@@ -7,8 +7,6 @@ export class CompXStaking extends Contract {
 
   minLockUp = GlobalStateKey<uint64>();
 
-  maxLockUp = GlobalStateKey<uint64>();
-
   totalStaked = GlobalStateKey<uint64>();
 
   totalRewards = GlobalStateKey<uint64>();
@@ -77,7 +75,6 @@ export class CompXStaking extends Contract {
     assert(this.txn.sender === this.app.creator);
 
     this.minLockUp.value = minLockUp;
-    this.maxLockUp.value = maxLockUp;
     this.oracleAppID.value = oracleAppID;
     this.contractDuration.value = contractDuration;
   }
@@ -87,7 +84,7 @@ export class CompXStaking extends Contract {
     assert(this.stakedAssetId.value.id !== 0, 'Staked AssetID not set');
     assert(this.rewardAssetId.value.id !== 0, 'Reward AssetID not set');
     assert(this.minLockUp.value !== 0, 'Minimum lockup not set');
-    assert(this.maxLockUp.value !== 0, 'Maximum lockup not set');
+    assert(this.contractDuration.value !== 0, 'Contract duration not set');
 
     verifyAssetTransferTxn(rewardTxn, {
       sender: this.app.creator,
@@ -103,9 +100,9 @@ export class CompXStaking extends Contract {
     assert(this.rewardAssetId.value.id !== 0, 'Reward AssetID not set');
     assert(this.totalRewards.value !== 0, 'No rewards to claim');
     assert(this.minLockUp.value !== 0, 'Minimum lockup not set');
-    assert(this.maxLockUp.value !== 0, 'Maximum lockup not set');
+    assert(this.contractDuration.value !== 0, 'Contract duration not set');
     assert(lockPeriod >= this.minLockUp.value, 'Lock period too short');
-    assert(lockPeriod <= this.maxLockUp.value, 'Lock period too long');
+    assert(lockPeriod <= this.contractDuration.value, 'Lock period too long');
 
     verifyAssetTransferTxn(stakeTxn, {
       sender: this.txn.sender,
