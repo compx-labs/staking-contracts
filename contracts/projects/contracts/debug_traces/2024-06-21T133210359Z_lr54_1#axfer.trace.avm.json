@@ -1,0 +1,69 @@
+{
+  "last-round": 54,
+  "txn-groups": [
+    {
+      "txn-results": [
+        {
+          "txn-result": {
+            "pool-error": "",
+            "txn": {
+              "txn": {
+                "aamt": 1,
+                "arcv": "zytPj0LIOSYK12cP1gLRJanVKw3zlYMatr8xOXCGUIg=",
+                "fee": 101000,
+                "fv": 54,
+                "gen": "dockernet-v1",
+                "gh": "SjABjDDAp6fFBZGD9A5rqkvfDhbG51QBejXMtLzDD1w=",
+                "grp": "5qmPN8e6FvxOtdnLhp4D9sX6RmUo/9gwGRd7kK5p/2E=",
+                "lv": 1054,
+                "snd": "f4T/33RR80yQuRTuRYuvpumSe6OQM1MFAQFJ4Th+odA=",
+                "type": "axfer",
+                "xaid": 1049
+              }
+            }
+          }
+        },
+        {
+          "txn-result": {
+            "pool-error": "",
+            "txn": {
+              "txn": {
+                "apaa": [
+                  "flCewg==",
+                  "AAAAAAAAAAE="
+                ],
+                "apid": 1050,
+                "fee": 1000,
+                "fv": 54,
+                "gen": "dockernet-v1",
+                "gh": "SjABjDDAp6fFBZGD9A5rqkvfDhbG51QBejXMtLzDD1w=",
+                "grp": "5qmPN8e6FvxOtdnLhp4D9sX6RmUo/9gwGRd7kK5p/2E=",
+                "lv": 1054,
+                "snd": "f4T/33RR80yQuRTuRYuvpumSe6OQM1MFAQFJ4Th+odA=",
+                "type": "appl"
+              }
+            }
+          }
+        }
+      ],
+      "app-budget-added": 700,
+      "failed-at": [
+        0
+      ],
+      "failure-message": "transaction FILTRIN4UCTVUTLEBF6IXWS2IGVXRWFGAMI7Y2PGSNX2RKZX7MZQ: receiver error: must optin, asset 1049 missing from Z4VU7D2CZA4SMCWXM4H5MAWREWU5KKYN6OKYGGVWX4YTS4EGKCEASEJH3I"
+    }
+  ],
+  "version": 2,
+  "eval-overrides": {
+    "allow-empty-signatures": true,
+    "max-log-calls": 2048,
+    "max-log-size": 65536
+  },
+  "exec-trace-config": {
+    "enable": true,
+    "scratch-change": true,
+    "stack-change": true,
+    "state-change": true
+  },
+  "initial-states": {}
+}

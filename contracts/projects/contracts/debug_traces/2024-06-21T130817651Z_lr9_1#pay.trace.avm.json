@@ -1,0 +1,67 @@
+{
+  "last-round": 9,
+  "txn-groups": [
+    {
+      "txn-results": [
+        {
+          "txn-result": {
+            "pool-error": "",
+            "txn": {
+              "txn": {
+                "amt": 2000,
+                "fee": 2000,
+                "fv": 9,
+                "gen": "dockernet-v1",
+                "gh": "SjABjDDAp6fFBZGD9A5rqkvfDhbG51QBejXMtLzDD1w=",
+                "grp": "3RYXLxJB80Yci0HVQHXQ0SFcAv2RQBWzU57wtY8/Gf4=",
+                "lv": 1009,
+                "rcv": "jsKZy38+/sKPVCOX4H8HEY10yHX4VAntjmuTwXtg6ZI=",
+                "snd": "I3f1l7dOV8plJ2LLfcf6PSsx1Y2kHR2m+uszif6Cm2Y=",
+                "type": "pay"
+              }
+            }
+          }
+        },
+        {
+          "txn-result": {
+            "pool-error": "",
+            "txn": {
+              "txn": {
+                "apaa": [
+                  "N+hGdw=="
+                ],
+                "apid": 1006,
+                "fee": 1000,
+                "fv": 9,
+                "gen": "dockernet-v1",
+                "gh": "SjABjDDAp6fFBZGD9A5rqkvfDhbG51QBejXMtLzDD1w=",
+                "grp": "3RYXLxJB80Yci0HVQHXQ0SFcAv2RQBWzU57wtY8/Gf4=",
+                "lv": 1009,
+                "snd": "I3f1l7dOV8plJ2LLfcf6PSsx1Y2kHR2m+uszif6Cm2Y=",
+                "type": "appl"
+              }
+            }
+          }
+        }
+      ],
+      "app-budget-added": 700,
+      "failed-at": [
+        0
+      ],
+      "failure-message": "transaction 6T4456QSLQ6VXVVGBZNWULHODW3HMKRX6ICH75VGYYEOGOKRLFWQ: account R3BJTS37H37MFD2UEOL6A7YHCGGXJSDV7BKAT3MONOJ4C63A5GJIUIBBFY balance 2000 below min 100000 (0 assets)"
+    }
+  ],
+  "version": 2,
+  "eval-overrides": {
+    "allow-empty-signatures": true,
+    "max-log-calls": 2048,
+    "max-log-size": 65536
+  },
+  "exec-trace-config": {
+    "enable": true,
+    "scratch-change": true,
+    "stack-change": true,
+    "state-change": true
+  },
+  "initial-states": {}
+}
