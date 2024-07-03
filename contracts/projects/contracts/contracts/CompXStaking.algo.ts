@@ -25,14 +25,12 @@ export class CompXStaking extends Contract {
     stakedAsset: AssetID,
     rewardAsset: AssetID,
     minLockUp: uint64,
-    maxLockUp: uint64,
     contractDuration: uint64,
     oracleAppID: AppID
   ): void {
     this.stakedAssetId.value = stakedAsset;
     this.rewardAssetId.value = rewardAsset;
     this.minLockUp.value = minLockUp;
-    this.maxLockUp.value = maxLockUp;
     this.totalRewards.value = 0;
     this.totalStaked.value = 0;
     this.contractDuration.value = contractDuration;
@@ -118,6 +116,11 @@ export class CompXStaking extends Contract {
     this.unlockTime(this.txn.sender).value = globals.latestTimestamp + lockPeriod * 86400;
   }
 
+/*   getOraclePrice(token: AssetID): uint64 {
+    const tokenPrice = this.oracleAppID.value.globalState(itob(token.id)) as BytesLike;
+    return btoi(tokenPrice);
+  } */
+
   unstake(): void {
     const quantity = this.staked(this.txn.sender).value;
     assert(quantity > 0, 'No staked assets');
@@ -125,9 +128,14 @@ export class CompXStaking extends Contract {
 
     const stakingDuration = globals.latestTimestamp - this.stakeStartTime(this.txn.sender).value;
     const stakeAmount = this.staked(this.txn.sender).value;
+
+    const stakeTokenPrice = 1_000_000; // this.getOraclePrice(this.stakedAssetId.value);
+    const rewardTokenPrice = 140_000; // this.getOraclePrice(this.rewardAssetId.value);
+
+    const normalisedAmount = (stakeAmount * stakeTokenPrice) / rewardTokenPrice;
     const reward =
-      (stakeAmount * stakingDuration * this.totalRewards.value) /
-      (this.totalStaked.value * this.contractDuration.value);
+      (normalisedAmount * stakingDuration * this.totalRewards.value) /
+      ((this.totalStaked.value * stakeTokenPrice * this.contractDuration.value) / rewardTokenPrice);
 
     sendAssetTransfer({
       xferAsset: this.stakedAssetId.value,

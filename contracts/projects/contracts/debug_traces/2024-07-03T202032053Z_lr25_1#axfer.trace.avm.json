@@ -1,0 +1,70 @@
+{
+  "last-round": 25,
+  "txn-groups": [
+    {
+      "txn-results": [
+        {
+          "txn-result": {
+            "pool-error": "",
+            "txn": {
+              "txn": {
+                "aamt": 1000000,
+                "arcv": "P9F2upOy1gYWBQ6d/gfuyKEs8/hW0GRmnBP8tzcsqBY=",
+                "fee": 101000,
+                "fv": 25,
+                "gen": "dockernet-v1",
+                "gh": "ehG2QUTvY0162F5v2xzzhZl0wwySUvB9M2bRXAXGGJI=",
+                "grp": "VokdybAaAxmsFD8zbmRSwKGzANNXu7RddbVIvx2VMkA=",
+                "lv": 1025,
+                "snd": "BjIieFsAzwgDriaVcg9lfXClN0ZOEebWZsmMgTXrESM=",
+                "type": "axfer",
+                "xaid": 1022
+              }
+            }
+          }
+        },
+        {
+          "txn-result": {
+            "pool-error": "",
+            "txn": {
+              "txn": {
+                "apaa": [
+                  "fVrMGw==",
+                  "AAAAAAAAAAE=",
+                  "AAAAAAAAAB4="
+                ],
+                "apid": 1024,
+                "fee": 1000,
+                "fv": 25,
+                "gen": "dockernet-v1",
+                "gh": "ehG2QUTvY0162F5v2xzzhZl0wwySUvB9M2bRXAXGGJI=",
+                "grp": "VokdybAaAxmsFD8zbmRSwKGzANNXu7RddbVIvx2VMkA=",
+                "lv": 1025,
+                "snd": "BjIieFsAzwgDriaVcg9lfXClN0ZOEebWZsmMgTXrESM=",
+                "type": "appl"
+              }
+            }
+          }
+        }
+      ],
+      "app-budget-added": 700,
+      "failed-at": [
+        0
+      ],
+      "failure-message": "transaction SB5U37HBQ4OTRVQHL5NWMVCFTX5MFXLR37I6FH2TEEGTDFPKNJDQ: underflow on subtracting 1000000 from sender amount 10"
+    }
+  ],
+  "version": 2,
+  "eval-overrides": {
+    "allow-empty-signatures": true,
+    "max-log-calls": 2048,
+    "max-log-size": 65536
+  },
+  "exec-trace-config": {
+    "enable": true,
+    "scratch-change": true,
+    "stack-change": true,
+    "state-change": true
+  },
+  "initial-states": {}
+}

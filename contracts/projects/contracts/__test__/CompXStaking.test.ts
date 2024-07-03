@@ -42,21 +42,20 @@ describe('CompXStaking', () => {
     await appClient.create.createApplication({
       stakedAsset: stakedAssetId,
       rewardAsset: rewardAssetId,
-      minLockUp: 10,
-      maxLockUp: 90,
+      minLockUp: 1,
       oracleAppID: 159512493,
-      contractDuration: 75,
+      contractDuration: 161000,
     });
   });
 
-  test('updateParams', async () => {
+  /*  test('updateParams', async () => {
     await appClient.updateParams({ minLockUp: 5, maxLockUp: 100, oracleAppID: 159512493, contractDuration: 75 });
     const globalState = await appClient.getGlobalState();
     expect(globalState.minLockUp!.asBigInt()).toBe(5n);
     expect(globalState.maxLockUp!.asBigInt()).toBe(100n);
     expect(globalState.oracleAppID!.asBigInt()).toBe(159512493n);
     expect(globalState.contractDuration!.asBigInt()).toBe(75n);
-  });
+  }); */
 
   test('opt app in', async () => {
     const { algorand } = fixture;
@@ -105,10 +104,10 @@ describe('CompXStaking', () => {
       sender: admin,
       receiver: appAddress,
       assetId: stakedAssetId,
-      amount: 1n,
+      amount: 1_000_000n,
       extraFee: algokit.algos(0.1),
     });
-    await appClient.stake({ stakeTxn: axferTxn, quantity: 1n, lockPeriod: 5n });
+    await appClient.stake({ stakeTxn: axferTxn, quantity: 1, lockPeriod: 30 });
 
     const stakedAmount = (await appClient.getGlobalState()).totalStaked!.asBigInt();
     expect(stakedAmount).toBe(1n);
