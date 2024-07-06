@@ -1,9 +1,11 @@
 import { Contract } from '@algorandfoundation/tealscript';
 
 export class CompXStaking extends Contract {
-  stakedAssetId = GlobalStateKey<AssetID>();
+  programVersion = 9;
 
-  rewardAssetId = GlobalStateKey<AssetID>();
+  stakedAssetId = GlobalStateKey<uint64>();
+
+  rewardAssetId = GlobalStateKey<uint64>();
 
   minLockUp = GlobalStateKey<uint64>();
 
@@ -11,7 +13,7 @@ export class CompXStaking extends Contract {
 
   totalRewards = GlobalStateKey<uint64>();
 
-  oracleAppID = GlobalStateKey<AppID>();
+  oracleAppID = GlobalStateKey<uint64>();
 
   contractDuration = GlobalStateKey<uint64>();
 
@@ -26,11 +28,11 @@ export class CompXStaking extends Contract {
   stakeStartTime = LocalStateKey<uint64>();
 
   createApplication(
-    stakedAsset: AssetID,
-    rewardAsset: AssetID,
+    stakedAsset: uint64,
+    rewardAsset: uint64,
     minLockUp: uint64,
     contractDuration: uint64,
-    oracleAppID: AppID
+    oracleAppID: uint64
   ): void {
     this.stakedAssetId.value = stakedAsset;
     this.rewardAssetId.value = rewardAsset;
@@ -59,14 +61,14 @@ export class CompXStaking extends Contract {
       amount: 2_000_000,
     });
     sendAssetTransfer({
-      xferAsset: this.stakedAssetId.value,
+      xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
       assetAmount: 0,
       assetReceiver: this.app.address,
       fee: 1_000,
     });
     if (mod === 2) {
       sendAssetTransfer({
-        xferAsset: this.rewardAssetId.value,
+        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
         assetAmount: 0,
         assetReceiver: this.app.address,
         fee: 1_000,
@@ -74,7 +76,7 @@ export class CompXStaking extends Contract {
     }
   }
 
-  updateParams(minLockUp: uint64, oracleAppID: AppID, contractDuration: uint64): void {
+  updateParams(minLockUp: uint64, oracleAppID: uint64, contractDuration: uint64): void {
     assert(this.txn.sender === this.app.creator);
 
     this.minLockUp.value = minLockUp;
@@ -84,23 +86,23 @@ export class CompXStaking extends Contract {
 
   addRewards(rewardTxn: AssetTransferTxn, quantity: uint64): void {
     assert(this.txn.sender === this.app.creator);
-    assert(this.stakedAssetId.value.id !== 0, 'Staked AssetID not set');
-    assert(this.rewardAssetId.value.id !== 0, 'Reward AssetID not set');
+    assert(this.stakedAssetId.value !== 0, 'Staked AssetID not set');
+    assert(this.rewardAssetId.value !== 0, 'Reward AssetID not set');
     assert(this.minLockUp.value !== 0, 'Minimum lockup not set');
     assert(this.contractDuration.value !== 0, 'Contract duration not set');
 
     verifyAssetTransferTxn(rewardTxn, {
       sender: this.app.creator,
       assetReceiver: this.app.address,
-      xferAsset: this.rewardAssetId.value,
+      xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
       assetAmount: quantity,
     });
     this.totalRewards.value += quantity;
   }
 
   stake(stakeTxn: AssetTransferTxn, quantity: uint64, lockPeriod: uint64): void {
-    assert(this.stakedAssetId.value.id !== 0, 'Staked AssetID not set');
-    assert(this.rewardAssetId.value.id !== 0, 'Reward AssetID not set');
+    assert(this.stakedAssetId.value !== 0, 'Staked AssetID not set');
+    assert(this.rewardAssetId.value !== 0, 'Reward AssetID not set');
     assert(this.totalRewards.value !== 0, 'No rewards to claim');
     assert(this.minLockUp.value !== 0, 'Minimum lockup not set');
     assert(this.contractDuration.value !== 0, 'Contract duration not set');
@@ -111,7 +113,7 @@ export class CompXStaking extends Contract {
       sender: this.txn.sender,
       assetReceiver: this.app.address,
       assetAmount: quantity,
-      xferAsset: this.stakedAssetId.value,
+      xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
     });
 
     this.totalStaked.value += quantity;
@@ -122,21 +124,22 @@ export class CompXStaking extends Contract {
     this.unlockTime(this.txn.sender).value = globals.latestTimestamp + lockPeriod;
   }
 
-  /*   getOraclePrice(token: AssetID): uint64 {
-    const tokenPrice = this.oracleAppID.value.globalState(itob(token.id)) as BytesLike;
-    return btoi(tokenPrice);
-  } */
-
   calculateRewards(): void {
     const quantity = this.staked(this.txn.sender).value;
     assert(quantity > 0, 'No staked assets');
-    // assert(this.unlockTime(this.txn.sender).value < globals.latestTimestamp, 'unlock time not reached'); // add in this check
+
+    assert(this.unlockTime(this.txn.sender).value < globals.latestTimestamp, 'unlock time not reached'); // add in this check
 
     const stakingDuration = this.stakeDuration(this.txn.sender).value;
     const stakeAmount = this.staked(this.txn.sender).value;
 
-    const stakeTokenPrice = 1000000; // this.getOraclePrice(this.stakedAssetId.value);
-    const rewardTokenPrice = 150000; // this.getOraclePrice(this.rewardAssetId.value);
+    // eslint-disable-next-line prettier/prettier
+    const stakeTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.stakedAssetId.value)) as bytes;
+    const stakeTokenPrice = extractUint64(stakeTokenPriceEncoded, 0);
+
+    // eslint-disable-next-line prettier/prettier
+    const rewardTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.rewardAssetId.value)) as bytes;
+    const rewardTokenPrice = extractUint64(rewardTokenPriceEncoded, 0);
 
     const stakedAmountlowerPrecision = stakeAmount / 10 ** 4;
     const stakeTokenPriceLowerPrecision = stakeTokenPrice / 10 ** 4;
@@ -161,8 +164,13 @@ export class CompXStaking extends Contract {
     const stakingDuration = this.stakeDuration(this.txn.sender).value;
     const stakeAmount = this.staked(this.txn.sender).value;
 
-    const stakeTokenPrice = 1000000; // this.getOraclePrice(this.stakedAssetId.value);
-    const rewardTokenPrice = 150000; // this.getOraclePrice(this.rewardAssetId.value);
+    // eslint-disable-next-line prettier/prettier
+    const stakeTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.stakedAssetId.value)) as bytes;
+    const stakeTokenPrice = extractUint64(stakeTokenPriceEncoded, 0);
+
+    // eslint-disable-next-line prettier/prettier
+    const rewardTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.rewardAssetId.value)) as bytes;
+    const rewardTokenPrice = extractUint64(rewardTokenPriceEncoded, 0);
 
     // lower precision for calculation
     const stakedAmountlowerPrecision = stakeAmount / 10 ** 4;
@@ -186,12 +194,12 @@ export class CompXStaking extends Contract {
     const reward = (rewardNom / rewardDom) * 10 ** 4;
 
     sendAssetTransfer({
-      xferAsset: this.stakedAssetId.value,
+      xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
       assetReceiver: this.txn.sender,
       assetAmount: quantity,
     });
     sendAssetTransfer({
-      xferAsset: this.rewardAssetId.value,
+      xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
       assetReceiver: this.txn.sender,
       assetAmount: reward,
     });
@@ -207,13 +215,13 @@ export class CompXStaking extends Contract {
     assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
     sendAssetTransfer({
-      xferAsset: this.stakedAssetId.value,
+      xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
       assetReceiver: this.app.creator,
       assetAmount: this.app.address.assetBalance(this.stakedAssetId.value),
       assetCloseTo: this.app.creator,
     });
     sendAssetTransfer({
-      xferAsset: this.rewardAssetId.value,
+      xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
       assetReceiver: this.app.creator,
       assetAmount: this.app.address.assetBalance(this.rewardAssetId.value),
       assetCloseTo: this.app.creator,
