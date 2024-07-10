@@ -41,8 +41,8 @@
       "name": "optInToAsset",
       "args": [
         {
-          "name": "mbrTxn",
-          "type": "pay"
+          "name": "asset",
+          "type": "uint64"
         }
       ],
       "returns": {
@@ -86,6 +86,34 @@
       }
     },
     {
+      "name": "addRewardsAlgo",
+      "args": [
+        {
+          "name": "payTxn",
+          "type": "pay"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "removeRewards",
+      "args": [
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "stake",
       "args": [
         {
@@ -107,14 +135,32 @@
     },
     {
       "name": "calculateRewards",
-      "args": [],
+      "args": [
+        {
+          "name": "stakeTokenBackupPrice",
+          "type": "uint64"
+        },
+        {
+          "name": "rewardTokenBackupPrice",
+          "type": "uint64"
+        }
+      ],
       "returns": {
         "type": "void"
       }
     },
     {
       "name": "unstake",
-      "args": [],
+      "args": [
+        {
+          "name": "stakeTokenBackupPrice",
+          "type": "uint64"
+        },
+        {
+          "name": "rewardTokenBackupPrice",
+          "type": "uint64"
+        }
+      ],
       "returns": {
         "type": "void"
       }

@@ -152,6 +152,7 @@ describe('CompXStaking', () => {
     const { balance: preRewardBalance } = await algorand.account.getAssetInformation(stakerAccount.addr, rewardAssetId);
     console.log('preRewardBalance', preRewardBalance);
 
+
     await appClient.calculateRewards({}, { sender: stakerAccount });
     localState = await appClient.getLocalState(stakerAccount);
     console.log('localState.calculatedReward', localState.calculatedReward!.asBigInt());

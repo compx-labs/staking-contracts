@@ -50,30 +50,15 @@ export class CompXStaking extends Contract {
     this.stakeDuration(this.txn.sender).value = 0;
   }
 
-  optInToAsset(mbrTxn: PayTxn): void {
+  optInToAsset(asset: AssetID): void {
     assert(this.txn.sender === this.app.creator);
-    let mod = 1;
-    if (this.stakedAssetId.value !== this.rewardAssetId.value) {
-      mod = 2;
-    }
-    verifyPayTxn(mbrTxn, {
-      receiver: this.app.address,
-      amount: 2_000_000,
-    });
+
     sendAssetTransfer({
-      xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
+      xferAsset: asset,
       assetAmount: 0,
       assetReceiver: this.app.address,
-      fee: 1_000,
+      sender: this.app.address,
     });
-    if (mod === 2) {
-      sendAssetTransfer({
-        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-        assetAmount: 0,
-        assetReceiver: this.app.address,
-        fee: 1_000,
-      });
-    }
   }
 
   updateParams(minLockUp: uint64, oracleAppID: uint64, contractDuration: uint64): void {
@@ -86,8 +71,6 @@ export class CompXStaking extends Contract {
 
   addRewards(rewardTxn: AssetTransferTxn, quantity: uint64): void {
     assert(this.txn.sender === this.app.creator);
-    assert(this.stakedAssetId.value !== 0, 'Staked AssetID not set');
-    assert(this.rewardAssetId.value !== 0, 'Reward AssetID not set');
     assert(this.minLockUp.value !== 0, 'Minimum lockup not set');
     assert(this.contractDuration.value !== 0, 'Contract duration not set');
 
@@ -100,19 +83,41 @@ export class CompXStaking extends Contract {
     this.totalRewards.value += quantity;
   }
 
-  stake(stakeTxn: AssetTransferTxn, quantity: uint64, lockPeriod: uint64): void {
-    assert(this.stakedAssetId.value !== 0, 'Staked AssetID not set');
-    assert(this.rewardAssetId.value !== 0, 'Reward AssetID not set');
-    assert(this.totalRewards.value !== 0, 'No rewards to claim');
+  addRewardsAlgo(payTxn: PayTxn, quantity: uint64): void {
+    assert(this.txn.sender === this.app.creator);
     assert(this.minLockUp.value !== 0, 'Minimum lockup not set');
     assert(this.contractDuration.value !== 0, 'Contract duration not set');
+
+    verifyPayTxn(payTxn, {
+      sender: this.app.creator,
+      receiver: this.app.address,
+    });
+
+    this.totalRewards.value += quantity;
+  }
+
+  removeRewards(quantity: uint64): void {
+    assert(this.txn.sender === this.app.creator);
+    assert(this.totalRewards.value >= quantity, 'Insufficient rewards');
+
+    let rewardsToRemove = quantity;
+    if (rewardsToRemove === 0) {
+      rewardsToRemove = this.totalRewards.value;
+    }
+    sendAssetTransfer({
+      xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+      assetReceiver: this.app.creator,
+      assetAmount: rewardsToRemove,
+    });
+  }
+
+  stake(stakeTxn: AssetTransferTxn, quantity: uint64, lockPeriod: uint64): void {
     assert(lockPeriod >= this.minLockUp.value, 'Lock period too short');
     assert(lockPeriod <= this.contractDuration.value, 'Lock period too long');
 
     verifyAssetTransferTxn(stakeTxn, {
       sender: this.txn.sender,
       assetReceiver: this.app.address,
-      assetAmount: quantity,
       xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
     });
 
@@ -124,7 +129,7 @@ export class CompXStaking extends Contract {
     this.unlockTime(this.txn.sender).value = globals.latestTimestamp + lockPeriod;
   }
 
-  calculateRewards(): void {
+  calculateRewards(stakeTokenBackupPrice: uint64, rewardTokenBackupPrice: uint64): void {
     const quantity = this.staked(this.txn.sender).value;
     assert(quantity > 0, 'No staked assets');
 
@@ -132,14 +137,18 @@ export class CompXStaking extends Contract {
 
     const stakingDuration = this.stakeDuration(this.txn.sender).value;
     const stakeAmount = this.staked(this.txn.sender).value;
+    const stakeTokenPrice = stakeTokenBackupPrice;
+    const rewardTokenPrice = rewardTokenBackupPrice;
 
-    // eslint-disable-next-line prettier/prettier
-    const stakeTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.stakedAssetId.value)) as bytes;
-    const stakeTokenPrice = extractUint64(stakeTokenPriceEncoded, 0);
+    /*     if (this.stakedAssetId.value !== 760037151) {
+      // eslint-disable-next-line prettier/prettier
+      const stakeTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.stakedAssetId.value)) as bytes;
+      stakeTokenPrice = extractUint64(stakeTokenPriceEncoded, 0);
+    }
 
     // eslint-disable-next-line prettier/prettier
     const rewardTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.rewardAssetId.value)) as bytes;
-    const rewardTokenPrice = extractUint64(rewardTokenPriceEncoded, 0);
+    const rewardTokenPrice = extractUint64(rewardTokenPriceEncoded, 0); */
 
     const stakedAmountlowerPrecision = stakeAmount / 10 ** 4;
     const stakeTokenPriceLowerPrecision = stakeTokenPrice / 10 ** 4;
@@ -156,7 +165,7 @@ export class CompXStaking extends Contract {
     this.calculatedReward(this.txn.sender).value = (rewardNom / rewardDom) * 10 ** 4;
   }
 
-  unstake(): void {
+  unstake(stakeTokenBackupPrice: uint64, rewardTokenBackupPrice: uint64): void {
     const quantity = this.staked(this.txn.sender).value;
     assert(quantity > 0, 'No staked assets');
     // assert(this.unlockTime(this.txn.sender).value < globals.latestTimestamp, 'unlock time not reached'); // add in this check
@@ -164,13 +173,20 @@ export class CompXStaking extends Contract {
     const stakingDuration = this.stakeDuration(this.txn.sender).value;
     const stakeAmount = this.staked(this.txn.sender).value;
 
-    // eslint-disable-next-line prettier/prettier
-    const stakeTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.stakedAssetId.value)) as bytes;
-    const stakeTokenPrice = extractUint64(stakeTokenPriceEncoded, 0);
+    const stakeTokenPrice = stakeTokenBackupPrice;
+    const rewardTokenPrice = rewardTokenBackupPrice;
 
-    // eslint-disable-next-line prettier/prettier
-    const rewardTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.rewardAssetId.value)) as bytes;
-    const rewardTokenPrice = extractUint64(rewardTokenPriceEncoded, 0);
+    /*     if (this.stakedAssetId.value !== 760037151 && this.txn.applications) {
+      // eslint-disable-next-line prettier/prettier
+      const stakeTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.stakedAssetId.value)) as bytes;
+      stakeTokenPrice = extractUint64(stakeTokenPriceEncoded, 0);
+    }
+
+    if (this.txn.applications) {
+      // eslint-disable-next-line prettier/prettier
+      const rewardTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.rewardAssetId.value)) as bytes;
+      rewardTokenPrice = extractUint64(rewardTokenPriceEncoded, 0);
+    } */
 
     // lower precision for calculation
     const stakedAmountlowerPrecision = stakeAmount / 10 ** 4;
@@ -193,16 +209,30 @@ export class CompXStaking extends Contract {
       rewardTokenPriceLowerPrecision;
     const reward = (rewardNom / rewardDom) * 10 ** 4;
 
-    sendAssetTransfer({
-      xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
-      assetReceiver: this.txn.sender,
-      assetAmount: quantity,
-    });
-    sendAssetTransfer({
-      xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-      assetReceiver: this.txn.sender,
-      assetAmount: reward,
-    });
+    if (this.stakedAssetId.value === 0) {
+      sendPayment({
+        amount: reward,
+        receiver: this.txn.sender,
+      });
+    } else {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
+        assetReceiver: this.txn.sender,
+        assetAmount: quantity,
+      });
+    }
+    if (this.rewardAssetId.value === 0) {
+      sendPayment({
+        amount: reward,
+        receiver: this.txn.sender,
+      });
+    } else {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+        assetReceiver: this.txn.sender,
+        assetAmount: reward,
+      });
+    }
 
     this.totalStaked.value -= quantity;
     this.totalRewards.value -= reward;
