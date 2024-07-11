@@ -104,11 +104,18 @@ export class CompXStaking extends Contract {
     if (rewardsToRemove === 0) {
       rewardsToRemove = this.totalRewards.value;
     }
-    sendAssetTransfer({
-      xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-      assetReceiver: this.app.creator,
-      assetAmount: rewardsToRemove,
-    });
+    if (this.rewardAssetId.value === 0) {
+      sendPayment({
+        amount: rewardsToRemove,
+        receiver: this.app.creator,
+      });
+    } else {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+        assetReceiver: this.app.creator,
+        assetAmount: rewardsToRemove,
+      });
+    }
   }
 
   stake(stakeTxn: AssetTransferTxn, quantity: uint64, lockPeriod: uint64): void {
@@ -244,18 +251,6 @@ export class CompXStaking extends Contract {
     assert(this.txn.sender === this.app.creator);
     assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
-    sendAssetTransfer({
-      xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
-      assetReceiver: this.app.creator,
-      assetAmount: this.app.address.assetBalance(this.stakedAssetId.value),
-      assetCloseTo: this.app.creator,
-    });
-    sendAssetTransfer({
-      xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-      assetReceiver: this.app.creator,
-      assetAmount: this.app.address.assetBalance(this.rewardAssetId.value),
-      assetCloseTo: this.app.creator,
-    });
     sendPayment({
       amount: this.app.address.balance,
       receiver: this.app.creator,
