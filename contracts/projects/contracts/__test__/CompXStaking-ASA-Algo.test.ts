@@ -88,6 +88,48 @@ describe('CompXStaking ASA/Algo', () => {
     expect(rewardAssetBalance).toBe(algokit.algos(5).microAlgos);
   });
 
+  test('remove rewards', async () => {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+
+    const { balance: adminRewardAssetBalancePreRemoval } = await algorand.account.getAssetInformation(
+      admin,
+      rewardAssetId
+    );
+    const { balance: contractRewardAssetBalancePreRemoval } = await algorand.account.getAssetInformation(
+      appAddress,
+      rewardAssetId
+    );
+
+    await appClient.removeRewards({ quantity: 0n }, { sendParams: { fee: algokit.algos(0.1) } });
+    const { balance: contractRewardAssetBalancePostRemoval } = await algorand.account.getAssetInformation(
+      appAddress,
+      rewardAssetId
+    );
+    expect(contractRewardAssetBalancePostRemoval).toBe(0n);
+    const { balance: adminRewardAssetBalanceAfterRemoval } = await algorand.account.getAssetInformation(
+      admin,
+      rewardAssetId
+    );
+    expect(adminRewardAssetBalanceAfterRemoval).toBe(
+      adminRewardAssetBalancePreRemoval + contractRewardAssetBalancePreRemoval
+    );
+  });
+
+  test('re-add the rewards', async () => {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+    const payTxn = await fixture.algorand.transactions.payment({
+      sender: admin,
+      receiver: appAddress,
+      amount: algokit.algos(5),
+    });
+
+    await appClient.addRewardsAlgo({ payTxn, quantity: algokit.algos(5).microAlgos });
+    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
+    expect(rewardAssetBalance).toBe(algokit.algos(5).microAlgos);
+  });
+
   test('opt in to application ', async () => {
     await appClient.optIn.optInToApplication({});
     const localState = await appClient.getLocalState(admin);
