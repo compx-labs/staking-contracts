@@ -50,6 +50,7 @@ describe('CompXStaking ASA/ASA', () => {
       minLockUp: 10,
       contractDuration: 99,
       oracleAppID: 159512493,
+      startTimestamp: Date.now(),
     });
   });
 

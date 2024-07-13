@@ -129,6 +129,7 @@ export class CompXStaking extends Contract {
     assert(lockPeriod >= this.minLockUp.value, 'Lock period too short');
     assert(globals.latestTimestamp + lockPeriod <= this.contractEndTimestamp.value, 'Lock period too long');
     assert(globals.latestTimestamp <= this.contractEndTimestamp.value, 'Contract has ended');
+    assert(globals.latestTimestamp >= this.contractStartTimestamp.value, 'Contract has not started');
 
     verifyAssetTransferTxn(stakeTxn, {
       sender: this.txn.sender,

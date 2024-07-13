@@ -24,6 +24,10 @@
         {
           "name": "oracleAppID",
           "type": "uint64"
+        },
+        {
+          "name": "startTimestamp",
+          "type": "uint64"
         }
       ],
       "returns": {
