@@ -17,6 +17,10 @@ export class CompXStaking extends Contract {
 
   contractDuration = GlobalStateKey<uint64>();
 
+  contractStartTimestamp = GlobalStateKey<uint64>();
+
+  contractEndTimestamp = GlobalStateKey<uint64>();
+
   calculatedReward = LocalStateKey<uint64>();
 
   staked = LocalStateKey<uint64>();
@@ -32,7 +36,8 @@ export class CompXStaking extends Contract {
     rewardAsset: uint64,
     minLockUp: uint64,
     contractDuration: uint64,
-    oracleAppID: uint64
+    oracleAppID: uint64,
+    startTimestamp: uint64
   ): void {
     this.stakedAssetId.value = stakedAsset;
     this.rewardAssetId.value = rewardAsset;
@@ -40,6 +45,8 @@ export class CompXStaking extends Contract {
     this.totalRewards.value = 0;
     this.totalStaked.value = 0;
     this.contractDuration.value = contractDuration;
+    this.contractStartTimestamp.value = startTimestamp;
+    this.contractEndTimestamp.value = startTimestamp + contractDuration;
     this.oracleAppID.value = oracleAppID;
   }
 
@@ -120,7 +127,8 @@ export class CompXStaking extends Contract {
 
   stake(stakeTxn: AssetTransferTxn, quantity: uint64, lockPeriod: uint64): void {
     assert(lockPeriod >= this.minLockUp.value, 'Lock period too short');
-    assert(lockPeriod <= this.contractDuration.value, 'Lock period too long');
+    assert(globals.latestTimestamp + lockPeriod <= this.contractEndTimestamp.value, 'Lock period too long');
+    assert(globals.latestTimestamp <= this.contractEndTimestamp.value, 'Contract has ended');
 
     verifyAssetTransferTxn(stakeTxn, {
       sender: this.txn.sender,
