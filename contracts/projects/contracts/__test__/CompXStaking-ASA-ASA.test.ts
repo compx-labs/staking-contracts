@@ -50,7 +50,7 @@ describe('CompXStaking ASA/ASA', () => {
       minLockUp: 10,
       contractDuration: 99,
       oracleAppID: 159512493,
-      startTimestamp: Date.now(),
+      startTimestamp: Math.floor(1720643215000 / 1000),
     });
   });
 
@@ -69,7 +69,7 @@ describe('CompXStaking ASA/ASA', () => {
     await algorand.send.payment({
       sender: admin,
       receiver: appAddress,
-      amount: algokit.algos(0.3),
+      amount: algokit.algos(0.4),
     });
 
     await appClient.optInToAsset({ asset: stakedAssetId }, { sendParams: { fee: algokit.algos(0.1) } });
@@ -81,6 +81,49 @@ describe('CompXStaking ASA/ASA', () => {
   });
 
   test('add rewards', async () => {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+    const axferTxn = await fixture.algorand.transactions.assetTransfer({
+      sender: admin,
+      receiver: appAddress,
+      assetId: rewardAssetId,
+      amount: 100_000_000_000n,
+      extraFee: algokit.algos(0.1),
+    });
+    await appClient.addRewards({ rewardTxn: axferTxn, quantity: 100_000_000_000n });
+    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
+    expect(rewardAssetBalance).toBe(100_000_000_000n);
+  });
+
+  test('remove rewards', async () => {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+
+    const { balance: adminRewardAssetBalancePreRemoval } = await algorand.account.getAssetInformation(
+      admin,
+      rewardAssetId
+    );
+    const { balance: contractRewardAssetBalancePreRemoval } = await algorand.account.getAssetInformation(
+      appAddress,
+      rewardAssetId
+    );
+
+    await appClient.removeRewards({ quantity: 0n }, { sendParams: { fee: algokit.algos(0.1) } });
+    const { balance: contractRewardAssetBalancePostRemoval } = await algorand.account.getAssetInformation(
+      appAddress,
+      rewardAssetId
+    );
+    expect(contractRewardAssetBalancePostRemoval).toBe(0n);
+    const { balance: adminRewardAssetBalanceAfterRemoval } = await algorand.account.getAssetInformation(
+      admin,
+      rewardAssetId
+    );
+    expect(adminRewardAssetBalanceAfterRemoval).toBe(
+      adminRewardAssetBalancePreRemoval + contractRewardAssetBalancePreRemoval
+    );
+  });
+
+  test('re-add rewards', async () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
     const axferTxn = await fixture.algorand.transactions.assetTransfer({
@@ -138,6 +181,7 @@ describe('CompXStaking ASA/ASA', () => {
       amount: 100_000_000n,
       extraFee: algokit.algos(0.1),
     });
+
     await appClient.stake({ stakeTxn: axferTxn, quantity: 100_000_000n, lockPeriod: 5 }, { sender: stakerAccount });
 
     const stakedAmount = (await appClient.getGlobalState()).totalStaked!.asBigInt();

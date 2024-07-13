@@ -115,12 +115,14 @@ export class CompXStaking extends Contract {
       sendPayment({
         amount: rewardsToRemove,
         receiver: this.app.creator,
+        fee: 1000,
       });
     } else {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
         assetReceiver: this.app.creator,
         assetAmount: rewardsToRemove,
+        fee: 1000,
       });
     }
   }
@@ -264,6 +266,7 @@ export class CompXStaking extends Contract {
       amount: this.app.address.balance,
       receiver: this.app.creator,
       closeRemainderTo: this.app.creator,
+      fee: 1000,
     });
   }
 }
