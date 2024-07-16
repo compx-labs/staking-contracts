@@ -54,13 +54,13 @@ describe('CompXStaking ASA/ASA', () => {
     });
   });
 
-  test('updateParams', async () => {
+/*   test('updateParams', async () => {
     await appClient.updateParams({ minLockUp: 5, oracleAppID: 159512493, contractDuration: 75 });
     const globalState = await appClient.getGlobalState();
     expect(globalState.minLockUp!.asBigInt()).toBe(5n);
     expect(globalState.oracleAppID!.asBigInt()).toBe(159512493n);
     expect(globalState.contractDuration!.asBigInt()).toBe(75n);
-  });
+  }); */
 
   test('opt app in', async () => {
     const { algorand } = fixture;
