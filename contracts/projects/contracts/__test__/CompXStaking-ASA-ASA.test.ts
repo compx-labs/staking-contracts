@@ -48,9 +48,9 @@ describe('CompXStaking ASA/ASA', () => {
       stakedAsset: stakedAssetId,
       rewardAsset: rewardAssetId,
       minLockUp: 10,
-      contractDuration: 99,
+      contractDuration: 6134400n, // 71 Days in seconds
       oracleAppID: 159512493,
-      startTimestamp: Math.floor(1720643215000 / 1000),
+      startTimestamp: Math.floor(Date.now() / 1000),
     });
   });
 
@@ -182,28 +182,24 @@ describe('CompXStaking ASA/ASA', () => {
       extraFee: algokit.algos(0.1),
     });
 
-    await appClient.stake({ stakeTxn: axferTxn, quantity: 100_000_000n, lockPeriod: 5 }, { sender: stakerAccount });
+    await appClient.stake(
+      {
+        stakeTxn: axferTxn,
+        quantity: 100_000_000n,
+        lockPeriod: 6134400n, // 71 Days in seconds
+        stakeTokenPrice: 1000000n,
+        rewardTokenPrice: 150000n,
+      },
+      { sender: stakerAccount }
+    );
 
     const stakedAmount = (await appClient.getGlobalState()).totalStaked!.asBigInt();
     expect(stakedAmount).toBe(100_000_000n);
-    let localState = await appClient.getLocalState(stakerAccount);
+    const localState = await appClient.getLocalState(stakerAccount);
     expect(localState.staked!.asBigInt()).toBe(100_000_000n);
 
-    // eslint-disable-next-line no-promise-executor-return
-    await new Promise((r) => setTimeout(r, 6000));
-
-    await appClient.calculateRewards(
-      { rewardTokenBackupPrice: 1398900, stakeTokenBackupPrice: 12000000 },
-      { sender: stakerAccount }
-    );
-    localState = await appClient.getLocalState(stakerAccount);
-    console.log('localState.calculatedReward', localState.calculatedReward!.asBigInt());
-
     const stakedAmountBefore = (await appClient.getGlobalState()).totalStaked!.asBigInt();
-    await appClient.unstake(
-      { rewardTokenBackupPrice: 1398900, stakeTokenBackupPrice: 12000000 },
-      { sendParams: { fee: algokit.algos(0.2) }, sender: stakerAccount }
-    );
+    await appClient.unstake({}, { sendParams: { fee: algokit.algos(0.2) }, sender: stakerAccount });
 
     const stakedAmountAfter = (await appClient.getGlobalState()).totalStaked!.asBigInt();
     expect(stakedAmountBefore).toBe(100_000_000n);

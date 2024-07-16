@@ -131,21 +131,13 @@
         {
           "name": "lockPeriod",
           "type": "uint64"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "calculateRewards",
-      "args": [
+        },
         {
-          "name": "stakeTokenBackupPrice",
+          "name": "stakeTokenPrice",
           "type": "uint64"
         },
         {
-          "name": "rewardTokenBackupPrice",
+          "name": "rewardTokenPrice",
           "type": "uint64"
         }
       ],
@@ -155,16 +147,7 @@
     },
     {
       "name": "unstake",
-      "args": [
-        {
-          "name": "stakeTokenBackupPrice",
-          "type": "uint64"
-        },
-        {
-          "name": "rewardTokenBackupPrice",
-          "type": "uint64"
-        }
-      ],
+      "args": [],
       "returns": {
         "type": "void"
       }

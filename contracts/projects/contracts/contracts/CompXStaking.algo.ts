@@ -21,6 +21,10 @@ export class CompXStaking extends Contract {
 
   contractEndTimestamp = GlobalStateKey<uint64>();
 
+  totalStakingWeight = GlobalStateKey<uint64>();
+
+  remainingRewards = GlobalStateKey<uint64>();
+
   calculatedReward = LocalStateKey<uint64>();
 
   staked = LocalStateKey<uint64>();
@@ -30,6 +34,8 @@ export class CompXStaking extends Contract {
   stakeDuration = LocalStateKey<uint64>();
 
   stakeStartTime = LocalStateKey<uint64>();
+
+  userStakingWeight = LocalStateKey<uint64>();
 
   createApplication(
     stakedAsset: uint64,
@@ -48,6 +54,8 @@ export class CompXStaking extends Contract {
     this.contractStartTimestamp.value = startTimestamp;
     this.contractEndTimestamp.value = startTimestamp + contractDuration;
     this.oracleAppID.value = oracleAppID;
+    this.totalStakingWeight.value = 0;
+    this.remainingRewards.value = 0;
   }
 
   optInToApplication(): void {
@@ -88,6 +96,7 @@ export class CompXStaking extends Contract {
       assetAmount: quantity,
     });
     this.totalRewards.value += quantity;
+    this.remainingRewards.value += quantity;
   }
 
   addRewardsAlgo(payTxn: PayTxn, quantity: uint64): void {
@@ -127,7 +136,13 @@ export class CompXStaking extends Contract {
     }
   }
 
-  stake(stakeTxn: AssetTransferTxn, quantity: uint64, lockPeriod: uint64): void {
+  stake(
+    stakeTxn: AssetTransferTxn,
+    quantity: uint64,
+    lockPeriod: uint64,
+    stakeTokenPrice: uint64,
+    rewardTokenPrice: uint64
+  ): void {
     assert(lockPeriod >= this.minLockUp.value, 'Lock period too short');
     assert(globals.latestTimestamp + lockPeriod <= this.contractEndTimestamp.value, 'Lock period too long');
     assert(globals.latestTimestamp <= this.contractEndTimestamp.value, 'Contract has ended');
@@ -138,98 +153,41 @@ export class CompXStaking extends Contract {
       assetReceiver: this.app.address,
       xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
     });
+    const normalisedAmount = (quantity * stakeTokenPrice) / rewardTokenPrice;
+    const userStakingWeight = normalisedAmount * lockPeriod;
 
     this.totalStaked.value += quantity;
+    this.totalStakingWeight.value += userStakingWeight;
+
     this.staked(this.txn.sender).value += quantity;
     this.stakeStartTime(this.txn.sender).value = globals.latestTimestamp;
     this.stakeDuration(this.txn.sender).value = lockPeriod;
-
+    this.userStakingWeight(this.txn.sender).value = userStakingWeight;
     this.unlockTime(this.txn.sender).value = globals.latestTimestamp + lockPeriod;
   }
 
-  calculateRewards(stakeTokenBackupPrice: uint64, rewardTokenBackupPrice: uint64): void {
-    const quantity = this.staked(this.txn.sender).value;
-    assert(quantity > 0, 'No staked assets');
-
-    assert(this.unlockTime(this.txn.sender).value < globals.latestTimestamp, 'unlock time not reached'); // add in this check
-
-    const stakingDuration = this.stakeDuration(this.txn.sender).value;
-    const stakeAmount = this.staked(this.txn.sender).value;
-    const stakeTokenPrice = stakeTokenBackupPrice;
-    const rewardTokenPrice = rewardTokenBackupPrice;
-
-    /*     if (this.stakedAssetId.value !== 760037151) {
-      // eslint-disable-next-line prettier/prettier
-      const stakeTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.stakedAssetId.value)) as bytes;
-      stakeTokenPrice = extractUint64(stakeTokenPriceEncoded, 0);
-    }
-
-    // eslint-disable-next-line prettier/prettier
-    const rewardTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.rewardAssetId.value)) as bytes;
-    const rewardTokenPrice = extractUint64(rewardTokenPriceEncoded, 0); */
-
-    const stakedAmountlowerPrecision = stakeAmount / 10 ** 4;
-    const stakeTokenPriceLowerPrecision = stakeTokenPrice / 10 ** 4;
-    const rewardTokenPriceLowerPrecision = rewardTokenPrice / 10 ** 4;
-    const totalRewardsLowerPrecision = this.totalRewards.value / 10 ** 4;
-    const totalStakedLowerPrecision = this.totalStaked.value / 10 ** 4;
-
-    const normalisedAmount =
-      (stakedAmountlowerPrecision * stakeTokenPriceLowerPrecision) / rewardTokenPriceLowerPrecision;
-    const rewardNom = normalisedAmount * stakingDuration * totalRewardsLowerPrecision;
-    const rewardDom =
-      (totalStakedLowerPrecision * stakeTokenPriceLowerPrecision * this.contractDuration.value) /
-      rewardTokenPriceLowerPrecision;
-    this.calculatedReward(this.txn.sender).value = (rewardNom / rewardDom) * 10 ** 4;
-  }
-
-  unstake(stakeTokenBackupPrice: uint64, rewardTokenBackupPrice: uint64): void {
+  unstake(): void {
     const quantity = this.staked(this.txn.sender).value;
     assert(quantity > 0, 'No staked assets');
     // assert(this.unlockTime(this.txn.sender).value < globals.latestTimestamp, 'unlock time not reached'); // add in this check
 
-    const stakingDuration = this.stakeDuration(this.txn.sender).value;
-    const stakeAmount = this.staked(this.txn.sender).value;
+    const userShare = this.userStakingWeight(this.txn.sender).value / this.totalStakingWeight.value;
 
-    const stakeTokenPrice = stakeTokenBackupPrice;
-    const rewardTokenPrice = rewardTokenBackupPrice;
+    // Calculate the user's total rewards from the remaining rewards pool
+    const userTotalRewards = userShare * this.remainingRewards.value;
 
-    /*     if (this.stakedAssetId.value !== 760037151 && this.txn.applications) {
-      // eslint-disable-next-line prettier/prettier
-      const stakeTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.stakedAssetId.value)) as bytes;
-      stakeTokenPrice = extractUint64(stakeTokenPriceEncoded, 0);
-    }
+    assert(userTotalRewards > 0, 'No rewards to claim');
+    assert(userTotalRewards <= this.remainingRewards.value, 'Insufficient rewards');
 
-    if (this.txn.applications) {
-      // eslint-disable-next-line prettier/prettier
-      const rewardTokenPriceEncoded = AppID.fromUint64(this.oracleAppID.value).globalState(itob(this.rewardAssetId.value)) as bytes;
-      rewardTokenPrice = extractUint64(rewardTokenPriceEncoded, 0);
-    } */
+    // Update the total staking weight
+    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
 
-    // lower precision for calculation
-    const stakedAmountlowerPrecision = stakeAmount / 10 ** 4;
-    const stakeTokenPriceLowerPrecision = stakeTokenPrice / 10 ** 4;
-    const rewardTokenPriceLowerPrecision = rewardTokenPrice / 10 ** 4;
-    const totalRewardsLowerPrecision = this.totalRewards.value / 10 ** 4;
-    const totalStakedLowerPrecision = this.totalStaked.value / 10 ** 4;
-
-    /* const normalisedAmount = (stakeAmount * stakeTokenPrice) / rewardTokenPrice;
-    const reward =
-      (normalisedAmount * stakingDuration * this.totalRewards.value) /
-      ((this.totalStaked.value * stakeTokenPrice * this.contractDuration.value) / rewardTokenPrice); */
-    // 100 * 5 * 1234 / 100 * 1 * 75 / 1
-    // 617,000 / (7500) / 1
-    const normalisedAmount =
-      (stakedAmountlowerPrecision * stakeTokenPriceLowerPrecision) / rewardTokenPriceLowerPrecision;
-    const rewardNom = normalisedAmount * stakingDuration * totalRewardsLowerPrecision;
-    const rewardDom =
-      (totalStakedLowerPrecision * stakeTokenPriceLowerPrecision * this.contractDuration.value) /
-      rewardTokenPriceLowerPrecision;
-    const reward = (rewardNom / rewardDom) * 10 ** 4;
+    // Update the remaining rewards pool
+    this.remainingRewards.value -= userTotalRewards;
 
     if (this.stakedAssetId.value === 0) {
       sendPayment({
-        amount: reward,
+        amount: userTotalRewards,
         receiver: this.txn.sender,
       });
     } else {
@@ -241,21 +199,25 @@ export class CompXStaking extends Contract {
     }
     if (this.rewardAssetId.value === 0) {
       sendPayment({
-        amount: reward,
+        amount: userTotalRewards,
         receiver: this.txn.sender,
       });
     } else {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
         assetReceiver: this.txn.sender,
-        assetAmount: reward,
+        assetAmount: userTotalRewards,
       });
     }
 
     this.totalStaked.value -= quantity;
-    this.totalRewards.value -= reward;
+    this.remainingRewards.value -= userTotalRewards;
+
     this.staked(this.txn.sender).value = 0;
     this.unlockTime(this.txn.sender).value = 0;
+    this.userStakingWeight(this.txn.sender).value = 0;
+    this.stakeDuration(this.txn.sender).value = 0;
+    this.stakeStartTime(this.txn.sender).value = 0;
   }
 
   deleteApplication(): void {
