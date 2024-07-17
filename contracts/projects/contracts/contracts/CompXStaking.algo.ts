@@ -3,6 +3,7 @@ import { Contract } from '@algorandfoundation/tealscript';
 export class CompXStaking extends Contract {
   programVersion = 9;
 
+  //Global State
   stakedAssetId = GlobalStateKey<uint64>();
 
   rewardAssetId = GlobalStateKey<uint64>();
@@ -13,7 +14,7 @@ export class CompXStaking extends Contract {
 
   totalRewards = GlobalStateKey<uint64>();
 
-  oracleAppID = GlobalStateKey<uint64>();
+  oracleAdminAddress = GlobalStateKey<Address>();
 
   contractDuration = GlobalStateKey<uint64>();
 
@@ -25,6 +26,11 @@ export class CompXStaking extends Contract {
 
   remainingRewards = GlobalStateKey<uint64>();
 
+  stakeTokenPrice = GlobalStateKey<uint64>();
+
+  rewardTokenPrice = GlobalStateKey<uint64>();
+
+  //Local State
   calculatedReward = LocalStateKey<uint64>();
 
   staked = LocalStateKey<uint64>();
@@ -44,7 +50,7 @@ export class CompXStaking extends Contract {
     rewardAsset: uint64,
     minLockUp: uint64,
     contractDuration: uint64,
-    oracleAppID: uint64,
+    oracleAdminAddress: Address,
     startTimestamp: uint64
   ): void {
     this.stakedAssetId.value = stakedAsset;
@@ -55,7 +61,7 @@ export class CompXStaking extends Contract {
     this.contractDuration.value = contractDuration;
     this.contractStartTimestamp.value = startTimestamp;
     this.contractEndTimestamp.value = startTimestamp + contractDuration;
-    this.oracleAppID.value = oracleAppID;
+    this.oracleAdminAddress.value = oracleAdminAddress;
     this.totalStakingWeight.value = 0;
     this.remainingRewards.value = 0;
   }
@@ -78,11 +84,11 @@ export class CompXStaking extends Contract {
     });
   }
 
-  updateParams(minLockUp: uint64, oracleAppID: uint64, contractDuration: uint64): void {
+  updateParams(minLockUp: uint64, oracleAdminAddress: Address, contractDuration: uint64): void {
     assert(this.txn.sender === this.app.creator);
 
     this.minLockUp.value = minLockUp;
-    this.oracleAppID.value = oracleAppID;
+    this.oracleAdminAddress.value = oracleAdminAddress;
     this.contractDuration.value = contractDuration;
   }
 
@@ -144,20 +150,20 @@ export class CompXStaking extends Contract {
     stakeTxn: AssetTransferTxn,
     quantity: uint64,
     lockPeriod: uint64,
-    stakeTokenPrice: uint64,
-    rewardTokenPrice: uint64
   ): void {
     assert(lockPeriod >= this.minLockUp.value, 'Lock period too short');
     assert(globals.latestTimestamp + lockPeriod < this.contractEndTimestamp.value, 'Lock period too long');
     assert(globals.latestTimestamp <= this.contractEndTimestamp.value, 'Contract has ended');
     assert(globals.latestTimestamp >= this.contractStartTimestamp.value, 'Contract has not started');
+    assert(this.stakeTokenPrice.value > 0, 'Stake token price not set');
+    assert(this.rewardTokenPrice.value > 0, 'Reward token price not set');
 
     verifyAssetTransferTxn(stakeTxn, {
       sender: this.txn.sender,
       assetReceiver: this.app.address,
       xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
     });
-    const normalisedAmount = (quantity * stakeTokenPrice) / rewardTokenPrice;
+    const normalisedAmount = (quantity * this.stakeTokenPrice.value) / this.rewardTokenPrice.value;
     const userStakingWeight = normalisedAmount * lockPeriod;
 
     this.totalStaked.value += quantity;
@@ -264,4 +270,15 @@ export class CompXStaking extends Contract {
       fee: 1000,
     });
   }
+
+  setPrices(stakeTokenPrice: uint64, rewardTokenPrice: uint64): void {
+    assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices');
+    assert(stakeTokenPrice > 0, 'Invalid stake token price');
+    assert(rewardTokenPrice > 0, 'Invalid reward token price');
+
+    this.stakeTokenPrice.value = stakeTokenPrice;
+    this.rewardTokenPrice.value = rewardTokenPrice;
+  }
 }
+
+  
