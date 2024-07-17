@@ -5267,93 +5267,87 @@
     ]
   },
   {
-    "teal": 1333,
-    "source": 262,
+    "teal": 1326,
+    "source": 237,
     "pc": [
       1315
     ]
   },
   {
-    "teal": 1334,
-    "source": 262,
+    "teal": 1331,
+    "source": 270,
     "pc": [
-      1316
-    ]
-  },
-  {
-    "teal": 1335,
-    "source": 262,
-    "pc": [
+      1316,
       1317,
       1318
     ]
   },
   {
-    "teal": 1339,
-    "source": 263,
+    "teal": 1332,
+    "source": 270,
     "pc": [
-      1319,
-      1320
+      1319
     ]
   },
   {
-    "teal": 1340,
-    "source": 263,
+    "teal": 1335,
+    "source": 270,
     "pc": [
+      1320,
       1321,
       1322
     ]
   },
   {
-    "teal": 1341,
-    "source": 263,
+    "teal": 1336,
+    "source": 270,
     "pc": [
       1323
     ]
   },
   {
-    "teal": 1342,
-    "source": 263,
+    "teal": 1339,
+    "source": 270,
     "pc": [
       1324,
-      1325
+      1325,
+      1326
     ]
   },
   {
-    "teal": 1346,
-    "source": 264,
+    "teal": 1340,
+    "source": 270,
     "pc": [
-      1326,
-      1327,
+      1327
+    ]
+  },
+  {
+    "teal": 1341,
+    "source": 270,
+    "pc": [
       1328
     ]
   },
   {
-    "teal": 1347,
-    "source": 264,
+    "teal": 1345,
+    "source": 270,
     "pc": [
       1329,
-      1330
-    ]
-  },
-  {
-    "teal": 1348,
-    "source": 264,
-    "pc": [
+      1330,
       1331
     ]
   },
   {
     "teal": 1349,
-    "source": 264,
+    "source": 271,
     "pc": [
       1332,
       1333
     ]
   },
   {
-    "teal": 1353,
-    "source": 265,
+    "teal": 1350,
+    "source": 271,
     "pc": [
       1334,
       1335,
@@ -5361,306 +5355,241 @@
     ]
   },
   {
-    "teal": 1354,
-    "source": 265,
+    "teal": 1351,
+    "source": 271,
     "pc": [
       1337,
       1338
     ]
   },
   {
-    "teal": 1355,
-    "source": 265,
+    "teal": 1352,
+    "source": 271,
     "pc": [
       1339
     ]
   },
   {
-    "teal": 1356,
-    "source": 265,
+    "teal": 1353,
+    "source": 271,
     "pc": [
-      1340,
+      1340
+    ]
+  },
+  {
+    "teal": 1356,
+    "source": 271,
+    "errorMessage": "Only oracle admin can set prices",
+    "pc": [
       1341
     ]
   },
   {
     "teal": 1360,
-    "source": 266,
+    "source": 272,
     "pc": [
-      1342
+      1342,
+      1343
     ]
   },
   {
     "teal": 1361,
-    "source": 266,
+    "source": 272,
     "pc": [
-      1343,
       1344
     ]
   },
   {
-    "teal": 1364,
-    "source": 262,
+    "teal": 1362,
+    "source": 272,
     "pc": [
       1345
     ]
   },
   {
     "teal": 1365,
-    "source": 237,
+    "source": 272,
+    "errorMessage": "Invalid stake token price",
     "pc": [
       1346
     ]
   },
   {
-    "teal": 1370,
-    "source": 270,
+    "teal": 1369,
+    "source": 273,
     "pc": [
       1347,
-      1348,
+      1348
+    ]
+  },
+  {
+    "teal": 1370,
+    "source": 273,
+    "pc": [
       1349
     ]
   },
   {
     "teal": 1371,
-    "source": 270,
+    "source": 273,
     "pc": [
       1350
     ]
   },
   {
     "teal": 1374,
-    "source": 270,
+    "source": 273,
+    "errorMessage": "Invalid reward token price",
     "pc": [
-      1351,
+      1351
+    ]
+  },
+  {
+    "teal": 1378,
+    "source": 275,
+    "pc": [
       1352,
       1353
     ]
   },
   {
-    "teal": 1375,
-    "source": 270,
-    "pc": [
-      1354
-    ]
-  },
-  {
-    "teal": 1378,
-    "source": 270,
-    "pc": [
-      1355,
-      1356,
-      1357
-    ]
-  },
-  {
     "teal": 1379,
-    "source": 270,
+    "source": 275,
     "pc": [
-      1358
+      1354,
+      1355
     ]
   },
   {
     "teal": 1380,
-    "source": 270,
+    "source": 275,
     "pc": [
-      1359
+      1356
     ]
   },
   {
     "teal": 1384,
+    "source": 276,
+    "pc": [
+      1357,
+      1358
+    ]
+  },
+  {
+    "teal": 1385,
+    "source": 276,
+    "pc": [
+      1359,
+      1360
+    ]
+  },
+  {
+    "teal": 1386,
+    "source": 276,
+    "pc": [
+      1361
+    ]
+  },
+  {
+    "teal": 1387,
     "source": 270,
     "pc": [
-      1360,
-      1361,
       1362
     ]
   },
   {
-    "teal": 1388,
-    "source": 271,
+    "teal": 1390,
+    "source": 3,
     "pc": [
       1363,
-      1364
-    ]
-  },
-  {
-    "teal": 1389,
-    "source": 271,
-    "pc": [
+      1364,
       1365,
       1366,
-      1367
-    ]
-  },
-  {
-    "teal": 1390,
-    "source": 271,
-    "pc": [
-      1368,
-      1369
+      1367,
+      1368
     ]
   },
   {
     "teal": 1391,
-    "source": 271,
+    "source": 3,
     "pc": [
-      1370
-    ]
-  },
-  {
-    "teal": 1392,
-    "source": 271,
-    "pc": [
+      1369,
+      1370,
       1371
     ]
   },
   {
-    "teal": 1395,
-    "source": 271,
-    "errorMessage": "Only oracle admin can set prices",
+    "teal": 1392,
+    "source": 3,
     "pc": [
-      1372
-    ]
-  },
-  {
-    "teal": 1399,
-    "source": 272,
-    "pc": [
+      1372,
       1373,
-      1374
-    ]
-  },
-  {
-    "teal": 1400,
-    "source": 272,
-    "pc": [
+      1374,
       1375
     ]
   },
   {
-    "teal": 1401,
-    "source": 272,
+    "teal": 1395,
+    "source": 3,
+    "errorMessage": "this contract does not implement the given ABI method for create NoOp",
     "pc": [
       1376
     ]
   },
   {
-    "teal": 1404,
-    "source": 272,
-    "errorMessage": "Invalid stake token price",
+    "teal": 1398,
+    "source": 3,
     "pc": [
-      1377
-    ]
-  },
-  {
-    "teal": 1408,
-    "source": 273,
-    "pc": [
+      1377,
       1378,
-      1379
-    ]
-  },
-  {
-    "teal": 1409,
-    "source": 273,
-    "pc": [
-      1380
-    ]
-  },
-  {
-    "teal": 1410,
-    "source": 273,
-    "pc": [
-      1381
-    ]
-  },
-  {
-    "teal": 1413,
-    "source": 273,
-    "errorMessage": "Invalid reward token price",
-    "pc": [
+      1379,
+      1380,
+      1381,
       1382
     ]
   },
   {
-    "teal": 1417,
-    "source": 275,
-    "pc": [
-      1383,
-      1384
-    ]
-  },
-  {
-    "teal": 1418,
-    "source": 275,
-    "pc": [
-      1385,
-      1386
-    ]
-  },
-  {
-    "teal": 1419,
-    "source": 275,
-    "pc": [
-      1387
-    ]
-  },
-  {
-    "teal": 1423,
-    "source": 276,
-    "pc": [
-      1388,
-      1389
-    ]
-  },
-  {
-    "teal": 1424,
-    "source": 276,
-    "pc": [
-      1390,
-      1391
-    ]
-  },
-  {
-    "teal": 1425,
-    "source": 276,
-    "pc": [
-      1392
-    ]
-  },
-  {
-    "teal": 1426,
-    "source": 270,
-    "pc": [
-      1393
-    ]
-  },
-  {
-    "teal": 1429,
+    "teal": 1399,
     "source": 3,
     "pc": [
-      1394,
+      1383,
+      1384,
+      1385,
+      1386,
+      1387,
+      1388
+    ]
+  },
+  {
+    "teal": 1400,
+    "source": 3,
+    "pc": [
+      1389,
+      1390,
+      1391,
+      1392,
+      1393,
+      1394
+    ]
+  },
+  {
+    "teal": 1401,
+    "source": 3,
+    "pc": [
       1395,
       1396,
       1397,
       1398,
-      1399
+      1399,
+      1400
     ]
   },
   {
-    "teal": 1430,
+    "teal": 1402,
     "source": 3,
     "pc": [
-      1400,
       1401,
-      1402
-    ]
-  },
-  {
-    "teal": 1431,
-    "source": 3,
-    "pc": [
+      1402,
       1403,
       1404,
       1405,
@@ -5668,226 +5597,158 @@
     ]
   },
   {
-    "teal": 1434,
-    "source": 3,
-    "errorMessage": "this contract does not implement the given ABI method for create NoOp",
-    "pc": [
-      1407
-    ]
-  },
-  {
-    "teal": 1437,
+    "teal": 1403,
     "source": 3,
     "pc": [
+      1407,
       1408,
       1409,
       1410,
       1411,
-      1412,
-      1413
+      1412
     ]
   },
   {
-    "teal": 1438,
+    "teal": 1404,
     "source": 3,
     "pc": [
+      1413,
       1414,
       1415,
       1416,
       1417,
-      1418,
-      1419
+      1418
     ]
   },
   {
-    "teal": 1439,
+    "teal": 1405,
     "source": 3,
     "pc": [
+      1419,
       1420,
       1421,
       1422,
       1423,
-      1424,
-      1425
+      1424
     ]
   },
   {
-    "teal": 1440,
+    "teal": 1406,
     "source": 3,
     "pc": [
+      1425,
       1426,
-      1427,
+      1427
+    ]
+  },
+  {
+    "teal": 1407,
+    "source": 3,
+    "pc": [
       1428,
       1429,
       1430,
-      1431
-    ]
-  },
-  {
-    "teal": 1441,
-    "source": 3,
-    "pc": [
+      1431,
       1432,
       1433,
       1434,
       1435,
       1436,
-      1437
-    ]
-  },
-  {
-    "teal": 1442,
-    "source": 3,
-    "pc": [
+      1437,
       1438,
       1439,
       1440,
       1441,
       1442,
-      1443
+      1443,
+      1444,
+      1445
     ]
   },
   {
-    "teal": 1443,
+    "teal": 1410,
+    "source": 3,
+    "errorMessage": "this contract does not implement the given ABI method for call NoOp",
+    "pc": [
+      1446
+    ]
+  },
+  {
+    "teal": 1413,
     "source": 3,
     "pc": [
-      1444,
-      1445,
-      1446,
       1447,
       1448,
-      1449
+      1449,
+      1450,
+      1451,
+      1452
     ]
   },
   {
-    "teal": 1444,
+    "teal": 1414,
     "source": 3,
     "pc": [
-      1450,
-      1451,
-      1452,
       1453,
       1454,
       1455
     ]
   },
   {
-    "teal": 1445,
+    "teal": 1415,
     "source": 3,
     "pc": [
       1456,
       1457,
-      1458
+      1458,
+      1459
     ]
   },
   {
-    "teal": 1446,
+    "teal": 1418,
+    "source": 3,
+    "errorMessage": "this contract does not implement the given ABI method for call OptIn",
+    "pc": [
+      1460
+    ]
+  },
+  {
+    "teal": 1421,
     "source": 3,
     "pc": [
-      1459,
-      1460,
       1461,
       1462,
       1463,
       1464,
       1465,
-      1466,
+      1466
+    ]
+  },
+  {
+    "teal": 1422,
+    "source": 3,
+    "pc": [
       1467,
       1468,
-      1469,
+      1469
+    ]
+  },
+  {
+    "teal": 1423,
+    "source": 3,
+    "pc": [
       1470,
       1471,
       1472,
-      1473,
-      1474,
-      1475,
-      1476
+      1473
     ]
   },
   {
-    "teal": 1449,
-    "source": 3,
-    "errorMessage": "this contract does not implement the given ABI method for call NoOp",
-    "pc": [
-      1477
-    ]
-  },
-  {
-    "teal": 1452,
-    "source": 3,
-    "pc": [
-      1478,
-      1479,
-      1480,
-      1481,
-      1482,
-      1483
-    ]
-  },
-  {
-    "teal": 1453,
-    "source": 3,
-    "pc": [
-      1484,
-      1485,
-      1486
-    ]
-  },
-  {
-    "teal": 1454,
-    "source": 3,
-    "pc": [
-      1487,
-      1488,
-      1489,
-      1490
-    ]
-  },
-  {
-    "teal": 1457,
-    "source": 3,
-    "errorMessage": "this contract does not implement the given ABI method for call OptIn",
-    "pc": [
-      1491
-    ]
-  },
-  {
-    "teal": 1460,
-    "source": 3,
-    "pc": [
-      1492,
-      1493,
-      1494,
-      1495,
-      1496,
-      1497
-    ]
-  },
-  {
-    "teal": 1461,
-    "source": 3,
-    "pc": [
-      1498,
-      1499,
-      1500
-    ]
-  },
-  {
-    "teal": 1462,
-    "source": 3,
-    "pc": [
-      1501,
-      1502,
-      1503,
-      1504
-    ]
-  },
-  {
-    "teal": 1465,
+    "teal": 1426,
     "source": 3,
     "errorMessage": "this contract does not implement the given ABI method for call DeleteApplication",
     "pc": [
-      1505
+      1474
     ]
   }
 ]

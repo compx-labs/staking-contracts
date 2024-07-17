@@ -259,12 +259,12 @@ export class CompXStaking extends Contract {
       });
     }
 
-    sendPayment({
+    /* sendPayment({
       amount: this.app.address.balance,
       receiver: this.app.creator,
       closeRemainderTo: this.app.creator,
       fee: 1000,
-    });
+    }); */
   }
 
   setPrices(stakeTokenPrice: uint64, rewardTokenPrice: uint64): void {

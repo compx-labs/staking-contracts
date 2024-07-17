@@ -1323,45 +1323,6 @@ deleteApplication:
 	itxn_submit
 
 *if5_end:
-	// contracts/CompXStaking.algo.ts:262
-	// sendPayment({
-	//       amount: this.app.address.balance,
-	//       receiver: this.app.creator,
-	//       closeRemainderTo: this.app.creator,
-	//       fee: 1000,
-	//     })
-	itxn_begin
-	int pay
-	itxn_field TypeEnum
-
-	// contracts/CompXStaking.algo.ts:263
-	// amount: this.app.address.balance
-	global CurrentApplicationAddress
-	acct_params_get AcctBalance
-	pop
-	itxn_field Amount
-
-	// contracts/CompXStaking.algo.ts:264
-	// receiver: this.app.creator
-	txna Applications 0
-	app_params_get AppCreator
-	pop
-	itxn_field Receiver
-
-	// contracts/CompXStaking.algo.ts:265
-	// closeRemainderTo: this.app.creator
-	txna Applications 0
-	app_params_get AppCreator
-	pop
-	itxn_field CloseRemainderTo
-
-	// contracts/CompXStaking.algo.ts:266
-	// fee: 1000
-	int 1000
-	itxn_field Fee
-
-	// Submit inner transaction
-	itxn_submit
 	retsub
 
 // setPrices(uint64,uint64)void

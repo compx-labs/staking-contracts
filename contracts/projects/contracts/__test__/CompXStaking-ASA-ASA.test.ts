@@ -161,7 +161,7 @@ describe('CompXStaking ASA/ASA', () => {
       {
         stakeTxn: axferTxn,
         quantity: 100_000_000n,
-        lockPeriod: 6048000n, // 71 Days in seconds
+        lockPeriod: 5961600n, // 71 Days in seconds
       },
       { sender: stakerAccount }
     );
@@ -207,6 +207,6 @@ describe('CompXStaking ASA/ASA', () => {
   });
 
   test('deleteApplication', async () => {
-    await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.1) } });
+    await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });
   });
 });
