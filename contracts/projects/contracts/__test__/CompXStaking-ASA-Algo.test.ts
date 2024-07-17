@@ -70,7 +70,7 @@ describe('CompXStaking ASA/Algo', () => {
     await algorand.send.payment({
       sender: admin,
       receiver: appAddress,
-      amount: algokit.algos(0.2),
+      amount: algokit.algos(0.3),
     });
 
     await appClient.optInToAsset({ asset: stakedAssetId }, { sendParams: { fee: algokit.algos(0.1) } });
@@ -78,7 +78,7 @@ describe('CompXStaking ASA/Algo', () => {
     const { balance: stakedAssetBalance } = await algorand.account.getAssetInformation(appAddress, stakedAssetId);
     const rewardAssetBalance = await (await algorand.account.getInformation(appAddress)).amount;
     expect(stakedAssetBalance).toBe(0n);
-    expect(rewardAssetBalance).toBe(algokit.algos(0.2).microAlgos);
+    expect(rewardAssetBalance).toBe(algokit.algos(0.3).microAlgos);
   });
 
   test('add rewards', async () => {
@@ -92,7 +92,7 @@ describe('CompXStaking ASA/Algo', () => {
 
     await appClient.addRewardsAlgo({ payTxn, quantity: algokit.algos(13171).microAlgos });
     const rewardAssetBalance = await (await algorand.account.getInformation(appAddress)).amount;
-    expect(rewardAssetBalance).toBe(algokit.algos(13171.2).microAlgos);
+    expect(rewardAssetBalance).toBe(algokit.algos(13171.3).microAlgos);
   });
 
   /*   test('remove rewards', async () => {
@@ -186,18 +186,16 @@ describe('CompXStaking ASA/Algo', () => {
       amount: 100_000_000n,
       extraFee: algokit.algos(0.1),
     });
-    
+
     const endDate = (await appClient.getGlobalState()).contractEndTimestamp!.asBigInt();
-    console.log('contract end date', endDate);
-    console.log('current timestamp', Math.floor(Date.now() / 1000));
-    console.log('current timestamp + lock', BigInt(Math.floor(Date.now() / 1000)) + 6048000n);
+
 
     await appClient.stake(
       {
         stakeTxn: axferTxn,
         quantity: 100_000_000n,
         lockPeriod: 5961600n, // 69 Days in seconds
-
+        stakeTimestamp: BigInt(Math.floor(Date.now() / 1000)),
       },
       { sender: stakerAccount }
     );
@@ -217,10 +215,7 @@ describe('CompXStaking ASA/Algo', () => {
     expect(stakedAmountBefore).toBe(100_000_000n);
     expect(stakedAmountAfter).toBe(0n);
 
-    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(
-      stakerAccount.addr,
-      rewardAssetId
-    );
+    const rewardAssetBalance  = (await algorand.account.getInformation(stakerAccount.addr)).amount;
     console.log('rewardAssetBalance', rewardAssetBalance);
 
     const { balance: stakedAssetBalance } = await algorand.account.getAssetInformation(
@@ -235,7 +230,7 @@ describe('CompXStaking ASA/Algo', () => {
     const { appAddress } = await appClient.appClient.getAppReference();
     await appClient.removeRewards({ quantity: 0n }, { sendParams: { fee: algokit.algos(0.3) } });
     const rewardAssetBalance = await (await algorand.account.getInformation(appAddress)).amount;
-    expect(rewardAssetBalance).toBe(algokit.algos(0.2));
+    expect(rewardAssetBalance).toBe(algokit.algos(0.297).microAlgos);
   });
 
   test('deleteApplication', async () => {

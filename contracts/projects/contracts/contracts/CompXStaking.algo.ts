@@ -114,6 +114,7 @@ export class CompXStaking extends Contract {
     });
 
     this.totalRewards.value += quantity;
+    this.remainingRewards.value += quantity;
   }
 
   removeRewards(quantity: uint64): void {
