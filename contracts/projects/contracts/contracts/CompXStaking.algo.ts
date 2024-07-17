@@ -146,11 +146,12 @@ export class CompXStaking extends Contract {
     stakeTxn: AssetTransferTxn,
     quantity: uint64,
     lockPeriod: uint64,
+    stakeTimestamp: uint64
   ): void {
     assert(lockPeriod >= this.minLockUp.value, 'Lock period too short');
-    assert(globals.latestTimestamp + lockPeriod < this.contractEndTimestamp.value, 'Lock period too long');
-    assert(globals.latestTimestamp <= this.contractEndTimestamp.value, 'Contract has ended');
-    assert(globals.latestTimestamp >= this.contractStartTimestamp.value, 'Contract has not started');
+    assert(stakeTimestamp + lockPeriod < this.contractEndTimestamp.value, 'Lock period too long');
+    assert(stakeTimestamp <= this.contractEndTimestamp.value, 'Contract has ended');
+    assert(stakeTimestamp >= this.contractStartTimestamp.value, 'Contract has not started');
     assert(this.stakeTokenPrice.value > 0, 'Stake token price not set');
     assert(this.rewardTokenPrice.value > 0, 'Reward token price not set');
 
@@ -166,10 +167,10 @@ export class CompXStaking extends Contract {
     this.totalStakingWeight.value += userStakingWeight;
 
     this.staked(this.txn.sender).value += quantity;
-    this.stakeStartTime(this.txn.sender).value = globals.latestTimestamp;
+    this.stakeStartTime(this.txn.sender).value = stakeTimestamp;
     this.stakeDuration(this.txn.sender).value = lockPeriod;
     this.userStakingWeight(this.txn.sender).value = userStakingWeight;
-    this.unlockTime(this.txn.sender).value = globals.latestTimestamp + lockPeriod;
+    this.unlockTime(this.txn.sender).value = stakeTimestamp + lockPeriod;
   }
 
   unstake(): void {

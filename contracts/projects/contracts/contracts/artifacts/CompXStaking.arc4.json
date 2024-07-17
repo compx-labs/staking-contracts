@@ -123,6 +123,10 @@
         {
           "name": "lockPeriod",
           "type": "uint64"
+        },
+        {
+          "name": "stakeTimestamp",
+          "type": "uint64"
         }
       ],
       "returns": {

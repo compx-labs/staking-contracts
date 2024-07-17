@@ -157,11 +157,13 @@ describe('CompXStaking ASA/ASA', () => {
       extraFee: algokit.algos(0.1),
     });
 
+
     await appClient.stake(
       {
         stakeTxn: axferTxn,
         quantity: 100_000_000n,
-        lockPeriod: 5961600n, // 71 Days in seconds
+        lockPeriod: 5961600n, // 69 Days in seconds
+        stakeTimestamp: BigInt(Math.floor(Date.now() / 1000)),
       },
       { sender: stakerAccount }
     );
