@@ -9,7 +9,6 @@ algokit.Config.configure({ populateAppCallResources: true });
 
 let appClient: CompXStakingClient;
 let admin: string;
-let oracleAdmin: string;
 let stakedAssetId: bigint;
 let rewardAssetId: bigint;
 
@@ -38,8 +37,6 @@ describe('CompXStaking ASA/ASA', () => {
       },
       algorand.client.algod,
     )
-    const oracleAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    oracleAdmin = oracleAdminAccount.addr;
 
     const stakeAssetCreate = algorand.send.assetCreate({
       sender: admin,
@@ -60,16 +57,14 @@ describe('CompXStaking ASA/ASA', () => {
       rewardAsset: rewardAssetId,
       minLockUp: 10,
       contractDuration: 6034400n, // 71 Days in seconds
-      oracleAdminAddress: oracleAdminAccount.addr,
       startTimestamp: Math.floor(Date.now() / 1000),
     });
   });
 
    test('updateParams', async () => {
-    await appClient.updateParams({ minLockUp: 5, oracleAdminAddress: oracleAdmin, contractDuration: 6134400n });
+    await appClient.updateParams({ minLockUp: 5, contractDuration: 6134400n });
     const globalState = await appClient.getGlobalState();
     expect(globalState.minLockUp!.asBigInt()).toBe(5n);
-    expect(globalState.oracleAdminAddress!.asString()).toBe(oracleAdmin);
     expect(globalState.contractDuration!.asBigInt()).toBe(6134400n);
   }); 
 
@@ -113,7 +108,7 @@ describe('CompXStaking ASA/ASA', () => {
     expect(localState.unlockTime!.asBigInt()).toBe(0n);
     expect(localState.stakeStartTime!.asBigInt()).toBe(0n);
   });
-  
+
   test('set Prices', async () => {
 
     await appClient.setPrices({

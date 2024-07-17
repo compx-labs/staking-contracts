@@ -9,7 +9,6 @@ algokit.Config.configure({ populateAppCallResources: true });
 
 let appClient: CompXStakingClient;
 let admin: string;
-let oracleAdmin: string;
 let stakedAssetId: bigint;
 let rewardAssetId: bigint;
 
@@ -38,8 +37,6 @@ describe('CompXStaking ASA/Algo', () => {
       },
       algorand.client.algod,
     )
-    const oracleAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    oracleAdmin = oracleAdminAccount.addr;
 
     const stakeAssetCreate = algorand.send.assetCreate({
       sender: admin,
@@ -54,18 +51,17 @@ describe('CompXStaking ASA/Algo', () => {
       rewardAsset: rewardAssetId,
       minLockUp: 10,
       contractDuration: 6034400n, // 71 Days in seconds
-      oracleAdminAddress: oracleAdmin,
-      startTimestamp: Math.floor(Date.now() / 1000) - 1,
+      startTimestamp: Math.floor(Date.now() / 1000),
     });
   });
 
   test('updateParams', async () => {
-    await appClient.updateParams({ minLockUp: 5, oracleAdminAddress: oracleAdmin, contractDuration: 6134400n });
-    const globalState = await appClient.getGlobalState();
-    expect(globalState.minLockUp!.asBigInt()).toBe(5n);
-    expect(globalState.oracleAdminAddress!.asString()).toBe(oracleAdmin);
-    expect(globalState.contractDuration!.asBigInt()).toBe(6134400n);
-  }); 
+
+    await appClient.updateParams({ minLockUp: 5, contractDuration: 6134400n });
+    const globalStateAfter = await appClient.getGlobalState();
+    expect(globalStateAfter.minLockUp!.asBigInt()).toBe(5n);
+    expect(globalStateAfter.contractDuration!.asBigInt()).toBe(6134400n);
+  });
 
   test('opt app in', async () => {
     const { algorand } = fixture;
@@ -190,11 +186,17 @@ describe('CompXStaking ASA/Algo', () => {
       amount: 100_000_000n,
       extraFee: algokit.algos(0.1),
     });
+    
+    const endDate = (await appClient.getGlobalState()).contractEndTimestamp!.asBigInt();
+    console.log('contract end date', endDate);
+    console.log('current timestamp', Math.floor(Date.now() / 1000));
+    console.log('current timestamp + lock', BigInt(Math.floor(Date.now() / 1000)) + 6048000n);
+
     await appClient.stake(
       {
         stakeTxn: axferTxn,
         quantity: 100_000_000n,
-        lockPeriod: 6048000n, // 70 Days in seconds
+        lockPeriod: 5961600n, // 69 Days in seconds
 
       },
       { sender: stakerAccount }

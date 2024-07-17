@@ -14,8 +14,6 @@ export class CompXStaking extends Contract {
 
   totalRewards = GlobalStateKey<uint64>();
 
-  oracleAdminAddress = GlobalStateKey<Address>();
-
   contractDuration = GlobalStateKey<uint64>();
 
   contractStartTimestamp = GlobalStateKey<uint64>();
@@ -50,7 +48,6 @@ export class CompXStaking extends Contract {
     rewardAsset: uint64,
     minLockUp: uint64,
     contractDuration: uint64,
-    oracleAdminAddress: Address,
     startTimestamp: uint64
   ): void {
     this.stakedAssetId.value = stakedAsset;
@@ -61,7 +58,6 @@ export class CompXStaking extends Contract {
     this.contractDuration.value = contractDuration;
     this.contractStartTimestamp.value = startTimestamp;
     this.contractEndTimestamp.value = startTimestamp + contractDuration;
-    this.oracleAdminAddress.value = oracleAdminAddress;
     this.totalStakingWeight.value = 0;
     this.remainingRewards.value = 0;
   }
@@ -84,12 +80,12 @@ export class CompXStaking extends Contract {
     });
   }
 
-  updateParams(minLockUp: uint64, oracleAdminAddress: Address, contractDuration: uint64): void {
+  updateParams(minLockUp: uint64, contractDuration: uint64): void {
     assert(this.txn.sender === this.app.creator);
 
     this.minLockUp.value = minLockUp;
-    this.oracleAdminAddress.value = oracleAdminAddress;
     this.contractDuration.value = contractDuration;
+    this.contractEndTimestamp.value = this.contractStartTimestamp.value + contractDuration;
   }
 
   addRewards(rewardTxn: AssetTransferTxn, quantity: uint64): void {
@@ -272,7 +268,7 @@ export class CompXStaking extends Contract {
   }
 
   setPrices(stakeTokenPrice: uint64, rewardTokenPrice: uint64): void {
-    assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices');
+    assert(this.txn.sender === this.app.creator, 'Only oracle admin can set prices');
     assert(stakeTokenPrice > 0, 'Invalid stake token price');
     assert(rewardTokenPrice > 0, 'Invalid reward token price');
 

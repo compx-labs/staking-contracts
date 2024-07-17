@@ -22,10 +22,6 @@
           "type": "uint64"
         },
         {
-          "name": "oracleAdminAddress",
-          "type": "address"
-        },
-        {
           "name": "startTimestamp",
           "type": "uint64"
         }
@@ -59,10 +55,6 @@
         {
           "name": "minLockUp",
           "type": "uint64"
-        },
-        {
-          "name": "oracleAdminAddress",
-          "type": "address"
         },
         {
           "name": "contractDuration",
