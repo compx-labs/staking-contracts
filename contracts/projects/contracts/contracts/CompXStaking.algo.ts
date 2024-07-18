@@ -155,6 +155,7 @@ export class CompXStaking extends Contract {
     assert(stakeTimestamp >= this.contractStartTimestamp.value, 'Contract has not started');
     assert(this.stakeTokenPrice.value > 0, 'Stake token price not set');
     assert(this.rewardTokenPrice.value > 0, 'Reward token price not set');
+    assert(this.staked(this.txn.sender).value === 0, 'User already staked');
 
     verifyAssetTransferTxn(stakeTxn, {
       sender: this.txn.sender,
@@ -177,7 +178,7 @@ export class CompXStaking extends Contract {
   unstake(): void {
     const quantity = this.staked(this.txn.sender).value;
     assert(quantity > 0, 'No staked assets');
-    // assert(this.unlockTime(this.txn.sender).value < globals.latestTimestamp, 'unlock time not reached'); // add in this check
+    assert(this.unlockTime(this.txn.sender).value < globals.latestTimestamp, 'unlock time not reached'); // add in this check
 
     const userShare = this.userStakingWeight(this.txn.sender).value / this.totalStakingWeight.value;
     this.userShare(this.txn.sender).value = userShare;
@@ -240,24 +241,24 @@ export class CompXStaking extends Contract {
     assert(this.txn.sender === this.app.creator);
     assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
-    if(this.rewardAssetId.value !== 0) {
+    if (this.rewardAssetId.value !== 0) {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
         assetReceiver: this.app.creator,
         assetAmount: 0,
         sender: this.app.address,
         assetCloseTo: this.app.creator,
-      
+
       });
     }
-    if(this.stakedAssetId.value !== 0) {
+    if (this.stakedAssetId.value !== 0) {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
         assetReceiver: this.app.creator,
         assetAmount: 0,
         sender: this.app.address,
         assetCloseTo: this.app.creator,
-      
+
       });
     }
 
@@ -279,4 +280,4 @@ export class CompXStaking extends Contract {
   }
 }
 
-  
+
