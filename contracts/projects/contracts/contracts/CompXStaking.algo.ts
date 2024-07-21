@@ -64,6 +64,8 @@ export class CompXStaking extends Contract {
     this.totalStakingWeight.value = 0;
     this.remainingRewards.value = 0;
     this.oracleAdminAddress.value = oracleAdmin;
+    this.stakeTokenPrice.value = 0;
+    this.rewardTokenPrice.value = 0;
   }
 
   optInToApplication(): void {
