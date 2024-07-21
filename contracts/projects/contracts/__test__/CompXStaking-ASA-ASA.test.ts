@@ -58,6 +58,7 @@ describe('CompXStaking ASA/ASA', () => {
       minLockUp: 10,
       contractDuration: 6034400n, // 71 Days in seconds
       startTimestamp: Math.floor(Date.now() / 1000),
+      oracleAdmin: admin,
     });
   });
 

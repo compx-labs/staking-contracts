@@ -28,6 +28,8 @@ export class CompXStaking extends Contract {
 
   rewardTokenPrice = GlobalStateKey<uint64>();
 
+  oracleAdminAddress = GlobalStateKey<Address>();
+
   //Local State
   calculatedReward = LocalStateKey<uint64>();
 
@@ -48,7 +50,8 @@ export class CompXStaking extends Contract {
     rewardAsset: uint64,
     minLockUp: uint64,
     contractDuration: uint64,
-    startTimestamp: uint64
+    startTimestamp: uint64,
+    oracleAdmin: Address
   ): void {
     this.stakedAssetId.value = stakedAsset;
     this.rewardAssetId.value = rewardAsset;
@@ -60,6 +63,7 @@ export class CompXStaking extends Contract {
     this.contractEndTimestamp.value = startTimestamp + contractDuration;
     this.totalStakingWeight.value = 0;
     this.remainingRewards.value = 0;
+    this.oracleAdminAddress.value = oracleAdmin;
   }
 
   optInToApplication(): void {
@@ -271,7 +275,7 @@ export class CompXStaking extends Contract {
   }
 
   setPrices(stakeTokenPrice: uint64, rewardTokenPrice: uint64): void {
-    assert(this.txn.sender === this.app.creator, 'Only oracle admin can set prices');
+    assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices');
     assert(stakeTokenPrice > 0, 'Invalid stake token price');
     assert(rewardTokenPrice > 0, 'Invalid reward token price');
 
