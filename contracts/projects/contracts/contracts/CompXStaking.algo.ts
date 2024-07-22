@@ -147,6 +147,13 @@ export class CompXStaking extends Contract {
         fee: 1_000,
       });
     }
+    if (rewardsToRemove === 0) {
+      this.totalRewards.value = 0;
+      this.remainingRewards.value = 0;
+    } else {
+      this.totalRewards.value -= rewardsToRemove;
+      this.remainingRewards.value = this.totalRewards.value;
+    }
   }
 
   stake(
@@ -184,7 +191,7 @@ export class CompXStaking extends Contract {
   unstake(): void {
     const quantity = this.staked(this.txn.sender).value;
     assert(quantity > 0, 'No staked assets');
-    assert(this.unlockTime(this.txn.sender).value < globals.latestTimestamp, 'unlock time not reached'); // add in this check
+    assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp * 1000), 'unlock time not reached'); // add in this check
 
     const userShare = this.userStakingWeight(this.txn.sender).value / this.totalStakingWeight.value;
     this.userShare(this.txn.sender).value = userShare;
