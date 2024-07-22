@@ -194,7 +194,7 @@ export class CompXStaking extends Contract {
     assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp * 1000), 'unlock time not reached'); // add in this check
 
     const userShare = this.userStakingWeight(this.txn.sender).value / this.totalStakingWeight.value;
-    this.userShare(this.txn.sender).value = userShare;
+    this.userShare(this.txn.sender).value = userShare * (this.stakeDuration(this.txn.sender).value / this.contractDuration.value);
 
     // Calculate the user's total rewards from the remaining rewards pool
     const userTotalRewards = userShare * this.remainingRewards.value;

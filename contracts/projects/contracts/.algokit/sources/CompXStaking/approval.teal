@@ -997,10 +997,17 @@ unstake:
 	frame_bury 1 // userShare: uint64
 
 	// contracts/CompXStaking.algo.ts:197
-	// this.userShare(this.txn.sender).value = userShare
+	// this.userShare(this.txn.sender).value = userShare * (this.stakeDuration(this.txn.sender).value / this.contractDuration.value)
 	txn Sender
 	byte 0x757365725368617265 // "userShare"
 	frame_dig 1 // userShare: uint64
+	txn Sender
+	byte 0x7374616b654475726174696f6e // "stakeDuration"
+	app_local_get
+	byte 0x636f6e74726163744475726174696f6e // "contractDuration"
+	app_global_get
+	/
+	*
 	app_local_put
 
 	// contracts/CompXStaking.algo.ts:200
