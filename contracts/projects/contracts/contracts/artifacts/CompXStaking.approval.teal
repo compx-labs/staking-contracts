@@ -997,13 +997,15 @@ unstake:
 	frame_bury 1 // userShare: uint64
 
 	// contracts/CompXStaking.algo.ts:197
-	// this.userShare(this.txn.sender).value = userShare * (this.stakeDuration(this.txn.sender).value / this.contractDuration.value)
+	// this.userShare(this.txn.sender).value = userShare * ((this.stakeDuration(this.txn.sender).value * 100000000) / this.contractDuration.value)
 	txn Sender
 	byte 0x757365725368617265 // "userShare"
 	frame_dig 1 // userShare: uint64
 	txn Sender
 	byte 0x7374616b654475726174696f6e // "stakeDuration"
 	app_local_get
+	int 100000000
+	*
 	byte 0x636f6e74726163744475726174696f6e // "contractDuration"
 	app_global_get
 	/
@@ -1011,11 +1013,15 @@ unstake:
 	app_local_put
 
 	// contracts/CompXStaking.algo.ts:200
-	// userTotalRewards = userShare * this.remainingRewards.value
-	frame_dig 1 // userShare: uint64
+	// userTotalRewards = (this.userShare(this.txn.sender).value * this.remainingRewards.value )/ 100000000
+	txn Sender
+	byte 0x757365725368617265 // "userShare"
+	app_local_get
 	byte 0x72656d61696e696e6752657761726473 // "remainingRewards"
 	app_global_get
 	*
+	int 100000000
+	/
 	frame_bury 2 // userTotalRewards: uint64
 
 	// contracts/CompXStaking.algo.ts:202

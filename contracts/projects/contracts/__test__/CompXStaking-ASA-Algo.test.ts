@@ -207,10 +207,14 @@ describe('CompXStaking ASA/Algo', () => {
     expect(localState.staked!.asBigInt()).toBe(100_000_000n);
 
     const stakedAmountBefore = (await appClient.getGlobalState()).totalStaked!.asBigInt();
+        console.log('rewards to payout', (await appClient.getGlobalState()).remainingRewards!.asBigInt());
     await appClient.unstake(
       {},
       { sendParams: { fee: algokit.algos(0.3) }, sender: stakerAccount }
     );
+    console.log('userShare', (await appClient.getLocalState(stakerAccount)).userShare!.asBigInt());
+    console.log('remaining rewards', (await appClient.getGlobalState()).remainingRewards!.asBigInt());
+    console.log('rewards to payout', (await appClient.getGlobalState()).remainingRewards!.asBigInt());
 
     const stakedAmountAfter = (await appClient.getGlobalState()).totalStaked!.asBigInt();
     expect(stakedAmountBefore).toBe(100_000_000n);
