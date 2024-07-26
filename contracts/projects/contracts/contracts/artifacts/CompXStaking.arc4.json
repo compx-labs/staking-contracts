@@ -28,6 +28,10 @@
         {
           "name": "oracleAdmin",
           "type": "address"
+        },
+        {
+          "name": "adminAddress",
+          "type": "address"
         }
       ],
       "returns": {
@@ -114,6 +118,29 @@
       }
     },
     {
+      "name": "deleteApplication",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "setPrices",
+      "args": [
+        {
+          "name": "stakeTokenPrice",
+          "type": "uint64"
+        },
+        {
+          "name": "rewardTokenPrice",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "stake",
       "args": [
         {
@@ -187,29 +214,6 @@
     {
       "name": "unstake",
       "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "deleteApplication",
-      "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "setPrices",
-      "args": [
-        {
-          "name": "stakeTokenPrice",
-          "type": "uint64"
-        },
-        {
-          "name": "rewardTokenPrice",
-          "type": "uint64"
-        }
-      ],
       "returns": {
         "type": "void"
       }

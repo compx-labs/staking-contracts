@@ -32,6 +32,8 @@ export class CompXStaking extends Contract {
 
   oracleAdminAddress = GlobalStateKey<Address>();
 
+  adminAddress = GlobalStateKey<Address>();
+
   rewardsAvailablePerTick = GlobalStateKey<uint64>();
 
   //Local State
@@ -56,7 +58,8 @@ export class CompXStaking extends Contract {
     minLockUp: uint64,
     contractDuration: uint64,
     startTimestamp: uint64,
-    oracleAdmin: Address
+    oracleAdmin: Address,
+    adminAddress: Address
   ): void {
     this.stakedAssetId.value = stakedAsset;
     this.rewardAssetId.value = rewardAsset;
@@ -72,6 +75,7 @@ export class CompXStaking extends Contract {
     this.stakeTokenPrice.value = 0;
     this.rewardTokenPrice.value = 0;
     this.rewardsAvailablePerTick.value = 0;
+    this.adminAddress.value = adminAddress;
   }
 
   optInToApplication(): void {
@@ -95,8 +99,9 @@ export class CompXStaking extends Contract {
     });
   }
 
+  //ADMIN FUNCTIONS
   updateParams(minLockUp: uint64, contractDuration: uint64): void {
-    assert(this.txn.sender === this.app.creator);
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update params');
 
     this.minLockUp.value = minLockUp;
     this.contractDuration.value = contractDuration;
@@ -107,7 +112,7 @@ export class CompXStaking extends Contract {
   }
 
   addRewards(rewardTxn: AssetTransferTxn, quantity: uint64): void {
-    assert(this.txn.sender === this.app.creator);
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can add rewards');
     assert(this.minLockUp.value !== 0, 'Minimum lockup not set');
     assert(this.contractDuration.value !== 0, 'Contract duration not set');
 
@@ -123,22 +128,23 @@ export class CompXStaking extends Contract {
   }
 
   addRewardsAlgo(payTxn: PayTxn, quantity: uint64): void {
-    assert(this.txn.sender === this.app.creator);
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can add rewards');
     assert(this.minLockUp.value !== 0, 'Minimum lockup not set');
     assert(this.contractDuration.value !== 0, 'Contract duration not set');
 
     verifyPayTxn(payTxn, {
       sender: this.app.creator,
       receiver: this.app.address,
+      amount: quantity,
     });
 
-    this.totalRewards.value += quantity;
-    this.remainingRewards.value += quantity;
+    this.totalRewards.value += payTxn.amount;
+    this.remainingRewards.value += payTxn.amount;
     this.rewardsAvailablePerTick.value = this.totalRewards.value / this.contractDuration.value;
   }
 
   removeRewards(quantity: uint64): void {
-    assert(this.txn.sender === this.app.creator);
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can remove rewards');
     assert(this.remainingRewards.value >= quantity, 'Insufficient rewards');
 
     let rewardsToRemove = quantity;
@@ -170,6 +176,41 @@ export class CompXStaking extends Contract {
       this.remainingRewards.value = this.totalRewards.value;
       this.rewardsAvailablePerTick.value = this.totalRewards.value / this.contractDuration.value;
     }
+  }
+
+  deleteApplication(): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
+    assert(this.totalStaked.value === 0, 'Staked assets still exist');
+
+    if (this.rewardAssetId.value !== 0) {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+        assetReceiver: this.app.creator,
+        assetAmount: 0,
+        sender: this.app.address,
+        assetCloseTo: this.app.creator,
+
+      });
+    }
+    if (this.stakedAssetId.value !== 0) {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
+        assetReceiver: this.app.creator,
+        assetAmount: 0,
+        sender: this.app.address,
+        assetCloseTo: this.app.creator,
+
+      });
+    }
+  }
+
+  setPrices(stakeTokenPrice: uint64, rewardTokenPrice: uint64): void {
+    assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices');
+    assert(stakeTokenPrice > 0, 'Invalid stake token price');
+    assert(rewardTokenPrice > 0, 'Invalid reward token price');
+
+    this.stakeTokenPrice.value = stakeTokenPrice;
+    this.rewardTokenPrice.value = rewardTokenPrice;
   }
 
   stake(
@@ -405,47 +446,7 @@ export class CompXStaking extends Contract {
     this.stakeStartTime(this.txn.sender).value = 0;
   }
 
-  deleteApplication(): void {
-    assert(this.txn.sender === this.app.creator);
-    assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
-    if (this.rewardAssetId.value !== 0) {
-      sendAssetTransfer({
-        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-        assetReceiver: this.app.creator,
-        assetAmount: 0,
-        sender: this.app.address,
-        assetCloseTo: this.app.creator,
-
-      });
-    }
-    if (this.stakedAssetId.value !== 0) {
-      sendAssetTransfer({
-        xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
-        assetReceiver: this.app.creator,
-        assetAmount: 0,
-        sender: this.app.address,
-        assetCloseTo: this.app.creator,
-
-      });
-    }
-
-    /* sendPayment({
-      amount: this.app.address.balance,
-      receiver: this.app.creator,
-      closeRemainderTo: this.app.creator,
-      fee: 1000,
-    }); */
-  }
-
-  setPrices(stakeTokenPrice: uint64, rewardTokenPrice: uint64): void {
-    assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices');
-    assert(stakeTokenPrice > 0, 'Invalid stake token price');
-    assert(rewardTokenPrice > 0, 'Invalid reward token price');
-
-    this.stakeTokenPrice.value = stakeTokenPrice;
-    this.rewardTokenPrice.value = rewardTokenPrice;
-  }
 }
 
 
