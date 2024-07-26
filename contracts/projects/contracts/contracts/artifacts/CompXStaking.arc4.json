@@ -138,6 +138,57 @@
       }
     },
     {
+      "name": "getRewardRate",
+      "args": [],
+      "returns": {
+        "type": "uint64"
+      }
+    },
+    {
+      "name": "getRewardRate_Dev",
+      "args": [
+        {
+          "name": "i_TotalStakingWeight",
+          "type": "uint64"
+        },
+        {
+          "name": "i_StakeTokenPrice",
+          "type": "uint64"
+        },
+        {
+          "name": "i_RewardTokenPrice",
+          "type": "uint64"
+        },
+        {
+          "name": "i_StakeDuration",
+          "type": "uint64"
+        },
+        {
+          "name": "i_StakeAmount",
+          "type": "uint64"
+        },
+        {
+          "name": "i_RewardsAvailablePerTick",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "accrueRewards",
+      "args": [
+        {
+          "name": "userAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "unstake",
       "args": [],
       "returns": {
