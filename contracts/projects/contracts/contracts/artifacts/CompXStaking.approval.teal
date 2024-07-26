@@ -63,49 +63,49 @@ switch *call_NoOp *call_OptIn *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED
 createApplication:
 	proto 6 0
 
-	// contracts/CompXStaking.algo.ts:59
+	// contracts/CompXStaking.algo.ts:61
 	// this.stakedAssetId.value = stakedAsset
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	frame_dig -1 // stakedAsset: uint64
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:60
+	// contracts/CompXStaking.algo.ts:62
 	// this.rewardAssetId.value = rewardAsset
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	frame_dig -2 // rewardAsset: uint64
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:61
+	// contracts/CompXStaking.algo.ts:63
 	// this.minLockUp.value = minLockUp
 	byte 0x6d696e4c6f636b5570 // "minLockUp"
 	frame_dig -3 // minLockUp: uint64
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:62
+	// contracts/CompXStaking.algo.ts:64
 	// this.totalRewards.value = 0
 	byte 0x746f74616c52657761726473 // "totalRewards"
 	int 0
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:63
+	// contracts/CompXStaking.algo.ts:65
 	// this.totalStaked.value = 0
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	int 0
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:64
+	// contracts/CompXStaking.algo.ts:66
 	// this.contractDuration.value = contractDuration
 	byte 0x636f6e74726163744475726174696f6e // "contractDuration"
 	frame_dig -4 // contractDuration: uint64
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:65
+	// contracts/CompXStaking.algo.ts:67
 	// this.contractStartTimestamp.value = startTimestamp
 	byte 0x636f6e7472616374537461727454696d657374616d70 // "contractStartTimestamp"
 	frame_dig -5 // startTimestamp: uint64
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:66
+	// contracts/CompXStaking.algo.ts:68
 	// this.contractEndTimestamp.value = startTimestamp + contractDuration
 	byte 0x636f6e7472616374456e6454696d657374616d70 // "contractEndTimestamp"
 	frame_dig -5 // startTimestamp: uint64
@@ -113,37 +113,37 @@ createApplication:
 	+
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:67
+	// contracts/CompXStaking.algo.ts:69
 	// this.totalStakingWeight.value = 0
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	int 0
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:68
+	// contracts/CompXStaking.algo.ts:70
 	// this.remainingRewards.value = 0
 	byte 0x72656d61696e696e6752657761726473 // "remainingRewards"
 	int 0
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:69
+	// contracts/CompXStaking.algo.ts:71
 	// this.oracleAdminAddress.value = oracleAdmin
 	byte 0x6f7261636c6541646d696e41646472657373 // "oracleAdminAddress"
 	frame_dig -6 // oracleAdmin: Address
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:70
+	// contracts/CompXStaking.algo.ts:72
 	// this.stakeTokenPrice.value = 0
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	int 0
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:71
+	// contracts/CompXStaking.algo.ts:73
 	// this.rewardTokenPrice.value = 0
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	int 0
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:72
+	// contracts/CompXStaking.algo.ts:74
 	// this.rewardsAvailablePerTick.value = 0
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	int 0
@@ -161,49 +161,49 @@ createApplication:
 optInToApplication:
 	proto 0 0
 
-	// contracts/CompXStaking.algo.ts:76
+	// contracts/CompXStaking.algo.ts:78
 	// this.staked(this.txn.sender).value = 0
 	txn Sender
 	byte 0x7374616b6564 // "staked"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:77
+	// contracts/CompXStaking.algo.ts:79
 	// this.unlockTime(this.txn.sender).value = 0
 	txn Sender
 	byte 0x756e6c6f636b54696d65 // "unlockTime"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:78
+	// contracts/CompXStaking.algo.ts:80
 	// this.stakeStartTime(this.txn.sender).value = 0
 	txn Sender
 	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:79
+	// contracts/CompXStaking.algo.ts:81
 	// this.stakeDuration(this.txn.sender).value = 0
 	txn Sender
 	byte 0x7374616b654475726174696f6e // "stakeDuration"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:80
+	// contracts/CompXStaking.algo.ts:82
 	// this.userStakingWeight(this.txn.sender).value = 0
 	txn Sender
 	byte 0x757365725374616b696e67576569676874 // "userStakingWeight"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:81
+	// contracts/CompXStaking.algo.ts:83
 	// this.rewardRate(this.txn.sender).value = 0
 	txn Sender
 	byte 0x72657761726452617465 // "rewardRate"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:82
+	// contracts/CompXStaking.algo.ts:84
 	// this.accruedRewards(this.txn.sender).value = 0
 	txn Sender
 	byte 0x6163637275656452657761726473 // "accruedRewards"
@@ -226,7 +226,7 @@ optInToApplication:
 optInToAsset:
 	proto 1 0
 
-	// contracts/CompXStaking.algo.ts:86
+	// contracts/CompXStaking.algo.ts:88
 	// assert(this.txn.sender === this.app.creator)
 	txn Sender
 	txna Applications 0
@@ -235,7 +235,7 @@ optInToAsset:
 	==
 	assert
 
-	// contracts/CompXStaking.algo.ts:88
+	// contracts/CompXStaking.algo.ts:90
 	// sendAssetTransfer({
 	//       xferAsset: asset,
 	//       assetAmount: 0,
@@ -246,22 +246,22 @@ optInToAsset:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/CompXStaking.algo.ts:89
+	// contracts/CompXStaking.algo.ts:91
 	// xferAsset: asset
 	frame_dig -1 // asset: AssetID
 	itxn_field XferAsset
 
-	// contracts/CompXStaking.algo.ts:90
+	// contracts/CompXStaking.algo.ts:92
 	// assetAmount: 0
 	int 0
 	itxn_field AssetAmount
 
-	// contracts/CompXStaking.algo.ts:91
+	// contracts/CompXStaking.algo.ts:93
 	// assetReceiver: this.app.address
 	global CurrentApplicationAddress
 	itxn_field AssetReceiver
 
-	// contracts/CompXStaking.algo.ts:92
+	// contracts/CompXStaking.algo.ts:94
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
@@ -293,7 +293,7 @@ optInToAsset:
 updateParams:
 	proto 2 0
 
-	// contracts/CompXStaking.algo.ts:97
+	// contracts/CompXStaking.algo.ts:99
 	// assert(this.txn.sender === this.app.creator)
 	txn Sender
 	txna Applications 0
@@ -302,19 +302,19 @@ updateParams:
 	==
 	assert
 
-	// contracts/CompXStaking.algo.ts:99
+	// contracts/CompXStaking.algo.ts:101
 	// this.minLockUp.value = minLockUp
 	byte 0x6d696e4c6f636b5570 // "minLockUp"
 	frame_dig -1 // minLockUp: uint64
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:100
+	// contracts/CompXStaking.algo.ts:102
 	// this.contractDuration.value = contractDuration
 	byte 0x636f6e74726163744475726174696f6e // "contractDuration"
 	frame_dig -2 // contractDuration: uint64
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:101
+	// contracts/CompXStaking.algo.ts:103
 	// this.contractEndTimestamp.value = this.contractStartTimestamp.value + contractDuration
 	byte 0x636f6e7472616374456e6454696d657374616d70 // "contractEndTimestamp"
 	byte 0x636f6e7472616374537461727454696d657374616d70 // "contractStartTimestamp"
@@ -324,7 +324,7 @@ updateParams:
 	app_global_put
 
 	// *if0_condition
-	// contracts/CompXStaking.algo.ts:102
+	// contracts/CompXStaking.algo.ts:104
 	// this.totalRewards.value > 0
 	byte 0x746f74616c52657761726473 // "totalRewards"
 	app_global_get
@@ -333,7 +333,7 @@ updateParams:
 	bz *if0_end
 
 	// *if0_consequent
-	// contracts/CompXStaking.algo.ts:103
+	// contracts/CompXStaking.algo.ts:105
 	// this.rewardsAvailablePerTick.value = this.totalRewards.value / contractDuration
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	byte 0x746f74616c52657761726473 // "totalRewards"
@@ -372,7 +372,7 @@ updateParams:
 addRewards:
 	proto 2 0
 
-	// contracts/CompXStaking.algo.ts:108
+	// contracts/CompXStaking.algo.ts:110
 	// assert(this.txn.sender === this.app.creator)
 	txn Sender
 	txna Applications 0
@@ -381,7 +381,7 @@ addRewards:
 	==
 	assert
 
-	// contracts/CompXStaking.algo.ts:109
+	// contracts/CompXStaking.algo.ts:111
 	// assert(this.minLockUp.value !== 0, 'Minimum lockup not set')
 	byte 0x6d696e4c6f636b5570 // "minLockUp"
 	app_global_get
@@ -391,7 +391,7 @@ addRewards:
 	// Minimum lockup not set
 	assert
 
-	// contracts/CompXStaking.algo.ts:110
+	// contracts/CompXStaking.algo.ts:112
 	// assert(this.contractDuration.value !== 0, 'Contract duration not set')
 	byte 0x636f6e74726163744475726174696f6e // "contractDuration"
 	app_global_get
@@ -401,7 +401,7 @@ addRewards:
 	// Contract duration not set
 	assert
 
-	// contracts/CompXStaking.algo.ts:112
+	// contracts/CompXStaking.algo.ts:114
 	// verifyAssetTransferTxn(rewardTxn, {
 	//       sender: this.app.creator,
 	//       assetReceiver: this.app.address,
@@ -447,7 +447,7 @@ addRewards:
 	// transaction verification failed: {"txn":"rewardTxn","field":"assetAmount","expected":"quantity"}
 	assert
 
-	// contracts/CompXStaking.algo.ts:118
+	// contracts/CompXStaking.algo.ts:120
 	// this.totalRewards.value += quantity
 	byte 0x746f74616c52657761726473 // "totalRewards"
 	app_global_get
@@ -457,7 +457,7 @@ addRewards:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:119
+	// contracts/CompXStaking.algo.ts:121
 	// this.remainingRewards.value += quantity
 	byte 0x72656d61696e696e6752657761726473 // "remainingRewards"
 	app_global_get
@@ -467,7 +467,7 @@ addRewards:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:120
+	// contracts/CompXStaking.algo.ts:122
 	// this.rewardsAvailablePerTick.value = this.totalRewards.value / this.contractDuration.value
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	byte 0x746f74616c52657761726473 // "totalRewards"
@@ -505,7 +505,7 @@ addRewards:
 addRewardsAlgo:
 	proto 2 0
 
-	// contracts/CompXStaking.algo.ts:124
+	// contracts/CompXStaking.algo.ts:126
 	// assert(this.txn.sender === this.app.creator)
 	txn Sender
 	txna Applications 0
@@ -514,7 +514,7 @@ addRewardsAlgo:
 	==
 	assert
 
-	// contracts/CompXStaking.algo.ts:125
+	// contracts/CompXStaking.algo.ts:127
 	// assert(this.minLockUp.value !== 0, 'Minimum lockup not set')
 	byte 0x6d696e4c6f636b5570 // "minLockUp"
 	app_global_get
@@ -524,7 +524,7 @@ addRewardsAlgo:
 	// Minimum lockup not set
 	assert
 
-	// contracts/CompXStaking.algo.ts:126
+	// contracts/CompXStaking.algo.ts:128
 	// assert(this.contractDuration.value !== 0, 'Contract duration not set')
 	byte 0x636f6e74726163744475726174696f6e // "contractDuration"
 	app_global_get
@@ -534,7 +534,7 @@ addRewardsAlgo:
 	// Contract duration not set
 	assert
 
-	// contracts/CompXStaking.algo.ts:128
+	// contracts/CompXStaking.algo.ts:130
 	// verifyPayTxn(payTxn, {
 	//       sender: this.app.creator,
 	//       receiver: this.app.address,
@@ -559,7 +559,7 @@ addRewardsAlgo:
 	// transaction verification failed: {"txn":"payTxn","field":"receiver","expected":"this.app.address"}
 	assert
 
-	// contracts/CompXStaking.algo.ts:133
+	// contracts/CompXStaking.algo.ts:135
 	// this.totalRewards.value += quantity
 	byte 0x746f74616c52657761726473 // "totalRewards"
 	app_global_get
@@ -569,7 +569,7 @@ addRewardsAlgo:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:134
+	// contracts/CompXStaking.algo.ts:136
 	// this.remainingRewards.value += quantity
 	byte 0x72656d61696e696e6752657761726473 // "remainingRewards"
 	app_global_get
@@ -579,7 +579,7 @@ addRewardsAlgo:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:135
+	// contracts/CompXStaking.algo.ts:137
 	// this.rewardsAvailablePerTick.value = this.totalRewards.value / this.contractDuration.value
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	byte 0x746f74616c52657761726473 // "totalRewards"
@@ -608,7 +608,7 @@ removeRewards:
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
 
-	// contracts/CompXStaking.algo.ts:139
+	// contracts/CompXStaking.algo.ts:141
 	// assert(this.txn.sender === this.app.creator)
 	txn Sender
 	txna Applications 0
@@ -617,7 +617,7 @@ removeRewards:
 	==
 	assert
 
-	// contracts/CompXStaking.algo.ts:140
+	// contracts/CompXStaking.algo.ts:142
 	// assert(this.remainingRewards.value >= quantity, 'Insufficient rewards')
 	byte 0x72656d61696e696e6752657761726473 // "remainingRewards"
 	app_global_get
@@ -627,13 +627,13 @@ removeRewards:
 	// Insufficient rewards
 	assert
 
-	// contracts/CompXStaking.algo.ts:142
+	// contracts/CompXStaking.algo.ts:144
 	// rewardsToRemove = quantity
 	frame_dig -1 // quantity: uint64
 	frame_bury 0 // rewardsToRemove: uint64
 
 	// *if1_condition
-	// contracts/CompXStaking.algo.ts:143
+	// contracts/CompXStaking.algo.ts:145
 	// rewardsToRemove === 0
 	frame_dig 0 // rewardsToRemove: uint64
 	int 0
@@ -641,7 +641,7 @@ removeRewards:
 	bz *if1_end
 
 	// *if1_consequent
-	// contracts/CompXStaking.algo.ts:144
+	// contracts/CompXStaking.algo.ts:146
 	// rewardsToRemove = this.remainingRewards.value
 	byte 0x72656d61696e696e6752657761726473 // "remainingRewards"
 	app_global_get
@@ -649,7 +649,7 @@ removeRewards:
 
 *if1_end:
 	// *if2_condition
-	// contracts/CompXStaking.algo.ts:146
+	// contracts/CompXStaking.algo.ts:148
 	// this.rewardAssetId.value === 0
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
@@ -658,7 +658,7 @@ removeRewards:
 	bz *if2_else
 
 	// *if2_consequent
-	// contracts/CompXStaking.algo.ts:147
+	// contracts/CompXStaking.algo.ts:149
 	// sendPayment({
 	//         amount: rewardsToRemove,
 	//         receiver: this.app.creator,
@@ -669,24 +669,24 @@ removeRewards:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/CompXStaking.algo.ts:148
+	// contracts/CompXStaking.algo.ts:150
 	// amount: rewardsToRemove
 	frame_dig 0 // rewardsToRemove: uint64
 	itxn_field Amount
 
-	// contracts/CompXStaking.algo.ts:149
+	// contracts/CompXStaking.algo.ts:151
 	// receiver: this.app.creator
 	txna Applications 0
 	app_params_get AppCreator
 	pop
 	itxn_field Receiver
 
-	// contracts/CompXStaking.algo.ts:150
+	// contracts/CompXStaking.algo.ts:152
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/CompXStaking.algo.ts:151
+	// contracts/CompXStaking.algo.ts:153
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -696,7 +696,7 @@ removeRewards:
 	b *if2_end
 
 *if2_else:
-	// contracts/CompXStaking.algo.ts:154
+	// contracts/CompXStaking.algo.ts:156
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
 	//         assetReceiver: this.app.creator,
@@ -708,30 +708,30 @@ removeRewards:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/CompXStaking.algo.ts:155
+	// contracts/CompXStaking.algo.ts:157
 	// xferAsset: AssetID.fromUint64(this.rewardAssetId.value)
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/CompXStaking.algo.ts:156
+	// contracts/CompXStaking.algo.ts:158
 	// assetReceiver: this.app.creator
 	txna Applications 0
 	app_params_get AppCreator
 	pop
 	itxn_field AssetReceiver
 
-	// contracts/CompXStaking.algo.ts:157
+	// contracts/CompXStaking.algo.ts:159
 	// assetAmount: rewardsToRemove
 	frame_dig 0 // rewardsToRemove: uint64
 	itxn_field AssetAmount
 
-	// contracts/CompXStaking.algo.ts:158
+	// contracts/CompXStaking.algo.ts:160
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/CompXStaking.algo.ts:159
+	// contracts/CompXStaking.algo.ts:161
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -741,7 +741,7 @@ removeRewards:
 
 *if2_end:
 	// *if3_condition
-	// contracts/CompXStaking.algo.ts:162
+	// contracts/CompXStaking.algo.ts:164
 	// rewardsToRemove === 0
 	frame_dig 0 // rewardsToRemove: uint64
 	int 0
@@ -749,19 +749,19 @@ removeRewards:
 	bz *if3_else
 
 	// *if3_consequent
-	// contracts/CompXStaking.algo.ts:163
+	// contracts/CompXStaking.algo.ts:165
 	// this.totalRewards.value = 0
 	byte 0x746f74616c52657761726473 // "totalRewards"
 	int 0
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:164
+	// contracts/CompXStaking.algo.ts:166
 	// this.remainingRewards.value = 0
 	byte 0x72656d61696e696e6752657761726473 // "remainingRewards"
 	int 0
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:165
+	// contracts/CompXStaking.algo.ts:167
 	// this.rewardsAvailablePerTick.value = 0
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	int 0
@@ -769,7 +769,7 @@ removeRewards:
 	b *if3_end
 
 *if3_else:
-	// contracts/CompXStaking.algo.ts:167
+	// contracts/CompXStaking.algo.ts:169
 	// this.totalRewards.value -= rewardsToRemove
 	byte 0x746f74616c52657761726473 // "totalRewards"
 	app_global_get
@@ -779,14 +779,14 @@ removeRewards:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:168
+	// contracts/CompXStaking.algo.ts:170
 	// this.remainingRewards.value = this.totalRewards.value
 	byte 0x72656d61696e696e6752657761726473 // "remainingRewards"
 	byte 0x746f74616c52657761726473 // "totalRewards"
 	app_global_get
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:169
+	// contracts/CompXStaking.algo.ts:171
 	// this.rewardsAvailablePerTick.value = this.totalRewards.value / this.contractDuration.value
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	byte 0x746f74616c52657761726473 // "totalRewards"
@@ -799,12 +799,8 @@ removeRewards:
 *if3_end:
 	retsub
 
-// stake(axfer,uint64,uint64,uint64)void
+// stake(axfer,uint64,uint64)void
 *abi_route_stake:
-	// stakeTimestamp: uint64
-	txna ApplicationArgs 3
-	btoi
-
 	// lockPeriod: uint64
 	txna ApplicationArgs 2
 	btoi
@@ -822,23 +818,30 @@ removeRewards:
 	int axfer
 	==
 
-	// argument 3 (stakeTxn) for stake must be a axfer transaction
+	// argument 2 (stakeTxn) for stake must be a axfer transaction
 	assert
 
-	// execute stake(axfer,uint64,uint64,uint64)void
+	// execute stake(axfer,uint64,uint64)void
 	callsub stake
 	int 1
 	return
 
-// stake(stakeTxn: AssetTransferTxn, quantity: uint64, lockPeriod: uint64, stakeTimestamp: uint64): void
+// stake(stakeTxn: AssetTransferTxn, quantity: uint64, lockPeriod: uint64): void
 stake:
-	proto 4 0
+	proto 3 0
 
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
-	dupn 5
+	dupn 11
 
-	// contracts/CompXStaking.algo.ts:179
+	// contracts/CompXStaking.algo.ts:180
+	// currentTimeStamp = globals.latestTimestamp * 1000
+	global LatestTimestamp
+	int 1000
+	*
+	frame_bury 0 // currentTimeStamp: uint64
+
+	// contracts/CompXStaking.algo.ts:181
 	// assert(lockPeriod >= this.minLockUp.value, 'Lock period too short')
 	frame_dig -3 // lockPeriod: uint64
 	byte 0x6d696e4c6f636b5570 // "minLockUp"
@@ -848,9 +851,9 @@ stake:
 	// Lock period too short
 	assert
 
-	// contracts/CompXStaking.algo.ts:180
-	// assert(stakeTimestamp + lockPeriod < this.contractEndTimestamp.value, 'Lock period too long')
-	frame_dig -4 // stakeTimestamp: uint64
+	// contracts/CompXStaking.algo.ts:182
+	// assert(currentTimeStamp + lockPeriod < this.contractEndTimestamp.value, 'Lock period too long')
+	frame_dig 0 // currentTimeStamp: uint64
 	frame_dig -3 // lockPeriod: uint64
 	+
 	byte 0x636f6e7472616374456e6454696d657374616d70 // "contractEndTimestamp"
@@ -860,9 +863,9 @@ stake:
 	// Lock period too long
 	assert
 
-	// contracts/CompXStaking.algo.ts:181
-	// assert(stakeTimestamp <= this.contractEndTimestamp.value, 'Contract has ended')
-	frame_dig -4 // stakeTimestamp: uint64
+	// contracts/CompXStaking.algo.ts:183
+	// assert(currentTimeStamp <= this.contractEndTimestamp.value, 'Contract has ended')
+	frame_dig 0 // currentTimeStamp: uint64
 	byte 0x636f6e7472616374456e6454696d657374616d70 // "contractEndTimestamp"
 	app_global_get
 	<=
@@ -870,9 +873,9 @@ stake:
 	// Contract has ended
 	assert
 
-	// contracts/CompXStaking.algo.ts:182
-	// assert(stakeTimestamp >= this.contractStartTimestamp.value, 'Contract has not started')
-	frame_dig -4 // stakeTimestamp: uint64
+	// contracts/CompXStaking.algo.ts:184
+	// assert(currentTimeStamp >= this.contractStartTimestamp.value, 'Contract has not started')
+	frame_dig 0 // currentTimeStamp: uint64
 	byte 0x636f6e7472616374537461727454696d657374616d70 // "contractStartTimestamp"
 	app_global_get
 	>=
@@ -880,7 +883,7 @@ stake:
 	// Contract has not started
 	assert
 
-	// contracts/CompXStaking.algo.ts:183
+	// contracts/CompXStaking.algo.ts:185
 	// assert(this.stakeTokenPrice.value > 0, 'Stake token price not set')
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
@@ -890,7 +893,7 @@ stake:
 	// Stake token price not set
 	assert
 
-	// contracts/CompXStaking.algo.ts:184
+	// contracts/CompXStaking.algo.ts:186
 	// assert(this.rewardTokenPrice.value > 0, 'Reward token price not set')
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	app_global_get
@@ -900,7 +903,7 @@ stake:
 	// Reward token price not set
 	assert
 
-	// contracts/CompXStaking.algo.ts:185
+	// contracts/CompXStaking.algo.ts:187
 	// assert(this.staked(this.txn.sender).value === 0, 'User already staked')
 	txn Sender
 	byte 0x7374616b6564 // "staked"
@@ -911,7 +914,7 @@ stake:
 	// User already staked
 	assert
 
-	// contracts/CompXStaking.algo.ts:186
+	// contracts/CompXStaking.algo.ts:188
 	// assert(quantity > 0, 'Invalid quantity')
 	frame_dig -2 // quantity: uint64
 	int 0
@@ -920,7 +923,7 @@ stake:
 	// Invalid quantity
 	assert
 
-	// contracts/CompXStaking.algo.ts:188
+	// contracts/CompXStaking.algo.ts:190
 	// verifyAssetTransferTxn(stakeTxn, {
 	//       sender: this.txn.sender,
 	//       assetReceiver: this.app.address,
@@ -964,33 +967,48 @@ stake:
 	// transaction verification failed: {"txn":"stakeTxn","field":"assetAmount","expected":"quantity"}
 	assert
 
-	// contracts/CompXStaking.algo.ts:195
-	// transactionQuantity = stakeTxn.assetAmount
+	// contracts/CompXStaking.algo.ts:196
+	// this.staked(this.txn.sender).value = stakeTxn.assetAmount
+	txn Sender
+	byte 0x7374616b6564 // "staked"
 	frame_dig -1 // stakeTxn: AssetTransferTxn
 	gtxns AssetAmount
-	frame_bury 0 // transactionQuantity: uint64
+	app_local_put
 
-	// contracts/CompXStaking.algo.ts:196
-	// normalisedAmount = (transactionQuantity * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value
-	frame_dig 0 // transactionQuantity: uint64
+	// contracts/CompXStaking.algo.ts:197
+	// this.stakeDuration(this.txn.sender).value = lockPeriod
+	txn Sender
+	byte 0x7374616b654475726174696f6e // "stakeDuration"
+	frame_dig -3 // lockPeriod: uint64
+	app_local_put
+
+	// contracts/CompXStaking.algo.ts:199
+	// normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION
+	txn Sender
+	byte 0x7374616b6564 // "staked"
+	app_local_get
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
 	*
-	int 1000000
+	int 10000
 	*
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	app_global_get
 	/
+	int 10000
+	/
 	frame_bury 1 // normalisedAmount: uint64
 
-	// contracts/CompXStaking.algo.ts:197
-	// userStakingWeight = normalisedAmount * lockPeriod
+	// contracts/CompXStaking.algo.ts:200
+	// userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value)
 	frame_dig 1 // normalisedAmount: uint64
-	frame_dig -3 // lockPeriod: uint64
+	txn Sender
+	byte 0x7374616b654475726174696f6e // "stakeDuration"
+	app_local_get
 	*
 	frame_bury 2 // userStakingWeight: uint64
 
-	// contracts/CompXStaking.algo.ts:198
+	// contracts/CompXStaking.algo.ts:201
 	// this.totalStakingWeight.value += userStakingWeight
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	app_global_get
@@ -1000,147 +1018,182 @@ stake:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:201
+	// contracts/CompXStaking.algo.ts:204
 	// userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value
 	frame_dig 2 // userStakingWeight: uint64
-	int 1000000
+	int 10000
 	*
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	app_global_get
 	/
 	frame_bury 3 // userShare: uint64
 
-	// contracts/CompXStaking.algo.ts:202
+	// contracts/CompXStaking.algo.ts:205
 	// userSharePercentage = (userShare * 100) / PRECISION
 	frame_dig 3 // userShare: uint64
 	int 100
 	*
-	int 1000000
+	int 10000
 	/
 	frame_bury 4 // userSharePercentage: uint64
 
-	// contracts/CompXStaking.algo.ts:204
-	// userRewardRate = (this.rewardsAvailablePerTick.value * PRECISION) / userSharePercentage
+	// contracts/CompXStaking.algo.ts:206
+	// numerator = (userSharePercentage * PRECISION)
+	frame_dig 4 // userSharePercentage: uint64
+	int 10000
+	*
+	frame_bury 5 // numerator: uint64
+
+	// contracts/CompXStaking.algo.ts:207
+	// denominator = PRECISION
+	int 10000
+	frame_bury 6 // denominator: uint64
+
+	// contracts/CompXStaking.algo.ts:209
+	// a = numerator
+	frame_dig 5 // numerator: uint64
+	frame_bury 7 // a: uint64
+
+	// contracts/CompXStaking.algo.ts:210
+	// b = denominator
+	frame_dig 6 // denominator: uint64
+	frame_bury 8 // b: uint64
+
+*while_0:
+
+*while_0_continue:
+	// contracts/CompXStaking.algo.ts:211
+	// b !== 0
+	frame_dig 8 // b: uint64
+	int 0
+	!=
+	bz *while_0_end
+
+	// contracts/CompXStaking.algo.ts:212
+	// temp = b
+	frame_dig 8 // b: uint64
+	frame_bury 9 // temp: uint64
+
+	// contracts/CompXStaking.algo.ts:213
+	// b = a % b
+	frame_dig 7 // a: uint64
+	frame_dig 8 // b: uint64
+	%
+	frame_bury 8 // b: uint64
+
+	// contracts/CompXStaking.algo.ts:214
+	// a = temp
+	frame_dig 9 // temp: uint64
+	frame_bury 7 // a: uint64
+	b *while_0
+
+*while_0_end:
+	// contracts/CompXStaking.algo.ts:216
+	// gcdValue = a
+	frame_dig 7 // a: uint64
+	frame_bury 10 // gcdValue: uint64
+
+	// contracts/CompXStaking.algo.ts:218
+	// numerator = numerator / gcdValue
+	frame_dig 5 // numerator: uint64
+	frame_dig 10 // gcdValue: uint64
+	/
+	frame_bury 5 // numerator: uint64
+
+	// contracts/CompXStaking.algo.ts:219
+	// denominator = denominator / gcdValue
+	frame_dig 6 // denominator: uint64
+	frame_dig 10 // gcdValue: uint64
+	/
+	frame_bury 6 // denominator: uint64
+
+	// contracts/CompXStaking.algo.ts:220
+	// userRewardRate = (this.rewardsAvailablePerTick.value * numerator) / denominator
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	app_global_get
-	int 1000000
+	frame_dig 5 // numerator: uint64
 	*
-	frame_dig 4 // userSharePercentage: uint64
+	frame_dig 6 // denominator: uint64
 	/
-	frame_bury 5 // userRewardRate: uint64
+	frame_bury 11 // userRewardRate: uint64
 
-	// contracts/CompXStaking.algo.ts:206
-	// this.totalStaked.value += transactionQuantity
+	// contracts/CompXStaking.algo.ts:222
+	// this.totalStaked.value += this.staked(this.txn.sender).value
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	app_global_get
-	frame_dig 0 // transactionQuantity: uint64
+	txn Sender
+	byte 0x7374616b6564 // "staked"
+	app_local_get
 	+
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:208
-	// this.rewardRate(this.txn.sender).value = userRewardRate / PRECISION
+	// contracts/CompXStaking.algo.ts:223
+	// this.rewardRate(this.txn.sender).value = userRewardRate
 	txn Sender
 	byte 0x72657761726452617465 // "rewardRate"
-	frame_dig 5 // userRewardRate: uint64
-	int 1000000
-	/
+	frame_dig 11 // userRewardRate: uint64
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:209
-	// this.staked(this.txn.sender).value += transactionQuantity
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
-	frame_dig 0 // transactionQuantity: uint64
-	+
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	uncover 2
-	app_local_put
-
-	// contracts/CompXStaking.algo.ts:210
-	// this.stakeStartTime(this.txn.sender).value = stakeTimestamp
+	// contracts/CompXStaking.algo.ts:224
+	// this.stakeStartTime(this.txn.sender).value = currentTimeStamp
 	txn Sender
 	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
-	frame_dig -4 // stakeTimestamp: uint64
+	frame_dig 0 // currentTimeStamp: uint64
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:211
-	// this.stakeDuration(this.txn.sender).value = lockPeriod
-	txn Sender
-	byte 0x7374616b654475726174696f6e // "stakeDuration"
-	frame_dig -3 // lockPeriod: uint64
-	app_local_put
-
-	// contracts/CompXStaking.algo.ts:212
+	// contracts/CompXStaking.algo.ts:225
 	// this.userStakingWeight(this.txn.sender).value = userStakingWeight
 	txn Sender
 	byte 0x757365725374616b696e67576569676874 // "userStakingWeight"
 	frame_dig 2 // userStakingWeight: uint64
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:213
-	// this.unlockTime(this.txn.sender).value = stakeTimestamp + lockPeriod
+	// contracts/CompXStaking.algo.ts:226
+	// this.unlockTime(this.txn.sender).value = currentTimeStamp + lockPeriod
 	txn Sender
 	byte 0x756e6c6f636b54696d65 // "unlockTime"
-	frame_dig -4 // stakeTimestamp: uint64
+	frame_dig 0 // currentTimeStamp: uint64
 	frame_dig -3 // lockPeriod: uint64
 	+
 	app_local_put
 	retsub
 
-// getRewardRate()uint64
+// getRewardRate()void
 *abi_route_getRewardRate:
-	// The ABI return prefix
-	byte 0x151f7c75
-
-	// execute getRewardRate()uint64
+	// execute getRewardRate()void
 	callsub getRewardRate
-	itob
-	concat
-	log
 	int 1
 	return
 
-// getRewardRate(): uint64
+// getRewardRate(): void
 getRewardRate:
-	proto 0 1
+	proto 0 0
 
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
-	dupn 4
+	dupn 10
 
-	// contracts/CompXStaking.algo.ts:218
-	// this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value
-	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
-	app_global_get
-	txn Sender
-	byte 0x757365725374616b696e67576569676874 // "userStakingWeight"
-	app_local_get
-	-
-	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
-	swap
-	app_global_put
-
-	// contracts/CompXStaking.algo.ts:219
-	// normalisedAmount = (this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value
+	// contracts/CompXStaking.algo.ts:230
+	// normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION
 	txn Sender
 	byte 0x7374616b6564 // "staked"
 	app_local_get
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
 	*
-	int 1000000
+	int 10000
 	*
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	app_global_get
 	/
+	int 10000
+	/
 	frame_bury 0 // normalisedAmount: uint64
 
-	// contracts/CompXStaking.algo.ts:220
-	// userStakingWeight = normalisedAmount * this.stakeDuration(this.txn.sender).value
+	// contracts/CompXStaking.algo.ts:231
+	// userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value)
 	frame_dig 0 // normalisedAmount: uint64
 	txn Sender
 	byte 0x7374616b654475726174696f6e // "stakeDuration"
@@ -1148,7 +1201,7 @@ getRewardRate:
 	*
 	frame_bury 1 // userStakingWeight: uint64
 
-	// contracts/CompXStaking.algo.ts:221
+	// contracts/CompXStaking.algo.ts:232
 	// this.totalStakingWeight.value += userStakingWeight
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	app_global_get
@@ -1158,46 +1211,111 @@ getRewardRate:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:224
+	// contracts/CompXStaking.algo.ts:235
 	// userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value
 	frame_dig 1 // userStakingWeight: uint64
-	int 1000000
+	int 10000
 	*
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	app_global_get
 	/
 	frame_bury 2 // userShare: uint64
 
-	// contracts/CompXStaking.algo.ts:225
+	// contracts/CompXStaking.algo.ts:236
 	// userSharePercentage = (userShare * 100) / PRECISION
 	frame_dig 2 // userShare: uint64
 	int 100
 	*
-	int 1000000
+	int 10000
 	/
 	frame_bury 3 // userSharePercentage: uint64
 
-	// contracts/CompXStaking.algo.ts:227
-	// userRewardRate = (this.rewardsAvailablePerTick.value * PRECISION) / userSharePercentage
+	// contracts/CompXStaking.algo.ts:237
+	// numerator = (userSharePercentage * PRECISION)
+	frame_dig 3 // userSharePercentage: uint64
+	int 10000
+	*
+	frame_bury 4 // numerator: uint64
+
+	// contracts/CompXStaking.algo.ts:238
+	// denominator = PRECISION
+	int 10000
+	frame_bury 5 // denominator: uint64
+
+	// contracts/CompXStaking.algo.ts:240
+	// a = numerator
+	frame_dig 4 // numerator: uint64
+	frame_bury 6 // a: uint64
+
+	// contracts/CompXStaking.algo.ts:241
+	// b = denominator
+	frame_dig 5 // denominator: uint64
+	frame_bury 7 // b: uint64
+
+*while_1:
+
+*while_1_continue:
+	// contracts/CompXStaking.algo.ts:242
+	// b !== 0
+	frame_dig 7 // b: uint64
+	int 0
+	!=
+	bz *while_1_end
+
+	// contracts/CompXStaking.algo.ts:243
+	// temp = b
+	frame_dig 7 // b: uint64
+	frame_bury 8 // temp: uint64
+
+	// contracts/CompXStaking.algo.ts:244
+	// b = a % b
+	frame_dig 6 // a: uint64
+	frame_dig 7 // b: uint64
+	%
+	frame_bury 7 // b: uint64
+
+	// contracts/CompXStaking.algo.ts:245
+	// a = temp
+	frame_dig 8 // temp: uint64
+	frame_bury 6 // a: uint64
+	b *while_1
+
+*while_1_end:
+	// contracts/CompXStaking.algo.ts:247
+	// gcdValue = a
+	frame_dig 6 // a: uint64
+	frame_bury 9 // gcdValue: uint64
+
+	// contracts/CompXStaking.algo.ts:249
+	// numerator = numerator / gcdValue
+	frame_dig 4 // numerator: uint64
+	frame_dig 9 // gcdValue: uint64
+	/
+	frame_bury 4 // numerator: uint64
+
+	// contracts/CompXStaking.algo.ts:250
+	// denominator = denominator / gcdValue
+	frame_dig 5 // denominator: uint64
+	frame_dig 9 // gcdValue: uint64
+	/
+	frame_bury 5 // denominator: uint64
+
+	// contracts/CompXStaking.algo.ts:251
+	// userRewardRate = (this.rewardsAvailablePerTick.value * numerator) / denominator
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	app_global_get
-	int 1000000
+	frame_dig 4 // numerator: uint64
 	*
-	frame_dig 3 // userSharePercentage: uint64
+	frame_dig 5 // denominator: uint64
 	/
-	frame_bury 4 // userRewardRate: uint64
+	frame_bury 10 // userRewardRate: uint64
 
-	// contracts/CompXStaking.algo.ts:228
-	// return userRewardRate / PRECISION;
-	frame_dig 4 // userRewardRate: uint64
-	int 1000000
-	/
-
-	// set the subroutine return value
-	frame_bury 0
-
-	// pop all local variables from the stack
-	popn 4
+	// contracts/CompXStaking.algo.ts:253
+	// this.rewardRate(this.txn.sender).value = userRewardRate
+	txn Sender
+	byte 0x72657761726452617465 // "rewardRate"
+	frame_dig 10 // userRewardRate: uint64
+	app_local_put
 	retsub
 
 // getRewardRate_Dev(uint64,uint64,uint64,uint64,uint64,uint64)void
@@ -1239,7 +1357,7 @@ getRewardRate_Dev:
 	byte 0x
 	dupn 10
 
-	// contracts/CompXStaking.algo.ts:240
+	// contracts/CompXStaking.algo.ts:265
 	// normalisedAmount = ((i_StakeAmount * i_StakeTokenPrice * PRECISION) / i_RewardTokenPrice) / PRECISION
 	frame_dig -5 // i_StakeAmount: uint64
 	frame_dig -2 // i_StakeTokenPrice: uint64
@@ -1252,21 +1370,21 @@ getRewardRate_Dev:
 	/
 	frame_bury 0 // normalisedAmount: uint64
 
-	// contracts/CompXStaking.algo.ts:241
+	// contracts/CompXStaking.algo.ts:266
 	// userStakingWeight = (normalisedAmount * i_StakeDuration)
 	frame_dig 0 // normalisedAmount: uint64
 	frame_dig -4 // i_StakeDuration: uint64
 	*
 	frame_bury 1 // userStakingWeight: uint64
 
-	// contracts/CompXStaking.algo.ts:242
+	// contracts/CompXStaking.algo.ts:267
 	// i_TotalStakingWeight += userStakingWeight
 	frame_dig -1 // i_TotalStakingWeight: uint64
 	frame_dig 1 // userStakingWeight: uint64
 	+
 	frame_bury -1 // i_TotalStakingWeight: uint64
 
-	// contracts/CompXStaking.algo.ts:245
+	// contracts/CompXStaking.algo.ts:270
 	// userShare = (userStakingWeight * PRECISION) / i_TotalStakingWeight
 	frame_dig 1 // userStakingWeight: uint64
 	int 10000
@@ -1275,7 +1393,7 @@ getRewardRate_Dev:
 	/
 	frame_bury 2 // userShare: uint64
 
-	// contracts/CompXStaking.algo.ts:246
+	// contracts/CompXStaking.algo.ts:271
 	// userSharePercentage = (userShare * 100) / PRECISION
 	frame_dig 2 // userShare: uint64
 	int 100
@@ -1284,77 +1402,77 @@ getRewardRate_Dev:
 	/
 	frame_bury 3 // userSharePercentage: uint64
 
-	// contracts/CompXStaking.algo.ts:250
+	// contracts/CompXStaking.algo.ts:275
 	// numerator = (userSharePercentage * PRECISION)
 	frame_dig 3 // userSharePercentage: uint64
 	int 10000
 	*
 	frame_bury 4 // numerator: uint64
 
-	// contracts/CompXStaking.algo.ts:251
+	// contracts/CompXStaking.algo.ts:276
 	// denominator = PRECISION
 	int 10000
 	frame_bury 5 // denominator: uint64
 
-	// contracts/CompXStaking.algo.ts:253
+	// contracts/CompXStaking.algo.ts:278
 	// a = numerator
 	frame_dig 4 // numerator: uint64
 	frame_bury 6 // a: uint64
 
-	// contracts/CompXStaking.algo.ts:254
+	// contracts/CompXStaking.algo.ts:279
 	// b = denominator
 	frame_dig 5 // denominator: uint64
 	frame_bury 7 // b: uint64
 
-*while_0:
+*while_2:
 
-*while_0_continue:
-	// contracts/CompXStaking.algo.ts:255
+*while_2_continue:
+	// contracts/CompXStaking.algo.ts:280
 	// b !== 0
 	frame_dig 7 // b: uint64
 	int 0
 	!=
-	bz *while_0_end
+	bz *while_2_end
 
-	// contracts/CompXStaking.algo.ts:256
+	// contracts/CompXStaking.algo.ts:281
 	// temp = b
 	frame_dig 7 // b: uint64
 	frame_bury 8 // temp: uint64
 
-	// contracts/CompXStaking.algo.ts:257
+	// contracts/CompXStaking.algo.ts:282
 	// b = a % b
 	frame_dig 6 // a: uint64
 	frame_dig 7 // b: uint64
 	%
 	frame_bury 7 // b: uint64
 
-	// contracts/CompXStaking.algo.ts:258
+	// contracts/CompXStaking.algo.ts:283
 	// a = temp
 	frame_dig 8 // temp: uint64
 	frame_bury 6 // a: uint64
-	b *while_0
+	b *while_2
 
-*while_0_end:
-	// contracts/CompXStaking.algo.ts:260
+*while_2_end:
+	// contracts/CompXStaking.algo.ts:285
 	// gcdValue = a
 	frame_dig 6 // a: uint64
 	frame_bury 9 // gcdValue: uint64
 
-	// contracts/CompXStaking.algo.ts:262
+	// contracts/CompXStaking.algo.ts:287
 	// numerator = numerator / gcdValue
 	frame_dig 4 // numerator: uint64
 	frame_dig 9 // gcdValue: uint64
 	/
 	frame_bury 4 // numerator: uint64
 
-	// contracts/CompXStaking.algo.ts:263
+	// contracts/CompXStaking.algo.ts:288
 	// denominator = denominator / gcdValue
 	frame_dig 5 // denominator: uint64
 	frame_dig 9 // gcdValue: uint64
 	/
 	frame_bury 5 // denominator: uint64
 
-	// contracts/CompXStaking.algo.ts:264
+	// contracts/CompXStaking.algo.ts:289
 	// userRewardRate = (i_RewardsAvailablePerTick * numerator) / denominator
 	frame_dig -6 // i_RewardsAvailablePerTick: uint64
 	frame_dig 4 // numerator: uint64
@@ -1363,7 +1481,7 @@ getRewardRate_Dev:
 	/
 	frame_bury 10 // userRewardRate: uint64
 
-	// contracts/CompXStaking.algo.ts:266
+	// contracts/CompXStaking.algo.ts:291
 	// this.rewardRate(this.txn.sender).value = userRewardRate
 	txn Sender
 	byte 0x72657761726452617465 // "rewardRate"
@@ -1396,7 +1514,7 @@ accrueRewards:
 	byte 0x
 	dupn 4
 
-	// contracts/CompXStaking.algo.ts:270
+	// contracts/CompXStaking.algo.ts:295
 	// assert(this.staked(userAddress).value > 0, 'User has no staked assets')
 	frame_dig -1 // userAddress: Address
 	byte 0x7374616b6564 // "staked"
@@ -1407,7 +1525,7 @@ accrueRewards:
 	// User has no staked assets
 	assert
 
-	// contracts/CompXStaking.algo.ts:271
+	// contracts/CompXStaking.algo.ts:296
 	// assert(this.unlockTime(userAddress).value > globals.latestTimestamp * 1000, 'User has not unlocked assets')
 	frame_dig -1 // userAddress: Address
 	byte 0x756e6c6f636b54696d65 // "unlockTime"
@@ -1420,7 +1538,7 @@ accrueRewards:
 	// User has not unlocked assets
 	assert
 
-	// contracts/CompXStaking.algo.ts:272
+	// contracts/CompXStaking.algo.ts:297
 	// assert(this.stakeStartTime(userAddress).value > 0, 'User has not staked assets')
 	frame_dig -1 // userAddress: Address
 	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
@@ -1431,7 +1549,7 @@ accrueRewards:
 	// User has not staked assets
 	assert
 
-	// contracts/CompXStaking.algo.ts:273
+	// contracts/CompXStaking.algo.ts:298
 	// assert(this.stakeDuration(userAddress).value > 0, 'User has not staked assets')
 	frame_dig -1 // userAddress: Address
 	byte 0x7374616b654475726174696f6e // "stakeDuration"
@@ -1442,7 +1560,7 @@ accrueRewards:
 	// User has not staked assets
 	assert
 
-	// contracts/CompXStaking.algo.ts:276
+	// contracts/CompXStaking.algo.ts:301
 	// this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	app_global_get
@@ -1454,7 +1572,7 @@ accrueRewards:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:277
+	// contracts/CompXStaking.algo.ts:302
 	// normalisedAmount = (this.staked(userAddress).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value
 	frame_dig -1 // userAddress: Address
 	byte 0x7374616b6564 // "staked"
@@ -1469,7 +1587,7 @@ accrueRewards:
 	/
 	frame_bury 0 // normalisedAmount: uint64
 
-	// contracts/CompXStaking.algo.ts:278
+	// contracts/CompXStaking.algo.ts:303
 	// userStakingWeight = normalisedAmount * this.stakeDuration(userAddress).value
 	frame_dig 0 // normalisedAmount: uint64
 	frame_dig -1 // userAddress: Address
@@ -1478,7 +1596,7 @@ accrueRewards:
 	*
 	frame_bury 1 // userStakingWeight: uint64
 
-	// contracts/CompXStaking.algo.ts:279
+	// contracts/CompXStaking.algo.ts:304
 	// this.totalStakingWeight.value += userStakingWeight
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	app_global_get
@@ -1488,7 +1606,7 @@ accrueRewards:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:282
+	// contracts/CompXStaking.algo.ts:307
 	// userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value
 	frame_dig 1 // userStakingWeight: uint64
 	int 1000000
@@ -1498,7 +1616,7 @@ accrueRewards:
 	/
 	frame_bury 2 // userShare: uint64
 
-	// contracts/CompXStaking.algo.ts:283
+	// contracts/CompXStaking.algo.ts:308
 	// userSharePercentage = (userShare * 100) / PRECISION
 	frame_dig 2 // userShare: uint64
 	int 100
@@ -1507,7 +1625,7 @@ accrueRewards:
 	/
 	frame_bury 3 // userSharePercentage: uint64
 
-	// contracts/CompXStaking.algo.ts:285
+	// contracts/CompXStaking.algo.ts:310
 	// userRewardRate = (this.rewardsAvailablePerTick.value * PRECISION) / userSharePercentage
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	app_global_get
@@ -1517,7 +1635,7 @@ accrueRewards:
 	/
 	frame_bury 4 // userRewardRate: uint64
 
-	// contracts/CompXStaking.algo.ts:287
+	// contracts/CompXStaking.algo.ts:312
 	// this.accruedRewards(userAddress).value = (userRewardRate * (globals.latestTimestamp * 1000 - this.stakeStartTime(userAddress).value)) / PRECISION
 	frame_dig -1 // userAddress: Address
 	byte 0x6163637275656452657761726473 // "accruedRewards"
@@ -1550,14 +1668,14 @@ unstake:
 	byte 0x
 	dupn 5
 
-	// contracts/CompXStaking.algo.ts:291
+	// contracts/CompXStaking.algo.ts:316
 	// quantity = this.staked(this.txn.sender).value
 	txn Sender
 	byte 0x7374616b6564 // "staked"
 	app_local_get
 	frame_bury 0 // quantity: uint64
 
-	// contracts/CompXStaking.algo.ts:292
+	// contracts/CompXStaking.algo.ts:317
 	// assert(quantity > 0, 'No staked assets')
 	frame_dig 0 // quantity: uint64
 	int 0
@@ -1566,7 +1684,7 @@ unstake:
 	// No staked assets
 	assert
 
-	// contracts/CompXStaking.algo.ts:293
+	// contracts/CompXStaking.algo.ts:318
 	// assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp * 1000), 'unlock time not reached')
 	txn Sender
 	byte 0x756e6c6f636b54696d65 // "unlockTime"
@@ -1579,7 +1697,7 @@ unstake:
 	// unlock time not reached
 	assert
 
-	// contracts/CompXStaking.algo.ts:294
+	// contracts/CompXStaking.algo.ts:319
 	// assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets')
 	txn Sender
 	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
@@ -1590,7 +1708,7 @@ unstake:
 	// User has not staked assets
 	assert
 
-	// contracts/CompXStaking.algo.ts:295
+	// contracts/CompXStaking.algo.ts:320
 	// assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets')
 	txn Sender
 	byte 0x7374616b654475726174696f6e // "stakeDuration"
@@ -1601,7 +1719,7 @@ unstake:
 	// User has not staked assets
 	assert
 
-	// contracts/CompXStaking.algo.ts:296
+	// contracts/CompXStaking.algo.ts:321
 	// assert(this.accruedRewards(this.txn.sender).value > 0, 'User has no accrued rewards')
 	txn Sender
 	byte 0x6163637275656452657761726473 // "accruedRewards"
@@ -1612,7 +1730,7 @@ unstake:
 	// User has no accrued rewards
 	assert
 
-	// contracts/CompXStaking.algo.ts:299
+	// contracts/CompXStaking.algo.ts:324
 	// this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	app_global_get
@@ -1624,7 +1742,7 @@ unstake:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:300
+	// contracts/CompXStaking.algo.ts:325
 	// normalisedAmount = (this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value
 	txn Sender
 	byte 0x7374616b6564 // "staked"
@@ -1639,7 +1757,7 @@ unstake:
 	/
 	frame_bury 1 // normalisedAmount: uint64
 
-	// contracts/CompXStaking.algo.ts:301
+	// contracts/CompXStaking.algo.ts:326
 	// userStakingWeight = normalisedAmount * this.stakeDuration(this.txn.sender).value
 	frame_dig 1 // normalisedAmount: uint64
 	txn Sender
@@ -1648,7 +1766,7 @@ unstake:
 	*
 	frame_bury 2 // userStakingWeight: uint64
 
-	// contracts/CompXStaking.algo.ts:302
+	// contracts/CompXStaking.algo.ts:327
 	// this.totalStakingWeight.value += userStakingWeight
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	app_global_get
@@ -1658,7 +1776,7 @@ unstake:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:305
+	// contracts/CompXStaking.algo.ts:330
 	// userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value
 	frame_dig 2 // userStakingWeight: uint64
 	int 1000000
@@ -1668,7 +1786,7 @@ unstake:
 	/
 	frame_bury 3 // userShare: uint64
 
-	// contracts/CompXStaking.algo.ts:306
+	// contracts/CompXStaking.algo.ts:331
 	// userSharePercentage = (userShare * 100) / PRECISION
 	frame_dig 3 // userShare: uint64
 	int 100
@@ -1677,7 +1795,7 @@ unstake:
 	/
 	frame_bury 4 // userSharePercentage: uint64
 
-	// contracts/CompXStaking.algo.ts:308
+	// contracts/CompXStaking.algo.ts:333
 	// userRewardRate = (this.rewardsAvailablePerTick.value * PRECISION) / userSharePercentage
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	app_global_get
@@ -1687,7 +1805,7 @@ unstake:
 	/
 	frame_bury 5 // userRewardRate: uint64
 
-	// contracts/CompXStaking.algo.ts:310
+	// contracts/CompXStaking.algo.ts:335
 	// this.accruedRewards(this.txn.sender).value = (userRewardRate * (globals.latestTimestamp * 1000 - this.stakeStartTime(this.txn.sender).value)) / PRECISION
 	txn Sender
 	byte 0x6163637275656452657761726473 // "accruedRewards"
@@ -1704,7 +1822,7 @@ unstake:
 	/
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:315
+	// contracts/CompXStaking.algo.ts:340
 	// this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	app_global_get
@@ -1716,7 +1834,7 @@ unstake:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:316
+	// contracts/CompXStaking.algo.ts:341
 	// this.remainingRewards.value -= this.accruedRewards(this.txn.sender).value
 	byte 0x72656d61696e696e6752657761726473 // "remainingRewards"
 	app_global_get
@@ -1729,7 +1847,7 @@ unstake:
 	app_global_put
 
 	// *if4_condition
-	// contracts/CompXStaking.algo.ts:318
+	// contracts/CompXStaking.algo.ts:343
 	// this.stakedAssetId.value === 0
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
@@ -1738,7 +1856,7 @@ unstake:
 	bz *if4_else
 
 	// *if4_consequent
-	// contracts/CompXStaking.algo.ts:319
+	// contracts/CompXStaking.algo.ts:344
 	// sendPayment({
 	//         amount: this.staked(this.txn.sender).value,
 	//         receiver: this.txn.sender,
@@ -1749,24 +1867,24 @@ unstake:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/CompXStaking.algo.ts:320
+	// contracts/CompXStaking.algo.ts:345
 	// amount: this.staked(this.txn.sender).value
 	txn Sender
 	byte 0x7374616b6564 // "staked"
 	app_local_get
 	itxn_field Amount
 
-	// contracts/CompXStaking.algo.ts:321
+	// contracts/CompXStaking.algo.ts:346
 	// receiver: this.txn.sender
 	txn Sender
 	itxn_field Receiver
 
-	// contracts/CompXStaking.algo.ts:322
+	// contracts/CompXStaking.algo.ts:347
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/CompXStaking.algo.ts:323
+	// contracts/CompXStaking.algo.ts:348
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -1776,7 +1894,7 @@ unstake:
 	b *if4_end
 
 *if4_else:
-	// contracts/CompXStaking.algo.ts:326
+	// contracts/CompXStaking.algo.ts:351
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
 	//         assetReceiver: this.txn.sender,
@@ -1788,30 +1906,30 @@ unstake:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/CompXStaking.algo.ts:327
+	// contracts/CompXStaking.algo.ts:352
 	// xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/CompXStaking.algo.ts:328
+	// contracts/CompXStaking.algo.ts:353
 	// assetReceiver: this.txn.sender
 	txn Sender
 	itxn_field AssetReceiver
 
-	// contracts/CompXStaking.algo.ts:329
+	// contracts/CompXStaking.algo.ts:354
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/CompXStaking.algo.ts:330
+	// contracts/CompXStaking.algo.ts:355
 	// assetAmount: this.staked(this.txn.sender).value
 	txn Sender
 	byte 0x7374616b6564 // "staked"
 	app_local_get
 	itxn_field AssetAmount
 
-	// contracts/CompXStaking.algo.ts:331
+	// contracts/CompXStaking.algo.ts:356
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -1821,7 +1939,7 @@ unstake:
 
 *if4_end:
 	// *if5_condition
-	// contracts/CompXStaking.algo.ts:334
+	// contracts/CompXStaking.algo.ts:359
 	// this.rewardAssetId.value === 0
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
@@ -1830,7 +1948,7 @@ unstake:
 	bz *if5_else
 
 	// *if5_consequent
-	// contracts/CompXStaking.algo.ts:335
+	// contracts/CompXStaking.algo.ts:360
 	// sendPayment({
 	//         amount: this.accruedRewards(this.txn.sender).value,
 	//         receiver: this.txn.sender,
@@ -1841,24 +1959,24 @@ unstake:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/CompXStaking.algo.ts:336
+	// contracts/CompXStaking.algo.ts:361
 	// amount: this.accruedRewards(this.txn.sender).value
 	txn Sender
 	byte 0x6163637275656452657761726473 // "accruedRewards"
 	app_local_get
 	itxn_field Amount
 
-	// contracts/CompXStaking.algo.ts:337
+	// contracts/CompXStaking.algo.ts:362
 	// receiver: this.txn.sender
 	txn Sender
 	itxn_field Receiver
 
-	// contracts/CompXStaking.algo.ts:338
+	// contracts/CompXStaking.algo.ts:363
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/CompXStaking.algo.ts:339
+	// contracts/CompXStaking.algo.ts:364
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -1868,7 +1986,7 @@ unstake:
 	b *if5_end
 
 *if5_else:
-	// contracts/CompXStaking.algo.ts:342
+	// contracts/CompXStaking.algo.ts:367
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
 	//         assetReceiver: this.txn.sender,
@@ -1880,30 +1998,30 @@ unstake:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/CompXStaking.algo.ts:343
+	// contracts/CompXStaking.algo.ts:368
 	// xferAsset: AssetID.fromUint64(this.rewardAssetId.value)
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/CompXStaking.algo.ts:344
+	// contracts/CompXStaking.algo.ts:369
 	// assetReceiver: this.txn.sender
 	txn Sender
 	itxn_field AssetReceiver
 
-	// contracts/CompXStaking.algo.ts:345
+	// contracts/CompXStaking.algo.ts:370
 	// assetAmount: this.accruedRewards(this.txn.sender).value
 	txn Sender
 	byte 0x6163637275656452657761726473 // "accruedRewards"
 	app_local_get
 	itxn_field AssetAmount
 
-	// contracts/CompXStaking.algo.ts:346
+	// contracts/CompXStaking.algo.ts:371
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/CompXStaking.algo.ts:347
+	// contracts/CompXStaking.algo.ts:372
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -1912,7 +2030,7 @@ unstake:
 	itxn_submit
 
 *if5_end:
-	// contracts/CompXStaking.algo.ts:351
+	// contracts/CompXStaking.algo.ts:376
 	// this.totalStaked.value -= quantity
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	app_global_get
@@ -1922,49 +2040,49 @@ unstake:
 	swap
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:353
+	// contracts/CompXStaking.algo.ts:378
 	// this.staked(this.txn.sender).value = 0
 	txn Sender
 	byte 0x7374616b6564 // "staked"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:354
+	// contracts/CompXStaking.algo.ts:379
 	// this.accruedRewards(this.txn.sender).value = 0
 	txn Sender
 	byte 0x6163637275656452657761726473 // "accruedRewards"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:355
+	// contracts/CompXStaking.algo.ts:380
 	// this.rewardRate(this.txn.sender).value = 0
 	txn Sender
 	byte 0x72657761726452617465 // "rewardRate"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:356
+	// contracts/CompXStaking.algo.ts:381
 	// this.unlockTime(this.txn.sender).value = 0
 	txn Sender
 	byte 0x756e6c6f636b54696d65 // "unlockTime"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:357
+	// contracts/CompXStaking.algo.ts:382
 	// this.userStakingWeight(this.txn.sender).value = 0
 	txn Sender
 	byte 0x757365725374616b696e67576569676874 // "userStakingWeight"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:358
+	// contracts/CompXStaking.algo.ts:383
 	// this.stakeDuration(this.txn.sender).value = 0
 	txn Sender
 	byte 0x7374616b654475726174696f6e // "stakeDuration"
 	int 0
 	app_local_put
 
-	// contracts/CompXStaking.algo.ts:359
+	// contracts/CompXStaking.algo.ts:384
 	// this.stakeStartTime(this.txn.sender).value = 0
 	txn Sender
 	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
@@ -1983,7 +2101,7 @@ unstake:
 deleteApplication:
 	proto 0 0
 
-	// contracts/CompXStaking.algo.ts:363
+	// contracts/CompXStaking.algo.ts:388
 	// assert(this.txn.sender === this.app.creator)
 	txn Sender
 	txna Applications 0
@@ -1992,7 +2110,7 @@ deleteApplication:
 	==
 	assert
 
-	// contracts/CompXStaking.algo.ts:364
+	// contracts/CompXStaking.algo.ts:389
 	// assert(this.totalStaked.value === 0, 'Staked assets still exist')
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	app_global_get
@@ -2003,7 +2121,7 @@ deleteApplication:
 	assert
 
 	// *if6_condition
-	// contracts/CompXStaking.algo.ts:366
+	// contracts/CompXStaking.algo.ts:391
 	// this.rewardAssetId.value !== 0
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
@@ -2012,7 +2130,7 @@ deleteApplication:
 	bz *if6_end
 
 	// *if6_consequent
-	// contracts/CompXStaking.algo.ts:367
+	// contracts/CompXStaking.algo.ts:392
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
 	//         assetReceiver: this.app.creator,
@@ -2025,30 +2143,30 @@ deleteApplication:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/CompXStaking.algo.ts:368
+	// contracts/CompXStaking.algo.ts:393
 	// xferAsset: AssetID.fromUint64(this.rewardAssetId.value)
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/CompXStaking.algo.ts:369
+	// contracts/CompXStaking.algo.ts:394
 	// assetReceiver: this.app.creator
 	txna Applications 0
 	app_params_get AppCreator
 	pop
 	itxn_field AssetReceiver
 
-	// contracts/CompXStaking.algo.ts:370
+	// contracts/CompXStaking.algo.ts:395
 	// assetAmount: 0
 	int 0
 	itxn_field AssetAmount
 
-	// contracts/CompXStaking.algo.ts:371
+	// contracts/CompXStaking.algo.ts:396
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/CompXStaking.algo.ts:372
+	// contracts/CompXStaking.algo.ts:397
 	// assetCloseTo: this.app.creator
 	txna Applications 0
 	app_params_get AppCreator
@@ -2064,7 +2182,7 @@ deleteApplication:
 
 *if6_end:
 	// *if7_condition
-	// contracts/CompXStaking.algo.ts:376
+	// contracts/CompXStaking.algo.ts:401
 	// this.stakedAssetId.value !== 0
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
@@ -2073,7 +2191,7 @@ deleteApplication:
 	bz *if7_end
 
 	// *if7_consequent
-	// contracts/CompXStaking.algo.ts:377
+	// contracts/CompXStaking.algo.ts:402
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
 	//         assetReceiver: this.app.creator,
@@ -2086,30 +2204,30 @@ deleteApplication:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/CompXStaking.algo.ts:378
+	// contracts/CompXStaking.algo.ts:403
 	// xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/CompXStaking.algo.ts:379
+	// contracts/CompXStaking.algo.ts:404
 	// assetReceiver: this.app.creator
 	txna Applications 0
 	app_params_get AppCreator
 	pop
 	itxn_field AssetReceiver
 
-	// contracts/CompXStaking.algo.ts:380
+	// contracts/CompXStaking.algo.ts:405
 	// assetAmount: 0
 	int 0
 	itxn_field AssetAmount
 
-	// contracts/CompXStaking.algo.ts:381
+	// contracts/CompXStaking.algo.ts:406
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/CompXStaking.algo.ts:382
+	// contracts/CompXStaking.algo.ts:407
 	// assetCloseTo: this.app.creator
 	txna Applications 0
 	app_params_get AppCreator
@@ -2145,7 +2263,7 @@ deleteApplication:
 setPrices:
 	proto 2 0
 
-	// contracts/CompXStaking.algo.ts:396
+	// contracts/CompXStaking.algo.ts:421
 	// assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices')
 	txn Sender
 	byte 0x6f7261636c6541646d696e41646472657373 // "oracleAdminAddress"
@@ -2155,7 +2273,7 @@ setPrices:
 	// Only oracle admin can set prices
 	assert
 
-	// contracts/CompXStaking.algo.ts:397
+	// contracts/CompXStaking.algo.ts:422
 	// assert(stakeTokenPrice > 0, 'Invalid stake token price')
 	frame_dig -1 // stakeTokenPrice: uint64
 	int 0
@@ -2164,7 +2282,7 @@ setPrices:
 	// Invalid stake token price
 	assert
 
-	// contracts/CompXStaking.algo.ts:398
+	// contracts/CompXStaking.algo.ts:423
 	// assert(rewardTokenPrice > 0, 'Invalid reward token price')
 	frame_dig -2 // rewardTokenPrice: uint64
 	int 0
@@ -2173,13 +2291,13 @@ setPrices:
 	// Invalid reward token price
 	assert
 
-	// contracts/CompXStaking.algo.ts:400
+	// contracts/CompXStaking.algo.ts:425
 	// this.stakeTokenPrice.value = stakeTokenPrice
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	frame_dig -1 // stakeTokenPrice: uint64
 	app_global_put
 
-	// contracts/CompXStaking.algo.ts:401
+	// contracts/CompXStaking.algo.ts:426
 	// this.rewardTokenPrice.value = rewardTokenPrice
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	frame_dig -2 // rewardTokenPrice: uint64
@@ -2200,8 +2318,8 @@ setPrices:
 	method "addRewards(axfer,uint64)void"
 	method "addRewardsAlgo(pay,uint64)void"
 	method "removeRewards(uint64)void"
-	method "stake(axfer,uint64,uint64,uint64)void"
-	method "getRewardRate()uint64"
+	method "stake(axfer,uint64,uint64)void"
+	method "getRewardRate()void"
 	method "getRewardRate_Dev(uint64,uint64,uint64,uint64,uint64,uint64)void"
 	method "accrueRewards(address)void"
 	method "unstake()void"

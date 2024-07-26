@@ -1,7 +1,9 @@
 import { Contract } from '@algorandfoundation/tealscript';
+const PRECISION = 10000;
 
 export class CompXStaking extends Contract {
   programVersion = 9;
+
 
   //Global State
   stakedAssetId = GlobalStateKey<uint64>();
@@ -174,12 +176,12 @@ export class CompXStaking extends Contract {
     stakeTxn: AssetTransferTxn,
     quantity: uint64,
     lockPeriod: uint64,
-    stakeTimestamp: uint64
   ): void {
+    const currentTimeStamp = globals.latestTimestamp * 1000;
     assert(lockPeriod >= this.minLockUp.value, 'Lock period too short');
-    assert(stakeTimestamp + lockPeriod < this.contractEndTimestamp.value, 'Lock period too long');
-    assert(stakeTimestamp <= this.contractEndTimestamp.value, 'Contract has ended');
-    assert(stakeTimestamp >= this.contractStartTimestamp.value, 'Contract has not started');
+    assert(currentTimeStamp + lockPeriod < this.contractEndTimestamp.value, 'Lock period too long');
+    assert(currentTimeStamp <= this.contractEndTimestamp.value, 'Contract has ended');
+    assert(currentTimeStamp >= this.contractStartTimestamp.value, 'Contract has not started');
     assert(this.stakeTokenPrice.value > 0, 'Stake token price not set');
     assert(this.rewardTokenPrice.value > 0, 'Reward token price not set');
     assert(this.staked(this.txn.sender).value === 0, 'User already staked');
@@ -191,41 +193,64 @@ export class CompXStaking extends Contract {
       xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
       assetAmount: quantity,
     });
-    const PRECISION = 1_000_000;
-    const transactionQuantity = stakeTxn.assetAmount;
-    const normalisedAmount = (transactionQuantity * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value;
-    const userStakingWeight = normalisedAmount * lockPeriod;
+    this.staked(this.txn.sender).value = stakeTxn.assetAmount;
+    this.stakeDuration(this.txn.sender).value = lockPeriod;
+
+    const normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION;
+    const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);
     this.totalStakingWeight.value += userStakingWeight;
 
     // getUser Staking weight as a share of the total weight
     const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
     const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
+    let numerator = (userSharePercentage * PRECISION);
+    let denominator = PRECISION;
 
-    const userRewardRate = (this.rewardsAvailablePerTick.value * PRECISION) / userSharePercentage; // scale numerator
+    var a = numerator;
+    var b = denominator;
+    while (b !== 0) {
+      let temp = b;
+      b = a % b;
+      a = temp;
+    }
+    const gcdValue = a;
 
-    this.totalStaked.value += transactionQuantity;
+    numerator = numerator / gcdValue;
+    denominator = denominator / gcdValue;
+    const userRewardRate = (this.rewardsAvailablePerTick.value * numerator) / denominator;
 
-    this.rewardRate(this.txn.sender).value = userRewardRate / PRECISION;
-    this.staked(this.txn.sender).value += transactionQuantity;
-    this.stakeStartTime(this.txn.sender).value = stakeTimestamp;
-    this.stakeDuration(this.txn.sender).value = lockPeriod;
+    this.totalStaked.value += this.staked(this.txn.sender).value;
+    this.rewardRate(this.txn.sender).value = userRewardRate;
+    this.stakeStartTime(this.txn.sender).value = currentTimeStamp;
     this.userStakingWeight(this.txn.sender).value = userStakingWeight;
-    this.unlockTime(this.txn.sender).value = stakeTimestamp + lockPeriod;
+    this.unlockTime(this.txn.sender).value = currentTimeStamp + lockPeriod;
   }
 
-  getRewardRate(): uint64 {
-    const PRECISION = 1_000_000;
-    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
-    const normalisedAmount = (this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value;
-    const userStakingWeight = normalisedAmount * this.stakeDuration(this.txn.sender).value;
+  getRewardRate(): void {
+    const normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION;
+    const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);
     this.totalStakingWeight.value += userStakingWeight;
 
     // getUser Staking weight as a share of the total weight
     const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
     const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
+    let numerator = (userSharePercentage * PRECISION);
+    let denominator = PRECISION;
 
-    const userRewardRate = (this.rewardsAvailablePerTick.value * PRECISION) / userSharePercentage; // scale numerator
-    return userRewardRate / PRECISION;
+    var a = numerator;
+    var b = denominator;
+    while (b !== 0) {
+      let temp = b;
+      b = a % b;
+      a = temp;
+    }
+    const gcdValue = a;
+
+    numerator = numerator / gcdValue;
+    denominator = denominator / gcdValue;
+    const userRewardRate = (this.rewardsAvailablePerTick.value * numerator) / denominator;
+
+    this.rewardRate(this.txn.sender).value = userRewardRate;
   }
 
   getRewardRate_Dev(
@@ -236,7 +261,7 @@ export class CompXStaking extends Contract {
     i_StakeAmount: uint64,
     i_RewardsAvailablePerTick: uint64
   ): void {
-    const PRECISION = 10000;
+
     const normalisedAmount = ((i_StakeAmount * i_StakeTokenPrice * PRECISION) / i_RewardTokenPrice) / PRECISION;
     const userStakingWeight = (normalisedAmount * i_StakeDuration);
     i_TotalStakingWeight += userStakingWeight;
@@ -262,7 +287,7 @@ export class CompXStaking extends Contract {
     numerator = numerator / gcdValue;
     denominator = denominator / gcdValue;
     const userRewardRate = (i_RewardsAvailablePerTick * numerator) / denominator;
-    
+
     this.rewardRate(this.txn.sender).value = userRewardRate;
   }
 
