@@ -55,7 +55,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     await appClient.create.createApplication({
       stakedAsset: stakedAssetId,
       rewardAsset: rewardAssetId,
-      minLockUp: 86400n, // 1 Day
+      minLockUp: 10n, // 1 Day
       contractDuration: 2592000n, // 30 Days
       startTimestamp: BigInt(Math.floor(Date.now() / 1000)),
       oracleAdmin: admin,
@@ -69,7 +69,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     expect(globalState.rewardTokenPrice!.asBigInt()).toBe(0n);
     expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
     expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetId);
-    expect(globalState.minLockUp!.asBigInt()).toBe(86400n);
+    expect(globalState.minLockUp!.asBigInt()).toBe(10n);
     expect(globalState.contractDuration!.asBigInt()).toBe(2592000n);
     expect(globalState.rewardsAvailablePerTick!.asBigInt()).toBe(0n);
     expect(globalState.totalStakingWeight!.asBigInt()).toBe(0n);
@@ -83,7 +83,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     await algorand.send.payment({
       sender: admin,
       receiver: appAddress,
-      amount: algokit.algos(0.3),
+      amount: algokit.algos(1),
     });
 
     await appClient.optInToAsset({ asset: stakedAssetId }, { sendParams: { fee: algokit.algos(0.1) } });
@@ -91,7 +91,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     const { balance: stakedAssetBalance } = await algorand.account.getAssetInformation(appAddress, stakedAssetId);
     const rewardAssetBalance = (await algorand.account.getInformation(appAddress)).amount;
     expect(stakedAssetBalance).toBe(0n);
-    expect(rewardAssetBalance).toBe(algokit.algos(0.3).microAlgos);
+    expect(rewardAssetBalance).toBe(algokit.algos(1).microAlgos);
   });
 
   test('add rewards', async () => {
@@ -105,7 +105,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
 
     await appClient.addRewardsAlgo({ payTxn, quantity: algokit.algos(10000).microAlgos });
     const rewardAssetBalance = (await algorand.account.getInformation(appAddress)).amount;
-    expect(rewardAssetBalance).toBe(algokit.algos(10000.3).microAlgos);
+    expect(rewardAssetBalance).toBe(algokit.algos(10001).microAlgos);
     const totalRewards = (await appClient.getGlobalState()).totalRewards!.asBigInt();
     const rewardsAvailablePerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();
     const contractDuration = (await appClient.getGlobalState()).contractDuration!.asBigInt();
@@ -147,6 +147,29 @@ describe('CompXStaking ASA/Algo - with staking', () => {
       });
     }
   });
+
+  async function accrueAll() {
+    for (let i = 0; i < stakingAccounts.length; i++) {
+      const staker = stakingAccounts[i];
+      console.log('staker:', staker.addr)
+      await appClient.accrueRewards({ userAddress: staker.addr }, { sender: staker, sendParams: { fee: algokit.algos(0.1) } });
+      const userAccruedRewards = (await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt();
+      console.log('userAccruedRewards', userAccruedRewards);
+    }
+  }
+
+  async function getAllRewardRates(): Promise<bigint> {
+    let totalRewardRate = 0n;
+    for (let i = 0; i < stakingAccounts.length; i++) {
+      const staker = stakingAccounts[i];
+      console.log('staker:', staker.addr)
+      await appClient.getRewardRate({ userAddress: staker.addr }, { sender: staker, sendParams: { fee: algokit.algos(0.1) } });
+      const rewardRate = (await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt();
+      console.log('rewardRate', rewardRate);
+      totalRewardRate += rewardRate;
+    }
+    return totalRewardRate;
+  }
 
   test('stake', async () => {
     const { algorand } = fixture;
@@ -197,39 +220,95 @@ describe('CompXStaking ASA/Algo - with staking', () => {
   }
   test('accrue reward 1', async () => {
     await waitForDuration(5000);
-    for (let i = 0; i < stakingAccounts.length; i++) {
-      const staker = stakingAccounts[i];
-      console.log('staker:', staker.addr)
-      await appClient.accrueRewards({ userAddress: staker.addr }, { sender: staker, sendParams: { fee: algokit.algos(0.1) } });
-      const userAccruedRewards = (await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt();
-      console.log('userAccruedRewards', userAccruedRewards);
-    }
+    accrueAll();
     await waitForDuration(5000);
-    for (let i = 0; i < stakingAccounts.length; i++) {
-      const staker = stakingAccounts[i];
-      console.log('staker:', staker.addr)
-      await appClient.accrueRewards({ userAddress: staker.addr }, { sender: staker, sendParams: { fee: algokit.algos(0.1) } });
-      const userAccruedRewards = (await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt();
-      console.log('userAccruedRewards', userAccruedRewards);
-    }
+    accrueAll();
+  });
+
+
+  test('intermitant stakers', async () => {
+    const { algorand } = fixture;
+    const staker = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+    const { appAddress } = await appClient.appClient.getAppReference();
+
+    await appClient.optIn.optInToApplication({}, { sender: staker });
+    await algorand.send.assetTransfer({
+      assetId: stakedAssetId,
+      amount: 0n,
+      sender: staker.addr,
+      receiver: staker.addr,
+    });
+    await algorand.send.assetTransfer({
+      assetId: stakedAssetId,
+      amount: 50_000n,
+      sender: admin,
+      receiver: staker.addr,
+    });
+    const stakeTxn = await algorand.transactions.assetTransfer({
+      assetId: stakedAssetId,
+      amount: 50_000n,
+      sender: staker.addr,
+      receiver: appAddress,
+    });
+
+    stakingAccounts.push(staker);
+    expect(stakingAccounts.length).toBe(6);
+    await appClient.stake({ stakeTxn, lockPeriod: 86400n, quantity: 50_000n }, { sender: staker, sendParams: { fee: algokit.algos(0.2) } });
+    expect((await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt()).toBe(0n);
+    expect((await appClient.getLocalState(staker.addr)).staked!.asBigInt()).toBe(50_000n);
+    expect((await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt()).toBe(964n);
+    await waitForDuration(5000);
+    await accrueAll();
+    let totalRewardRate = await getAllRewardRates();
+    const totalRewardPerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();
+    expect(totalRewardRate).toBeLessThanOrEqual(totalRewardPerTick);
+    console.log('accrued rewards + 5000', (await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt());
+    await waitForDuration(6500);
+    await accrueAll();
+    expect(totalRewardRate).toBeLessThanOrEqual(totalRewardPerTick);
+    console.log('accrued rewards + 6500', (await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt());
+    await waitForDuration(1000);
   });
 
   test('unstake', async () => {
-    const {algorand} = fixture;
+    const { algorand } = fixture;
+    let totalPaidOut = 0n;
     for (let i = 0; i < stakingAccounts.length; i++) {
       const staker = stakingAccounts[i];
-      await appClient.unstake({}, { sender: staker, sendParams: { fee: algokit.algos(0.1) } });
+      const rewardBalancePrior = BigInt((await algorand.account.getInformation(staker.addr)).amount);
+      await appClient.unstake({}, { sender: staker, sendParams: { fee: algokit.algos(0.02) } });
       //get asset balances
       const stakedAssetBalance = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
       const rewardAssetBalance = BigInt((await algorand.account.getInformation(staker.addr)).amount);
       console.log('stakedAssetBalance', stakedAssetBalance);
       console.log('rewardAssetBalance', rewardAssetBalance);
+      totalPaidOut += (rewardAssetBalance - rewardBalancePrior);
     }
     const remainingRewards = (await appClient.getGlobalState()).remainingRewards!.asBigInt();
     const totalRewards = (await appClient.getGlobalState()).totalRewards!.asBigInt();
     console.log('remainingRewards', remainingRewards);
     console.log('totalRewards', totalRewards);
     console.log('rewards spent', totalRewards - remainingRewards);
+    console.log('totalPaidOut', totalPaidOut);
+  });
+
+  test('delete app - non-admin', async () => {
+    const { algorand } = fixture;
+    const staker = stakingAccounts[0];
+    await expect(
+      appClient.delete.deleteApplication(
+        {
+        },
+        {
+          sender: staker,
+          sendParams: { fee: algokit.algos(0.2) },
+        },
+      ),
+    ).rejects.toThrowError();
+  });
+
+  test('delete app', async () => {
+    await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });
   });
 
 });
