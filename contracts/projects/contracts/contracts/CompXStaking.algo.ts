@@ -245,9 +245,9 @@ export class CompXStaking extends Contract {
     this.staked(this.txn.sender).value = stakeTxn.assetAmount;
     this.stakeDuration(this.txn.sender).value = lockPeriod;
 
-    const normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION;
+    const normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
     const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);
-    this.totalStakingWeight.value += userStakingWeight;
+    this.totalStakingWeight.value += userStakingWeight
 
     // getUser Staking weight as a share of the total weight
     const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
@@ -278,7 +278,7 @@ export class CompXStaking extends Contract {
 
   getRewardRate(): void {
     this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
-    const normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION;
+    const normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
     const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);
     this.totalStakingWeight.value += userStakingWeight;
 
@@ -313,7 +313,7 @@ export class CompXStaking extends Contract {
     i_RewardsAvailablePerTick: uint64
   ): void {
 
-    const normalisedAmount = ((i_StakeAmount * i_StakeTokenPrice * PRECISION) / i_RewardTokenPrice) / PRECISION;
+    const normalisedAmount = (((i_StakeAmount / PRECISION) * i_StakeTokenPrice) / i_RewardTokenPrice);
     const userStakingWeight = (normalisedAmount * i_StakeDuration);
     i_TotalStakingWeight += userStakingWeight;
 
@@ -348,9 +348,9 @@ export class CompXStaking extends Contract {
     assert(this.stakeDuration(userAddress).value > 0, 'User has not staked assets');
     if (this.unlockTime(userAddress).value > globals.latestTimestamp) {
       this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
-      const normalisedAmount = ((this.staked(userAddress).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION;
+      const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
       const userStakingWeight = (normalisedAmount * this.stakeDuration(userAddress).value);
-      this.totalStakingWeight.value += userStakingWeight;
+      this.totalStakingWeight.value += userStakingWeight
 
       // getUser Staking weight as a share of the total weight
       const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
@@ -378,7 +378,7 @@ export class CompXStaking extends Contract {
     else if (this.lastUpdateTime(userAddress).value !== this.unlockTime(userAddress).value) {
 
       this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
-      const normalisedAmount = ((this.staked(userAddress).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION;
+      const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION;
       const userStakingWeight = (normalisedAmount * this.stakeDuration(userAddress).value);
       this.totalStakingWeight.value += userStakingWeight;
 
@@ -416,7 +416,7 @@ export class CompXStaking extends Contract {
 
     if (this.unlockTime(this.txn.sender).value > globals.latestTimestamp) {
       this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
-      const normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION;
+      const normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
       const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);
       this.totalStakingWeight.value += userStakingWeight;
 
@@ -446,7 +446,7 @@ export class CompXStaking extends Contract {
     else if (this.lastUpdateTime(this.txn.sender).value !== this.unlockTime(this.txn.sender).value) {
 
       this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
-      const normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION;
+      const normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
       const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);
       this.totalStakingWeight.value += userStakingWeight;
 

@@ -13,7 +13,7 @@ let appClient: CompXStakingClient;
 let admin: string;
 let stakedAssetId: bigint;
 let rewardAssetId: bigint;
-
+const PRECISION = 10000n;
 let stakingAccount: TransactionSignerAccount;
 
 
@@ -138,7 +138,7 @@ describe('CompXStaking ASA/Algo - single staker', () => {
         });
         await algorand.send.assetTransfer({
             assetId: stakedAssetId,
-            amount: 1000n,
+            amount: 50_000_000_000n,
             sender: admin,
             receiver: stakingAccount.addr,
         });
@@ -165,7 +165,8 @@ describe('CompXStaking ASA/Algo - single staker', () => {
 
     test('stake', async () => {
         const { algorand } = fixture;
-        const stakingAmount = 1000n;
+        const stakingAmount = 50_000_000_000n;
+        const lockPeriod = 2588000n;
         const staker = stakingAccount;
 
         const stakedAssetBalanceBefore = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
@@ -178,7 +179,7 @@ describe('CompXStaking ASA/Algo - single staker', () => {
             sender: staker.addr,
             receiver: appAddress,
         });
-        await appClient.stake({ lockPeriod: 2588000n, quantity: stakingAmount, stakeTxn }, { sender: staker, sendParams: { fee: algokit.algos(0.2) } });
+        await appClient.stake({ lockPeriod: lockPeriod, quantity: stakingAmount, stakeTxn }, { sender: staker, sendParams: { fee: algokit.algos(0.2) } });
 
         const stakedAssetBalanceAfter = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
         const rewardAssetBalanceAfter = BigInt((await algorand.account.getInformation(staker.addr)).amount);
@@ -192,8 +193,8 @@ describe('CompXStaking ASA/Algo - single staker', () => {
         const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
         const stakeTokenPrice = 1000000n;
         const rewardTokenPrice = 150000n;
-        const normalisedAmount = ((stakingAmount * stakeTokenPrice * 10_000n) / rewardTokenPrice) / 10_000n;
-        const userStakingWeight = (normalisedAmount * 2588000n);
+        const normalisedAmount = (((stakingAmount * stakeTokenPrice / PRECISION) * 10_000n) / rewardTokenPrice) / 10_000n;
+        const userStakingWeight = (normalisedAmount * lockPeriod);
         expect(totalStakingWeight).toBe(userStakingWeight);
 
         await appClient.getRewardRate({}, { sender: staker, sendParams: { fee: algokit.algos(0.1) } });

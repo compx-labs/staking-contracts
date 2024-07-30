@@ -1261,19 +1261,17 @@ stake:
 	app_local_put
 
 	// contracts/CompXStaking.algo.ts:248
-	// normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION
+	// normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value)
 	txn Sender
 	byte 0x7374616b6564 // "staked"
 	app_local_get
+	int 10000
+	/
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
 	*
-	int 10000
-	*
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	app_global_get
-	/
-	int 10000
 	/
 	frame_bury 1 // normalisedAmount: uint64
 
@@ -1475,19 +1473,17 @@ getRewardRate:
 	app_global_put
 
 	// contracts/CompXStaking.algo.ts:281
-	// normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION
+	// normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value)
 	txn Sender
 	byte 0x7374616b6564 // "staked"
 	app_local_get
+	int 10000
+	/
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
 	*
-	int 10000
-	*
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	app_global_get
-	/
-	int 10000
 	/
 	frame_bury 0 // normalisedAmount: uint64
 
@@ -1659,15 +1655,13 @@ getRewardRate_Dev:
 	dupn 10
 
 	// contracts/CompXStaking.algo.ts:316
-	// normalisedAmount = ((i_StakeAmount * i_StakeTokenPrice * PRECISION) / i_RewardTokenPrice) / PRECISION
+	// normalisedAmount = (((i_StakeAmount / PRECISION) * i_StakeTokenPrice) / i_RewardTokenPrice)
 	frame_dig -5 // i_StakeAmount: uint64
+	int 10000
+	/
 	frame_dig -2 // i_StakeTokenPrice: uint64
 	*
-	int 10000
-	*
 	frame_dig -3 // i_RewardTokenPrice: uint64
-	/
-	int 10000
 	/
 	frame_bury 0 // normalisedAmount: uint64
 
@@ -1872,19 +1866,17 @@ accrueRewards:
 	app_global_put
 
 	// contracts/CompXStaking.algo.ts:351
-	// normalisedAmount = ((this.staked(userAddress).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION
+	// normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value)
 	frame_dig -1 // userAddress: Address
 	byte 0x7374616b6564 // "staked"
 	app_local_get
+	int 10000
+	/
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
 	*
-	int 10000
-	*
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	app_global_get
-	/
-	int 10000
 	/
 	frame_bury 0 // normalisedAmount: uint64
 
@@ -2064,10 +2056,12 @@ accrueRewards:
 	app_global_put
 
 	// contracts/CompXStaking.algo.ts:381
-	// normalisedAmount = ((this.staked(userAddress).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION
+	// normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION
 	frame_dig -1 // userAddress: Address
 	byte 0x7374616b6564 // "staked"
 	app_local_get
+	int 10000
+	/
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
 	*
@@ -2330,19 +2324,17 @@ unstake:
 	app_global_put
 
 	// contracts/CompXStaking.algo.ts:419
-	// normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION
+	// normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value)
 	txn Sender
 	byte 0x7374616b6564 // "staked"
 	app_local_get
+	int 10000
+	/
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
 	*
-	int 10000
-	*
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	app_global_get
-	/
-	int 10000
 	/
 	frame_bury 0 // normalisedAmount: uint64
 
@@ -2522,19 +2514,17 @@ unstake:
 	app_global_put
 
 	// contracts/CompXStaking.algo.ts:449
-	// normalisedAmount = ((this.staked(this.txn.sender).value * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION
+	// normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value)
 	txn Sender
 	byte 0x7374616b6564 // "staked"
 	app_local_get
+	int 10000
+	/
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
 	*
-	int 10000
-	*
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	app_global_get
-	/
-	int 10000
 	/
 	frame_bury 10 // normalisedAmount: uint64
 

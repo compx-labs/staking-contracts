@@ -13,7 +13,7 @@ let appClient: CompXStakingClient;
 let admin: string;
 let stakedAssetId: bigint;
 let rewardAssetId: bigint;
-
+const PRECISION = 10_000n;
 let stakingAccount: TransactionSignerAccount;
 
 
@@ -138,7 +138,7 @@ describe('CompXStaking ASA/Algo - single staker', () => {
         });
         await algorand.send.assetTransfer({
             assetId: stakedAssetId,
-            amount: 1000n,
+            amount: 1000000000n,
             sender: admin,
             receiver: stakingAccount.addr,
         });
@@ -165,7 +165,7 @@ describe('CompXStaking ASA/Algo - single staker', () => {
 
     test('stake', async () => {
         const { algorand } = fixture;
-        const stakingAmount = 1000n;
+        const stakingAmount = 1000000000n;
         const staker = stakingAccount;
 
         const stakedAssetBalanceBefore = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
@@ -192,7 +192,7 @@ describe('CompXStaking ASA/Algo - single staker', () => {
         const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
         const stakeTokenPrice = 1000000n;
         const rewardTokenPrice = 150000n;
-        const normalisedAmount = ((stakingAmount * stakeTokenPrice * 10_000n) / rewardTokenPrice) / 10_000n;
+        const normalisedAmount = (((stakingAmount / PRECISION) * stakeTokenPrice) / rewardTokenPrice);
         const userStakingWeight = (normalisedAmount * 10n);
         expect(totalStakingWeight).toBe(userStakingWeight);
 
