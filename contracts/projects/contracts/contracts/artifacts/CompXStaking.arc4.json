@@ -217,6 +217,18 @@
       "returns": {
         "type": "void"
       }
+    },
+    {
+      "name": "adminUnstake",
+      "args": [
+        {
+          "name": "userAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
     }
   ]
 }

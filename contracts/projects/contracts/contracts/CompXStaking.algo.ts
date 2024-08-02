@@ -520,6 +520,119 @@ export class CompXStaking extends Contract {
     this.stakeStartTime(this.txn.sender).value = 0;
   }
 
+  adminUnstake(userAddress: Address): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can unstake via this method');
+    assert(this.staked(userAddress).value > 0, 'No staked assets');
+    assert(this.stakeStartTime(userAddress).value > 0, 'User has not staked assets');
+    assert(this.stakeDuration(userAddress).value > 0, 'User has not staked assets');
+    assert(this.accruedRewards(userAddress).value > 0, 'User has no accrued rewards');
+
+    if (this.unlockTime(userAddress).value > globals.latestTimestamp) {
+      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+      const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
+      const userStakingWeight = (normalisedAmount * this.stakeDuration(userAddress).value);
+      this.totalStakingWeight.value += userStakingWeight;
+
+      // getUser Staking weight as a share of the total weight
+      const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
+      const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
+      let numerator = (userSharePercentage * PRECISION);
+      let denominator = PRECISION;
+
+      var a = numerator;
+      var b = denominator;
+      while (b !== 0) {
+        let temp = b;
+        b = a % b;
+        a = temp;
+      }
+      const gcdValue = a;
+
+      numerator = numerator / gcdValue;
+      denominator = denominator / gcdValue;
+      this.rewardRate(userAddress).value = ((this.rewardsAvailablePerTick.value * numerator) / denominator) / 100;
+
+      this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * ((globals.latestTimestamp) - this.lastUpdateTime(userAddress).value));
+      this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
+
+    }
+    else if (this.lastUpdateTime(this.txn.sender).value !== this.unlockTime(this.txn.sender).value) {
+
+      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+      const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
+      const userStakingWeight = (normalisedAmount * this.stakeDuration(userAddress).value);
+      this.totalStakingWeight.value += userStakingWeight;
+
+      // getUser Staking weight as a share of the total weight
+      const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
+      const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
+      let numerator = (userSharePercentage * PRECISION);
+      let denominator = PRECISION;
+
+      var a = numerator;
+      var b = denominator;
+      while (b !== 0) {
+        let temp = b;
+        b = a % b;
+        a = temp;
+      }
+      const gcdValue = a;
+
+      numerator = numerator / gcdValue;
+      denominator = denominator / gcdValue;
+      this.rewardRate(userAddress).value = ((this.rewardsAvailablePerTick.value * numerator) / denominator) / 100;
+
+      this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * (this.unlockTime(userAddress).value - this.lastUpdateTime(userAddress).value));
+      this.lastUpdateTime(userAddress).value = this.unlockTime(userAddress).value;
+    }
+
+    if (this.stakedAssetId.value === 0) {
+      sendPayment({
+        amount: this.staked(this.txn.sender).value,
+        receiver: userAddress,
+        sender: this.app.address,
+        fee: 1_000,
+      });
+    } else {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
+        assetReceiver: userAddress,
+        sender: this.app.address,
+        assetAmount: this.staked(userAddress).value,
+        fee: 1_000,
+      });
+    }
+    if (this.rewardAssetId.value === 0) {
+      sendPayment({
+        amount: this.accruedRewards(userAddress).value,
+        receiver: userAddress,
+        sender: this.app.address,
+        fee: 1_000,
+      });
+    } else {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+        assetReceiver: userAddress,
+        assetAmount: this.accruedRewards(userAddress).value,
+        sender: this.app.address,
+        fee: 1_000,
+      });
+    }
+
+    // Update the total staking weight
+    this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+    this.remainingRewards.value -= this.accruedRewards(userAddress).value;
+    this.totalStaked.value -= this.staked(userAddress).value;
+
+    this.staked(userAddress).value = 0;
+    this.accruedRewards(userAddress).value = 0;
+    this.rewardRate(userAddress).value = 0;
+    this.unlockTime(userAddress).value = 0;
+    this.userStakingWeight(userAddress).value = 0;
+    this.stakeDuration(userAddress).value = 0;
+    this.stakeStartTime(userAddress).value = 0;
+  }
+
 
 }
 
