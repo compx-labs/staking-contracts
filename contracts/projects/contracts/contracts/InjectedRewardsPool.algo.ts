@@ -28,7 +28,6 @@ export class InjectedRewardsPool extends Contract {
 
   adminAddress = GlobalStateKey<Address>();
 
-
   //Local State
   staked = LocalStateKey<uint64>();
 
@@ -94,7 +93,7 @@ export class InjectedRewardsPool extends Contract {
 
 
   injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can add rewards');
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
     assert(this.minStakePeriodForRewards.value !== 0, 'Minimum stake period not set');
 
     verifyAssetTransferTxn(rewardTxn, {
@@ -147,33 +146,12 @@ export class InjectedRewardsPool extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
     assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
-    if (this.rewardAssetId.value !== 0) {
-      sendAssetTransfer({
-        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-        assetReceiver: this.app.creator,
-        assetAmount: 0,
-        sender: this.app.address,
-        assetCloseTo: this.app.creator,
-        fee: 1_000,
-      });
-    }
-    if (this.stakedAssetId.value !== 0) {
-      sendAssetTransfer({
-        xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
-        assetReceiver: this.app.creator,
-        assetAmount: 0,
-        sender: this.app.address,
-        assetCloseTo: this.app.creator,
-
-      });
-    }
-
-    sendPayment({
+    /* sendPayment({
       amount: (this.adminAddress.value.balance - this.adminAddress.value.minBalance),
       receiver: this.adminAddress.value,
       sender: this.app.address,
       fee: 1_000,
-    });
+    }); */
   }
 
   setPrices(stakeTokenPrice: uint64, rewardTokenPrice: uint64): void {
@@ -219,42 +197,38 @@ export class InjectedRewardsPool extends Contract {
     assert(this.staked(userAddress).value > 0, 'User has no staked assets');
     assert(this.stakeStartTime(userAddress).value > 0, 'User has not staked assets');
     this.stakeDuration(userAddress).value = globals.latestTimestamp - this.stakeStartTime(userAddress).value;
+    assert(this.stakeDuration(userAddress).value >= this.minStakePeriodForRewards.value, 'User has not staked for minimum period');
 
-    if (this.stakeDuration(userAddress).value >= 86400) {
+    this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+    const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
+    const userStakingWeight = normalisedAmount;
+    this.totalStakingWeight.value += userStakingWeight
 
-      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
-      const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
-      const userStakingWeight = normalisedAmount;
-      this.totalStakingWeight.value += userStakingWeight
+    // getUser Staking weight as a share of the total weight
+    const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
+    const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
+    let numerator = (userSharePercentage * PRECISION);
+    let denominator = PRECISION;
 
-      // getUser Staking weight as a share of the total weight
-      const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
-      const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-      let numerator = (userSharePercentage * PRECISION);
-      let denominator = PRECISION;
+    var a = numerator;
+    var b = denominator;
+    while (b !== 0) {
+      let temp = b;
+      b = a % b;
+      a = temp;
+    }
+    const gcdValue = a;
 
-      var a = numerator;
-      var b = denominator;
-      while (b !== 0) {
-        let temp = b;
-        b = a % b;
-        a = temp;
-      }
-      const gcdValue = a;
+    numerator = numerator / gcdValue;
+    denominator = denominator / gcdValue;
+    const rewardsToAddThisInjection = (numerator / denominator) / 100;
 
-      numerator = numerator / gcdValue;
-      denominator = denominator / gcdValue;
-      const rewardsToAddThisInjection = (numerator / denominator) / 100;
+    this.accruedRewards(userAddress).value += rewardsToAddThisInjection;
+    this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
 
-      this.accruedRewards(userAddress).value += rewardsToAddThisInjection;
-      this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
-
-      if (this.rewardAssetId.value === this.stakedAssetId.value) {
-        //Compound rewards
-        this.staked(userAddress).value += rewardsToAddThisInjection;
-      }
-    } else {
-      this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
+    if (this.rewardAssetId.value === this.stakedAssetId.value) {
+      //Compound rewards
+      this.staked(userAddress).value += rewardsToAddThisInjection;
     }
   }
 
