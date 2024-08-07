@@ -2,7 +2,7 @@ import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
 import * as algokit from '@algorandfoundation/algokit-utils';
 
-import { CompXStakingClient } from '../contracts/clients/CompXStakingClient';
+import { CompXStakingClient } from '../../contracts/clients/CompXStakingClient';
 import algosdk, { TransactionSigner } from 'algosdk';
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
 

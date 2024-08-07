@@ -2,7 +2,7 @@ import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
 import * as algokit from '@algorandfoundation/algokit-utils';
 
-import { CompXStakingClient } from '../contracts/clients/CompXStakingClient';
+import { CompXStakingClient } from '../../contracts/clients/CompXStakingClient';
 import algosdk, { TransactionSigner } from 'algosdk';
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
 
@@ -13,11 +13,11 @@ let appClient: CompXStakingClient;
 let admin: string;
 let stakedAssetId: bigint;
 let rewardAssetId: bigint;
-const PRECISION = 10000n;
+const PRECISION = 10_000n;
 let stakingAccount: TransactionSignerAccount;
 
 
-describe('CompXStaking ASA/Algo - adminUnstake', () => {
+describe('CompXStaking ASA/Algo - single staker', () => {
     beforeEach(fixture.beforeEach);
 
     beforeAll(async () => {
@@ -56,7 +56,7 @@ describe('CompXStaking ASA/Algo - adminUnstake', () => {
             stakedAsset: stakedAssetId,
             rewardAsset: rewardAssetId,
             minLockUp: 10n,
-            contractDuration: 2592000n, // 30 Days
+            contractDuration: 86400n, //1 day
             startTimestamp: BigInt(Math.floor(Date.now() / 1000)),
             oracleAdmin: admin,
             adminAddress: admin,
@@ -70,7 +70,7 @@ describe('CompXStaking ASA/Algo - adminUnstake', () => {
         expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
         expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetId);
         expect(globalState.minLockUp!.asBigInt()).toBe(10n);
-        expect(globalState.contractDuration!.asBigInt()).toBe(2592000n);
+        expect(globalState.contractDuration!.asBigInt()).toBe(86400n);
         expect(globalState.rewardsAvailablePerTick!.asBigInt()).toBe(0n);
         expect(globalState.totalStakingWeight!.asBigInt()).toBe(0n);
         expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin);
@@ -138,7 +138,7 @@ describe('CompXStaking ASA/Algo - adminUnstake', () => {
         });
         await algorand.send.assetTransfer({
             assetId: stakedAssetId,
-            amount: 50_000_000_000n,
+            amount: 1000000000n,
             sender: admin,
             receiver: stakingAccount.addr,
         });
@@ -165,8 +165,7 @@ describe('CompXStaking ASA/Algo - adminUnstake', () => {
 
     test('stake', async () => {
         const { algorand } = fixture;
-        const stakingAmount = 50_000_000_000n;
-        const lockPeriod = 2588000n;
+        const stakingAmount = 1000000000n;
         const staker = stakingAccount;
 
         const stakedAssetBalanceBefore = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
@@ -179,7 +178,7 @@ describe('CompXStaking ASA/Algo - adminUnstake', () => {
             sender: staker.addr,
             receiver: appAddress,
         });
-        await appClient.stake({ lockPeriod: lockPeriod, quantity: stakingAmount, stakeTxn }, { sender: staker, sendParams: { fee: algokit.algos(0.2) } });
+        await appClient.stake({ lockPeriod: 10n, quantity: stakingAmount, stakeTxn }, { sender: staker, sendParams: { fee: algokit.algos(0.2) } });
 
         const stakedAssetBalanceAfter = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
         const rewardAssetBalanceAfter = BigInt((await algorand.account.getInformation(staker.addr)).amount);
@@ -193,8 +192,8 @@ describe('CompXStaking ASA/Algo - adminUnstake', () => {
         const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
         const stakeTokenPrice = 1000000n;
         const rewardTokenPrice = 150000n;
-        const normalisedAmount = (((stakingAmount * stakeTokenPrice / PRECISION) * 10_000n) / rewardTokenPrice) / 10_000n;
-        const userStakingWeight = (normalisedAmount * lockPeriod);
+        const normalisedAmount = (((stakingAmount / PRECISION) * stakeTokenPrice) / rewardTokenPrice);
+        const userStakingWeight = (normalisedAmount * 10n);
         expect(totalStakingWeight).toBe(userStakingWeight);
 
         await appClient.getRewardRate({}, { sender: staker, sendParams: { fee: algokit.algos(0.1) } });
@@ -216,12 +215,22 @@ describe('CompXStaking ASA/Algo - adminUnstake', () => {
     });
 
 
-    test('admin Unstake', async () => {
+    test('unstake', async () => {
         const { algorand } = fixture;
         let totalPaidOut = 0n;
         const staker = stakingAccount;
         const rewardBalancePrior = BigInt((await algorand.account.getInformation(staker.addr)).amount);
-        await appClient.adminUnstake({ userAddress: staker.addr }, { sendParams: { fee: algokit.algos(0.02) } });
+        const unlockTime = (await appClient.getLocalState(staker.addr)).unlockTime!.asBigInt();
+        const currentTime = BigInt(Math.floor(Date.now() / 1000));
+        const stakeDuration = (await appClient.getLocalState(staker.addr)).stakeDuration!.asBigInt();
+        const stakeStart = (await appClient.getLocalState(staker.addr)).stakeStartTime!.asBigInt();
+
+        console.log('unlockTime', unlockTime);
+        console.log('currentTime', currentTime);
+        console.log('stakeDuration', stakeDuration);
+        console.log('stakeStart', stakeStart);
+
+        await appClient.unstake({}, { sender: staker, sendParams: { fee: algokit.algos(0.02) } });
         //get asset balances
         const stakedAssetBalance = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
         const rewardAssetBalance = BigInt((await algorand.account.getInformation(staker.addr)).amount);
