@@ -2,7 +2,7 @@ import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
 import * as algokit from '@algorandfoundation/algokit-utils';
 
-import { CompXStakingClient } from '../contracts/clients/CompXStakingClient';
+import { CompXStakingClient } from '../../contracts/clients/CompXStakingClient';
 import algosdk, { TransactionSigner } from 'algosdk';
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
 
@@ -37,7 +37,7 @@ describe('CompXStaking ASA/Algo setup/admin functions - no staking', () => {
       {
         accountToFund: admin,
         fundingSource: await algokit.getDispenserAccount(algorand.client.algod, algorand.client.kmd!),
-        minSpendingBalance: algokit.algos(14000),
+        minSpendingBalance: algokit.algos(20),
       },
       algorand.client.algod,
     )
@@ -46,9 +46,16 @@ describe('CompXStaking ASA/Algo setup/admin functions - no staking', () => {
       sender: admin,
       total: 999_999_999_000n,
       decimals: 6,
+      assetName: 'StakeToken',
+    });
+    const rewardAssetCreate = algorand.send.assetCreate({
+      sender: admin,
+      total: 999_999_999_000n,
+      decimals: 6,
+      assetName: 'RewardToken',
     });
     stakedAssetId = BigInt((await stakeAssetCreate).confirmation.assetIndex!);
-    rewardAssetId = 0n;
+    rewardAssetId = BigInt((await rewardAssetCreate).confirmation.assetIndex!);
 
     await appClient.create.createApplication({
       stakedAsset: stakedAssetId,
@@ -99,15 +106,17 @@ describe('CompXStaking ASA/Algo setup/admin functions - no staking', () => {
     await algorand.send.payment({
       sender: admin,
       receiver: appAddress,
-      amount: algokit.algos(0.3),
+      amount: algokit.algos(10),
     });
 
     await appClient.optInToAsset({ asset: stakedAssetId }, { sendParams: { fee: algokit.algos(0.1) } });
+    await appClient.optInToAsset({ asset: rewardAssetId }, { sendParams: { fee: algokit.algos(0.1) } });
+
 
     const { balance: stakedAssetBalance } = await algorand.account.getAssetInformation(appAddress, stakedAssetId);
-    const rewardAssetBalance = (await algorand.account.getInformation(appAddress)).amount;
+    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
     expect(stakedAssetBalance).toBe(0n);
-    expect(rewardAssetBalance).toBe(algokit.algos(0.3).microAlgos);
+    expect(rewardAssetBalance).toBe(0n);
   });
 
   test('add rewards non admin', async () => {
@@ -115,37 +124,47 @@ describe('CompXStaking ASA/Algo setup/admin functions - no staking', () => {
     const { appAddress } = await appClient.appClient.getAppReference();
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
 
-    const payTxn = await fixture.algorand.transactions.payment({
-      sender: nonAdminAccount.addr,
-      receiver: appAddress,
-      amount: algokit.algos(1),
+    const rewardsInUnits = 100_000n * 10n**6n;
+    const axferTxn = await fixture.algorand.transactions.assetTransfer({
+        sender: admin,
+        receiver: appAddress,
+        assetId: rewardAssetId,
+        amount: rewardsInUnits,
     });
 
     await expect(
-      appClient.addRewardsAlgo(
-        { payTxn, quantity: algokit.algos(1).microAlgos },
+      appClient.addRewards(
+        { rewardTxn: axferTxn, quantity: rewardsInUnits },
         { sender: nonAdminAccount },
       ),
     ).rejects.toThrowError()
 
-    const rewardAssetBalance = (await algorand.account.getInformation(appAddress)).amount;
-    expect(rewardAssetBalance).toBe(algokit.algos(0.3).microAlgos);
+    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
+    expect(rewardAssetBalance).toBe(0n);
     expect((await appClient.getGlobalState()).totalRewards?.asBigInt()).toBe(0n);
   });
 
   test('add rewards', async () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
-    const payTxn = await fixture.algorand.transactions.payment({
-      sender: admin,
-      receiver: appAddress,
-      amount: algokit.algos(13171),
+    const rewardsInUnits = 100_000n * 10n**6n;
+    const axferTxn = await fixture.algorand.transactions.assetTransfer({
+        sender: admin,
+        receiver: appAddress,
+        assetId: rewardAssetId,
+        amount: rewardsInUnits,
     });
 
-    await appClient.addRewardsAlgo({ payTxn, quantity: algokit.algos(13171).microAlgos });
-    const rewardAssetBalance = (await algorand.account.getInformation(appAddress)).amount;
-    expect(rewardAssetBalance).toBe(algokit.algos(13171.3).microAlgos);
-  });
+    await appClient.addRewards({ rewardTxn: axferTxn, quantity: rewardsInUnits }, { sendParams: { fee: algokit.algos(0.1) } });
+    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
+    expect(rewardAssetBalance).toBe(rewardsInUnits);
+    const totalRewards = (await appClient.getGlobalState()).totalRewards!.asBigInt();
+    const rewardsAvailablePerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();
+    const contractDuration = (await appClient.getGlobalState()).contractDuration!.asBigInt();
+    expect(totalRewards).toBe(BigInt(rewardsInUnits));
+    expect(rewardsAvailablePerTick).toBe(BigInt(totalRewards / contractDuration));
+    console.log('rewardsAvailablePerTick', rewardsAvailablePerTick); //
+});
 
   test('remove rewards non admin', async () => {
     const { algorand } = fixture;
@@ -155,33 +174,38 @@ describe('CompXStaking ASA/Algo setup/admin functions - no staking', () => {
       appClient.removeRewards({ quantity: 0n }, { sender: nonAdminAccount }),
     ).rejects.toThrowError();
 
-    const rewardAssetBalance = (await algorand.account.getInformation(appAddress)).amount;
-    expect(rewardAssetBalance).toBe(algokit.algos(13171.3).microAlgos);
+    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
+    expect(rewardAssetBalance).toBe(100_000n * 10n**6n);
   });
   test('remove rewards', async () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
-    await appClient.removeRewards({ quantity: 0n }, { sendParams: { fee: algokit.algos(0.3) } });
-    const rewardAssetBalance = (await algorand.account.getInformation(appAddress)).amount;
-    expect(rewardAssetBalance).toBe(algokit.algos(0.299).microAlgos);
+    await appClient.removeRewards({ quantity: 0n }, { sendParams: { fee: algokit.algos(0.02) } });
+    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
+    expect(rewardAssetBalance).toBe(0n);
   });
 
   test('add rewards', async () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
-    let rewardAssetBalance = (await algorand.account.getInformation(appAddress)).amount;
-    expect(rewardAssetBalance).toBe(algokit.algos(0.299).microAlgos);
-
-    const payTxn = await fixture.algorand.transactions.payment({
-      sender: admin,
-      receiver: appAddress,
-      amount: algokit.algos(13171),
+    const rewardsInUnits = 100_000n * 10n**6n;
+    const axferTxn = await fixture.algorand.transactions.assetTransfer({
+        sender: admin,
+        receiver: appAddress,
+        assetId: rewardAssetId,
+        amount: rewardsInUnits,
     });
 
-    await appClient.addRewardsAlgo({ payTxn, quantity: algokit.algos(13171).microAlgos });
-    rewardAssetBalance = (await algorand.account.getInformation(appAddress)).amount;
-    expect(rewardAssetBalance).toBe(algokit.algos(13171.299).microAlgos);
-  });
+    await appClient.addRewards({ rewardTxn: axferTxn, quantity: rewardsInUnits }, { sendParams: { fee: algokit.algos(0.1) } });
+    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
+    expect(rewardAssetBalance).toBe(rewardsInUnits);
+    const totalRewards = (await appClient.getGlobalState()).totalRewards!.asBigInt();
+    const rewardsAvailablePerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();
+    const contractDuration = (await appClient.getGlobalState()).contractDuration!.asBigInt();
+    expect(totalRewards).toBe(BigInt(rewardsInUnits));
+    expect(rewardsAvailablePerTick).toBe(BigInt(totalRewards / contractDuration));
+    console.log('rewardsAvailablePerTick', rewardsAvailablePerTick); //
+});
 
   test('set Prices', async () => {
 
@@ -207,76 +231,6 @@ describe('CompXStaking ASA/Algo setup/admin functions - no staking', () => {
       ),
     ).rejects.toThrowError();
   });
-
-  /*   test.skip('opt in to application ', async () => {
-      await appClient.optIn.optInToApplication({});
-      const localState = await appClient.getLocalState(admin);
-      expect(localState.staked!.asBigInt()).toBe(0n);
-      expect(localState.unlockTime!.asBigInt()).toBe(0n);
-      expect(localState.stakeStartTime!.asBigInt()).toBe(0n);
-    });
-  
-    test.skip('reward-rate-dev, 3 stakers, full rate', async () => {
-      //Setup
-      const PRECISION: uint64 = 10_000;
-      const contractDuration: uint64 = 6134400;
-      const i_StakeTokenPrice: uint64 = 1000000;
-      const i_RewardTokenPrice: uint64 = 150000;
-      const i_StakeDuration: uint64 = 6034400;
-      const i_StakeAmount: uint64 = 1000000;
-      const i_TotalRewards: uint64 = 13171000000;
-      //set up total staking weight as 3 current stakers for full period
-      const numStakers: uint64 = 3;
-      const normalisedAmount: uint64 = Math.floor(((i_StakeAmount * i_StakeTokenPrice * PRECISION) / i_RewardTokenPrice) / PRECISION);
-      console.log('normalisedAmount', normalisedAmount);
-      //normalisedAmount = 1000000 * 1000000 * 1000000 / 150000 = 6666666
-      const userStakingWeight: uint64 = Math.floor((normalisedAmount * i_StakeDuration));
-      console.log('userStakingWeight', userStakingWeight);
-      //userStakingWeight = 6666666 * 6034400 / 1000000 = 40200000
-      const i_TotalStakingWeight: uint64 = Math.floor(userStakingWeight * numStakers);
-      const i_TotalStakingWait_Jest = i_TotalStakingWeight + userStakingWeight;
-  
-      console.log('i_TotalStakingWeight', i_TotalStakingWeight);
-      console.log('i_TotalStakingWait_Jest', i_TotalStakingWait_Jest);
-      //i_TotalStakingWeight = 40200000 * 3 = 120600000
-      const i_RewardsAvailablePerTick: uint64 = Math.floor(i_TotalRewards / contractDuration);
-      console.log('i_RewardsAvailablePerTick', i_RewardsAvailablePerTick);
-      const userShare: uint64 = Math.floor((userStakingWeight * PRECISION) / i_TotalStakingWait_Jest); // scale numerator
-      console.log('userShare', userShare);
-      const userSharePercentage: uint64 = Math.floor((userShare * 100) / PRECISION); // convert to percentage
-      console.log('userSharePercentage', userSharePercentage);
-      function gcd(a: uint64, b: uint64) {
-        while (b !== 0) {
-          let temp = b;
-          b = a % b;
-          a = temp;
-        }
-        return a;
-      }
-  
-      //Convert decimal to fraction
-      let numerator = (userSharePercentage * PRECISION);
-      let denominator = PRECISION;
-      const gcdValue = gcd(numerator, denominator);
-      numerator = numerator / gcdValue;
-      denominator = denominator / gcdValue;
-      const expectedRewardRate: uint64 = (i_RewardsAvailablePerTick * numerator) / denominator;
-  
-      //const expectedRewardRate:uint64 = Math.floor((i_RewardsAvailablePerTick * PRECISION) / userSharePercentage); // needs better maths
-      console.log('expectedRewardRate', expectedRewardRate);
-  
-      await appClient.getRewardRateDev({
-        i_TotalStakingWeight,
-        i_StakeTokenPrice,
-        i_RewardTokenPrice,
-        i_StakeDuration,
-        i_StakeAmount,
-        i_RewardsAvailablePerTick,
-      });
-      const localState = await appClient.getLocalState(admin);
-      expect(localState.rewardRate!.asBigInt()).toBe(BigInt(Math.floor(expectedRewardRate)));
-  
-    }); */
 
   test('deleteApplication', async () => {
     await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });
