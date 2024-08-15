@@ -244,6 +244,14 @@ export class CompXStaking extends Contract {
     });
     this.staked(this.txn.sender).value = stakeTxn.assetAmount;
     this.stakeDuration(this.txn.sender).value = lockPeriod;
+    //56342762073834
+    //57000000000000
+    //570000000000
+    //5700000000000
+    // 100000 / 10000 
+    //stake token price = 10000_000000
+    // 10 * 10000 / 1 = 100000
+    
 
     const normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
     const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);

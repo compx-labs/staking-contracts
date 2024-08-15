@@ -43,6 +43,8 @@ export class InjectedRewardsPool extends Contract {
 
   lastUpdateTime = LocalStateKey<uint64>();
 
+  dev_userShare = LocalStateKey<uint64>();
+
   createApplication(
     stakedAsset: uint64,
     rewardAsset: uint64,
@@ -199,36 +201,48 @@ export class InjectedRewardsPool extends Contract {
     this.stakeDuration(userAddress).value = globals.latestTimestamp - this.stakeStartTime(userAddress).value;
     assert(this.stakeDuration(userAddress).value >= this.minStakePeriodForRewards.value, 'User has not staked for minimum period');
 
-    this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
-    const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
-    const userStakingWeight = normalisedAmount;
-    this.totalStakingWeight.value += userStakingWeight
+    if (this.userStakingWeight(userAddress).value === this.totalStakingWeight.value) {
+      this.accruedRewards(userAddress).value = this.lastRewardInjectionAmount.value;
+      this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
+      if (this.stakedAssetId.value === this.rewardAssetId.value) {
+        //compound rewards
+        this.staked(userAddress).value += this.lastRewardInjectionAmount.value;
+      }
+      this.dev_userShare(userAddress).value = 100;
 
-    // getUser Staking weight as a share of the total weight
-    const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
-    const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-    let numerator = (userSharePercentage * PRECISION);
-    let denominator = PRECISION;
+    } else {
+      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+      const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
+      const userStakingWeight = normalisedAmount;
+      this.totalStakingWeight.value += userStakingWeight
 
-    var a = numerator;
-    var b = denominator;
-    while (b !== 0) {
-      let temp = b;
-      b = a % b;
-      a = temp;
-    }
-    const gcdValue = a;
+      // getUser Staking weight as a share of the total weight
+      const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
+      this.dev_userShare(userAddress).value = userShare;
+      const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
+      let numerator = (userSharePercentage * PRECISION);
+      let denominator = PRECISION;
 
-    numerator = numerator / gcdValue;
-    denominator = denominator / gcdValue;
-    const rewardsToAddThisInjection = (numerator / denominator) / 100;
+      var a = numerator;
+      var b = denominator;
+      while (b !== 0) {
+        let temp = b;
+        b = a % b;
+        a = temp;
+      }
+      const gcdValue = a;
 
-    this.accruedRewards(userAddress).value += rewardsToAddThisInjection;
-    this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
+      numerator = numerator / gcdValue;
+      denominator = denominator / gcdValue;
+      const rewardsToAddThisInjection = (numerator / denominator) / 100;
 
-    if (this.rewardAssetId.value === this.stakedAssetId.value) {
-      //Compound rewards
-      this.staked(userAddress).value += rewardsToAddThisInjection;
+      this.accruedRewards(userAddress).value += rewardsToAddThisInjection;
+      this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
+
+      if (this.rewardAssetId.value === this.stakedAssetId.value) {
+        //Compound rewards
+        this.staked(userAddress).value += rewardsToAddThisInjection;
+      }
     }
   }
 
@@ -238,15 +252,6 @@ export class InjectedRewardsPool extends Contract {
     assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets');
     assert(this.accruedRewards(this.txn.sender).value > 0, 'User has no accrued rewards');
 
-
-    if (this.stakedAssetId.value === 0) {
-      sendPayment({
-        amount: this.staked(this.txn.sender).value,
-        receiver: this.txn.sender,
-        sender: this.app.address,
-        fee: 1_000,
-      });
-    } else {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
         assetReceiver: this.txn.sender,
@@ -254,24 +259,7 @@ export class InjectedRewardsPool extends Contract {
         assetAmount: this.staked(this.txn.sender).value,
         fee: 1_000,
       });
-    }
 
-    if (this.rewardAssetId.value === 0) {
-      sendPayment({
-        amount: this.accruedRewards(this.txn.sender).value,
-        receiver: this.txn.sender,
-        sender: this.app.address,
-        fee: 1_000,
-      });
-    } else if (this.rewardAssetId.value !== this.stakedAssetId.value) {
-      sendAssetTransfer({
-        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-        assetReceiver: this.txn.sender,
-        assetAmount: this.accruedRewards(this.txn.sender).value,
-        sender: this.app.address,
-        fee: 1_000,
-      });
-    }
 
     // Update the total staking weight
     this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
