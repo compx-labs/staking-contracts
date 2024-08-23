@@ -163,6 +163,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
   test('stake', async () => {
     const { algorand } = fixture;
     const stakingAmount = 1_000_000_000n;
+    const lockPeriod = 2588000n;
     for (let i = 0; i < stakingAccounts.length; i++) {
       const staker = stakingAccounts[i];
 
@@ -176,7 +177,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
         sender: staker.addr,
         receiver: appAddress,
       });
-      await appClient.stake({ lockPeriod: 2588000n, quantity: stakingAmount, stakeTxn }, { sender: staker, sendParams: { fee: algokit.algos(0.2) } });
+      await appClient.stake({ lockPeriod: lockPeriod, quantity: stakingAmount, stakeTxn }, { sender: staker, sendParams: { fee: algokit.algos(0.2) } });
 
       const stakedAssetBalanceAfter = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
       const rewardAssetBalanceAfter = BigInt((await algorand.account.getInformation(staker.addr)).amount);
@@ -190,8 +191,8 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
     const stakeTokenPrice = 1000000n;
     const rewardTokenPrice = 150000n;
-    const normalisedAmount = (((stakingAmount / PRECISION) * stakeTokenPrice) / rewardTokenPrice);
-    const userStakingWeight = (normalisedAmount * 2588000n);
+    const normalisedAmount = ((stakingAmount * stakeTokenPrice) / rewardTokenPrice);
+    const userStakingWeight = (normalisedAmount * lockPeriod);
     expect(totalStakingWeight).toBe(userStakingWeight * BigInt(stakingAccounts.length));
 
   });
@@ -239,10 +240,9 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     await appClient.stake({ stakeTxn, lockPeriod: 86400n, quantity: 50_000_000_000n }, { sender: staker, sendParams: { fee: algokit.algos(0.2) } });
     expect((await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt()).toBe(0n);
     expect((await appClient.getLocalState(staker.addr)).staked!.asBigInt()).toBe(50_000_000_000n);
-    expect((await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt()).toBe(964n);
+    expect((await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt()).toBe(96450n);
     await waitForDuration(5000);
     await accrueAll();
-    const totalRewardPerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();
     console.log('accrued rewards + 5000', (await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt());
     await waitForDuration(6500);
     await accrueAll();

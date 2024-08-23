@@ -182,7 +182,7 @@ describe('CompXStaking ASA/Algo - single staker', () => {
         const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
         const stakeTokenPrice = 1000000n;
         const rewardTokenPrice = 150000n;
-        const normalisedAmount = (((stakingAmount / PRECISION) * stakeTokenPrice) / rewardTokenPrice);
+        const normalisedAmount = ((stakingAmount * stakeTokenPrice) / rewardTokenPrice);
         const userStakingWeight = (normalisedAmount * 10n);
         expect(totalStakingWeight).toBe(userStakingWeight);
 
