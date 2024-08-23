@@ -1338,8 +1338,8 @@ accrueRewards:
 	assert
 
 	// contracts/CompXStaking.algo.ts:252
-	// assert(this.unlockTime(this.txn.sender).value > (globals.latestTimestamp), 'unlock time reached')
-	txn Sender
+	// assert(this.unlockTime(userAddress).value > (globals.latestTimestamp), 'unlock time reached')
+	frame_dig -1 // userAddress: Address
 	byte 0x756e6c6f636b54696d65 // "unlockTime"
 	app_local_get
 	global LatestTimestamp

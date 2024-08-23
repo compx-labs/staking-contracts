@@ -249,7 +249,7 @@ export class CompXStaking extends Contract {
 
   accrueRewards(userAddress: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can accrue rewards');
-    assert(this.unlockTime(this.txn.sender).value > (globals.latestTimestamp), 'unlock time reached'); // add in this check
+    assert(this.unlockTime(userAddress).value > (globals.latestTimestamp), 'unlock time reached'); // add in this check
 
     this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * (globals.latestTimestamp - this.lastUpdateTime(userAddress).value));
     this.lastUpdateTime(userAddress).value = globals.latestTimestamp;

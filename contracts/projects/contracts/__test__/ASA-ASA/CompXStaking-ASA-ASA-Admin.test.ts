@@ -63,22 +63,18 @@ describe('CompXStaking ASA/Algo setup/admin functions - no staking', () => {
       minLockUp: 10,
       contractDuration: 6034400n, // 71 Days in seconds
       startTimestamp: Math.floor(Date.now() / 1000),
-      oracleAdmin: admin,
       adminAddress: admin,
     });
   });
 
   test('confirm global state on initialisation', async () => {
     const globalState = await appClient.getGlobalState();
-    expect(globalState.stakeTokenPrice!.asBigInt()).toBe(0n);
-    expect(globalState.rewardTokenPrice!.asBigInt()).toBe(0n);
     expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
     expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetId);
     expect(globalState.minLockUp!.asBigInt()).toBe(10n);
     expect(globalState.contractDuration!.asBigInt()).toBe(6034400n);
     expect(globalState.rewardsAvailablePerTick!.asBigInt()).toBe(0n);
     expect(globalState.totalStakingWeight!.asBigInt()).toBe(0n);
-    expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin);
   });
 
   test('updateParams', async () => {
@@ -207,30 +203,6 @@ describe('CompXStaking ASA/Algo setup/admin functions - no staking', () => {
     console.log('rewardsAvailablePerTick', rewardsAvailablePerTick); //
 });
 
-  test('set Prices', async () => {
-
-    await appClient.setPrices({
-      stakeTokenPrice: 1000000n,
-      rewardTokenPrice: 150000n,
-    });
-    const stakedTokenPrice = (await appClient.getGlobalState()).stakeTokenPrice!.asBigInt();
-    const rewardTokenPrice = (await appClient.getGlobalState()).rewardTokenPrice!.asBigInt();
-    expect(stakedTokenPrice).toBe(1000000n);
-    expect(rewardTokenPrice).toBe(150000n);
-  });
-
-  test('set Prices, non admin', async () => {
-    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await expect(
-      appClient.setPrices(
-        {
-          stakeTokenPrice: 1000000n,
-          rewardTokenPrice: 150000n,
-        },
-        { sender: nonAdminAccount },
-      ),
-    ).rejects.toThrowError();
-  });
 
   test('deleteApplication', async () => {
     await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });
