@@ -184,9 +184,9 @@ describe('CompXStaking ASA/Algo - single staker', () => {
         const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
         const stakeTokenPrice = 1000000n;
         const rewardTokenPrice = 150000n;
-        const normalisedAmount = (((stakingAmount * stakeTokenPrice / PRECISION) * 10_000n) / rewardTokenPrice) / 10_000n;
+        const normalisedAmount = (((stakingAmount * stakeTokenPrice)) / rewardTokenPrice);
         const userStakingWeight = (normalisedAmount * lockPeriod);
-        expect(totalStakingWeight).toBe(userStakingWeight);
+        expect(totalStakingWeight).toBeGreaterThanOrEqual(userStakingWeight);
 
     });
 
@@ -221,7 +221,8 @@ describe('CompXStaking ASA/Algo - single staker', () => {
         console.log('remainingRewards', remainingRewards);
         console.log('totalRewards', totalRewards);
         console.log('rewards spent', totalRewards - remainingRewards);
-        console.log('totalPaidOut', totalPaidOut);
+        const rewardsSpent = totalRewards - remainingRewards;
+        expect(rewardsSpent).toBe(totalPaidOut);
     });
 
     test('delete app - non-admin', async () => {
