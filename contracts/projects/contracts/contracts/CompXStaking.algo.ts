@@ -1,5 +1,5 @@
 import { Contract } from '@algorandfoundation/tealscript';
-const PRECISION = 10000;
+const PRECISION = 1_000_000_000_000_000;
 
 export class CompXStaking extends Contract {
   programVersion = 9;
@@ -253,131 +253,50 @@ export class CompXStaking extends Contract {
     // 10 * 10000 / 1 = 100000
     
 
-    const normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
-    const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);
+    const normalisedAmount = wideRatio([this.staked(this.txn.sender).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
+    const userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(this.txn.sender).value], [1]);
     this.totalStakingWeight.value += userStakingWeight
 
-    // getUser Staking weight as a share of the total weight
-    const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
-    const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-    let numerator = (userSharePercentage * PRECISION);
+    const userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
+
+    const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
+    let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
     let denominator = PRECISION;
 
-    var a = numerator;
-    var b = denominator;
-    while (b !== 0) {
-      let temp = b;
-      b = a % b;
-      a = temp;
+    this.rewardRate(this.txn.sender).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100);
+    if(this.rewardRate(this.txn.sender).value === 0){
+      this.rewardRate(this.txn.sender).value = 1;
     }
-    const gcdValue = a;
-
-    numerator = numerator / gcdValue;
-    denominator = denominator / gcdValue;
-    const userRewardRate = ((this.rewardsAvailablePerTick.value * numerator) / denominator) / 100;
-
     this.totalStaked.value += this.staked(this.txn.sender).value;
-    this.rewardRate(this.txn.sender).value = userRewardRate;
     this.stakeStartTime(this.txn.sender).value = currentTimeStamp;
     this.userStakingWeight(this.txn.sender).value = userStakingWeight;
     this.unlockTime(this.txn.sender).value = currentTimeStamp + lockPeriod;
     this.lastUpdateTime(this.txn.sender).value = currentTimeStamp;
   }
 
-  getRewardRate(): void {
-    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
-    const normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
-    const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);
-    this.totalStakingWeight.value += userStakingWeight;
-
-    // getUser Staking weight as a share of the total weight
-    const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
-    const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-    let numerator = (userSharePercentage * PRECISION);
-    let denominator = PRECISION;
-
-    var a = numerator;
-    var b = denominator;
-    while (b !== 0) {
-      let temp = b;
-      b = a % b;
-      a = temp;
-    }
-    const gcdValue = a;
-
-    numerator = numerator / gcdValue;
-    denominator = denominator / gcdValue;
-    const userRewardRate = ((this.rewardsAvailablePerTick.value * numerator) / denominator) / 100;
-
-    this.rewardRate(this.txn.sender).value = userRewardRate;
-  }
-
-  getRewardRate_Dev(
-    i_TotalStakingWeight: uint64,
-    i_StakeTokenPrice: uint64,
-    i_RewardTokenPrice: uint64,
-    i_StakeDuration: uint64,
-    i_StakeAmount: uint64,
-    i_RewardsAvailablePerTick: uint64
-  ): void {
-
-    const normalisedAmount = (((i_StakeAmount / PRECISION) * i_StakeTokenPrice) / i_RewardTokenPrice);
-    const userStakingWeight = (normalisedAmount * i_StakeDuration);
-    i_TotalStakingWeight += userStakingWeight;
-
-    // getUser Staking weight as a share of the total weight
-    const userShare = (userStakingWeight * PRECISION) / i_TotalStakingWeight; // scale numerator
-    const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-
-
-    //Convert decimal to fraction
-    let numerator = (userSharePercentage * PRECISION);
-    let denominator = PRECISION;
-
-    var a = numerator;
-    var b = denominator;
-    while (b !== 0) {
-      let temp = b;
-      b = a % b;
-      a = temp;
-    }
-    const gcdValue = a;
-
-    numerator = numerator / gcdValue;
-    denominator = denominator / gcdValue;
-    const userRewardRate = (i_RewardsAvailablePerTick * numerator) / denominator;
-
-    this.rewardRate(this.txn.sender).value = userRewardRate;
-  }
-
   accrueRewards(userAddress: Address): void {
     assert(this.staked(userAddress).value > 0, 'User has no staked assets');
     assert(this.stakeStartTime(userAddress).value > 0, 'User has not staked assets');
     assert(this.stakeDuration(userAddress).value > 0, 'User has not staked assets');
+
     if (this.unlockTime(userAddress).value > globals.latestTimestamp) {
       this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
-      const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
-      const userStakingWeight = (normalisedAmount * this.stakeDuration(userAddress).value);
-      this.totalStakingWeight.value += userStakingWeight
+      const normalisedAmount = wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
+      const _userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(userAddress).value], [1]);
 
-      // getUser Staking weight as a share of the total weight
-      const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
-      const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-      let numerator = (userSharePercentage * PRECISION);
+      this.totalStakingWeight.value += _userStakingWeight
+      this.userStakingWeight(userAddress).value = _userStakingWeight;
+
+      const userShare = wideRatio([_userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
+
+      const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
+      let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      var a = numerator;
-      var b = denominator;
-      while (b !== 0) {
-        let temp = b;
-        b = a % b;
-        a = temp;
+      this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100);
+      if(this.rewardRate(userAddress).value === 0){
+        this.rewardRate(userAddress).value = 1;
       }
-      const gcdValue = a;
-
-      numerator = numerator / gcdValue;
-      denominator = denominator / gcdValue;
-      this.rewardRate(userAddress).value = ((this.rewardsAvailablePerTick.value * numerator) / denominator) / 100;
 
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * ((globals.latestTimestamp) - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
@@ -386,29 +305,21 @@ export class CompXStaking extends Contract {
     else if (this.lastUpdateTime(userAddress).value !== this.unlockTime(userAddress).value) {
 
       this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
-      const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value * PRECISION) / this.rewardTokenPrice.value) / PRECISION;
-      const userStakingWeight = (normalisedAmount * this.stakeDuration(userAddress).value);
-      this.totalStakingWeight.value += userStakingWeight;
+      const normalisedAmount = wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
+      const _userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(userAddress).value], [1]);
+      this.totalStakingWeight.value += _userStakingWeight
+      this.userStakingWeight(userAddress).value = _userStakingWeight;
 
-      // getUser Staking weight as a share of the total weight
-      const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
-      const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-      let numerator = (userSharePercentage * PRECISION);
+
+      const userShare = wideRatio([_userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
+      const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
+      let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      var a = numerator;
-      var b = denominator;
-      while (b !== 0) {
-        let temp = b;
-        b = a % b;
-        a = temp;
+      this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
+      if(this.rewardRate(userAddress).value === 0){
+        this.rewardRate(userAddress).value = 1;
       }
-      const gcdValue = a;
-
-      numerator = numerator / gcdValue;
-      denominator = denominator / gcdValue;
-      this.rewardRate(userAddress).value = ((this.rewardsAvailablePerTick.value * numerator) / denominator) / 100;
-
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * (this.unlockTime(userAddress).value - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = this.unlockTime(userAddress).value;
     }
@@ -417,36 +328,27 @@ export class CompXStaking extends Contract {
 
   unstake(): void {
     assert(this.staked(this.txn.sender).value > 0, 'No staked assets');
-    assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp), 'unlock time not reached'); // add in this check
+    //assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp), 'unlock time not reached'); // add in this check
     assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets');
     assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets');
-    assert(this.accruedRewards(this.txn.sender).value > 0, 'User has no accrued rewards');
 
     if (this.unlockTime(this.txn.sender).value > globals.latestTimestamp) {
-      this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
-      const normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
-      const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);
-      this.totalStakingWeight.value += userStakingWeight;
 
-      // getUser Staking weight as a share of the total weight
-      const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
-      const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-      let numerator = (userSharePercentage * PRECISION);
+      this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
+      const normalisedAmount = wideRatio([this.staked(this.txn.sender).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
+      const _userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(this.txn.sender).value], [1]);
+      this.totalStakingWeight.value += _userStakingWeight;
+      this.userStakingWeight(this.txn.sender).value = _userStakingWeight;
+
+      const userShare = wideRatio([_userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
+      const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
+      let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      var a = numerator;
-      var b = denominator;
-      while (b !== 0) {
-        let temp = b;
-        b = a % b;
-        a = temp;
+      this.rewardRate(this.txn.sender).value = wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]);
+      if(this.rewardRate(this.txn.sender).value === 0){
+        this.rewardRate(this.txn.sender).value = 1;
       }
-      const gcdValue = a;
-
-      numerator = numerator / gcdValue;
-      denominator = denominator / gcdValue;
-      this.rewardRate(this.txn.sender).value = ((this.rewardsAvailablePerTick.value * numerator) / denominator) / 100;
-
       this.accruedRewards(this.txn.sender).value += (this.rewardRate(this.txn.sender).value * ((globals.latestTimestamp) - this.lastUpdateTime(this.txn.sender).value));
       this.lastUpdateTime(this.txn.sender).value = globals.latestTimestamp;
 
@@ -454,32 +356,24 @@ export class CompXStaking extends Contract {
     else if (this.lastUpdateTime(this.txn.sender).value !== this.unlockTime(this.txn.sender).value) {
 
       this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
-      const normalisedAmount = (((this.staked(this.txn.sender).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
-      const userStakingWeight = (normalisedAmount * this.stakeDuration(this.txn.sender).value);
-      this.totalStakingWeight.value += userStakingWeight;
+      const normalisedAmount = wideRatio([this.staked(this.txn.sender).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
+      const _userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(this.txn.sender).value], [1]);
+      this.totalStakingWeight.value += _userStakingWeight;
+      this.userStakingWeight(this.txn.sender).value = _userStakingWeight;
 
-      // getUser Staking weight as a share of the total weight
-      const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
-      const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-      let numerator = (userSharePercentage * PRECISION);
+      const userShare = wideRatio([_userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
+      const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
+      let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      var a = numerator;
-      var b = denominator;
-      while (b !== 0) {
-        let temp = b;
-        b = a % b;
-        a = temp;
+      this.rewardRate(this.txn.sender).value = wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]);
+      if(this.rewardRate(this.txn.sender).value === 0){
+        this.rewardRate(this.txn.sender).value = 1;
       }
-      const gcdValue = a;
-
-      numerator = numerator / gcdValue;
-      denominator = denominator / gcdValue;
-      this.rewardRate(this.txn.sender).value = ((this.rewardsAvailablePerTick.value * numerator) / denominator) / 100;
-
       this.accruedRewards(this.txn.sender).value += (this.rewardRate(this.txn.sender).value * (this.unlockTime(this.txn.sender).value - this.lastUpdateTime(this.txn.sender).value));
       this.lastUpdateTime(this.txn.sender).value = this.unlockTime(this.txn.sender).value;
     }
+
 
     if (this.stakedAssetId.value === 0) {
       sendPayment({
@@ -497,21 +391,23 @@ export class CompXStaking extends Contract {
         fee: 1_000,
       });
     }
-    if (this.rewardAssetId.value === 0) {
-      sendPayment({
-        amount: this.accruedRewards(this.txn.sender).value,
-        receiver: this.txn.sender,
-        sender: this.app.address,
-        fee: 1_000,
-      });
-    } else {
-      sendAssetTransfer({
-        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-        assetReceiver: this.txn.sender,
-        assetAmount: this.accruedRewards(this.txn.sender).value,
-        sender: this.app.address,
-        fee: 1_000,
-      });
+    if (this.accruedRewards(this.txn.sender).value > 0) {
+      if (this.rewardAssetId.value === 0) {
+        sendPayment({
+          amount: this.accruedRewards(this.txn.sender).value,
+          receiver: this.txn.sender,
+          sender: this.app.address,
+          fee: 1_000,
+        });
+      } else {
+        sendAssetTransfer({
+          xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+          assetReceiver: this.txn.sender,
+          assetAmount: this.accruedRewards(this.txn.sender).value,
+          sender: this.app.address,
+          fee: 1_000,
+        });
+      }
     }
 
     // Update the total staking weight
@@ -530,73 +426,52 @@ export class CompXStaking extends Contract {
 
   adminUnstake(userAddress: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can unstake via this method');
-    assert(this.staked(userAddress).value > 0, 'No staked assets');
-    assert(this.stakeStartTime(userAddress).value > 0, 'User has not staked assets');
-    assert(this.stakeDuration(userAddress).value > 0, 'User has not staked assets');
-    assert(this.accruedRewards(userAddress).value > 0, 'User has no accrued rewards');
 
     if (this.unlockTime(userAddress).value > globals.latestTimestamp) {
-      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
-      const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
-      const userStakingWeight = (normalisedAmount * this.stakeDuration(userAddress).value);
-      this.totalStakingWeight.value += userStakingWeight;
 
-      // getUser Staking weight as a share of the total weight
-      const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
-      const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-      let numerator = (userSharePercentage * PRECISION);
+      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+      const normalisedAmount = wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
+      const _userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(userAddress).value], [1]);
+      this.totalStakingWeight.value += _userStakingWeight;
+      this.userStakingWeight(userAddress).value = _userStakingWeight;
+
+      const userShare = wideRatio([_userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
+      const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
+      let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      var a = numerator;
-      var b = denominator;
-      while (b !== 0) {
-        let temp = b;
-        b = a % b;
-        a = temp;
+      this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
+      if(this.rewardRate(userAddress).value === 0){
+        this.rewardRate(userAddress).value = 1;
       }
-      const gcdValue = a;
-
-      numerator = numerator / gcdValue;
-      denominator = denominator / gcdValue;
-      this.rewardRate(userAddress).value = ((this.rewardsAvailablePerTick.value * numerator) / denominator) / 100;
-
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * ((globals.latestTimestamp) - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
 
     }
-    else if (this.lastUpdateTime(this.txn.sender).value !== this.unlockTime(this.txn.sender).value) {
+    else if (this.lastUpdateTime(userAddress).value !== this.unlockTime(userAddress).value) {
 
       this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
-      const normalisedAmount = (((this.staked(userAddress).value / PRECISION) * this.stakeTokenPrice.value) / this.rewardTokenPrice.value);
-      const userStakingWeight = (normalisedAmount * this.stakeDuration(userAddress).value);
-      this.totalStakingWeight.value += userStakingWeight;
+      const normalisedAmount = wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
+      const _userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(userAddress).value], [1]);
+      this.totalStakingWeight.value += _userStakingWeight;
+      this.userStakingWeight(userAddress).value = _userStakingWeight;
 
-      // getUser Staking weight as a share of the total weight
-      const userShare = (userStakingWeight * PRECISION) / this.totalStakingWeight.value; // scale numerator
-      const userSharePercentage = (userShare * 100) / PRECISION; // convert to percentage
-      let numerator = (userSharePercentage * PRECISION);
+      const userShare = wideRatio([_userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
+      const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
+      let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      var a = numerator;
-      var b = denominator;
-      while (b !== 0) {
-        let temp = b;
-        b = a % b;
-        a = temp;
+      this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
+      if(this.rewardRate(userAddress).value === 0){
+        this.rewardRate(userAddress).value = 1;
       }
-      const gcdValue = a;
-
-      numerator = numerator / gcdValue;
-      denominator = denominator / gcdValue;
-      this.rewardRate(userAddress).value = ((this.rewardsAvailablePerTick.value * numerator) / denominator) / 100;
-
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * (this.unlockTime(userAddress).value - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = this.unlockTime(userAddress).value;
     }
 
     if (this.stakedAssetId.value === 0) {
       sendPayment({
-        amount: this.staked(this.txn.sender).value,
+        amount: this.staked(userAddress).value,
         receiver: userAddress,
         sender: this.app.address,
         fee: 1_000,
