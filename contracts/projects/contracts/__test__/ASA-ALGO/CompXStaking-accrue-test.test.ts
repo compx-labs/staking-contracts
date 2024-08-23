@@ -158,18 +158,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     }
   }
 
-  async function getAllRewardRates(): Promise<bigint> {
-    let totalRewardRate = 0n;
-    for (let i = 0; i < stakingAccounts.length; i++) {
-      const staker = stakingAccounts[i];
-      console.log('staker:', staker.addr)
-      await appClient.getRewardRate({ userAddress: staker.addr }, { sender: staker, sendParams: { fee: algokit.algos(0.1) } });
-      const rewardRate = (await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt();
-      console.log('rewardRate', rewardRate);
-      totalRewardRate += rewardRate;
-    }
-    return totalRewardRate;
-  }
+ 
 
   test('stake', async () => {
     const { algorand } = fixture;
@@ -205,12 +194,6 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     const userStakingWeight = (normalisedAmount * 2588000n);
     expect(totalStakingWeight).toBe(userStakingWeight * BigInt(stakingAccounts.length));
 
-    for (let i = 0; i < stakingAccounts.length; i++) {
-      const staker = stakingAccounts[i];
-      await appClient.getRewardRate({}, { sender: staker, sendParams: { fee: algokit.algos(0.1) } });
-      const rewardRate = (await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt();
-      console.log('rewardRate', rewardRate);
-    }
   });
 
   async function waitForDuration(duration: number) {
@@ -259,13 +242,10 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     expect((await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt()).toBe(964n);
     await waitForDuration(5000);
     await accrueAll();
-    let totalRewardRate = await getAllRewardRates();
     const totalRewardPerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();
-    expect(totalRewardRate).toBeLessThanOrEqual(totalRewardPerTick);
     console.log('accrued rewards + 5000', (await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt());
     await waitForDuration(6500);
     await accrueAll();
-    expect(totalRewardRate).toBeLessThanOrEqual(totalRewardPerTick);
     console.log('accrued rewards + 6500', (await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt());
     await waitForDuration(1000);
   });

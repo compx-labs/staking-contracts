@@ -153,16 +153,6 @@ describe('CompXStaking ASA/Algo - adminUnstake', () => {
 
     }
 
-    async function getAllRewardRates(): Promise<bigint> {
-        let totalRewardRate = 0n;
-        console.log('staker:', stakingAccount.addr)
-        await appClient.getRewardRate({ userAddress: stakingAccount.addr }, { sender: stakingAccount, sendParams: { fee: algokit.algos(0.1) } });
-        const rewardRate = (await appClient.getLocalState(stakingAccount.addr)).rewardRate!.asBigInt();
-        console.log('rewardRate', rewardRate);
-        totalRewardRate += rewardRate;
-        return totalRewardRate;
-    }
-
     test('stake', async () => {
         const { algorand } = fixture;
         const stakingAmount = 50_000_000_000n;
@@ -197,9 +187,6 @@ describe('CompXStaking ASA/Algo - adminUnstake', () => {
         const userStakingWeight = (normalisedAmount * lockPeriod);
         expect(totalStakingWeight).toBe(userStakingWeight);
 
-        await appClient.getRewardRate({}, { sender: staker, sendParams: { fee: algokit.algos(0.1) } });
-        const rewardRate2 = (await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt();
-        console.log('rewardRate', rewardRate2);
 
     });
 
