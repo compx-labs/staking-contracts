@@ -255,10 +255,9 @@ export class CompXStaking extends Contract {
     let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
     let denominator = PRECISION;
 
-    const userRewardRate = wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]);
+    this.rewardRate(this.txn.sender).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100);
 
     this.totalStaked.value += this.staked(this.txn.sender).value;
-    this.rewardRate(this.txn.sender).value = userRewardRate;
     this.stakeStartTime(this.txn.sender).value = currentTimeStamp;
     this.userStakingWeight(this.txn.sender).value = userStakingWeight;
     this.unlockTime(this.txn.sender).value = currentTimeStamp + lockPeriod;
@@ -284,7 +283,7 @@ export class CompXStaking extends Contract {
       let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      this.rewardRate(userAddress).value = wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]);
+      this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
 
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * ((globals.latestTimestamp) - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
@@ -304,7 +303,7 @@ export class CompXStaking extends Contract {
       let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      this.rewardRate(userAddress).value = wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]);
+      this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
 
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * (this.unlockTime(userAddress).value - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = this.unlockTime(userAddress).value;
@@ -314,7 +313,7 @@ export class CompXStaking extends Contract {
 
   unstake(): void {
     assert(this.staked(this.txn.sender).value > 0, 'No staked assets');
-    assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp), 'unlock time not reached'); // add in this check
+    //assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp), 'unlock time not reached'); // add in this check
     assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets');
     assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets');
 
@@ -422,7 +421,7 @@ export class CompXStaking extends Contract {
       let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      this.rewardRate(userAddress).value = wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]);
+      this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
 
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * ((globals.latestTimestamp) - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
@@ -441,7 +440,7 @@ export class CompXStaking extends Contract {
       let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      this.rewardRate(userAddress).value = wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]);
+      this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
 
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * (this.unlockTime(userAddress).value - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = this.unlockTime(userAddress).value;

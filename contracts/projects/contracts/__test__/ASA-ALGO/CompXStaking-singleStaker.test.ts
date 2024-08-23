@@ -214,7 +214,7 @@ describe('CompXStaking ASA/Algo - single staker', () => {
         const rewardAssetBalance = BigInt((await algorand.account.getInformation(staker.addr)).amount);
         console.log('stakedAssetBalance', stakedAssetBalance);
         console.log('rewardAssetBalance', rewardAssetBalance);
-        totalPaidOut += (rewardAssetBalance - rewardBalancePrior);
+        totalPaidOut += (rewardAssetBalance - rewardBalancePrior + BigInt(algokit.algos(0.02).microAlgos));
 
         const remainingRewards = (await appClient.getGlobalState()).remainingRewards!.asBigInt();
         const totalRewards = (await appClient.getGlobalState()).totalRewards!.asBigInt();

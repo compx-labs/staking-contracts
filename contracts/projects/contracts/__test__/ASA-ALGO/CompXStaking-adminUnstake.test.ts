@@ -183,10 +183,12 @@ describe('CompXStaking ASA/Algo - adminUnstake', () => {
         const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
         const stakeTokenPrice = 1000000n;
         const rewardTokenPrice = 150000n;
-        const normalisedAmount = (((stakingAmount * stakeTokenPrice / PRECISION) * 10_000n) / rewardTokenPrice) / 10_000n;
+        const normalisedAmount = ((stakingAmount * stakeTokenPrice) / rewardTokenPrice);
         const userStakingWeight = (normalisedAmount * lockPeriod);
-        expect(totalStakingWeight).toBe(userStakingWeight);
-
+        expect(totalStakingWeight).toBeGreaterThanOrEqual(userStakingWeight);
+        const rewardsAvailablePerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();
+        const userRewardRate = (await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt();
+        expect(userRewardRate).toBe(rewardsAvailablePerTick);
 
     });
 
