@@ -117,11 +117,39 @@
       }
     },
     {
+      "name": "updateRewardRate",
+      "args": [
+        {
+          "name": "userAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "accrueRewards",
       "args": [
         {
           "name": "userAddress",
           "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "restake",
+      "args": [
+        {
+          "name": "stakeTxn",
+          "type": "axfer"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
         }
       ],
       "returns": {
