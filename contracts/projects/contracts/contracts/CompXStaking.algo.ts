@@ -1,5 +1,5 @@
 import { Contract } from '@algorandfoundation/tealscript';
-const PRECISION = 1_000_000_000;
+const PRECISION = 1_000_000_000_000_000;
 
 export class CompXStaking extends Contract {
   programVersion = 9;
@@ -256,7 +256,9 @@ export class CompXStaking extends Contract {
     let denominator = PRECISION;
 
     this.rewardRate(this.txn.sender).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100);
-
+    if(this.rewardRate(this.txn.sender).value === 0){
+      this.rewardRate(this.txn.sender).value = 1;
+    }
     this.totalStaked.value += this.staked(this.txn.sender).value;
     this.stakeStartTime(this.txn.sender).value = currentTimeStamp;
     this.userStakingWeight(this.txn.sender).value = userStakingWeight;
@@ -283,7 +285,10 @@ export class CompXStaking extends Contract {
       let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
       let denominator = PRECISION;
 
-      this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
+      this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100);
+      if(this.rewardRate(userAddress).value === 0){
+        this.rewardRate(userAddress).value = 1;
+      }
 
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * ((globals.latestTimestamp) - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
@@ -304,7 +309,9 @@ export class CompXStaking extends Contract {
       let denominator = PRECISION;
 
       this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
-
+      if(this.rewardRate(userAddress).value === 0){
+        this.rewardRate(userAddress).value = 1;
+      }
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * (this.unlockTime(userAddress).value - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = this.unlockTime(userAddress).value;
     }
@@ -331,7 +338,9 @@ export class CompXStaking extends Contract {
       let denominator = PRECISION;
 
       this.rewardRate(this.txn.sender).value = wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]);
-
+      if(this.rewardRate(this.txn.sender).value === 0){
+        this.rewardRate(this.txn.sender).value = 1;
+      }
       this.accruedRewards(this.txn.sender).value += (this.rewardRate(this.txn.sender).value * ((globals.latestTimestamp) - this.lastUpdateTime(this.txn.sender).value));
       this.lastUpdateTime(this.txn.sender).value = globals.latestTimestamp;
 
@@ -350,7 +359,9 @@ export class CompXStaking extends Contract {
       let denominator = PRECISION;
 
       this.rewardRate(this.txn.sender).value = wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]);
-
+      if(this.rewardRate(this.txn.sender).value === 0){
+        this.rewardRate(this.txn.sender).value = 1;
+      }
       this.accruedRewards(this.txn.sender).value += (this.rewardRate(this.txn.sender).value * (this.unlockTime(this.txn.sender).value - this.lastUpdateTime(this.txn.sender).value));
       this.lastUpdateTime(this.txn.sender).value = this.unlockTime(this.txn.sender).value;
     }
@@ -422,7 +433,9 @@ export class CompXStaking extends Contract {
       let denominator = PRECISION;
 
       this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
-
+      if(this.rewardRate(userAddress).value === 0){
+        this.rewardRate(userAddress).value = 1;
+      }
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * ((globals.latestTimestamp) - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
 
@@ -441,7 +454,9 @@ export class CompXStaking extends Contract {
       let denominator = PRECISION;
 
       this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100)
-
+      if(this.rewardRate(userAddress).value === 0){
+        this.rewardRate(userAddress).value = 1;
+      }
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * (this.unlockTime(userAddress).value - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = this.unlockTime(userAddress).value;
     }
