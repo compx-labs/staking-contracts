@@ -178,7 +178,8 @@ export class CompXStaking extends Contract {
     } else {
       this.totalRewards.value -= rewardsToRemove;
       this.remainingRewards.value = this.totalRewards.value;
-      this.rewardsAvailablePerTick.value = this.totalRewards.value / this.contractDuration.value;
+      const maxRewardsPerTick = wideRatio([this.totalRewards.value, PRECISION], [this.contractDuration.value]);
+      this.rewardsAvailablePerTick.value = ((maxRewardsPerTick / 100) * 98) / PRECISION;
     }
   }
 
