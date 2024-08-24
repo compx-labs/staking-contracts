@@ -66,7 +66,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
     expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetId);
     expect(globalState.totalStakingWeight!.asBigInt()).toBe(0n);
-    expect(globalState.lastRewardInjectionAmount!.asBigInt()).toBe(0n);
+    expect(globalState.injectedRewards!.asBigInt()).toBe(0n);
     expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
     expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(ONE_DAY);
     expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin);
@@ -108,7 +108,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     expect(rewardAssetBalance).toBe(0n);
   });
 
-  test('add rewards non admin', async () => {
+  test('inject rewards non admin', async () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
@@ -130,7 +130,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
 
     const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
     expect(rewardAssetBalance).toBe(0n);
-    expect((await appClient.getGlobalState()).lastRewardInjectionAmount?.asBigInt()).toBe(0n);
+    expect((await appClient.getGlobalState()).injectedRewards?.asBigInt()).toBe(0n);
     expect((await appClient.getGlobalState()).lastRewardInjectionTime?.asBigInt()).toBe(0n);
   });
 
@@ -148,7 +148,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     await appClient.injectRewards({ rewardTxn: axferTxn, quantity: rewardsInUnits }, { sendParams: { fee: algokit.algos(0.1) } });
     const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
     expect(rewardAssetBalance).toBe(rewardsInUnits);
-    const lastRewardInjectionAmount = (await appClient.getGlobalState()).lastRewardInjectionAmount!.asBigInt();
+    const lastRewardInjectionAmount = (await appClient.getGlobalState()).injectedRewards!.asBigInt();
     expect(lastRewardInjectionAmount).toBe(BigInt(rewardsInUnits));
   });
 
