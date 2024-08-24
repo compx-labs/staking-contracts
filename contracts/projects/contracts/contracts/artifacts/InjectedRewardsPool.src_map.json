@@ -666,162 +666,162 @@
     "teal": 82,
     "source": 63,
     "pc": [
-      438,
-      439
+      438
     ]
   },
   {
     "teal": 83,
     "source": 63,
     "pc": [
-      440
+      439
     ]
   },
   {
     "teal": 84,
     "source": 63,
     "pc": [
-      441
+      440
     ]
   },
   {
     "teal": 88,
     "source": 64,
     "pc": [
-      442
+      441
     ]
   },
   {
     "teal": 89,
     "source": 64,
     "pc": [
-      443
+      442
     ]
   },
   {
     "teal": 90,
     "source": 64,
     "pc": [
-      444
+      443
     ]
   },
   {
     "teal": 94,
     "source": 65,
     "pc": [
-      445,
-      446
+      444,
+      445
     ]
   },
   {
     "teal": 95,
     "source": 65,
     "pc": [
-      447,
-      448
+      446,
+      447
     ]
   },
   {
     "teal": 96,
     "source": 65,
     "pc": [
-      449
+      448
     ]
   },
   {
     "teal": 100,
     "source": 66,
     "pc": [
-      450,
-      451
+      449,
+      450
     ]
   },
   {
     "teal": 101,
     "source": 66,
     "pc": [
-      452
+      451
     ]
   },
   {
     "teal": 102,
     "source": 66,
     "pc": [
-      453
+      452
     ]
   },
   {
     "teal": 106,
     "source": 67,
     "pc": [
-      454,
-      455
+      453,
+      454
     ]
   },
   {
     "teal": 107,
     "source": 67,
     "pc": [
-      456
+      455
     ]
   },
   {
     "teal": 108,
     "source": 67,
     "pc": [
-      457
+      456
     ]
   },
   {
     "teal": 112,
     "source": 68,
     "pc": [
-      458,
-      459
+      457,
+      458
     ]
   },
   {
     "teal": 113,
     "source": 68,
     "pc": [
-      460,
-      461
+      459,
+      460
     ]
   },
   {
     "teal": 114,
     "source": 68,
     "pc": [
-      462
+      461
     ]
   },
   {
     "teal": 118,
     "source": 69,
     "pc": [
-      463,
-      464
+      462,
+      463
     ]
   },
   {
     "teal": 119,
     "source": 69,
     "pc": [
-      465,
-      466
+      464,
+      465
     ]
   },
   {
     "teal": 120,
     "source": 69,
     "pc": [
-      467
+      466
     ]
   },
   {
     "teal": 124,
     "source": 70,
     "pc": [
+      467,
       468
     ]
   },
@@ -1646,115 +1646,109 @@
     ]
   },
   {
-    "teal": 344,
-    "source": 107,
+    "teal": 350,
+    "source": 108,
     "pc": [
       638,
       639
     ]
   },
   {
-    "teal": 345,
-    "source": 107,
+    "teal": 351,
+    "source": 109,
     "pc": [
-      640
-    ]
-  },
-  {
-    "teal": 346,
-    "source": 107,
-    "pc": [
+      640,
       641
     ]
   },
   {
-    "teal": 347,
-    "source": 107,
-    "pc": [
-      642
-    ]
-  },
-  {
-    "teal": 350,
-    "source": 107,
-    "errorMessage": "Minimum stake period not set",
-    "pc": [
-      643
-    ]
-  },
-  {
-    "teal": 360,
+    "teal": 352,
     "source": 109,
     "pc": [
-      644,
-      645
+      642,
+      643,
+      644
+    ]
+  },
+  {
+    "teal": 353,
+    "source": 109,
+    "pc": [
+      645,
+      646
+    ]
+  },
+  {
+    "teal": 354,
+    "source": 109,
+    "pc": [
+      647
+    ]
+  },
+  {
+    "teal": 355,
+    "source": 109,
+    "pc": [
+      648
+    ]
+  },
+  {
+    "teal": 358,
+    "source": 109,
+    "errorMessage": "transaction verification failed: {\"txn\":\"rewardTxn\",\"field\":\"sender\",\"expected\":\"this.app.creator\"}",
+    "pc": [
+      649
     ]
   },
   {
     "teal": 361,
-    "source": 110,
+    "source": 108,
     "pc": [
-      646,
-      647
+      650,
+      651
     ]
   },
   {
     "teal": 362,
     "source": 110,
     "pc": [
-      648,
-      649,
-      650
+      652,
+      653
     ]
   },
   {
     "teal": 363,
     "source": 110,
     "pc": [
-      651,
-      652
+      654,
+      655
     ]
   },
   {
     "teal": 364,
     "source": 110,
     "pc": [
-      653
+      656
     ]
   },
   {
-    "teal": 365,
+    "teal": 367,
     "source": 110,
+    "errorMessage": "transaction verification failed: {\"txn\":\"rewardTxn\",\"field\":\"assetReceiver\",\"expected\":\"this.app.address\"}",
     "pc": [
-      654
-    ]
-  },
-  {
-    "teal": 368,
-    "source": 110,
-    "errorMessage": "transaction verification failed: {\"txn\":\"rewardTxn\",\"field\":\"sender\",\"expected\":\"this.app.creator\"}",
-    "pc": [
-      655
-    ]
-  },
-  {
-    "teal": 371,
-    "source": 109,
-    "pc": [
-      656,
       657
     ]
   },
   {
-    "teal": 372,
-    "source": 111,
+    "teal": 370,
+    "source": 108,
     "pc": [
       658,
       659
     ]
   },
   {
-    "teal": 373,
+    "teal": 371,
     "source": 111,
     "pc": [
       660,
@@ -1762,386 +1756,379 @@
     ]
   },
   {
+    "teal": 372,
+    "source": 111,
+    "pc": [
+      662,
+      663
+    ]
+  },
+  {
+    "teal": 373,
+    "source": 111,
+    "pc": [
+      664
+    ]
+  },
+  {
     "teal": 374,
     "source": 111,
     "pc": [
-      662
+      665
     ]
   },
   {
     "teal": 377,
     "source": 111,
-    "errorMessage": "transaction verification failed: {\"txn\":\"rewardTxn\",\"field\":\"assetReceiver\",\"expected\":\"this.app.address\"}",
+    "errorMessage": "transaction verification failed: {\"txn\":\"rewardTxn\",\"field\":\"xferAsset\",\"expected\":\"AssetID.fromUint64(this.rewardAssetId.value)\"}",
     "pc": [
-      663
+      666
     ]
   },
   {
     "teal": 380,
-    "source": 109,
+    "source": 108,
     "pc": [
-      664,
-      665
+      667,
+      668
     ]
   },
   {
     "teal": 381,
     "source": 112,
     "pc": [
-      666,
-      667
+      669,
+      670
     ]
   },
   {
     "teal": 382,
     "source": 112,
     "pc": [
-      668,
-      669
+      671,
+      672
     ]
   },
   {
     "teal": 383,
     "source": 112,
     "pc": [
-      670
+      673
     ]
   },
   {
-    "teal": 384,
+    "teal": 386,
     "source": 112,
+    "errorMessage": "transaction verification failed: {\"txn\":\"rewardTxn\",\"field\":\"assetAmount\",\"expected\":\"quantity\"}",
     "pc": [
-      671
-    ]
-  },
-  {
-    "teal": 387,
-    "source": 112,
-    "errorMessage": "transaction verification failed: {\"txn\":\"rewardTxn\",\"field\":\"xferAsset\",\"expected\":\"AssetID.fromUint64(this.rewardAssetId.value)\"}",
-    "pc": [
-      672
-    ]
-  },
-  {
-    "teal": 390,
-    "source": 109,
-    "pc": [
-      673,
       674
     ]
   },
   {
-    "teal": 391,
-    "source": 113,
+    "teal": 390,
+    "source": 114,
     "pc": [
       675,
       676
     ]
   },
   {
-    "teal": 392,
-    "source": 113,
+    "teal": 391,
+    "source": 114,
     "pc": [
-      677,
-      678
+      677
     ]
   },
   {
-    "teal": 393,
-    "source": 113,
+    "teal": 392,
+    "source": 114,
     "pc": [
+      678,
       679
     ]
   },
   {
-    "teal": 396,
-    "source": 113,
-    "errorMessage": "transaction verification failed: {\"txn\":\"rewardTxn\",\"field\":\"assetAmount\",\"expected\":\"quantity\"}",
+    "teal": 393,
+    "source": 114,
     "pc": [
       680
+    ]
+  },
+  {
+    "teal": 394,
+    "source": 114,
+    "pc": [
+      681,
+      682
+    ]
+  },
+  {
+    "teal": 395,
+    "source": 114,
+    "pc": [
+      683
+    ]
+  },
+  {
+    "teal": 396,
+    "source": 114,
+    "pc": [
+      684
     ]
   },
   {
     "teal": 400,
     "source": 115,
     "pc": [
-      681
+      685,
+      686
     ]
   },
   {
     "teal": 401,
     "source": 115,
     "pc": [
-      682
+      687,
+      688
     ]
   },
   {
     "teal": 402,
     "source": 115,
     "pc": [
-      683,
-      684
-    ]
-  },
-  {
-    "teal": 403,
-    "source": 115,
-    "pc": [
-      685
-    ]
-  },
-  {
-    "teal": 404,
-    "source": 115,
-    "pc": [
-      686
-    ]
-  },
-  {
-    "teal": 405,
-    "source": 115,
-    "pc": [
-      687
+      689
     ]
   },
   {
     "teal": 406,
-    "source": 115,
+    "source": 116,
     "pc": [
-      688
+      690,
+      691
+    ]
+  },
+  {
+    "teal": 407,
+    "source": 116,
+    "pc": [
+      692
+    ]
+  },
+  {
+    "teal": 408,
+    "source": 116,
+    "pc": [
+      693,
+      694
+    ]
+  },
+  {
+    "teal": 409,
+    "source": 116,
+    "pc": [
+      695
     ]
   },
   {
     "teal": 410,
     "source": 116,
     "pc": [
-      689,
-      690
+      696,
+      697
     ]
   },
   {
     "teal": 411,
     "source": 116,
     "pc": [
-      691,
-      692
+      698
     ]
   },
   {
     "teal": 412,
     "source": 116,
     "pc": [
-      693
-    ]
-  },
-  {
-    "teal": 416,
-    "source": 117,
-    "pc": [
-      694,
-      695
-    ]
-  },
-  {
-    "teal": 417,
-    "source": 117,
-    "pc": [
-      696
-    ]
-  },
-  {
-    "teal": 418,
-    "source": 117,
-    "pc": [
-      697,
-      698
-    ]
-  },
-  {
-    "teal": 419,
-    "source": 117,
-    "pc": [
       699
     ]
   },
   {
-    "teal": 420,
-    "source": 117,
+    "teal": 413,
+    "source": 105,
     "pc": [
-      700,
-      701
+      700
     ]
   },
   {
-    "teal": 421,
-    "source": 117,
+    "teal": 418,
+    "source": 119,
     "pc": [
-      702
-    ]
-  },
-  {
-    "teal": 422,
-    "source": 117,
-    "pc": [
+      701,
+      702,
       703
     ]
   },
   {
-    "teal": 423,
-    "source": 105,
+    "teal": 419,
+    "source": 119,
     "pc": [
       704
+    ]
+  },
+  {
+    "teal": 420,
+    "source": 119,
+    "pc": [
+      705
+    ]
+  },
+  {
+    "teal": 424,
+    "source": 119,
+    "pc": [
+      706,
+      707,
+      708
     ]
   },
   {
     "teal": 428,
     "source": 120,
     "pc": [
-      705,
-      706,
-      707
+      709,
+      710
     ]
   },
   {
     "teal": 429,
     "source": 120,
     "pc": [
-      708
+      711,
+      712
     ]
   },
   {
     "teal": 430,
     "source": 120,
     "pc": [
-      709
+      713
+    ]
+  },
+  {
+    "teal": 431,
+    "source": 120,
+    "pc": [
+      714
     ]
   },
   {
     "teal": 434,
     "source": 120,
+    "errorMessage": "Only admin can delete application",
     "pc": [
-      710,
-      711,
-      712
+      715
     ]
   },
   {
     "teal": 438,
     "source": 121,
     "pc": [
-      713,
-      714
+      716
     ]
   },
   {
     "teal": 439,
     "source": 121,
     "pc": [
-      715,
-      716
+      717
     ]
   },
   {
     "teal": 440,
     "source": 121,
     "pc": [
-      717
+      718
     ]
   },
   {
     "teal": 441,
     "source": 121,
     "pc": [
-      718
+      719
     ]
   },
   {
     "teal": 444,
     "source": 121,
-    "errorMessage": "Only admin can delete application",
+    "errorMessage": "Staked assets still exist",
     "pc": [
-      719
+      720
     ]
   },
   {
-    "teal": 448,
-    "source": 122,
+    "teal": 445,
+    "source": 119,
     "pc": [
-      720,
       721
     ]
   },
   {
-    "teal": 449,
-    "source": 122,
-    "pc": [
-      722
-    ]
-  },
-  {
     "teal": 450,
-    "source": 122,
+    "source": 131,
     "pc": [
-      723
-    ]
-  },
-  {
-    "teal": 451,
-    "source": 122,
-    "pc": [
+      722,
+      723,
       724
     ]
   },
   {
-    "teal": 454,
-    "source": 122,
-    "errorMessage": "Staked assets still exist",
+    "teal": 451,
+    "source": 131,
     "pc": [
       725
     ]
   },
   {
-    "teal": 455,
-    "source": 120,
+    "teal": 454,
+    "source": 131,
     "pc": [
-      726
+      726,
+      727,
+      728
     ]
   },
   {
-    "teal": 460,
-    "source": 132,
+    "teal": 455,
+    "source": 131,
     "pc": [
-      727,
-      728,
       729
     ]
   },
   {
-    "teal": 461,
-    "source": 132,
+    "teal": 458,
+    "source": 131,
     "pc": [
-      730
+      730,
+      731,
+      732
     ]
   },
   {
-    "teal": 464,
-    "source": 132,
+    "teal": 459,
+    "source": 131,
     "pc": [
-      731,
-      732,
       733
     ]
   },
   {
-    "teal": 465,
-    "source": 132,
+    "teal": 460,
+    "source": 131,
     "pc": [
       734
     ]
   },
   {
-    "teal": 468,
-    "source": 132,
+    "teal": 464,
+    "source": 131,
     "pc": [
       735,
       736,
@@ -2149,38 +2136,45 @@
     ]
   },
   {
+    "teal": 468,
+    "source": 132,
+    "pc": [
+      738,
+      739
+    ]
+  },
+  {
     "teal": 469,
     "source": 132,
     "pc": [
-      738
+      740,
+      741
     ]
   },
   {
     "teal": 470,
     "source": 132,
     "pc": [
-      739
+      742
+    ]
+  },
+  {
+    "teal": 471,
+    "source": 132,
+    "pc": [
+      743
     ]
   },
   {
     "teal": 474,
     "source": 132,
+    "errorMessage": "Only oracle admin can set prices",
     "pc": [
-      740,
-      741,
-      742
-    ]
-  },
-  {
-    "teal": 478,
-    "source": 133,
-    "pc": [
-      743,
       744
     ]
   },
   {
-    "teal": 479,
+    "teal": 478,
     "source": 133,
     "pc": [
       745,
@@ -2188,29 +2182,29 @@
     ]
   },
   {
-    "teal": 480,
+    "teal": 479,
     "source": 133,
     "pc": [
       747
     ]
   },
   {
-    "teal": 481,
+    "teal": 480,
     "source": 133,
     "pc": [
       748
     ]
   },
   {
-    "teal": 484,
+    "teal": 483,
     "source": 133,
-    "errorMessage": "Only oracle admin can set prices",
+    "errorMessage": "Invalid stake token price",
     "pc": [
       749
     ]
   },
   {
-    "teal": 488,
+    "teal": 487,
     "source": 134,
     "pc": [
       750,
@@ -2218,59 +2212,52 @@
     ]
   },
   {
-    "teal": 489,
+    "teal": 488,
     "source": 134,
     "pc": [
       752
     ]
   },
   {
-    "teal": 490,
+    "teal": 489,
     "source": 134,
     "pc": [
       753
     ]
   },
   {
-    "teal": 493,
+    "teal": 492,
     "source": 134,
-    "errorMessage": "Invalid stake token price",
+    "errorMessage": "Invalid reward token price",
     "pc": [
       754
     ]
   },
   {
-    "teal": 497,
-    "source": 135,
+    "teal": 496,
+    "source": 136,
     "pc": [
       755,
       756
     ]
   },
   {
-    "teal": 498,
-    "source": 135,
+    "teal": 497,
+    "source": 136,
     "pc": [
-      757
-    ]
-  },
-  {
-    "teal": 499,
-    "source": 135,
-    "pc": [
+      757,
       758
     ]
   },
   {
-    "teal": 502,
-    "source": 135,
-    "errorMessage": "Invalid reward token price",
+    "teal": 498,
+    "source": 136,
     "pc": [
       759
     ]
   },
   {
-    "teal": 506,
+    "teal": 502,
     "source": 137,
     "pc": [
       760,
@@ -2278,7 +2265,7 @@
     ]
   },
   {
-    "teal": 507,
+    "teal": 503,
     "source": 137,
     "pc": [
       762,
@@ -2286,120 +2273,120 @@
     ]
   },
   {
-    "teal": 508,
+    "teal": 504,
     "source": 137,
     "pc": [
       764
     ]
   },
   {
-    "teal": 512,
-    "source": 138,
+    "teal": 505,
+    "source": 131,
     "pc": [
-      765,
-      766
+      765
     ]
   },
   {
-    "teal": 513,
-    "source": 138,
+    "teal": 510,
+    "source": 142,
     "pc": [
+      766,
       767,
       768
     ]
   },
   {
-    "teal": 514,
-    "source": 138,
+    "teal": 511,
+    "source": 142,
     "pc": [
       769
     ]
   },
   {
-    "teal": 515,
-    "source": 132,
+    "teal": 514,
+    "source": 141,
     "pc": [
-      770
+      770,
+      771
     ]
   },
   {
-    "teal": 520,
-    "source": 143,
+    "teal": 515,
+    "source": 141,
     "pc": [
-      771,
-      772,
+      772
+    ]
+  },
+  {
+    "teal": 516,
+    "source": 141,
+    "pc": [
       773
     ]
   },
   {
-    "teal": 521,
-    "source": 143,
+    "teal": 517,
+    "source": 141,
     "pc": [
       774
     ]
   },
   {
-    "teal": 524,
-    "source": 142,
+    "teal": 518,
+    "source": 141,
     "pc": [
       775,
       776
     ]
   },
   {
-    "teal": 525,
-    "source": 142,
+    "teal": 519,
+    "source": 141,
     "pc": [
       777
     ]
   },
   {
-    "teal": 526,
-    "source": 142,
+    "teal": 520,
+    "source": 141,
     "pc": [
       778
     ]
   },
   {
-    "teal": 527,
-    "source": 142,
+    "teal": 523,
+    "source": 141,
+    "errorMessage": "argument 1 (stakeTxn) for stake must be a axfer transaction",
     "pc": [
       779
     ]
   },
   {
-    "teal": 528,
-    "source": 142,
+    "teal": 526,
+    "source": 140,
     "pc": [
       780,
-      781
-    ]
-  },
-  {
-    "teal": 529,
-    "source": 142,
-    "pc": [
+      781,
       782
     ]
   },
   {
-    "teal": 530,
-    "source": 142,
+    "teal": 527,
+    "source": 140,
     "pc": [
       783
     ]
   },
   {
-    "teal": 533,
-    "source": 142,
-    "errorMessage": "argument 1 (stakeTxn) for stake must be a axfer transaction",
+    "teal": 528,
+    "source": 140,
     "pc": [
       784
     ]
   },
   {
-    "teal": 536,
-    "source": 141,
+    "teal": 532,
+    "source": 140,
     "pc": [
       785,
       786,
@@ -2407,65 +2394,78 @@
     ]
   },
   {
-    "teal": 537,
-    "source": 141,
+    "teal": 535,
+    "source": 140,
     "pc": [
-      788
-    ]
-  },
-  {
-    "teal": 538,
-    "source": 141,
-    "pc": [
+      788,
       789
     ]
   },
   {
-    "teal": 542,
-    "source": 141,
+    "teal": 539,
+    "source": 144,
     "pc": [
       790,
-      791,
-      792
+      791
+    ]
+  },
+  {
+    "teal": 540,
+    "source": 144,
+    "pc": [
+      792,
+      793
+    ]
+  },
+  {
+    "teal": 544,
+    "source": 145,
+    "pc": [
+      794,
+      795
     ]
   },
   {
     "teal": 545,
-    "source": 141,
+    "source": 145,
     "pc": [
-      793,
-      794
+      796
     ]
   },
   {
     "teal": 546,
-    "source": 141,
+    "source": 145,
     "pc": [
-      795,
-      796
+      797
+    ]
+  },
+  {
+    "teal": 547,
+    "source": 145,
+    "pc": [
+      798
     ]
   },
   {
     "teal": 550,
     "source": 145,
+    "errorMessage": "Stake token price not set",
     "pc": [
-      797,
-      798
+      799
     ]
   },
   {
-    "teal": 551,
-    "source": 145,
+    "teal": 554,
+    "source": 146,
     "pc": [
-      799,
-      800
+      800,
+      801
     ]
   },
   {
     "teal": 555,
     "source": 146,
     "pc": [
-      801,
       802
     ]
   },
@@ -2484,25 +2484,25 @@
     ]
   },
   {
-    "teal": 558,
+    "teal": 560,
     "source": 146,
+    "errorMessage": "Reward token price not set",
     "pc": [
       805
     ]
   },
   {
-    "teal": 561,
-    "source": 146,
-    "errorMessage": "Stake token price not set",
+    "teal": 564,
+    "source": 147,
     "pc": [
-      806
+      806,
+      807
     ]
   },
   {
     "teal": 565,
     "source": 147,
     "pc": [
-      807,
       808
     ]
   },
@@ -2530,7 +2530,7 @@
   {
     "teal": 571,
     "source": 147,
-    "errorMessage": "Reward token price not set",
+    "errorMessage": "User already staked, use Restake method instead",
     "pc": [
       812
     ]
@@ -2558,259 +2558,246 @@
     ]
   },
   {
-    "teal": 578,
+    "teal": 580,
     "source": 148,
+    "errorMessage": "Invalid quantity",
     "pc": [
       817
     ]
   },
   {
-    "teal": 579,
-    "source": 148,
+    "teal": 590,
+    "source": 150,
     "pc": [
-      818
-    ]
-  },
-  {
-    "teal": 582,
-    "source": 148,
-    "errorMessage": "User already staked, use Restake method instead",
-    "pc": [
+      818,
       819
     ]
   },
   {
-    "teal": 586,
-    "source": 149,
+    "teal": 591,
+    "source": 151,
     "pc": [
       820,
       821
     ]
   },
   {
-    "teal": 587,
-    "source": 149,
+    "teal": 592,
+    "source": 151,
     "pc": [
-      822
-    ]
-  },
-  {
-    "teal": 588,
-    "source": 149,
-    "pc": [
+      822,
       823
     ]
   },
   {
-    "teal": 591,
-    "source": 149,
-    "errorMessage": "Invalid quantity",
+    "teal": 593,
+    "source": 151,
     "pc": [
       824
     ]
   },
   {
-    "teal": 601,
+    "teal": 596,
     "source": 151,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"sender\",\"expected\":\"this.txn.sender\"}",
     "pc": [
-      825,
-      826
+      825
+    ]
+  },
+  {
+    "teal": 599,
+    "source": 150,
+    "pc": [
+      826,
+      827
+    ]
+  },
+  {
+    "teal": 600,
+    "source": 152,
+    "pc": [
+      828,
+      829
+    ]
+  },
+  {
+    "teal": 601,
+    "source": 152,
+    "pc": [
+      830,
+      831
     ]
   },
   {
     "teal": 602,
     "source": 152,
     "pc": [
-      827,
-      828
-    ]
-  },
-  {
-    "teal": 603,
-    "source": 152,
-    "pc": [
-      829,
-      830
-    ]
-  },
-  {
-    "teal": 604,
-    "source": 152,
-    "pc": [
-      831
-    ]
-  },
-  {
-    "teal": 607,
-    "source": 152,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"sender\",\"expected\":\"this.txn.sender\"}",
-    "pc": [
       832
     ]
   },
   {
-    "teal": 610,
-    "source": 151,
+    "teal": 605,
+    "source": 152,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetReceiver\",\"expected\":\"this.app.address\"}",
     "pc": [
-      833,
-      834
+      833
+    ]
+  },
+  {
+    "teal": 608,
+    "source": 150,
+    "pc": [
+      834,
+      835
+    ]
+  },
+  {
+    "teal": 609,
+    "source": 153,
+    "pc": [
+      836,
+      837
+    ]
+  },
+  {
+    "teal": 610,
+    "source": 153,
+    "pc": [
+      838
     ]
   },
   {
     "teal": 611,
     "source": 153,
     "pc": [
-      835,
-      836
+      839
     ]
   },
   {
     "teal": 612,
     "source": 153,
     "pc": [
-      837,
-      838
-    ]
-  },
-  {
-    "teal": 613,
-    "source": 153,
-    "pc": [
-      839
-    ]
-  },
-  {
-    "teal": 616,
-    "source": 153,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetReceiver\",\"expected\":\"this.app.address\"}",
-    "pc": [
       840
     ]
   },
   {
-    "teal": 619,
-    "source": 151,
+    "teal": 615,
+    "source": 153,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"xferAsset\",\"expected\":\"AssetID.fromUint64(this.stakedAssetId.value)\"}",
     "pc": [
-      841,
-      842
+      841
+    ]
+  },
+  {
+    "teal": 618,
+    "source": 150,
+    "pc": [
+      842,
+      843
+    ]
+  },
+  {
+    "teal": 619,
+    "source": 154,
+    "pc": [
+      844,
+      845
     ]
   },
   {
     "teal": 620,
     "source": 154,
     "pc": [
-      843,
-      844
+      846,
+      847
     ]
   },
   {
     "teal": 621,
     "source": 154,
     "pc": [
-      845
-    ]
-  },
-  {
-    "teal": 622,
-    "source": 154,
-    "pc": [
-      846
-    ]
-  },
-  {
-    "teal": 623,
-    "source": 154,
-    "pc": [
-      847
-    ]
-  },
-  {
-    "teal": 626,
-    "source": 154,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"xferAsset\",\"expected\":\"AssetID.fromUint64(this.stakedAssetId.value)\"}",
-    "pc": [
       848
     ]
   },
   {
-    "teal": 629,
-    "source": 151,
+    "teal": 624,
+    "source": 154,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetAmount\",\"expected\":\"quantity\"}",
     "pc": [
-      849,
-      850
+      849
     ]
   },
   {
-    "teal": 630,
-    "source": 155,
+    "teal": 628,
+    "source": 156,
     "pc": [
-      851,
+      850,
+      851
+    ]
+  },
+  {
+    "teal": 629,
+    "source": 156,
+    "pc": [
       852
     ]
   },
   {
-    "teal": 631,
-    "source": 155,
+    "teal": 630,
+    "source": 156,
     "pc": [
       853,
       854
     ]
   },
   {
-    "teal": 632,
-    "source": 155,
+    "teal": 631,
+    "source": 156,
     "pc": [
-      855
-    ]
-  },
-  {
-    "teal": 635,
-    "source": 155,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetAmount\",\"expected\":\"quantity\"}",
-    "pc": [
+      855,
       856
     ]
   },
   {
-    "teal": 639,
-    "source": 157,
+    "teal": 632,
+    "source": 156,
     "pc": [
-      857,
-      858
+      857
     ]
   },
   {
-    "teal": 640,
-    "source": 157,
+    "teal": 636,
+    "source": 158,
     "pc": [
+      858,
       859
     ]
   },
   {
-    "teal": 641,
-    "source": 157,
+    "teal": 637,
+    "source": 158,
     "pc": [
       860,
-      861
+      861,
+      862
     ]
   },
   {
-    "teal": 642,
-    "source": 157,
+    "teal": 641,
+    "source": 159,
     "pc": [
-      862,
       863
     ]
   },
   {
-    "teal": 643,
-    "source": 157,
+    "teal": 642,
+    "source": 159,
     "pc": [
       864
     ]
   },
   {
-    "teal": 647,
+    "teal": 643,
     "source": 159,
     "pc": [
       865,
@@ -2818,36 +2805,42 @@
     ]
   },
   {
-    "teal": 648,
+    "teal": 644,
     "source": 159,
     "pc": [
       867
     ]
   },
   {
-    "teal": 649,
+    "teal": 645,
     "source": 159,
     "pc": [
       868
     ]
   },
   {
-    "teal": 650,
+    "teal": 646,
     "source": 159,
     "pc": [
-      869,
+      869
+    ]
+  },
+  {
+    "teal": 647,
+    "source": 159,
+    "pc": [
       870
     ]
   },
   {
-    "teal": 651,
+    "teal": 648,
     "source": 159,
     "pc": [
       871
     ]
   },
   {
-    "teal": 652,
+    "teal": 649,
     "source": 159,
     "pc": [
       872
@@ -2855,942 +2848,899 @@
   },
   {
     "teal": 653,
-    "source": 159,
+    "source": 160,
     "pc": [
-      873
+      873,
+      874
     ]
   },
   {
     "teal": 654,
-    "source": 159,
+    "source": 160,
     "pc": [
-      874,
-      875
-    ]
-  },
-  {
-    "teal": 655,
-    "source": 159,
-    "pc": [
+      875,
       876
     ]
   },
   {
-    "teal": 656,
-    "source": 159,
+    "teal": 655,
+    "source": 160,
     "pc": [
-      877
-    ]
-  },
-  {
-    "teal": 657,
-    "source": 159,
-    "pc": [
+      877,
       878
     ]
   },
   {
-    "teal": 658,
-    "source": 159,
+    "teal": 656,
+    "source": 160,
     "pc": [
       879
     ]
   },
   {
-    "teal": 659,
-    "source": 159,
-    "pc": [
-      880
-    ]
-  },
-  {
     "teal": 660,
-    "source": 159,
+    "source": 161,
     "pc": [
+      880,
       881
     ]
   },
   {
-    "teal": 663,
-    "source": 159,
-    "errorMessage": "wideRatio failed",
+    "teal": 661,
+    "source": 161,
     "pc": [
-      882
+      882,
+      883
     ]
   },
   {
-    "teal": 664,
-    "source": 159,
+    "teal": 662,
+    "source": 161,
     "pc": [
-      883,
-      884
-    ]
-  },
-  {
-    "teal": 668,
-    "source": 160,
-    "pc": [
+      884,
       885
     ]
   },
   {
-    "teal": 669,
-    "source": 160,
+    "teal": 663,
+    "source": 161,
     "pc": [
       886
     ]
   },
   {
-    "teal": 670,
-    "source": 160,
+    "teal": 667,
+    "source": 162,
     "pc": [
       887,
       888
     ]
   },
   {
-    "teal": 671,
-    "source": 160,
+    "teal": 668,
+    "source": 162,
     "pc": [
-      889
-    ]
-  },
-  {
-    "teal": 672,
-    "source": 160,
-    "pc": [
+      889,
       890
     ]
   },
   {
-    "teal": 673,
-    "source": 160,
+    "teal": 669,
+    "source": 162,
     "pc": [
       891
     ]
   },
   {
-    "teal": 674,
-    "source": 160,
+    "teal": 670,
+    "source": 162,
     "pc": [
       892
     ]
   },
   {
-    "teal": 678,
-    "source": 161,
+    "teal": 671,
+    "source": 140,
     "pc": [
-      893,
-      894
+      893
     ]
   },
   {
-    "teal": 679,
-    "source": 161,
+    "teal": 676,
+    "source": 166,
     "pc": [
+      894,
       895,
       896
     ]
   },
   {
-    "teal": 680,
-    "source": 161,
+    "teal": 677,
+    "source": 166,
     "pc": [
-      897,
+      897
+    ]
+  },
+  {
+    "teal": 678,
+    "source": 166,
+    "pc": [
       898
     ]
   },
   {
-    "teal": 681,
-    "source": 161,
+    "teal": 679,
+    "source": 166,
     "pc": [
-      899
+      899,
+      900
     ]
   },
   {
-    "teal": 685,
-    "source": 163,
+    "teal": 680,
+    "source": 166,
     "pc": [
-      900,
       901
     ]
   },
   {
-    "teal": 686,
-    "source": 163,
+    "teal": 683,
+    "source": 166,
+    "errorMessage": "argument 0 (userAddress) for updateRewardRate must be a address",
     "pc": [
       902
     ]
   },
   {
-    "teal": 687,
-    "source": 163,
+    "teal": 686,
+    "source": 166,
     "pc": [
-      903
-    ]
-  },
-  {
-    "teal": 688,
-    "source": 163,
-    "pc": [
-      904
-    ]
-  },
-  {
-    "teal": 689,
-    "source": 163,
-    "pc": [
+      903,
+      904,
       905
     ]
   },
   {
-    "teal": 690,
-    "source": 163,
+    "teal": 687,
+    "source": 166,
     "pc": [
       906
     ]
   },
   {
-    "teal": 691,
-    "source": 163,
+    "teal": 688,
+    "source": 166,
     "pc": [
       907
     ]
   },
   {
     "teal": 692,
-    "source": 163,
+    "source": 166,
     "pc": [
-      908
-    ]
-  },
-  {
-    "teal": 693,
-    "source": 163,
-    "pc": [
-      909
-    ]
-  },
-  {
-    "teal": 694,
-    "source": 163,
-    "pc": [
+      908,
+      909,
       910
     ]
   },
   {
-    "teal": 695,
-    "source": 163,
+    "teal": 696,
+    "source": 167,
     "pc": [
-      911
-    ]
-  },
-  {
-    "teal": 698,
-    "source": 163,
-    "errorMessage": "wideRatio failed",
-    "pc": [
+      911,
       912
     ]
   },
   {
-    "teal": 699,
-    "source": 163,
+    "teal": 697,
+    "source": 167,
     "pc": [
       913,
       914
     ]
   },
   {
-    "teal": 703,
-    "source": 165,
+    "teal": 698,
+    "source": 167,
     "pc": [
-      915,
+      915
+    ]
+  },
+  {
+    "teal": 699,
+    "source": 167,
+    "pc": [
       916
     ]
   },
   {
-    "teal": 704,
-    "source": 165,
+    "teal": 702,
+    "source": 167,
+    "errorMessage": "Only admin can update rewards rates",
     "pc": [
-      917,
-      918
-    ]
-  },
-  {
-    "teal": 705,
-    "source": 165,
-    "pc": [
-      919
+      917
     ]
   },
   {
     "teal": 706,
-    "source": 165,
+    "source": 169,
     "pc": [
-      920
+      918,
+      919
     ]
   },
   {
     "teal": 707,
-    "source": 165,
+    "source": 169,
     "pc": [
+      920,
       921
     ]
   },
   {
     "teal": 708,
-    "source": 165,
+    "source": 169,
     "pc": [
-      922
-    ]
-  },
-  {
-    "teal": 709,
-    "source": 165,
-    "pc": [
+      922,
       923
     ]
   },
   {
-    "teal": 710,
-    "source": 165,
+    "teal": 709,
+    "source": 169,
     "pc": [
-      924
-    ]
-  },
-  {
-    "teal": 711,
-    "source": 165,
-    "pc": [
+      924,
       925
     ]
   },
   {
-    "teal": 712,
-    "source": 165,
+    "teal": 710,
+    "source": 169,
     "pc": [
-      926
-    ]
-  },
-  {
-    "teal": 715,
-    "source": 165,
-    "errorMessage": "wideRatio failed",
-    "pc": [
+      926,
       927
     ]
   },
   {
-    "teal": 716,
-    "source": 165,
+    "teal": 711,
+    "source": 169,
     "pc": [
-      928,
+      928
+    ]
+  },
+  {
+    "teal": 712,
+    "source": 169,
+    "pc": [
       929
     ]
   },
   {
-    "teal": 720,
-    "source": 166,
+    "teal": 713,
+    "source": 169,
     "pc": [
       930
     ]
   },
   {
-    "teal": 721,
-    "source": 166,
+    "teal": 717,
+    "source": 170,
     "pc": [
       931,
       932
     ]
   },
   {
-    "teal": 722,
-    "source": 166,
+    "teal": 718,
+    "source": 170,
     "pc": [
-      933
-    ]
-  },
-  {
-    "teal": 723,
-    "source": 166,
-    "pc": [
+      933,
       934
     ]
   },
   {
-    "teal": 724,
-    "source": 166,
+    "teal": 719,
+    "source": 170,
     "pc": [
       935
     ]
   },
   {
-    "teal": 725,
-    "source": 166,
+    "teal": 720,
+    "source": 170,
     "pc": [
-      936
-    ]
-  },
-  {
-    "teal": 726,
-    "source": 166,
-    "pc": [
+      936,
       937
     ]
   },
   {
-    "teal": 727,
-    "source": 166,
+    "teal": 721,
+    "source": 170,
     "pc": [
       938
     ]
   },
   {
-    "teal": 728,
-    "source": 166,
+    "teal": 722,
+    "source": 170,
     "pc": [
       939
     ]
   },
   {
-    "teal": 729,
-    "source": 166,
+    "teal": 725,
+    "source": 170,
+    "errorMessage": "User has not staked for minimum period",
     "pc": [
       940
     ]
   },
   {
-    "teal": 730,
-    "source": 166,
+    "teal": 729,
+    "source": 171,
     "pc": [
-      941
-    ]
-  },
-  {
-    "teal": 733,
-    "source": 166,
-    "errorMessage": "wideRatio failed",
-    "pc": [
+      941,
       942
     ]
   },
   {
-    "teal": 734,
-    "source": 166,
+    "teal": 730,
+    "source": 171,
     "pc": [
       943,
-      944
-    ]
-  },
-  {
-    "teal": 738,
-    "source": 167,
-    "pc": [
+      944,
       945
     ]
   },
   {
-    "teal": 739,
-    "source": 167,
+    "teal": 731,
+    "source": 166,
     "pc": [
-      946,
-      947
+      946
     ]
   },
   {
-    "teal": 743,
-    "source": 169,
+    "teal": 735,
+    "source": 174,
     "pc": [
+      947,
       948,
       949
     ]
   },
   {
-    "teal": 744,
-    "source": 169,
+    "teal": 738,
+    "source": 174,
     "pc": [
       950,
       951
     ]
   },
   {
-    "teal": 745,
-    "source": 169,
+    "teal": 739,
+    "source": 174,
     "pc": [
-      952
-    ]
-  },
-  {
-    "teal": 746,
-    "source": 169,
-    "pc": [
+      952,
       953
     ]
   },
   {
-    "teal": 747,
-    "source": 169,
+    "teal": 744,
+    "source": 175,
     "pc": [
       954,
       955
     ]
   },
   {
-    "teal": 748,
-    "source": 169,
+    "teal": 745,
+    "source": 175,
     "pc": [
-      956
-    ]
-  },
-  {
-    "teal": 749,
-    "source": 169,
-    "pc": [
+      956,
       957
     ]
   },
   {
-    "teal": 750,
-    "source": 169,
+    "teal": 746,
+    "source": 175,
     "pc": [
       958
     ]
   },
   {
-    "teal": 751,
-    "source": 169,
+    "teal": 747,
+    "source": 175,
     "pc": [
       959
     ]
   },
   {
-    "teal": 752,
-    "source": 169,
+    "teal": 748,
+    "source": 175,
     "pc": [
       960
     ]
   },
   {
-    "teal": 753,
-    "source": 169,
+    "teal": 749,
+    "source": 175,
     "pc": [
-      961
-    ]
-  },
-  {
-    "teal": 754,
-    "source": 169,
-    "pc": [
-      962
-    ]
-  },
-  {
-    "teal": 755,
-    "source": 169,
-    "pc": [
+      961,
+      962,
       963
     ]
   },
   {
-    "teal": 758,
-    "source": 169,
-    "errorMessage": "wideRatio failed",
+    "teal": 754,
+    "source": 176,
     "pc": [
       964
     ]
   },
   {
-    "teal": 759,
-    "source": 169,
+    "teal": 755,
+    "source": 176,
     "pc": [
       965
     ]
   },
   {
-    "teal": 763,
-    "source": 171,
+    "teal": 756,
+    "source": 176,
     "pc": [
       966,
       967
     ]
   },
   {
-    "teal": 764,
-    "source": 171,
+    "teal": 757,
+    "source": 176,
     "pc": [
-      968
+      968,
+      969
     ]
   },
   {
-    "teal": 765,
-    "source": 171,
+    "teal": 758,
+    "source": 176,
     "pc": [
-      969,
       970
     ]
   },
   {
-    "teal": 766,
-    "source": 171,
+    "teal": 759,
+    "source": 176,
     "pc": [
       971
     ]
   },
   {
-    "teal": 767,
-    "source": 171,
+    "teal": 760,
+    "source": 176,
     "pc": [
       972
     ]
   },
   {
-    "teal": 768,
-    "source": 171,
+    "teal": 761,
+    "source": 176,
     "pc": [
       973
     ]
   },
   {
-    "teal": 769,
-    "source": 171,
+    "teal": 762,
+    "source": 176,
     "pc": [
-      974,
-      975
+      974
     ]
   },
   {
-    "teal": 770,
-    "source": 171,
+    "teal": 767,
+    "source": 178,
     "pc": [
+      975,
       976
     ]
   },
   {
-    "teal": 771,
-    "source": 171,
+    "teal": 768,
+    "source": 178,
     "pc": [
       977
     ]
   },
   {
-    "teal": 775,
-    "source": 172,
+    "teal": 769,
+    "source": 178,
     "pc": [
-      978,
-      979
+      978
     ]
   },
   {
-    "teal": 776,
-    "source": 172,
+    "teal": 770,
+    "source": 178,
     "pc": [
-      980,
+      979,
+      980
+    ]
+  },
+  {
+    "teal": 771,
+    "source": 178,
+    "pc": [
       981
     ]
   },
   {
-    "teal": 777,
-    "source": 172,
+    "teal": 772,
+    "source": 178,
     "pc": [
-      982,
+      982
+    ]
+  },
+  {
+    "teal": 773,
+    "source": 178,
+    "pc": [
       983
     ]
   },
   {
-    "teal": 778,
-    "source": 172,
+    "teal": 774,
+    "source": 178,
     "pc": [
-      984
+      984,
+      985
     ]
   },
   {
-    "teal": 782,
-    "source": 173,
+    "teal": 775,
+    "source": 178,
     "pc": [
-      985,
       986
     ]
   },
   {
-    "teal": 783,
-    "source": 173,
+    "teal": 776,
+    "source": 178,
     "pc": [
-      987,
+      987
+    ]
+  },
+  {
+    "teal": 777,
+    "source": 178,
+    "pc": [
       988
     ]
   },
   {
-    "teal": 784,
-    "source": 173,
+    "teal": 778,
+    "source": 178,
     "pc": [
-      989,
+      989
+    ]
+  },
+  {
+    "teal": 779,
+    "source": 178,
+    "pc": [
       990
     ]
   },
   {
-    "teal": 785,
-    "source": 173,
+    "teal": 780,
+    "source": 178,
     "pc": [
       991
     ]
   },
   {
-    "teal": 789,
-    "source": 174,
+    "teal": 783,
+    "source": 178,
+    "errorMessage": "wideRatio failed",
     "pc": [
-      992,
-      993
+      992
     ]
   },
   {
-    "teal": 790,
-    "source": 174,
+    "teal": 784,
+    "source": 178,
     "pc": [
-      994,
+      993,
+      994
+    ]
+  },
+  {
+    "teal": 788,
+    "source": 179,
+    "pc": [
       995
     ]
   },
   {
-    "teal": 791,
-    "source": 174,
+    "teal": 789,
+    "source": 179,
     "pc": [
       996
     ]
   },
   {
-    "teal": 792,
-    "source": 174,
+    "teal": 790,
+    "source": 179,
     "pc": [
-      997
-    ]
-  },
-  {
-    "teal": 793,
-    "source": 141,
-    "pc": [
+      997,
       998
     ]
   },
   {
-    "teal": 798,
-    "source": 178,
+    "teal": 791,
+    "source": 179,
     "pc": [
-      999,
-      1000,
+      999
+    ]
+  },
+  {
+    "teal": 792,
+    "source": 179,
+    "pc": [
+      1000
+    ]
+  },
+  {
+    "teal": 793,
+    "source": 179,
+    "pc": [
       1001
     ]
   },
   {
-    "teal": 799,
-    "source": 178,
+    "teal": 794,
+    "source": 179,
     "pc": [
       1002
     ]
   },
   {
-    "teal": 800,
-    "source": 178,
+    "teal": 798,
+    "source": 180,
     "pc": [
-      1003
+      1003,
+      1004
     ]
   },
   {
-    "teal": 801,
-    "source": 178,
+    "teal": 799,
+    "source": 180,
     "pc": [
-      1004,
-      1005
-    ]
-  },
-  {
-    "teal": 802,
-    "source": 178,
-    "pc": [
+      1005,
       1006
     ]
   },
   {
+    "teal": 800,
+    "source": 180,
+    "pc": [
+      1007,
+      1008
+    ]
+  },
+  {
+    "teal": 801,
+    "source": 180,
+    "pc": [
+      1009
+    ]
+  },
+  {
     "teal": 805,
-    "source": 178,
-    "errorMessage": "argument 0 (userAddress) for updateRewardRate must be a address",
+    "source": 182,
     "pc": [
-      1007
-    ]
-  },
-  {
-    "teal": 808,
-    "source": 178,
-    "pc": [
-      1008,
-      1009,
-      1010
-    ]
-  },
-  {
-    "teal": 809,
-    "source": 178,
-    "pc": [
+      1010,
       1011
     ]
   },
   {
-    "teal": 810,
-    "source": 178,
+    "teal": 806,
+    "source": 182,
     "pc": [
       1012
     ]
   },
   {
-    "teal": 814,
-    "source": 178,
+    "teal": 807,
+    "source": 182,
     "pc": [
-      1013,
-      1014,
+      1013
+    ]
+  },
+  {
+    "teal": 808,
+    "source": 182,
+    "pc": [
+      1014
+    ]
+  },
+  {
+    "teal": 809,
+    "source": 182,
+    "pc": [
       1015
     ]
   },
   {
-    "teal": 817,
-    "source": 178,
+    "teal": 810,
+    "source": 182,
     "pc": [
-      1016,
+      1016
+    ]
+  },
+  {
+    "teal": 811,
+    "source": 182,
+    "pc": [
       1017
     ]
   },
   {
-    "teal": 818,
-    "source": 178,
+    "teal": 812,
+    "source": 182,
     "pc": [
-      1018,
+      1018
+    ]
+  },
+  {
+    "teal": 813,
+    "source": 182,
+    "pc": [
       1019
     ]
   },
   {
-    "teal": 822,
-    "source": 179,
+    "teal": 814,
+    "source": 182,
     "pc": [
-      1020,
+      1020
+    ]
+  },
+  {
+    "teal": 815,
+    "source": 182,
+    "pc": [
       1021
     ]
   },
   {
-    "teal": 823,
-    "source": 179,
+    "teal": 818,
+    "source": 182,
+    "errorMessage": "wideRatio failed",
     "pc": [
-      1022,
-      1023
+      1022
     ]
   },
   {
-    "teal": 824,
-    "source": 179,
+    "teal": 819,
+    "source": 182,
     "pc": [
+      1023,
       1024
     ]
   },
   {
-    "teal": 825,
-    "source": 179,
+    "teal": 823,
+    "source": 183,
     "pc": [
-      1025
-    ]
-  },
-  {
-    "teal": 828,
-    "source": 179,
-    "errorMessage": "Only admin can update rewards rates",
-    "pc": [
+      1025,
       1026
     ]
   },
   {
-    "teal": 832,
-    "source": 181,
+    "teal": 824,
+    "source": 183,
     "pc": [
       1027,
       1028
     ]
   },
   {
-    "teal": 833,
-    "source": 181,
+    "teal": 825,
+    "source": 183,
     "pc": [
       1029,
       1030
     ]
   },
   {
-    "teal": 834,
-    "source": 181,
+    "teal": 826,
+    "source": 183,
     "pc": [
-      1031,
-      1032
+      1031
     ]
   },
   {
-    "teal": 835,
-    "source": 181,
+    "teal": 830,
+    "source": 184,
     "pc": [
-      1033,
-      1034
+      1032,
+      1033
     ]
   },
   {
-    "teal": 836,
-    "source": 181,
+    "teal": 831,
+    "source": 184,
     "pc": [
-      1035,
+      1034,
+      1035
+    ]
+  },
+  {
+    "teal": 832,
+    "source": 184,
+    "pc": [
       1036
     ]
   },
   {
-    "teal": 837,
-    "source": 181,
+    "teal": 833,
+    "source": 184,
     "pc": [
       1037
     ]
   },
   {
-    "teal": 838,
-    "source": 181,
+    "teal": 834,
+    "source": 184,
     "pc": [
       1038
     ]
   },
   {
-    "teal": 839,
-    "source": 181,
+    "teal": 835,
+    "source": 184,
     "pc": [
       1039
     ]
   },
   {
-    "teal": 843,
-    "source": 182,
+    "teal": 836,
+    "source": 184,
     "pc": [
-      1040,
+      1040
+    ]
+  },
+  {
+    "teal": 837,
+    "source": 184,
+    "pc": [
       1041
     ]
   },
   {
-    "teal": 844,
-    "source": 182,
+    "teal": 838,
+    "source": 184,
     "pc": [
-      1042,
+      1042
+    ]
+  },
+  {
+    "teal": 839,
+    "source": 184,
+    "pc": [
       1043
     ]
   },
   {
-    "teal": 845,
-    "source": 182,
+    "teal": 842,
+    "source": 184,
+    "errorMessage": "wideRatio failed",
     "pc": [
       1044
     ]
   },
   {
-    "teal": 846,
-    "source": 182,
+    "teal": 843,
+    "source": 184,
     "pc": [
       1045,
       1046
@@ -3798,4166 +3748,3707 @@
   },
   {
     "teal": 847,
-    "source": 182,
+    "source": 185,
     "pc": [
-      1047
-    ]
-  },
-  {
-    "teal": 848,
-    "source": 182,
-    "pc": [
+      1047,
       1048
     ]
   },
   {
-    "teal": 851,
-    "source": 182,
-    "errorMessage": "User has not staked for minimum period",
+    "teal": 848,
+    "source": 185,
     "pc": [
-      1049
-    ]
-  },
-  {
-    "teal": 855,
-    "source": 184,
-    "pc": [
+      1049,
       1050
     ]
   },
   {
-    "teal": 856,
-    "source": 184,
+    "teal": 849,
+    "source": 185,
     "pc": [
-      1051
+      1051,
+      1052
     ]
   },
   {
-    "teal": 857,
-    "source": 184,
+    "teal": 850,
+    "source": 185,
     "pc": [
-      1052,
       1053
     ]
   },
   {
-    "teal": 858,
-    "source": 184,
+    "teal": 854,
+    "source": 187,
     "pc": [
       1054,
       1055
     ]
   },
   {
-    "teal": 859,
-    "source": 184,
+    "teal": 855,
+    "source": 187,
     "pc": [
-      1056
-    ]
-  },
-  {
-    "teal": 860,
-    "source": 184,
-    "pc": [
+      1056,
       1057
     ]
   },
   {
-    "teal": 861,
-    "source": 184,
+    "teal": 856,
+    "source": 187,
     "pc": [
-      1058
-    ]
-  },
-  {
-    "teal": 862,
-    "source": 184,
-    "pc": [
+      1058,
       1059
     ]
   },
   {
-    "teal": 863,
-    "source": 184,
+    "teal": 857,
+    "source": 187,
     "pc": [
       1060
     ]
   },
   {
-    "teal": 867,
-    "source": 185,
+    "teal": 858,
+    "source": 187,
     "pc": [
       1061,
       1062
     ]
   },
   {
-    "teal": 868,
-    "source": 185,
+    "teal": 859,
+    "source": 187,
     "pc": [
       1063
     ]
   },
   {
-    "teal": 869,
-    "source": 185,
+    "teal": 860,
+    "source": 187,
     "pc": [
       1064
     ]
   },
   {
-    "teal": 870,
-    "source": 185,
+    "teal": 861,
+    "source": 187,
     "pc": [
       1065,
       1066
     ]
   },
   {
-    "teal": 871,
-    "source": 185,
+    "teal": 862,
+    "source": 187,
     "pc": [
       1067
     ]
   },
   {
-    "teal": 872,
-    "source": 185,
+    "teal": 863,
+    "source": 187,
     "pc": [
       1068
     ]
   },
   {
-    "teal": 873,
-    "source": 185,
+    "teal": 864,
+    "source": 187,
     "pc": [
       1069
     ]
   },
   {
-    "teal": 874,
-    "source": 185,
+    "teal": 865,
+    "source": 187,
     "pc": [
-      1070,
+      1070
+    ]
+  },
+  {
+    "teal": 866,
+    "source": 187,
+    "pc": [
       1071
     ]
   },
   {
-    "teal": 875,
-    "source": 185,
+    "teal": 869,
+    "source": 187,
+    "errorMessage": "wideRatio failed",
     "pc": [
       1072
     ]
   },
   {
-    "teal": 876,
-    "source": 185,
+    "teal": 870,
+    "source": 187,
     "pc": [
       1073
     ]
   },
   {
-    "teal": 877,
-    "source": 185,
+    "teal": 871,
+    "source": 174,
     "pc": [
       1074
     ]
   },
   {
-    "teal": 878,
-    "source": 185,
+    "teal": 876,
+    "source": 191,
     "pc": [
-      1075
-    ]
-  },
-  {
-    "teal": 879,
-    "source": 185,
-    "pc": [
-      1076
-    ]
-  },
-  {
-    "teal": 880,
-    "source": 185,
-    "pc": [
+      1075,
+      1076,
       1077
     ]
   },
   {
-    "teal": 883,
-    "source": 185,
-    "errorMessage": "wideRatio failed",
+    "teal": 877,
+    "source": 191,
     "pc": [
       1078
     ]
   },
   {
-    "teal": 884,
-    "source": 185,
+    "teal": 878,
+    "source": 191,
     "pc": [
-      1079,
-      1080
+      1079
     ]
   },
   {
-    "teal": 888,
-    "source": 186,
+    "teal": 879,
+    "source": 191,
     "pc": [
+      1080,
       1081
     ]
   },
   {
-    "teal": 889,
-    "source": 186,
+    "teal": 880,
+    "source": 191,
     "pc": [
       1082
     ]
   },
   {
-    "teal": 890,
-    "source": 186,
+    "teal": 883,
+    "source": 191,
+    "errorMessage": "argument 0 (userAddress) for accrueRewards must be a address",
     "pc": [
-      1083,
-      1084
+      1083
     ]
   },
   {
-    "teal": 891,
-    "source": 186,
+    "teal": 886,
+    "source": 191,
     "pc": [
-      1085
-    ]
-  },
-  {
-    "teal": 892,
-    "source": 186,
-    "pc": [
+      1084,
+      1085,
       1086
     ]
   },
   {
-    "teal": 893,
-    "source": 186,
+    "teal": 887,
+    "source": 191,
     "pc": [
       1087
     ]
   },
   {
-    "teal": 894,
-    "source": 186,
+    "teal": 888,
+    "source": 191,
     "pc": [
       1088
     ]
   },
   {
-    "teal": 898,
-    "source": 187,
+    "teal": 892,
+    "source": 191,
     "pc": [
       1089,
-      1090
+      1090,
+      1091
     ]
   },
   {
-    "teal": 899,
-    "source": 187,
+    "teal": 896,
+    "source": 192,
     "pc": [
-      1091,
-      1092
+      1092,
+      1093
     ]
   },
   {
-    "teal": 900,
-    "source": 187,
+    "teal": 897,
+    "source": 192,
     "pc": [
-      1093,
       1094
     ]
   },
   {
-    "teal": 901,
-    "source": 187,
+    "teal": 898,
+    "source": 192,
     "pc": [
       1095
     ]
   },
   {
-    "teal": 905,
-    "source": 189,
+    "teal": 899,
+    "source": 192,
     "pc": [
-      1096,
+      1096
+    ]
+  },
+  {
+    "teal": 900,
+    "source": 192,
+    "pc": [
       1097
     ]
   },
   {
-    "teal": 906,
-    "source": 189,
+    "teal": 903,
+    "source": 192,
+    "errorMessage": "User has no staked assets",
     "pc": [
       1098
     ]
   },
   {
     "teal": 907,
-    "source": 189,
+    "source": 193,
     "pc": [
-      1099
-    ]
-  },
-  {
-    "teal": 908,
-    "source": 189,
-    "pc": [
+      1099,
       1100
     ]
   },
   {
-    "teal": 909,
-    "source": 189,
+    "teal": 908,
+    "source": 193,
     "pc": [
-      1101
-    ]
-  },
-  {
-    "teal": 910,
-    "source": 189,
-    "pc": [
+      1101,
       1102
     ]
   },
   {
-    "teal": 911,
-    "source": 189,
+    "teal": 909,
+    "source": 193,
     "pc": [
       1103
     ]
   },
   {
-    "teal": 912,
-    "source": 189,
+    "teal": 910,
+    "source": 193,
     "pc": [
       1104
     ]
   },
   {
-    "teal": 913,
-    "source": 189,
+    "teal": 911,
+    "source": 193,
     "pc": [
       1105
     ]
   },
   {
     "teal": 914,
-    "source": 189,
+    "source": 193,
+    "errorMessage": "User has not staked assets",
     "pc": [
       1106
     ]
   },
   {
-    "teal": 915,
-    "source": 189,
-    "pc": [
-      1107
-    ]
-  },
-  {
     "teal": 918,
-    "source": 189,
-    "errorMessage": "wideRatio failed",
+    "source": 194,
     "pc": [
+      1107,
       1108
     ]
   },
   {
     "teal": 919,
-    "source": 189,
+    "source": 194,
     "pc": [
       1109,
       1110
     ]
   },
   {
-    "teal": 923,
-    "source": 190,
+    "teal": 920,
+    "source": 194,
     "pc": [
       1111,
       1112
     ]
   },
   {
-    "teal": 924,
-    "source": 190,
+    "teal": 921,
+    "source": 194,
     "pc": [
       1113,
       1114
     ]
   },
   {
-    "teal": 925,
-    "source": 190,
+    "teal": 922,
+    "source": 194,
     "pc": [
       1115,
       1116
     ]
   },
   {
-    "teal": 926,
-    "source": 190,
+    "teal": 923,
+    "source": 194,
     "pc": [
       1117
     ]
   },
   {
-    "teal": 930,
-    "source": 191,
+    "teal": 924,
+    "source": 194,
     "pc": [
-      1118,
+      1118
+    ]
+  },
+  {
+    "teal": 925,
+    "source": 194,
+    "pc": [
       1119
     ]
   },
   {
-    "teal": 931,
-    "source": 191,
+    "teal": 929,
+    "source": 195,
     "pc": [
       1120,
       1121
     ]
   },
   {
-    "teal": 932,
-    "source": 191,
+    "teal": 930,
+    "source": 195,
     "pc": [
-      1122
-    ]
-  },
-  {
-    "teal": 933,
-    "source": 191,
-    "pc": [
+      1122,
       1123
     ]
   },
   {
-    "teal": 934,
-    "source": 191,
+    "teal": 931,
+    "source": 195,
     "pc": [
       1124
     ]
   },
   {
-    "teal": 935,
-    "source": 191,
+    "teal": 932,
+    "source": 195,
     "pc": [
-      1125
-    ]
-  },
-  {
-    "teal": 936,
-    "source": 191,
-    "pc": [
+      1125,
       1126
     ]
   },
   {
-    "teal": 937,
-    "source": 191,
+    "teal": 933,
+    "source": 195,
     "pc": [
       1127
     ]
   },
   {
-    "teal": 938,
-    "source": 191,
+    "teal": 934,
+    "source": 195,
     "pc": [
       1128
     ]
   },
   {
-    "teal": 939,
-    "source": 191,
+    "teal": 937,
+    "source": 195,
+    "errorMessage": "User has not staked for minimum period",
     "pc": [
       1129
     ]
   },
   {
-    "teal": 942,
-    "source": 191,
-    "errorMessage": "wideRatio failed",
+    "teal": 941,
+    "source": 197,
     "pc": [
-      1130
+      1130,
+      1131
+    ]
+  },
+  {
+    "teal": 942,
+    "source": 197,
+    "pc": [
+      1132,
+      1133
     ]
   },
   {
     "teal": 943,
-    "source": 191,
+    "source": 197,
     "pc": [
-      1131,
-      1132
-    ]
-  },
-  {
-    "teal": 947,
-    "source": 192,
-    "pc": [
-      1133,
       1134
     ]
   },
   {
-    "teal": 948,
-    "source": 192,
+    "teal": 944,
+    "source": 197,
     "pc": [
       1135,
       1136
     ]
   },
   {
-    "teal": 949,
-    "source": 192,
+    "teal": 945,
+    "source": 197,
     "pc": [
       1137,
       1138
     ]
   },
   {
-    "teal": 950,
-    "source": 192,
+    "teal": 946,
+    "source": 197,
     "pc": [
       1139
     ]
   },
   {
-    "teal": 954,
-    "source": 194,
+    "teal": 947,
+    "source": 197,
     "pc": [
-      1140,
-      1141
+      1140
     ]
   },
   {
-    "teal": 955,
-    "source": 194,
+    "teal": 948,
+    "source": 197,
     "pc": [
+      1141,
       1142
     ]
   },
   {
-    "teal": 956,
-    "source": 194,
+    "teal": 949,
+    "source": 197,
     "pc": [
-      1143
-    ]
-  },
-  {
-    "teal": 957,
-    "source": 194,
-    "pc": [
+      1143,
       1144
     ]
   },
   {
-    "teal": 958,
-    "source": 194,
+    "teal": 950,
+    "source": 197,
     "pc": [
-      1145
-    ]
-  },
-  {
-    "teal": 959,
-    "source": 194,
-    "pc": [
+      1145,
       1146
     ]
   },
   {
-    "teal": 960,
-    "source": 194,
+    "teal": 951,
+    "source": 197,
     "pc": [
       1147
     ]
   },
   {
-    "teal": 961,
-    "source": 194,
+    "teal": 955,
+    "source": 198,
     "pc": [
-      1148
-    ]
-  },
-  {
-    "teal": 962,
-    "source": 194,
-    "pc": [
+      1148,
       1149
     ]
   },
   {
-    "teal": 963,
-    "source": 194,
+    "teal": 956,
+    "source": 198,
     "pc": [
       1150
     ]
   },
   {
-    "teal": 966,
-    "source": 194,
-    "errorMessage": "wideRatio failed",
+    "teal": 957,
+    "source": 198,
     "pc": [
-      1151
+      1151,
+      1152
     ]
   },
   {
-    "teal": 967,
-    "source": 194,
+    "teal": 958,
+    "source": 198,
     "pc": [
-      1152,
-      1153
-    ]
-  },
-  {
-    "teal": 971,
-    "source": 195,
-    "pc": [
+      1153,
       1154
     ]
   },
   {
-    "teal": 972,
-    "source": 195,
+    "teal": 959,
+    "source": 198,
     "pc": [
-      1155,
+      1155
+    ]
+  },
+  {
+    "teal": 960,
+    "source": 198,
+    "pc": [
       1156
     ]
   },
   {
-    "teal": 976,
-    "source": 197,
+    "teal": 961,
+    "source": 198,
     "pc": [
       1157,
       1158
     ]
   },
   {
-    "teal": 977,
-    "source": 197,
+    "teal": 962,
+    "source": 198,
     "pc": [
-      1159,
+      1159
+    ]
+  },
+  {
+    "teal": 963,
+    "source": 198,
+    "pc": [
       1160
     ]
   },
   {
-    "teal": 978,
-    "source": 197,
+    "teal": 967,
+    "source": 199,
     "pc": [
-      1161
-    ]
-  },
-  {
-    "teal": 979,
-    "source": 197,
-    "pc": [
+      1161,
       1162
     ]
   },
   {
-    "teal": 980,
-    "source": 197,
+    "teal": 968,
+    "source": 199,
     "pc": [
       1163,
       1164
     ]
   },
   {
-    "teal": 981,
-    "source": 197,
+    "teal": 969,
+    "source": 199,
     "pc": [
-      1165
-    ]
-  },
-  {
-    "teal": 982,
-    "source": 197,
-    "pc": [
+      1165,
       1166
     ]
   },
   {
-    "teal": 983,
-    "source": 197,
+    "teal": 970,
+    "source": 199,
     "pc": [
       1167
     ]
   },
   {
-    "teal": 984,
-    "source": 197,
+    "teal": 975,
+    "source": 201,
     "pc": [
-      1168
-    ]
-  },
-  {
-    "teal": 985,
-    "source": 197,
-    "pc": [
+      1168,
       1169
     ]
   },
   {
-    "teal": 986,
-    "source": 197,
+    "teal": 976,
+    "source": 201,
     "pc": [
       1170
     ]
   },
   {
-    "teal": 987,
-    "source": 197,
+    "teal": 977,
+    "source": 201,
     "pc": [
       1171
     ]
   },
   {
-    "teal": 988,
-    "source": 197,
+    "teal": 978,
+    "source": 201,
     "pc": [
       1172
     ]
   },
   {
-    "teal": 991,
-    "source": 197,
-    "errorMessage": "wideRatio failed",
+    "teal": 979,
+    "source": 201,
     "pc": [
       1173
     ]
   },
   {
-    "teal": 992,
-    "source": 197,
-    "pc": [
-      1174
-    ]
-  },
-  {
-    "teal": 993,
-    "source": 178,
-    "pc": [
-      1175
-    ]
-  },
-  {
-    "teal": 998,
+    "teal": 980,
     "source": 201,
     "pc": [
-      1176,
+      1174,
+      1175,
+      1176
+    ]
+  },
+  {
+    "teal": 985,
+    "source": 203,
+    "pc": [
       1177,
       1178
     ]
   },
   {
-    "teal": 999,
-    "source": 201,
+    "teal": 986,
+    "source": 203,
     "pc": [
       1179
     ]
   },
   {
-    "teal": 1000,
-    "source": 201,
+    "teal": 987,
+    "source": 203,
     "pc": [
       1180
     ]
   },
   {
-    "teal": 1001,
-    "source": 201,
+    "teal": 988,
+    "source": 203,
     "pc": [
       1181,
       1182
     ]
   },
   {
-    "teal": 1002,
-    "source": 201,
+    "teal": 989,
+    "source": 203,
     "pc": [
-      1183
-    ]
-  },
-  {
-    "teal": 1005,
-    "source": 201,
-    "errorMessage": "argument 0 (userAddress) for accrueRewards must be a address",
-    "pc": [
+      1183,
       1184
     ]
   },
   {
-    "teal": 1008,
-    "source": 201,
+    "teal": 990,
+    "source": 203,
     "pc": [
-      1185,
-      1186,
-      1187
+      1185
     ]
   },
   {
-    "teal": 1009,
-    "source": 201,
+    "teal": 991,
+    "source": 203,
     "pc": [
+      1186
+    ]
+  },
+  {
+    "teal": 992,
+    "source": 203,
+    "pc": [
+      1187,
       1188
     ]
   },
   {
-    "teal": 1010,
-    "source": 201,
+    "teal": 993,
+    "source": 203,
     "pc": [
       1189
     ]
   },
   {
-    "teal": 1014,
-    "source": 201,
+    "teal": 994,
+    "source": 203,
     "pc": [
       1190,
-      1191,
+      1191
+    ]
+  },
+  {
+    "teal": 995,
+    "source": 203,
+    "pc": [
       1192
     ]
   },
   {
-    "teal": 1018,
-    "source": 202,
+    "teal": 999,
+    "source": 204,
     "pc": [
-      1193,
+      1193
+    ]
+  },
+  {
+    "teal": 1000,
+    "source": 204,
+    "pc": [
       1194
     ]
   },
   {
-    "teal": 1019,
-    "source": 202,
+    "teal": 1001,
+    "source": 204,
     "pc": [
-      1195
-    ]
-  },
-  {
-    "teal": 1020,
-    "source": 202,
-    "pc": [
+      1195,
       1196
     ]
   },
   {
-    "teal": 1021,
-    "source": 202,
+    "teal": 1002,
+    "source": 204,
     "pc": [
-      1197
-    ]
-  },
-  {
-    "teal": 1022,
-    "source": 202,
-    "pc": [
+      1197,
       1198
     ]
   },
   {
-    "teal": 1025,
-    "source": 202,
-    "errorMessage": "User has no staked assets",
+    "teal": 1003,
+    "source": 204,
     "pc": [
       1199
     ]
   },
   {
-    "teal": 1029,
-    "source": 203,
+    "teal": 1004,
+    "source": 204,
     "pc": [
-      1200,
+      1200
+    ]
+  },
+  {
+    "teal": 1005,
+    "source": 204,
+    "pc": [
       1201
     ]
   },
   {
-    "teal": 1030,
-    "source": 203,
+    "teal": 1006,
+    "source": 204,
     "pc": [
-      1202,
+      1202
+    ]
+  },
+  {
+    "teal": 1007,
+    "source": 204,
+    "pc": [
       1203
     ]
   },
   {
-    "teal": 1031,
-    "source": 203,
+    "teal": 1010,
+    "source": 191,
     "pc": [
       1204
     ]
   },
   {
-    "teal": 1032,
-    "source": 203,
+    "teal": 1015,
+    "source": 209,
     "pc": [
-      1205
-    ]
-  },
-  {
-    "teal": 1033,
-    "source": 203,
-    "pc": [
-      1206
-    ]
-  },
-  {
-    "teal": 1036,
-    "source": 203,
-    "errorMessage": "User has not staked assets",
-    "pc": [
+      1205,
+      1206,
       1207
     ]
   },
   {
-    "teal": 1040,
-    "source": 204,
+    "teal": 1016,
+    "source": 209,
     "pc": [
-      1208,
-      1209
+      1208
     ]
   },
   {
-    "teal": 1041,
-    "source": 204,
+    "teal": 1019,
+    "source": 209,
     "pc": [
-      1210,
+      1209,
+      1210
+    ]
+  },
+  {
+    "teal": 1020,
+    "source": 209,
+    "pc": [
       1211
     ]
   },
   {
-    "teal": 1042,
-    "source": 204,
+    "teal": 1021,
+    "source": 209,
     "pc": [
-      1212,
+      1212
+    ]
+  },
+  {
+    "teal": 1022,
+    "source": 209,
+    "pc": [
       1213
     ]
   },
   {
-    "teal": 1043,
-    "source": 204,
+    "teal": 1023,
+    "source": 209,
     "pc": [
       1214,
       1215
     ]
   },
   {
-    "teal": 1044,
-    "source": 204,
+    "teal": 1024,
+    "source": 209,
     "pc": [
-      1216,
+      1216
+    ]
+  },
+  {
+    "teal": 1025,
+    "source": 209,
+    "pc": [
       1217
     ]
   },
   {
-    "teal": 1045,
-    "source": 204,
+    "teal": 1028,
+    "source": 209,
+    "errorMessage": "argument 1 (stakeTxn) for restake must be a axfer transaction",
     "pc": [
       1218
     ]
   },
   {
-    "teal": 1046,
-    "source": 204,
+    "teal": 1031,
+    "source": 209,
     "pc": [
-      1219
+      1219,
+      1220,
+      1221
     ]
   },
   {
-    "teal": 1047,
-    "source": 204,
+    "teal": 1032,
+    "source": 209,
     "pc": [
-      1220
-    ]
-  },
-  {
-    "teal": 1051,
-    "source": 205,
-    "pc": [
-      1221,
       1222
     ]
   },
   {
-    "teal": 1052,
-    "source": 205,
+    "teal": 1033,
+    "source": 209,
     "pc": [
-      1223,
-      1224
+      1223
     ]
   },
   {
-    "teal": 1053,
-    "source": 205,
+    "teal": 1037,
+    "source": 209,
     "pc": [
-      1225
+      1224,
+      1225,
+      1226
     ]
   },
   {
-    "teal": 1054,
-    "source": 205,
+    "teal": 1040,
+    "source": 209,
     "pc": [
-      1226,
-      1227
-    ]
-  },
-  {
-    "teal": 1055,
-    "source": 205,
-    "pc": [
+      1227,
       1228
     ]
   },
   {
-    "teal": 1056,
-    "source": 205,
+    "teal": 1041,
+    "source": 209,
     "pc": [
-      1229
-    ]
-  },
-  {
-    "teal": 1059,
-    "source": 205,
-    "errorMessage": "User has not staked for minimum period",
-    "pc": [
+      1229,
       1230
     ]
   },
   {
-    "teal": 1063,
-    "source": 207,
+    "teal": 1045,
+    "source": 210,
     "pc": [
       1231,
       1232
     ]
   },
   {
-    "teal": 1064,
-    "source": 207,
+    "teal": 1046,
+    "source": 210,
     "pc": [
-      1233,
+      1233
+    ]
+  },
+  {
+    "teal": 1047,
+    "source": 210,
+    "pc": [
       1234
     ]
   },
   {
-    "teal": 1065,
-    "source": 207,
+    "teal": 1050,
+    "source": 210,
+    "errorMessage": "Invalid quantity",
     "pc": [
       1235
     ]
   },
   {
-    "teal": 1066,
-    "source": 207,
+    "teal": 1060,
+    "source": 212,
     "pc": [
       1236,
       1237
     ]
   },
   {
-    "teal": 1067,
-    "source": 207,
+    "teal": 1061,
+    "source": 213,
     "pc": [
       1238,
       1239
     ]
   },
   {
-    "teal": 1068,
-    "source": 207,
+    "teal": 1062,
+    "source": 213,
     "pc": [
-      1240
-    ]
-  },
-  {
-    "teal": 1069,
-    "source": 207,
-    "pc": [
+      1240,
       1241
     ]
   },
   {
-    "teal": 1070,
-    "source": 207,
+    "teal": 1063,
+    "source": 213,
     "pc": [
-      1242,
+      1242
+    ]
+  },
+  {
+    "teal": 1066,
+    "source": 213,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"sender\",\"expected\":\"this.txn.sender\"}",
+    "pc": [
       1243
     ]
   },
   {
-    "teal": 1071,
-    "source": 207,
+    "teal": 1069,
+    "source": 212,
     "pc": [
       1244,
       1245
     ]
   },
   {
-    "teal": 1072,
-    "source": 207,
+    "teal": 1070,
+    "source": 214,
     "pc": [
       1246,
       1247
     ]
   },
   {
-    "teal": 1073,
-    "source": 207,
+    "teal": 1071,
+    "source": 214,
     "pc": [
-      1248
-    ]
-  },
-  {
-    "teal": 1077,
-    "source": 208,
-    "pc": [
+      1248,
       1249
     ]
   },
   {
-    "teal": 1078,
-    "source": 208,
+    "teal": 1072,
+    "source": 214,
     "pc": [
       1250
     ]
   },
   {
+    "teal": 1075,
+    "source": 214,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetReceiver\",\"expected\":\"this.app.address\"}",
+    "pc": [
+      1251
+    ]
+  },
+  {
+    "teal": 1078,
+    "source": 212,
+    "pc": [
+      1252,
+      1253
+    ]
+  },
+  {
     "teal": 1079,
-    "source": 208,
+    "source": 215,
     "pc": [
-      1251,
-      1252
-    ]
-  },
-  {
-    "teal": 1080,
-    "source": 208,
-    "pc": [
-      1253,
-      1254
-    ]
-  },
-  {
-    "teal": 1081,
-    "source": 208,
-    "pc": [
+      1254,
       1255
     ]
   },
   {
-    "teal": 1082,
-    "source": 208,
+    "teal": 1080,
+    "source": 215,
     "pc": [
       1256
     ]
   },
   {
-    "teal": 1083,
-    "source": 208,
+    "teal": 1081,
+    "source": 215,
     "pc": [
       1257
     ]
   },
   {
-    "teal": 1084,
-    "source": 208,
+    "teal": 1082,
+    "source": 215,
     "pc": [
       1258
     ]
   },
   {
     "teal": 1085,
-    "source": 208,
+    "source": 215,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"xferAsset\",\"expected\":\"AssetID.fromUint64(this.stakedAssetId.value)\"}",
     "pc": [
       1259
     ]
   },
   {
-    "teal": 1089,
-    "source": 209,
+    "teal": 1088,
+    "source": 212,
     "pc": [
       1260,
       1261
     ]
   },
   {
-    "teal": 1090,
-    "source": 209,
+    "teal": 1089,
+    "source": 216,
     "pc": [
       1262,
       1263
     ]
   },
   {
-    "teal": 1091,
-    "source": 209,
+    "teal": 1090,
+    "source": 216,
     "pc": [
       1264,
       1265
     ]
   },
   {
-    "teal": 1092,
-    "source": 209,
+    "teal": 1091,
+    "source": 216,
     "pc": [
       1266
     ]
   },
   {
-    "teal": 1097,
-    "source": 211,
+    "teal": 1094,
+    "source": 216,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetAmount\",\"expected\":\"quantity\"}",
     "pc": [
-      1267,
-      1268
+      1267
     ]
   },
   {
     "teal": 1098,
-    "source": 211,
+    "source": 218,
     "pc": [
+      1268,
       1269
     ]
   },
   {
     "teal": 1099,
-    "source": 211,
+    "source": 218,
     "pc": [
       1270
     ]
   },
   {
     "teal": 1100,
-    "source": 211,
+    "source": 218,
     "pc": [
       1271
     ]
   },
   {
     "teal": 1101,
-    "source": 211,
+    "source": 218,
     "pc": [
-      1272
+      1272,
+      1273
     ]
   },
   {
     "teal": 1102,
-    "source": 211,
+    "source": 218,
     "pc": [
-      1273,
       1274,
       1275
     ]
   },
   {
-    "teal": 1107,
-    "source": 213,
+    "teal": 1103,
+    "source": 218,
     "pc": [
-      1276,
-      1277
+      1276
     ]
   },
   {
-    "teal": 1108,
-    "source": 213,
+    "teal": 1104,
+    "source": 218,
     "pc": [
+      1277,
       1278
     ]
   },
   {
-    "teal": 1109,
-    "source": 213,
+    "teal": 1105,
+    "source": 218,
     "pc": [
       1279
     ]
   },
   {
-    "teal": 1110,
-    "source": 213,
+    "teal": 1106,
+    "source": 218,
     "pc": [
       1280,
       1281
     ]
   },
   {
-    "teal": 1111,
-    "source": 213,
+    "teal": 1107,
+    "source": 218,
     "pc": [
-      1282,
+      1282
+    ]
+  },
+  {
+    "teal": 1111,
+    "source": 219,
+    "pc": [
       1283
     ]
   },
   {
     "teal": 1112,
-    "source": 213,
+    "source": 219,
     "pc": [
       1284
     ]
   },
   {
     "teal": 1113,
-    "source": 213,
+    "source": 219,
     "pc": [
-      1285
+      1285,
+      1286
     ]
   },
   {
     "teal": 1114,
-    "source": 213,
+    "source": 219,
     "pc": [
-      1286,
-      1287
-    ]
-  },
-  {
-    "teal": 1115,
-    "source": 213,
-    "pc": [
+      1287,
       1288
     ]
   },
   {
-    "teal": 1116,
-    "source": 213,
+    "teal": 1115,
+    "source": 219,
     "pc": [
-      1289,
+      1289
+    ]
+  },
+  {
+    "teal": 1116,
+    "source": 219,
+    "pc": [
       1290
     ]
   },
   {
     "teal": 1117,
-    "source": 213,
+    "source": 219,
     "pc": [
       1291
     ]
   },
   {
-    "teal": 1120,
-    "source": 201,
+    "teal": 1118,
+    "source": 219,
     "pc": [
       1292
     ]
   },
   {
-    "teal": 1125,
-    "source": 218,
+    "teal": 1122,
+    "source": 221,
     "pc": [
       1293,
-      1294,
-      1295
+      1294
     ]
   },
   {
-    "teal": 1126,
-    "source": 218,
+    "teal": 1123,
+    "source": 221,
     "pc": [
+      1295,
       1296
     ]
   },
   {
-    "teal": 1129,
-    "source": 218,
+    "teal": 1124,
+    "source": 221,
     "pc": [
       1297,
       1298
     ]
   },
   {
-    "teal": 1130,
-    "source": 218,
+    "teal": 1125,
+    "source": 221,
     "pc": [
       1299
     ]
   },
   {
-    "teal": 1131,
-    "source": 218,
+    "teal": 1129,
+    "source": 222,
     "pc": [
-      1300
-    ]
-  },
-  {
-    "teal": 1132,
-    "source": 218,
-    "pc": [
+      1300,
       1301
     ]
   },
   {
-    "teal": 1133,
-    "source": 218,
+    "teal": 1130,
+    "source": 222,
     "pc": [
       1302,
       1303
     ]
   },
   {
-    "teal": 1134,
-    "source": 218,
+    "teal": 1131,
+    "source": 222,
     "pc": [
       1304
     ]
   },
   {
-    "teal": 1135,
-    "source": 218,
+    "teal": 1132,
+    "source": 222,
     "pc": [
       1305
     ]
   },
   {
-    "teal": 1138,
-    "source": 218,
-    "errorMessage": "argument 1 (stakeTxn) for restake must be a axfer transaction",
+    "teal": 1136,
+    "source": 225,
     "pc": [
       1306
     ]
   },
   {
-    "teal": 1141,
-    "source": 218,
+    "teal": 1137,
+    "source": 225,
     "pc": [
-      1307,
+      1307
+    ]
+  },
+  {
+    "teal": 1138,
+    "source": 225,
+    "pc": [
       1308,
       1309
     ]
   },
   {
-    "teal": 1142,
-    "source": 218,
+    "teal": 1139,
+    "source": 225,
     "pc": [
-      1310
-    ]
-  },
-  {
-    "teal": 1143,
-    "source": 218,
-    "pc": [
+      1310,
       1311
     ]
   },
   {
-    "teal": 1147,
-    "source": 218,
+    "teal": 1140,
+    "source": 225,
     "pc": [
-      1312,
-      1313,
+      1312
+    ]
+  },
+  {
+    "teal": 1141,
+    "source": 225,
+    "pc": [
+      1313
+    ]
+  },
+  {
+    "teal": 1142,
+    "source": 225,
+    "pc": [
       1314
     ]
   },
   {
-    "teal": 1150,
-    "source": 218,
+    "teal": 1143,
+    "source": 225,
     "pc": [
-      1315,
+      1315
+    ]
+  },
+  {
+    "teal": 1144,
+    "source": 225,
+    "pc": [
       1316
     ]
   },
   {
-    "teal": 1151,
-    "source": 218,
+    "teal": 1148,
+    "source": 226,
     "pc": [
       1317,
       1318
     ]
   },
   {
-    "teal": 1155,
-    "source": 219,
+    "teal": 1149,
+    "source": 226,
     "pc": [
-      1319,
+      1319
+    ]
+  },
+  {
+    "teal": 1150,
+    "source": 226,
+    "pc": [
       1320
     ]
   },
   {
-    "teal": 1156,
-    "source": 219,
+    "teal": 1151,
+    "source": 226,
     "pc": [
-      1321
-    ]
-  },
-  {
-    "teal": 1157,
-    "source": 219,
-    "pc": [
+      1321,
       1322
     ]
   },
   {
-    "teal": 1160,
-    "source": 219,
-    "errorMessage": "Invalid quantity",
+    "teal": 1152,
+    "source": 226,
     "pc": [
       1323
     ]
   },
   {
-    "teal": 1170,
-    "source": 222,
+    "teal": 1153,
+    "source": 226,
     "pc": [
-      1324,
+      1324
+    ]
+  },
+  {
+    "teal": 1154,
+    "source": 226,
+    "pc": [
       1325
     ]
   },
   {
-    "teal": 1171,
-    "source": 223,
+    "teal": 1155,
+    "source": 226,
     "pc": [
       1326,
       1327
     ]
   },
   {
-    "teal": 1172,
-    "source": 223,
+    "teal": 1156,
+    "source": 226,
     "pc": [
-      1328,
+      1328
+    ]
+  },
+  {
+    "teal": 1157,
+    "source": 226,
+    "pc": [
       1329
     ]
   },
   {
-    "teal": 1173,
-    "source": 223,
+    "teal": 1158,
+    "source": 226,
     "pc": [
       1330
     ]
   },
   {
-    "teal": 1176,
-    "source": 223,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"sender\",\"expected\":\"this.txn.sender\"}",
+    "teal": 1159,
+    "source": 226,
     "pc": [
       1331
     ]
   },
   {
-    "teal": 1179,
-    "source": 222,
+    "teal": 1160,
+    "source": 226,
     "pc": [
-      1332,
+      1332
+    ]
+  },
+  {
+    "teal": 1161,
+    "source": 226,
+    "pc": [
       1333
     ]
   },
   {
-    "teal": 1180,
-    "source": 224,
+    "teal": 1164,
+    "source": 226,
+    "errorMessage": "wideRatio failed",
     "pc": [
-      1334,
-      1335
+      1334
     ]
   },
   {
-    "teal": 1181,
-    "source": 224,
+    "teal": 1165,
+    "source": 226,
     "pc": [
-      1336,
+      1335,
+      1336
+    ]
+  },
+  {
+    "teal": 1169,
+    "source": 227,
+    "pc": [
       1337
     ]
   },
   {
-    "teal": 1182,
-    "source": 224,
+    "teal": 1170,
+    "source": 227,
     "pc": [
       1338
     ]
   },
   {
-    "teal": 1185,
-    "source": 224,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetReceiver\",\"expected\":\"this.app.address\"}",
+    "teal": 1171,
+    "source": 227,
     "pc": [
-      1339
+      1339,
+      1340
     ]
   },
   {
-    "teal": 1188,
-    "source": 222,
+    "teal": 1172,
+    "source": 227,
     "pc": [
-      1340,
       1341
     ]
   },
   {
-    "teal": 1189,
-    "source": 225,
+    "teal": 1173,
+    "source": 227,
     "pc": [
-      1342,
+      1342
+    ]
+  },
+  {
+    "teal": 1174,
+    "source": 227,
+    "pc": [
       1343
     ]
   },
   {
-    "teal": 1190,
-    "source": 225,
+    "teal": 1175,
+    "source": 227,
     "pc": [
       1344
     ]
   },
   {
-    "teal": 1191,
-    "source": 225,
+    "teal": 1179,
+    "source": 228,
     "pc": [
-      1345
-    ]
-  },
-  {
-    "teal": 1192,
-    "source": 225,
-    "pc": [
+      1345,
       1346
     ]
   },
   {
-    "teal": 1195,
-    "source": 225,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"xferAsset\",\"expected\":\"AssetID.fromUint64(this.stakedAssetId.value)\"}",
+    "teal": 1180,
+    "source": 228,
     "pc": [
-      1347
+      1347,
+      1348
     ]
   },
   {
-    "teal": 1198,
-    "source": 222,
+    "teal": 1181,
+    "source": 228,
     "pc": [
-      1348,
-      1349
+      1349,
+      1350
     ]
   },
   {
-    "teal": 1199,
-    "source": 226,
+    "teal": 1182,
+    "source": 228,
     "pc": [
-      1350,
       1351
     ]
   },
   {
-    "teal": 1200,
-    "source": 226,
+    "teal": 1186,
+    "source": 230,
     "pc": [
       1352,
       1353
     ]
   },
   {
-    "teal": 1201,
-    "source": 226,
+    "teal": 1187,
+    "source": 230,
     "pc": [
       1354
     ]
   },
   {
-    "teal": 1204,
-    "source": 226,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetAmount\",\"expected\":\"quantity\"}",
+    "teal": 1188,
+    "source": 230,
     "pc": [
       1355
     ]
   },
   {
-    "teal": 1208,
-    "source": 228,
+    "teal": 1189,
+    "source": 230,
     "pc": [
-      1356,
+      1356
+    ]
+  },
+  {
+    "teal": 1190,
+    "source": 230,
+    "pc": [
       1357
     ]
   },
   {
-    "teal": 1209,
-    "source": 228,
+    "teal": 1191,
+    "source": 230,
     "pc": [
       1358
     ]
   },
   {
-    "teal": 1210,
-    "source": 228,
+    "teal": 1192,
+    "source": 230,
     "pc": [
       1359
     ]
   },
   {
-    "teal": 1211,
-    "source": 228,
+    "teal": 1193,
+    "source": 230,
     "pc": [
-      1360,
+      1360
+    ]
+  },
+  {
+    "teal": 1194,
+    "source": 230,
+    "pc": [
       1361
     ]
   },
   {
-    "teal": 1212,
-    "source": 228,
+    "teal": 1195,
+    "source": 230,
     "pc": [
-      1362,
+      1362
+    ]
+  },
+  {
+    "teal": 1196,
+    "source": 230,
+    "pc": [
       1363
     ]
   },
   {
-    "teal": 1213,
-    "source": 228,
+    "teal": 1199,
+    "source": 230,
+    "errorMessage": "wideRatio failed",
     "pc": [
       1364
     ]
   },
   {
-    "teal": 1214,
-    "source": 228,
+    "teal": 1200,
+    "source": 230,
     "pc": [
       1365,
       1366
     ]
   },
   {
-    "teal": 1215,
-    "source": 228,
+    "teal": 1204,
+    "source": 232,
     "pc": [
-      1367
+      1367,
+      1368
     ]
   },
   {
-    "teal": 1216,
-    "source": 228,
+    "teal": 1205,
+    "source": 232,
     "pc": [
-      1368,
-      1369
-    ]
-  },
-  {
-    "teal": 1217,
-    "source": 228,
-    "pc": [
+      1369,
       1370
     ]
   },
   {
-    "teal": 1221,
-    "source": 230,
+    "teal": 1206,
+    "source": 232,
     "pc": [
-      1371,
+      1371
+    ]
+  },
+  {
+    "teal": 1207,
+    "source": 232,
+    "pc": [
       1372
     ]
   },
   {
-    "teal": 1222,
-    "source": 230,
+    "teal": 1208,
+    "source": 232,
     "pc": [
-      1373,
+      1373
+    ]
+  },
+  {
+    "teal": 1209,
+    "source": 232,
+    "pc": [
       1374
     ]
   },
   {
-    "teal": 1223,
-    "source": 230,
+    "teal": 1210,
+    "source": 232,
     "pc": [
-      1375,
+      1375
+    ]
+  },
+  {
+    "teal": 1211,
+    "source": 232,
+    "pc": [
       1376
     ]
   },
   {
-    "teal": 1224,
-    "source": 230,
+    "teal": 1212,
+    "source": 232,
     "pc": [
       1377
     ]
   },
   {
-    "teal": 1228,
-    "source": 231,
+    "teal": 1213,
+    "source": 232,
     "pc": [
-      1378,
+      1378
+    ]
+  },
+  {
+    "teal": 1216,
+    "source": 232,
+    "errorMessage": "wideRatio failed",
+    "pc": [
       1379
     ]
   },
   {
-    "teal": 1229,
-    "source": 231,
+    "teal": 1217,
+    "source": 232,
     "pc": [
       1380,
       1381
     ]
   },
   {
-    "teal": 1230,
-    "source": 231,
+    "teal": 1221,
+    "source": 233,
     "pc": [
       1382
     ]
   },
   {
-    "teal": 1231,
-    "source": 231,
+    "teal": 1222,
+    "source": 233,
     "pc": [
-      1383
-    ]
-  },
-  {
-    "teal": 1235,
-    "source": 234,
-    "pc": [
+      1383,
       1384
     ]
   },
   {
-    "teal": 1236,
-    "source": 234,
+    "teal": 1223,
+    "source": 233,
     "pc": [
       1385
     ]
   },
   {
-    "teal": 1237,
-    "source": 234,
+    "teal": 1224,
+    "source": 233,
     "pc": [
-      1386,
+      1386
+    ]
+  },
+  {
+    "teal": 1225,
+    "source": 233,
+    "pc": [
       1387
     ]
   },
   {
-    "teal": 1238,
-    "source": 234,
+    "teal": 1226,
+    "source": 233,
     "pc": [
-      1388,
+      1388
+    ]
+  },
+  {
+    "teal": 1227,
+    "source": 233,
+    "pc": [
       1389
     ]
   },
   {
-    "teal": 1239,
-    "source": 234,
+    "teal": 1228,
+    "source": 233,
     "pc": [
       1390
     ]
   },
   {
-    "teal": 1240,
-    "source": 234,
+    "teal": 1229,
+    "source": 233,
     "pc": [
       1391
     ]
   },
   {
-    "teal": 1241,
-    "source": 234,
+    "teal": 1230,
+    "source": 233,
     "pc": [
       1392
     ]
   },
   {
-    "teal": 1242,
-    "source": 234,
+    "teal": 1231,
+    "source": 233,
     "pc": [
       1393
     ]
   },
   {
-    "teal": 1243,
-    "source": 234,
+    "teal": 1234,
+    "source": 233,
+    "errorMessage": "wideRatio failed",
     "pc": [
       1394
     ]
   },
   {
-    "teal": 1247,
-    "source": 235,
+    "teal": 1235,
+    "source": 233,
     "pc": [
       1395,
       1396
     ]
   },
   {
-    "teal": 1248,
-    "source": 235,
+    "teal": 1239,
+    "source": 234,
     "pc": [
       1397
     ]
   },
   {
-    "teal": 1249,
-    "source": 235,
+    "teal": 1240,
+    "source": 234,
     "pc": [
-      1398
+      1398,
+      1399
     ]
   },
   {
-    "teal": 1250,
-    "source": 235,
+    "teal": 1244,
+    "source": 236,
     "pc": [
-      1399,
-      1400
-    ]
-  },
-  {
-    "teal": 1251,
-    "source": 235,
-    "pc": [
+      1400,
       1401
     ]
   },
   {
-    "teal": 1252,
-    "source": 235,
+    "teal": 1245,
+    "source": 236,
     "pc": [
-      1402
-    ]
-  },
-  {
-    "teal": 1253,
-    "source": 235,
-    "pc": [
+      1402,
       1403
     ]
   },
   {
-    "teal": 1254,
-    "source": 235,
+    "teal": 1246,
+    "source": 236,
     "pc": [
       1404,
       1405
     ]
   },
   {
-    "teal": 1255,
-    "source": 235,
+    "teal": 1247,
+    "source": 236,
     "pc": [
       1406
     ]
   },
   {
-    "teal": 1256,
-    "source": 235,
+    "teal": 1248,
+    "source": 236,
     "pc": [
-      1407
-    ]
-  },
-  {
-    "teal": 1257,
-    "source": 235,
-    "pc": [
+      1407,
       1408
     ]
   },
   {
-    "teal": 1258,
-    "source": 235,
+    "teal": 1249,
+    "source": 236,
     "pc": [
       1409
     ]
   },
   {
-    "teal": 1259,
-    "source": 235,
+    "teal": 1250,
+    "source": 236,
     "pc": [
       1410
     ]
   },
   {
-    "teal": 1260,
-    "source": 235,
+    "teal": 1251,
+    "source": 236,
     "pc": [
       1411
     ]
   },
   {
-    "teal": 1263,
-    "source": 235,
-    "errorMessage": "wideRatio failed",
+    "teal": 1252,
+    "source": 236,
     "pc": [
       1412
     ]
   },
   {
-    "teal": 1264,
-    "source": 235,
+    "teal": 1253,
+    "source": 236,
     "pc": [
-      1413,
+      1413
+    ]
+  },
+  {
+    "teal": 1254,
+    "source": 236,
+    "pc": [
       1414
     ]
   },
   {
-    "teal": 1268,
+    "teal": 1255,
     "source": 236,
     "pc": [
       1415
     ]
   },
   {
-    "teal": 1269,
+    "teal": 1256,
     "source": 236,
     "pc": [
       1416
     ]
   },
   {
-    "teal": 1270,
+    "teal": 1259,
     "source": 236,
+    "errorMessage": "wideRatio failed",
     "pc": [
-      1417,
-      1418
+      1417
     ]
   },
   {
-    "teal": 1271,
+    "teal": 1260,
     "source": 236,
     "pc": [
+      1418,
       1419
     ]
   },
   {
-    "teal": 1272,
+    "teal": 1261,
     "source": 236,
     "pc": [
       1420
     ]
   },
   {
-    "teal": 1273,
+    "teal": 1262,
     "source": 236,
     "pc": [
       1421
     ]
   },
   {
-    "teal": 1274,
-    "source": 236,
+    "teal": 1263,
+    "source": 209,
     "pc": [
       1422
     ]
   },
   {
-    "teal": 1278,
-    "source": 237,
+    "teal": 1268,
+    "source": 239,
     "pc": [
       1423,
-      1424
+      1424,
+      1425
     ]
   },
   {
-    "teal": 1279,
-    "source": 237,
+    "teal": 1269,
+    "source": 239,
     "pc": [
-      1425,
       1426
     ]
   },
   {
-    "teal": 1280,
-    "source": 237,
-    "pc": [
-      1427,
-      1428
-    ]
-  },
-  {
-    "teal": 1281,
-    "source": 237,
-    "pc": [
-      1429
-    ]
-  },
-  {
-    "teal": 1285,
+    "teal": 1270,
     "source": 239,
     "pc": [
-      1430,
-      1431
+      1427
     ]
   },
   {
-    "teal": 1286,
+    "teal": 1274,
     "source": 239,
     "pc": [
+      1428,
+      1429,
+      1430
+    ]
+  },
+  {
+    "teal": 1278,
+    "source": 240,
+    "pc": [
+      1431,
       1432
     ]
   },
   {
-    "teal": 1287,
-    "source": 239,
+    "teal": 1279,
+    "source": 240,
     "pc": [
       1433
     ]
   },
   {
-    "teal": 1288,
-    "source": 239,
+    "teal": 1280,
+    "source": 240,
     "pc": [
       1434
     ]
   },
   {
-    "teal": 1289,
-    "source": 239,
+    "teal": 1281,
+    "source": 240,
     "pc": [
       1435
     ]
   },
   {
-    "teal": 1290,
-    "source": 239,
+    "teal": 1282,
+    "source": 240,
     "pc": [
       1436
     ]
   },
   {
-    "teal": 1291,
-    "source": 239,
+    "teal": 1285,
+    "source": 240,
+    "errorMessage": "No staked assets",
     "pc": [
       1437
     ]
   },
   {
-    "teal": 1292,
-    "source": 239,
+    "teal": 1289,
+    "source": 241,
     "pc": [
-      1438
-    ]
-  },
-  {
-    "teal": 1293,
-    "source": 239,
-    "pc": [
+      1438,
       1439
     ]
   },
   {
-    "teal": 1294,
-    "source": 239,
+    "teal": 1290,
+    "source": 241,
     "pc": [
-      1440
-    ]
-  },
-  {
-    "teal": 1295,
-    "source": 239,
-    "pc": [
+      1440,
       1441
     ]
   },
   {
-    "teal": 1298,
-    "source": 239,
-    "errorMessage": "wideRatio failed",
+    "teal": 1291,
+    "source": 241,
     "pc": [
       1442
     ]
   },
   {
-    "teal": 1299,
-    "source": 239,
+    "teal": 1292,
+    "source": 241,
     "pc": [
-      1443,
+      1443
+    ]
+  },
+  {
+    "teal": 1293,
+    "source": 241,
+    "pc": [
       1444
     ]
   },
   {
-    "teal": 1303,
+    "teal": 1296,
     "source": 241,
+    "errorMessage": "User has not staked assets",
     "pc": [
-      1445,
-      1446
+      1445
     ]
   },
   {
-    "teal": 1304,
-    "source": 241,
+    "teal": 1300,
+    "source": 242,
     "pc": [
-      1447,
-      1448
+      1446,
+      1447
     ]
   },
   {
-    "teal": 1305,
-    "source": 241,
+    "teal": 1301,
+    "source": 242,
     "pc": [
+      1448,
       1449
     ]
   },
   {
-    "teal": 1306,
-    "source": 241,
+    "teal": 1302,
+    "source": 242,
     "pc": [
       1450
     ]
   },
   {
-    "teal": 1307,
-    "source": 241,
+    "teal": 1303,
+    "source": 242,
     "pc": [
       1451
     ]
   },
   {
-    "teal": 1308,
-    "source": 241,
+    "teal": 1304,
+    "source": 242,
     "pc": [
       1452
     ]
   },
   {
-    "teal": 1309,
-    "source": 241,
+    "teal": 1307,
+    "source": 242,
+    "errorMessage": "User has not staked assets",
     "pc": [
       1453
     ]
   },
   {
-    "teal": 1310,
-    "source": 241,
+    "teal": 1312,
+    "source": 244,
     "pc": [
       1454
     ]
   },
   {
-    "teal": 1311,
-    "source": 241,
+    "teal": 1313,
+    "source": 244,
     "pc": [
       1455
     ]
   },
   {
-    "teal": 1312,
-    "source": 241,
+    "teal": 1314,
+    "source": 244,
     "pc": [
-      1456
-    ]
-  },
-  {
-    "teal": 1315,
-    "source": 241,
-    "errorMessage": "wideRatio failed",
-    "pc": [
+      1456,
       1457
     ]
   },
   {
-    "teal": 1316,
-    "source": 241,
+    "teal": 1315,
+    "source": 244,
     "pc": [
-      1458,
+      1458
+    ]
+  },
+  {
+    "teal": 1316,
+    "source": 244,
+    "pc": [
       1459
     ]
   },
   {
-    "teal": 1320,
-    "source": 242,
+    "teal": 1317,
+    "source": 244,
     "pc": [
-      1460
-    ]
-  },
-  {
-    "teal": 1321,
-    "source": 242,
-    "pc": [
+      1460,
       1461,
       1462
     ]
   },
   {
-    "teal": 1322,
-    "source": 242,
+    "teal": 1323,
+    "source": 245,
     "pc": [
       1463
     ]
   },
   {
-    "teal": 1323,
-    "source": 242,
+    "teal": 1324,
+    "source": 245,
     "pc": [
       1464
     ]
   },
   {
-    "teal": 1324,
-    "source": 242,
+    "teal": 1325,
+    "source": 245,
     "pc": [
       1465
     ]
   },
   {
-    "teal": 1325,
-    "source": 242,
+    "teal": 1326,
+    "source": 245,
     "pc": [
       1466
     ]
   },
   {
-    "teal": 1326,
-    "source": 242,
-    "pc": [
-      1467
-    ]
-  },
-  {
     "teal": 1327,
-    "source": 242,
+    "source": 245,
     "pc": [
-      1468
-    ]
-  },
-  {
-    "teal": 1328,
-    "source": 242,
-    "pc": [
+      1467,
+      1468,
       1469
     ]
   },
   {
-    "teal": 1329,
-    "source": 242,
+    "teal": 1337,
+    "source": 246,
     "pc": [
       1470
     ]
   },
   {
-    "teal": 1330,
-    "source": 242,
+    "teal": 1338,
+    "source": 246,
     "pc": [
       1471
     ]
   },
   {
-    "teal": 1333,
-    "source": 242,
-    "errorMessage": "wideRatio failed",
-    "pc": [
-      1472
-    ]
-  },
-  {
-    "teal": 1334,
-    "source": 242,
-    "pc": [
-      1473,
-      1474
-    ]
-  },
-  {
-    "teal": 1338,
-    "source": 243,
-    "pc": [
-      1475
-    ]
-  },
-  {
     "teal": 1339,
-    "source": 243,
+    "source": 246,
     "pc": [
-      1476,
-      1477
+      1472,
+      1473
     ]
   },
   {
     "teal": 1343,
-    "source": 245,
+    "source": 247,
+    "pc": [
+      1474,
+      1475
+    ]
+  },
+  {
+    "teal": 1344,
+    "source": 247,
+    "pc": [
+      1476
+    ]
+  },
+  {
+    "teal": 1345,
+    "source": 247,
+    "pc": [
+      1477
+    ]
+  },
+  {
+    "teal": 1346,
+    "source": 247,
     "pc": [
       1478,
       1479
     ]
   },
   {
-    "teal": 1344,
-    "source": 245,
+    "teal": 1350,
+    "source": 248,
     "pc": [
       1480,
       1481
     ]
   },
   {
-    "teal": 1345,
-    "source": 245,
+    "teal": 1351,
+    "source": 248,
     "pc": [
-      1482
-    ]
-  },
-  {
-    "teal": 1346,
-    "source": 245,
-    "pc": [
+      1482,
       1483
     ]
   },
   {
-    "teal": 1347,
-    "source": 245,
+    "teal": 1355,
+    "source": 249,
     "pc": [
       1484,
       1485
     ]
   },
   {
-    "teal": 1348,
-    "source": 245,
+    "teal": 1356,
+    "source": 249,
     "pc": [
-      1486
-    ]
-  },
-  {
-    "teal": 1349,
-    "source": 245,
-    "pc": [
+      1486,
       1487
     ]
   },
   {
-    "teal": 1350,
-    "source": 245,
+    "teal": 1360,
+    "source": 250,
     "pc": [
-      1488
-    ]
-  },
-  {
-    "teal": 1351,
-    "source": 245,
-    "pc": [
+      1488,
       1489
     ]
   },
   {
-    "teal": 1352,
-    "source": 245,
+    "teal": 1361,
+    "source": 250,
     "pc": [
-      1490
-    ]
-  },
-  {
-    "teal": 1353,
-    "source": 245,
-    "pc": [
+      1490,
       1491
     ]
   },
   {
-    "teal": 1354,
-    "source": 245,
+    "teal": 1364,
+    "source": 246,
     "pc": [
       1492
     ]
   },
   {
-    "teal": 1355,
+    "teal": 1365,
     "source": 245,
     "pc": [
-      1493
-    ]
-  },
-  {
-    "teal": 1358,
-    "source": 245,
-    "errorMessage": "wideRatio failed",
-    "pc": [
-      1494
-    ]
-  },
-  {
-    "teal": 1359,
-    "source": 245,
-    "pc": [
+      1493,
+      1494,
       1495
     ]
   },
   {
-    "teal": 1360,
-    "source": 218,
+    "teal": 1376,
+    "source": 253,
     "pc": [
       1496
     ]
   },
   {
-    "teal": 1365,
-    "source": 248,
+    "teal": 1377,
+    "source": 253,
     "pc": [
-      1497,
+      1497
+    ]
+  },
+  {
+    "teal": 1378,
+    "source": 253,
+    "pc": [
       1498,
       1499
     ]
   },
   {
-    "teal": 1366,
-    "source": 248,
+    "teal": 1382,
+    "source": 254,
     "pc": [
       1500
     ]
   },
   {
-    "teal": 1367,
-    "source": 248,
+    "teal": 1383,
+    "source": 254,
     "pc": [
       1501
     ]
   },
   {
-    "teal": 1371,
-    "source": 248,
+    "teal": 1384,
+    "source": 254,
     "pc": [
       1502,
-      1503,
-      1504
+      1503
     ]
   },
   {
-    "teal": 1375,
-    "source": 249,
+    "teal": 1388,
+    "source": 255,
     "pc": [
-      1505,
-      1506
+      1504,
+      1505
     ]
   },
   {
-    "teal": 1376,
-    "source": 249,
+    "teal": 1389,
+    "source": 255,
     "pc": [
+      1506,
       1507
     ]
   },
   {
-    "teal": 1377,
-    "source": 249,
+    "teal": 1393,
+    "source": 256,
     "pc": [
-      1508
-    ]
-  },
-  {
-    "teal": 1378,
-    "source": 249,
-    "pc": [
+      1508,
       1509
     ]
   },
   {
-    "teal": 1379,
-    "source": 249,
+    "teal": 1394,
+    "source": 256,
     "pc": [
-      1510
-    ]
-  },
-  {
-    "teal": 1382,
-    "source": 249,
-    "errorMessage": "No staked assets",
-    "pc": [
+      1510,
       1511
     ]
   },
   {
-    "teal": 1386,
-    "source": 250,
+    "teal": 1398,
+    "source": 257,
     "pc": [
       1512,
       1513
     ]
   },
   {
-    "teal": 1387,
-    "source": 250,
+    "teal": 1399,
+    "source": 257,
     "pc": [
-      1514,
+      1514
+    ]
+  },
+  {
+    "teal": 1400,
+    "source": 257,
+    "pc": [
       1515
     ]
   },
   {
-    "teal": 1388,
-    "source": 250,
+    "teal": 1401,
+    "source": 257,
     "pc": [
-      1516
-    ]
-  },
-  {
-    "teal": 1389,
-    "source": 250,
-    "pc": [
+      1516,
       1517
     ]
   },
   {
-    "teal": 1390,
-    "source": 250,
+    "teal": 1405,
+    "source": 258,
     "pc": [
-      1518
-    ]
-  },
-  {
-    "teal": 1393,
-    "source": 250,
-    "errorMessage": "User has not staked assets",
-    "pc": [
+      1518,
       1519
     ]
   },
   {
-    "teal": 1397,
-    "source": 251,
+    "teal": 1406,
+    "source": 258,
     "pc": [
       1520,
       1521
     ]
   },
   {
-    "teal": 1398,
-    "source": 251,
+    "teal": 1409,
+    "source": 253,
     "pc": [
-      1522,
-      1523
+      1522
     ]
   },
   {
-    "teal": 1399,
-    "source": 251,
+    "teal": 1412,
+    "source": 244,
     "pc": [
-      1524
-    ]
-  },
-  {
-    "teal": 1400,
-    "source": 251,
-    "pc": [
+      1523,
+      1524,
       1525
     ]
   },
   {
-    "teal": 1401,
-    "source": 251,
+    "teal": 1418,
+    "source": 263,
     "pc": [
       1526
     ]
   },
   {
-    "teal": 1404,
-    "source": 251,
-    "errorMessage": "User has not staked assets",
+    "teal": 1419,
+    "source": 263,
     "pc": [
       1527
     ]
   },
   {
-    "teal": 1409,
-    "source": 253,
+    "teal": 1420,
+    "source": 263,
     "pc": [
       1528
     ]
   },
   {
-    "teal": 1410,
-    "source": 253,
+    "teal": 1421,
+    "source": 263,
     "pc": [
       1529
     ]
   },
   {
-    "teal": 1411,
-    "source": 253,
+    "teal": 1422,
+    "source": 263,
     "pc": [
       1530,
-      1531
-    ]
-  },
-  {
-    "teal": 1412,
-    "source": 253,
-    "pc": [
+      1531,
       1532
     ]
   },
   {
-    "teal": 1413,
-    "source": 253,
+    "teal": 1432,
+    "source": 264,
     "pc": [
       1533
     ]
   },
   {
-    "teal": 1414,
-    "source": 253,
+    "teal": 1433,
+    "source": 264,
     "pc": [
-      1534,
+      1534
+    ]
+  },
+  {
+    "teal": 1434,
+    "source": 264,
+    "pc": [
       1535,
       1536
     ]
   },
   {
-    "teal": 1420,
-    "source": 254,
+    "teal": 1438,
+    "source": 265,
     "pc": [
-      1537
-    ]
-  },
-  {
-    "teal": 1421,
-    "source": 254,
-    "pc": [
+      1537,
       1538
     ]
   },
   {
-    "teal": 1422,
-    "source": 254,
+    "teal": 1439,
+    "source": 265,
     "pc": [
       1539
     ]
   },
   {
-    "teal": 1423,
-    "source": 254,
+    "teal": 1440,
+    "source": 265,
     "pc": [
       1540
     ]
   },
   {
-    "teal": 1424,
-    "source": 254,
+    "teal": 1441,
+    "source": 265,
     "pc": [
       1541,
-      1542,
-      1543
+      1542
     ]
   },
   {
-    "teal": 1434,
-    "source": 255,
+    "teal": 1445,
+    "source": 266,
     "pc": [
+      1543,
       1544
     ]
   },
   {
-    "teal": 1435,
-    "source": 255,
+    "teal": 1446,
+    "source": 266,
     "pc": [
-      1545
+      1545,
+      1546
     ]
   },
   {
-    "teal": 1436,
-    "source": 255,
+    "teal": 1450,
+    "source": 267,
     "pc": [
-      1546,
-      1547
+      1547,
+      1548
     ]
   },
   {
-    "teal": 1440,
-    "source": 256,
+    "teal": 1451,
+    "source": 267,
     "pc": [
-      1548,
-      1549
-    ]
-  },
-  {
-    "teal": 1441,
-    "source": 256,
-    "pc": [
+      1549,
       1550
     ]
   },
   {
-    "teal": 1442,
-    "source": 256,
+    "teal": 1455,
+    "source": 268,
     "pc": [
-      1551
+      1551,
+      1552
     ]
   },
   {
-    "teal": 1443,
-    "source": 256,
+    "teal": 1456,
+    "source": 268,
     "pc": [
-      1552,
-      1553
+      1553,
+      1554
     ]
   },
   {
-    "teal": 1447,
-    "source": 257,
+    "teal": 1459,
+    "source": 264,
     "pc": [
-      1554,
       1555
     ]
   },
   {
-    "teal": 1448,
-    "source": 257,
+    "teal": 1460,
+    "source": 263,
     "pc": [
       1556,
-      1557
+      1557,
+      1558
     ]
   },
   {
-    "teal": 1452,
-    "source": 258,
+    "teal": 1471,
+    "source": 271,
     "pc": [
-      1558,
       1559
     ]
   },
   {
-    "teal": 1453,
-    "source": 258,
+    "teal": 1472,
+    "source": 271,
     "pc": [
-      1560,
-      1561
-    ]
-  },
-  {
-    "teal": 1457,
-    "source": 259,
-    "pc": [
-      1562,
-      1563
-    ]
-  },
-  {
-    "teal": 1458,
-    "source": 259,
-    "pc": [
-      1564,
-      1565
-    ]
-  },
-  {
-    "teal": 1461,
-    "source": 255,
-    "pc": [
-      1566
-    ]
-  },
-  {
-    "teal": 1462,
-    "source": 254,
-    "pc": [
-      1567,
-      1568,
-      1569
+      1560
     ]
   },
   {
     "teal": 1473,
-    "source": 262,
+    "source": 271,
     "pc": [
-      1570
+      1561,
+      1562
     ]
   },
   {
-    "teal": 1474,
-    "source": 262,
+    "teal": 1477,
+    "source": 272,
     "pc": [
-      1571
+      1563
     ]
   },
   {
-    "teal": 1475,
-    "source": 262,
+    "teal": 1478,
+    "source": 272,
     "pc": [
-      1572,
-      1573
+      1564
     ]
   },
   {
     "teal": 1479,
-    "source": 263,
+    "source": 272,
     "pc": [
+      1565,
+      1566
+    ]
+  },
+  {
+    "teal": 1483,
+    "source": 273,
+    "pc": [
+      1567,
+      1568
+    ]
+  },
+  {
+    "teal": 1484,
+    "source": 273,
+    "pc": [
+      1569,
+      1570
+    ]
+  },
+  {
+    "teal": 1488,
+    "source": 274,
+    "pc": [
+      1571,
+      1572
+    ]
+  },
+  {
+    "teal": 1489,
+    "source": 274,
+    "pc": [
+      1573,
       1574
     ]
   },
   {
-    "teal": 1480,
-    "source": 263,
+    "teal": 1493,
+    "source": 275,
     "pc": [
-      1575
+      1575,
+      1576
     ]
   },
   {
-    "teal": 1481,
-    "source": 263,
+    "teal": 1494,
+    "source": 275,
     "pc": [
-      1576,
       1577
     ]
   },
   {
-    "teal": 1485,
-    "source": 264,
+    "teal": 1495,
+    "source": 275,
     "pc": [
-      1578,
-      1579
+      1578
     ]
   },
   {
-    "teal": 1486,
-    "source": 264,
+    "teal": 1496,
+    "source": 275,
     "pc": [
-      1580,
-      1581
+      1579,
+      1580
     ]
   },
   {
-    "teal": 1490,
-    "source": 265,
+    "teal": 1500,
+    "source": 276,
     "pc": [
-      1582,
-      1583
+      1581,
+      1582
     ]
   },
   {
-    "teal": 1491,
-    "source": 265,
+    "teal": 1501,
+    "source": 276,
     "pc": [
-      1584,
+      1583,
+      1584
+    ]
+  },
+  {
+    "teal": 1504,
+    "source": 271,
+    "pc": [
       1585
     ]
   },
   {
-    "teal": 1495,
-    "source": 266,
+    "teal": 1510,
+    "source": 279,
     "pc": [
       1586,
       1587
     ]
   },
   {
-    "teal": 1496,
-    "source": 266,
+    "teal": 1511,
+    "source": 279,
     "pc": [
-      1588
-    ]
-  },
-  {
-    "teal": 1497,
-    "source": 266,
-    "pc": [
+      1588,
       1589
     ]
   },
   {
-    "teal": 1498,
-    "source": 266,
+    "teal": 1512,
+    "source": 279,
     "pc": [
-      1590,
+      1590
+    ]
+  },
+  {
+    "teal": 1513,
+    "source": 279,
+    "pc": [
       1591
     ]
   },
   {
-    "teal": 1502,
-    "source": 267,
+    "teal": 1514,
+    "source": 279,
     "pc": [
-      1592,
-      1593
+      1592
     ]
   },
   {
-    "teal": 1503,
-    "source": 267,
+    "teal": 1515,
+    "source": 279,
     "pc": [
+      1593,
       1594,
       1595
     ]
   },
   {
-    "teal": 1506,
-    "source": 262,
+    "teal": 1521,
+    "source": 280,
     "pc": [
-      1596
+      1596,
+      1597
     ]
   },
   {
-    "teal": 1509,
-    "source": 253,
+    "teal": 1522,
+    "source": 280,
     "pc": [
-      1597,
-      1598,
+      1598
+    ]
+  },
+  {
+    "teal": 1523,
+    "source": 280,
+    "pc": [
       1599
     ]
   },
   {
-    "teal": 1515,
-    "source": 272,
+    "teal": 1524,
+    "source": 280,
     "pc": [
       1600
     ]
   },
   {
-    "teal": 1516,
-    "source": 272,
+    "teal": 1525,
+    "source": 280,
     "pc": [
-      1601
-    ]
-  },
-  {
-    "teal": 1517,
-    "source": 272,
-    "pc": [
-      1602
-    ]
-  },
-  {
-    "teal": 1518,
-    "source": 272,
-    "pc": [
+      1601,
+      1602,
       1603
     ]
   },
   {
-    "teal": 1519,
-    "source": 272,
-    "pc": [
-      1604,
-      1605,
-      1606
-    ]
-  },
-  {
-    "teal": 1529,
-    "source": 273,
-    "pc": [
-      1607
-    ]
-  },
-  {
-    "teal": 1530,
-    "source": 273,
-    "pc": [
-      1608
-    ]
-  },
-  {
-    "teal": 1531,
-    "source": 273,
-    "pc": [
-      1609,
-      1610
-    ]
-  },
-  {
     "teal": 1535,
-    "source": 274,
+    "source": 281,
     "pc": [
-      1611,
-      1612
+      1604
     ]
   },
   {
     "teal": 1536,
-    "source": 274,
+    "source": 281,
     "pc": [
-      1613
+      1605
     ]
   },
   {
     "teal": 1537,
-    "source": 274,
+    "source": 281,
     "pc": [
+      1606,
+      1607
+    ]
+  },
+  {
+    "teal": 1541,
+    "source": 282,
+    "pc": [
+      1608,
+      1609
+    ]
+  },
+  {
+    "teal": 1542,
+    "source": 282,
+    "pc": [
+      1610,
+      1611
+    ]
+  },
+  {
+    "teal": 1543,
+    "source": 282,
+    "pc": [
+      1612
+    ]
+  },
+  {
+    "teal": 1544,
+    "source": 282,
+    "pc": [
+      1613,
       1614
     ]
   },
   {
-    "teal": 1538,
-    "source": 274,
+    "teal": 1548,
+    "source": 283,
     "pc": [
       1615,
       1616
     ]
   },
   {
-    "teal": 1542,
-    "source": 275,
+    "teal": 1549,
+    "source": 283,
     "pc": [
       1617,
       1618
     ]
   },
   {
-    "teal": 1543,
-    "source": 275,
+    "teal": 1553,
+    "source": 284,
     "pc": [
       1619,
       1620
     ]
   },
   {
-    "teal": 1547,
-    "source": 276,
+    "teal": 1554,
+    "source": 284,
     "pc": [
       1621,
       1622
     ]
   },
   {
-    "teal": 1548,
-    "source": 276,
+    "teal": 1558,
+    "source": 285,
     "pc": [
       1623,
       1624
     ]
   },
   {
-    "teal": 1552,
-    "source": 277,
+    "teal": 1559,
+    "source": 285,
     "pc": [
       1625,
       1626
     ]
   },
   {
-    "teal": 1553,
-    "source": 277,
+    "teal": 1562,
+    "source": 281,
     "pc": [
-      1627,
-      1628
+      1627
     ]
   },
   {
-    "teal": 1556,
-    "source": 273,
+    "teal": 1563,
+    "source": 280,
     "pc": [
-      1629
+      1628,
+      1629,
+      1630
     ]
   },
   {
-    "teal": 1557,
-    "source": 272,
+    "teal": 1574,
+    "source": 288,
     "pc": [
-      1630,
-      1631,
+      1631
+    ]
+  },
+  {
+    "teal": 1575,
+    "source": 288,
+    "pc": [
       1632
     ]
   },
   {
-    "teal": 1568,
-    "source": 280,
+    "teal": 1576,
+    "source": 288,
     "pc": [
-      1633
-    ]
-  },
-  {
-    "teal": 1569,
-    "source": 280,
-    "pc": [
+      1633,
       1634
     ]
   },
   {
-    "teal": 1570,
-    "source": 280,
+    "teal": 1580,
+    "source": 289,
     "pc": [
       1635,
       1636
     ]
   },
   {
-    "teal": 1574,
-    "source": 281,
+    "teal": 1581,
+    "source": 289,
     "pc": [
       1637
     ]
   },
   {
-    "teal": 1575,
-    "source": 281,
+    "teal": 1582,
+    "source": 289,
     "pc": [
-      1638
-    ]
-  },
-  {
-    "teal": 1576,
-    "source": 281,
-    "pc": [
-      1639,
-      1640
-    ]
-  },
-  {
-    "teal": 1580,
-    "source": 282,
-    "pc": [
-      1641,
-      1642
-    ]
-  },
-  {
-    "teal": 1581,
-    "source": 282,
-    "pc": [
-      1643,
-      1644
-    ]
-  },
-  {
-    "teal": 1585,
-    "source": 283,
-    "pc": [
-      1645,
-      1646
+      1638,
+      1639
     ]
   },
   {
     "teal": 1586,
-    "source": 283,
+    "source": 290,
     "pc": [
-      1647,
+      1640,
+      1641
+    ]
+  },
+  {
+    "teal": 1587,
+    "source": 290,
+    "pc": [
+      1642,
+      1643
+    ]
+  },
+  {
+    "teal": 1591,
+    "source": 291,
+    "pc": [
+      1644,
+      1645
+    ]
+  },
+  {
+    "teal": 1592,
+    "source": 291,
+    "pc": [
+      1646,
+      1647
+    ]
+  },
+  {
+    "teal": 1593,
+    "source": 291,
+    "pc": [
       1648
     ]
   },
   {
-    "teal": 1590,
-    "source": 284,
+    "teal": 1594,
+    "source": 291,
     "pc": [
       1649,
       1650
     ]
   },
   {
-    "teal": 1591,
-    "source": 284,
+    "teal": 1598,
+    "source": 292,
     "pc": [
-      1651
-    ]
-  },
-  {
-    "teal": 1592,
-    "source": 284,
-    "pc": [
+      1651,
       1652
     ]
   },
   {
-    "teal": 1593,
-    "source": 284,
+    "teal": 1599,
+    "source": 292,
     "pc": [
       1653,
       1654
     ]
   },
   {
-    "teal": 1597,
-    "source": 285,
+    "teal": 1603,
+    "source": 293,
     "pc": [
       1655,
       1656
     ]
   },
   {
-    "teal": 1598,
-    "source": 285,
+    "teal": 1604,
+    "source": 293,
     "pc": [
       1657,
       1658
     ]
   },
   {
-    "teal": 1601,
-    "source": 280,
+    "teal": 1607,
+    "source": 288,
     "pc": [
       1659
     ]
   },
   {
-    "teal": 1607,
-    "source": 288,
+    "teal": 1616,
+    "source": 300,
     "pc": [
-      1660,
+      1660
+    ]
+  },
+  {
+    "teal": 1617,
+    "source": 300,
+    "pc": [
       1661
     ]
   },
   {
-    "teal": 1608,
-    "source": 288,
+    "teal": 1618,
+    "source": 300,
     "pc": [
       1662,
       1663
     ]
   },
   {
-    "teal": 1609,
-    "source": 288,
+    "teal": 1619,
+    "source": 300,
     "pc": [
-      1664
-    ]
-  },
-  {
-    "teal": 1610,
-    "source": 288,
-    "pc": [
+      1664,
       1665
     ]
   },
   {
-    "teal": 1611,
-    "source": 288,
+    "teal": 1620,
+    "source": 300,
     "pc": [
       1666
     ]
   },
   {
-    "teal": 1612,
-    "source": 288,
+    "teal": 1621,
+    "source": 300,
     "pc": [
-      1667,
-      1668,
+      1667
+    ]
+  },
+  {
+    "teal": 1622,
+    "source": 300,
+    "pc": [
+      1668
+    ]
+  },
+  {
+    "teal": 1623,
+    "source": 300,
+    "pc": [
       1669
     ]
   },
   {
-    "teal": 1618,
-    "source": 289,
+    "teal": 1624,
+    "source": 300,
     "pc": [
-      1670,
+      1670
+    ]
+  },
+  {
+    "teal": 1628,
+    "source": 301,
+    "pc": [
       1671
     ]
   },
   {
-    "teal": 1619,
-    "source": 289,
+    "teal": 1629,
+    "source": 301,
     "pc": [
       1672
     ]
   },
   {
-    "teal": 1620,
-    "source": 289,
+    "teal": 1630,
+    "source": 301,
     "pc": [
-      1673
-    ]
-  },
-  {
-    "teal": 1621,
-    "source": 289,
-    "pc": [
+      1673,
       1674
     ]
   },
   {
-    "teal": 1622,
-    "source": 289,
+    "teal": 1631,
+    "source": 301,
     "pc": [
-      1675,
-      1676,
-      1677
+      1675
     ]
   },
   {
     "teal": 1632,
-    "source": 290,
+    "source": 301,
+    "pc": [
+      1676
+    ]
+  },
+  {
+    "teal": 1633,
+    "source": 301,
+    "pc": [
+      1677
+    ]
+  },
+  {
+    "teal": 1634,
+    "source": 301,
     "pc": [
       1678
     ]
   },
   {
-    "teal": 1633,
-    "source": 290,
+    "teal": 1635,
+    "source": 301,
     "pc": [
       1679
     ]
   },
   {
-    "teal": 1634,
-    "source": 290,
+    "teal": 1636,
+    "source": 301,
     "pc": [
-      1680,
-      1681
-    ]
-  },
-  {
-    "teal": 1638,
-    "source": 291,
-    "pc": [
-      1682,
-      1683
-    ]
-  },
-  {
-    "teal": 1639,
-    "source": 291,
-    "pc": [
-      1684,
-      1685
+      1680
     ]
   },
   {
     "teal": 1640,
-    "source": 291,
+    "source": 303,
     "pc": [
-      1686
+      1681,
+      1682
     ]
   },
   {
     "teal": 1641,
-    "source": 291,
+    "source": 303,
     "pc": [
-      1687,
-      1688
+      1683
     ]
   },
   {
-    "teal": 1645,
-    "source": 292,
+    "teal": 1642,
+    "source": 303,
     "pc": [
-      1689,
+      1684
+    ]
+  },
+  {
+    "teal": 1643,
+    "source": 303,
+    "pc": [
+      1685
+    ]
+  },
+  {
+    "teal": 1647,
+    "source": 304,
+    "pc": [
+      1686,
+      1687
+    ]
+  },
+  {
+    "teal": 1648,
+    "source": 304,
+    "pc": [
+      1688,
+      1689
+    ]
+  },
+  {
+    "teal": 1649,
+    "source": 304,
+    "pc": [
       1690
     ]
   },
   {
-    "teal": 1646,
-    "source": 292,
-    "pc": [
-      1691,
-      1692
-    ]
-  },
-  {
     "teal": 1650,
-    "source": 293,
+    "source": 304,
     "pc": [
-      1693,
-      1694
+      1691
     ]
   },
   {
-    "teal": 1651,
-    "source": 293,
+    "teal": 1654,
+    "source": 305,
     "pc": [
-      1695,
-      1696
+      1692,
+      1693
     ]
   },
   {
     "teal": 1655,
-    "source": 294,
+    "source": 305,
     "pc": [
-      1697,
-      1698
+      1694,
+      1695
     ]
   },
   {
     "teal": 1656,
-    "source": 294,
+    "source": 305,
     "pc": [
-      1699,
-      1700
+      1696
     ]
   },
   {
-    "teal": 1659,
-    "source": 290,
+    "teal": 1657,
+    "source": 305,
     "pc": [
+      1697
+    ]
+  },
+  {
+    "teal": 1661,
+    "source": 306,
+    "pc": [
+      1698,
+      1699
+    ]
+  },
+  {
+    "teal": 1662,
+    "source": 306,
+    "pc": [
+      1700,
       1701
     ]
   },
   {
-    "teal": 1660,
-    "source": 289,
+    "teal": 1663,
+    "source": 306,
     "pc": [
-      1702,
-      1703,
-      1704
+      1702
     ]
   },
   {
-    "teal": 1671,
-    "source": 297,
+    "teal": 1664,
+    "source": 306,
     "pc": [
+      1703
+    ]
+  },
+  {
+    "teal": 1668,
+    "source": 307,
+    "pc": [
+      1704,
       1705
     ]
   },
   {
-    "teal": 1672,
-    "source": 297,
+    "teal": 1669,
+    "source": 307,
     "pc": [
-      1706
+      1706,
+      1707
     ]
   },
   {
-    "teal": 1673,
-    "source": 297,
+    "teal": 1670,
+    "source": 307,
     "pc": [
-      1707,
       1708
     ]
   },
   {
-    "teal": 1677,
-    "source": 298,
+    "teal": 1671,
+    "source": 307,
     "pc": [
-      1709,
-      1710
+      1709
     ]
   },
   {
-    "teal": 1678,
-    "source": 298,
+    "teal": 1675,
+    "source": 308,
     "pc": [
+      1710,
       1711
     ]
   },
   {
-    "teal": 1679,
-    "source": 298,
+    "teal": 1676,
+    "source": 308,
     "pc": [
       1712,
       1713
     ]
   },
   {
-    "teal": 1683,
-    "source": 299,
+    "teal": 1677,
+    "source": 308,
     "pc": [
-      1714,
+      1714
+    ]
+  },
+  {
+    "teal": 1678,
+    "source": 308,
+    "pc": [
       1715
     ]
   },
   {
-    "teal": 1684,
-    "source": 299,
+    "teal": 1679,
+    "source": 239,
     "pc": [
-      1716,
-      1717
+      1716
     ]
   },
   {
-    "teal": 1688,
-    "source": 300,
+    "teal": 1682,
+    "source": 4,
     "pc": [
+      1717,
       1718,
-      1719
-    ]
-  },
-  {
-    "teal": 1689,
-    "source": 300,
-    "pc": [
+      1719,
       1720,
-      1721
-    ]
-  },
-  {
-    "teal": 1690,
-    "source": 300,
-    "pc": [
+      1721,
       1722
     ]
   },
   {
-    "teal": 1691,
-    "source": 300,
+    "teal": 1683,
+    "source": 4,
     "pc": [
       1723,
-      1724
+      1724,
+      1725
     ]
   },
   {
-    "teal": 1695,
-    "source": 301,
+    "teal": 1684,
+    "source": 4,
     "pc": [
-      1725,
-      1726
-    ]
-  },
-  {
-    "teal": 1696,
-    "source": 301,
-    "pc": [
+      1726,
       1727,
-      1728
+      1728,
+      1729
     ]
   },
   {
-    "teal": 1700,
-    "source": 302,
+    "teal": 1687,
+    "source": 4,
+    "errorMessage": "this contract does not implement the given ABI method for create NoOp",
     "pc": [
-      1729,
       1730
     ]
   },
   {
-    "teal": 1701,
-    "source": 302,
+    "teal": 1690,
+    "source": 4,
     "pc": [
       1731,
-      1732
+      1732,
+      1733,
+      1734,
+      1735,
+      1736
     ]
   },
   {
-    "teal": 1704,
-    "source": 297,
+    "teal": 1691,
+    "source": 4,
     "pc": [
-      1733
-    ]
-  },
-  {
-    "teal": 1713,
-    "source": 309,
-    "pc": [
-      1734
-    ]
-  },
-  {
-    "teal": 1714,
-    "source": 309,
-    "pc": [
-      1735
-    ]
-  },
-  {
-    "teal": 1715,
-    "source": 309,
-    "pc": [
-      1736,
-      1737
-    ]
-  },
-  {
-    "teal": 1716,
-    "source": 309,
-    "pc": [
+      1737,
       1738,
-      1739
-    ]
-  },
-  {
-    "teal": 1717,
-    "source": 309,
-    "pc": [
-      1740
-    ]
-  },
-  {
-    "teal": 1718,
-    "source": 309,
-    "pc": [
-      1741
-    ]
-  },
-  {
-    "teal": 1719,
-    "source": 309,
-    "pc": [
+      1739,
+      1740,
+      1741,
       1742
     ]
   },
   {
-    "teal": 1720,
-    "source": 309,
+    "teal": 1692,
+    "source": 4,
     "pc": [
-      1743
-    ]
-  },
-  {
-    "teal": 1721,
-    "source": 309,
-    "pc": [
-      1744
-    ]
-  },
-  {
-    "teal": 1725,
-    "source": 310,
-    "pc": [
+      1743,
+      1744,
       1745,
-      1746
+      1746,
+      1747,
+      1748
     ]
   },
   {
-    "teal": 1726,
-    "source": 310,
+    "teal": 1693,
+    "source": 4,
     "pc": [
-      1747
-    ]
-  },
-  {
-    "teal": 1727,
-    "source": 310,
-    "pc": [
-      1748,
-      1749
-    ]
-  },
-  {
-    "teal": 1728,
-    "source": 310,
-    "pc": [
-      1750
-    ]
-  },
-  {
-    "teal": 1729,
-    "source": 310,
-    "pc": [
-      1751
-    ]
-  },
-  {
-    "teal": 1730,
-    "source": 310,
-    "pc": [
-      1752
-    ]
-  },
-  {
-    "teal": 1731,
-    "source": 310,
-    "pc": [
+      1749,
+      1750,
+      1751,
+      1752,
       1753,
       1754
     ]
   },
   {
-    "teal": 1732,
-    "source": 310,
+    "teal": 1694,
+    "source": 4,
     "pc": [
-      1755
-    ]
-  },
-  {
-    "teal": 1733,
-    "source": 310,
-    "pc": [
-      1756
-    ]
-  },
-  {
-    "teal": 1737,
-    "source": 312,
-    "pc": [
+      1755,
+      1756,
       1757,
-      1758
-    ]
-  },
-  {
-    "teal": 1738,
-    "source": 312,
-    "pc": [
-      1759
-    ]
-  },
-  {
-    "teal": 1739,
-    "source": 312,
-    "pc": [
+      1758,
+      1759,
       1760
     ]
   },
   {
-    "teal": 1740,
-    "source": 312,
+    "teal": 1695,
+    "source": 4,
     "pc": [
-      1761
-    ]
-  },
-  {
-    "teal": 1744,
-    "source": 313,
-    "pc": [
+      1761,
       1762,
-      1763
-    ]
-  },
-  {
-    "teal": 1745,
-    "source": 313,
-    "pc": [
+      1763,
       1764,
-      1765
-    ]
-  },
-  {
-    "teal": 1746,
-    "source": 313,
-    "pc": [
+      1765,
       1766
     ]
   },
   {
-    "teal": 1747,
-    "source": 313,
+    "teal": 1696,
+    "source": 4,
     "pc": [
-      1767
-    ]
-  },
-  {
-    "teal": 1751,
-    "source": 314,
-    "pc": [
+      1767,
       1768,
-      1769
-    ]
-  },
-  {
-    "teal": 1752,
-    "source": 314,
-    "pc": [
+      1769,
       1770,
-      1771
-    ]
-  },
-  {
-    "teal": 1753,
-    "source": 314,
-    "pc": [
+      1771,
       1772
     ]
   },
   {
-    "teal": 1754,
-    "source": 314,
+    "teal": 1697,
+    "source": 4,
     "pc": [
-      1773
-    ]
-  },
-  {
-    "teal": 1758,
-    "source": 315,
-    "pc": [
+      1773,
       1774,
-      1775
-    ]
-  },
-  {
-    "teal": 1759,
-    "source": 315,
-    "pc": [
+      1775,
       1776,
-      1777
-    ]
-  },
-  {
-    "teal": 1760,
-    "source": 315,
-    "pc": [
+      1777,
       1778
     ]
   },
   {
-    "teal": 1761,
-    "source": 315,
+    "teal": 1698,
+    "source": 4,
     "pc": [
-      1779
-    ]
-  },
-  {
-    "teal": 1765,
-    "source": 316,
-    "pc": [
+      1779,
       1780,
-      1781
-    ]
-  },
-  {
-    "teal": 1766,
-    "source": 316,
-    "pc": [
+      1781,
       1782,
-      1783
-    ]
-  },
-  {
-    "teal": 1767,
-    "source": 316,
-    "pc": [
+      1783,
       1784
     ]
   },
   {
-    "teal": 1768,
-    "source": 316,
+    "teal": 1699,
+    "source": 4,
     "pc": [
-      1785
-    ]
-  },
-  {
-    "teal": 1772,
-    "source": 317,
-    "pc": [
+      1785,
       1786,
       1787
     ]
   },
   {
-    "teal": 1773,
-    "source": 317,
-    "pc": [
-      1788,
-      1789
-    ]
-  },
-  {
-    "teal": 1774,
-    "source": 317,
-    "pc": [
-      1790
-    ]
-  },
-  {
-    "teal": 1775,
-    "source": 317,
-    "pc": [
-      1791
-    ]
-  },
-  {
-    "teal": 1776,
-    "source": 248,
-    "pc": [
-      1792
-    ]
-  },
-  {
-    "teal": 1779,
+    "teal": 1700,
     "source": 4,
     "pc": [
+      1788,
+      1789,
+      1790,
+      1791,
+      1792,
       1793,
       1794,
       1795,
       1796,
       1797,
-      1798
-    ]
-  },
-  {
-    "teal": 1780,
-    "source": 4,
-    "pc": [
+      1798,
       1799,
       1800,
-      1801
-    ]
-  },
-  {
-    "teal": 1781,
-    "source": 4,
-    "pc": [
+      1801,
       1802,
       1803,
       1804,
-      1805
+      1805,
+      1806,
+      1807
     ]
   },
   {
-    "teal": 1784,
-    "source": 4,
-    "errorMessage": "this contract does not implement the given ABI method for create NoOp",
-    "pc": [
-      1806
-    ]
-  },
-  {
-    "teal": 1787,
-    "source": 4,
-    "pc": [
-      1807,
-      1808,
-      1809,
-      1810,
-      1811,
-      1812
-    ]
-  },
-  {
-    "teal": 1788,
-    "source": 4,
-    "pc": [
-      1813,
-      1814,
-      1815,
-      1816,
-      1817,
-      1818
-    ]
-  },
-  {
-    "teal": 1789,
-    "source": 4,
-    "pc": [
-      1819,
-      1820,
-      1821,
-      1822,
-      1823,
-      1824
-    ]
-  },
-  {
-    "teal": 1790,
-    "source": 4,
-    "pc": [
-      1825,
-      1826,
-      1827,
-      1828,
-      1829,
-      1830
-    ]
-  },
-  {
-    "teal": 1791,
-    "source": 4,
-    "pc": [
-      1831,
-      1832,
-      1833,
-      1834,
-      1835,
-      1836
-    ]
-  },
-  {
-    "teal": 1792,
-    "source": 4,
-    "pc": [
-      1837,
-      1838,
-      1839,
-      1840,
-      1841,
-      1842
-    ]
-  },
-  {
-    "teal": 1793,
-    "source": 4,
-    "pc": [
-      1843,
-      1844,
-      1845,
-      1846,
-      1847,
-      1848
-    ]
-  },
-  {
-    "teal": 1794,
-    "source": 4,
-    "pc": [
-      1849,
-      1850,
-      1851,
-      1852,
-      1853,
-      1854
-    ]
-  },
-  {
-    "teal": 1795,
-    "source": 4,
-    "pc": [
-      1855,
-      1856,
-      1857,
-      1858,
-      1859,
-      1860
-    ]
-  },
-  {
-    "teal": 1796,
-    "source": 4,
-    "pc": [
-      1861,
-      1862,
-      1863
-    ]
-  },
-  {
-    "teal": 1797,
-    "source": 4,
-    "pc": [
-      1864,
-      1865,
-      1866,
-      1867,
-      1868,
-      1869,
-      1870,
-      1871,
-      1872,
-      1873,
-      1874,
-      1875,
-      1876,
-      1877,
-      1878,
-      1879,
-      1880,
-      1881,
-      1882,
-      1883
-    ]
-  },
-  {
-    "teal": 1800,
+    "teal": 1703,
     "source": 4,
     "errorMessage": "this contract does not implement the given ABI method for call NoOp",
     "pc": [
-      1884
+      1808
     ]
   },
   {
-    "teal": 1803,
+    "teal": 1706,
     "source": 4,
     "pc": [
-      1885,
-      1886,
-      1887,
-      1888,
-      1889,
-      1890
+      1809,
+      1810,
+      1811,
+      1812,
+      1813,
+      1814
     ]
   },
   {
-    "teal": 1804,
+    "teal": 1707,
     "source": 4,
     "pc": [
-      1891,
-      1892,
-      1893
+      1815,
+      1816,
+      1817
     ]
   },
   {
-    "teal": 1805,
+    "teal": 1708,
     "source": 4,
     "pc": [
-      1894,
-      1895,
-      1896,
-      1897
+      1818,
+      1819,
+      1820,
+      1821
     ]
   },
   {
-    "teal": 1808,
+    "teal": 1711,
     "source": 4,
     "errorMessage": "this contract does not implement the given ABI method for call OptIn",
     "pc": [
-      1898
+      1822
     ]
   },
   {
-    "teal": 1811,
+    "teal": 1714,
     "source": 4,
     "pc": [
-      1899,
-      1900,
-      1901,
-      1902,
-      1903,
-      1904
+      1823,
+      1824,
+      1825,
+      1826,
+      1827,
+      1828
     ]
   },
   {
-    "teal": 1812,
+    "teal": 1715,
     "source": 4,
     "pc": [
-      1905,
-      1906,
-      1907
+      1829,
+      1830,
+      1831
     ]
   },
   {
-    "teal": 1813,
+    "teal": 1716,
     "source": 4,
     "pc": [
-      1908,
-      1909,
-      1910,
-      1911
+      1832,
+      1833,
+      1834,
+      1835
     ]
   },
   {
-    "teal": 1816,
+    "teal": 1719,
     "source": 4,
     "errorMessage": "this contract does not implement the given ABI method for call DeleteApplication",
     "pc": [
-      1912
+      1836
     ]
   }
 ]
