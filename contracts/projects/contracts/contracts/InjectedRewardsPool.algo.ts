@@ -104,7 +104,6 @@ export class InjectedRewardsPool extends Contract {
 
   injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
-    assert(this.minStakePeriodForRewards.value !== 0, 'Minimum stake period not set');
 
     verifyAssetTransferTxn(rewardTxn, {
       sender: this.app.creator,
@@ -156,18 +155,7 @@ export class InjectedRewardsPool extends Contract {
     });
     this.staked(this.txn.sender).value = stakeTxn.assetAmount;
 
-    const userStakingWeight = wideRatio([this.staked(this.txn.sender).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
-    this.totalStakingWeight.value += userStakingWeight
-    this.userStakingWeight(this.txn.sender).value = userStakingWeight;
-
-    const userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
-
-    const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
-    let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
-    let denominator = PRECISION;
-
-    this.rewardRate(this.txn.sender).value = (wideRatio([this.injectedRewards.value, numerator], [denominator]) / 100);
-
+    this.calculateRewardRate(this.txn.sender);
     this.totalStaked.value += this.staked(this.txn.sender).value;
     this.stakeStartTime(this.txn.sender).value = currentTimeStamp;
     this.lastUpdateTime(this.txn.sender).value = currentTimeStamp;
@@ -180,8 +168,13 @@ export class InjectedRewardsPool extends Contract {
 
     this.stakeDuration(userAddress).value = globals.latestTimestamp - this.stakeStartTime(userAddress).value;
     assert(this.stakeDuration(userAddress).value >= this.minStakePeriodForRewards.value, 'User has not staked for minimum period');
+    this.calculateRewardRate(userAddress);
+  }
 
-    this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+  private calculateRewardRate(userAddress: Address): void {
+    if (this.userStakingWeight(userAddress).value > 0) {
+      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+    }
     const userStakingWeight = wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
     this.totalStakingWeight.value += userStakingWeight
     this.userStakingWeight(userAddress).value = userStakingWeight;
@@ -190,11 +183,11 @@ export class InjectedRewardsPool extends Contract {
     this.useShare(userAddress).value = userShare;
     const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
     this.userSharePercentage(userAddress).value = userSharePercentage;
-    //25n
-    let numerator = wideRatio([userSharePercentage, PRECISION], [1]);
-    let denominator = PRECISION;
 
-    this.rewardRate(userAddress).value = (wideRatio([this.injectedRewards.value, numerator], [denominator]) / 100);
+    this.rewardRate(userAddress).value = wideRatio([this.injectedRewards.value, userSharePercentage], [100]);
+    if (this.rewardRate(userAddress).value === 0) {
+      this.rewardRate(userAddress).value = 10;
+    }
   }
 
 
@@ -211,13 +204,13 @@ export class InjectedRewardsPool extends Contract {
     if (this.rewardAssetId.value === this.stakedAssetId.value) {
       //Compound rewards
       this.staked(userAddress).value += this.rewardRate(userAddress).value;
+      this.totalStaked.value += this.rewardRate(userAddress).value;
     }
 
   }
 
   restake(stakeTxn: AssetTransferTxn, quantity: uint64): void {
     assert(quantity > 0, 'Invalid quantity');
-
 
     verifyAssetTransferTxn(stakeTxn, {
       sender: this.txn.sender,
@@ -226,23 +219,13 @@ export class InjectedRewardsPool extends Contract {
       assetAmount: quantity,
     });
     this.staked(this.txn.sender).value += stakeTxn.assetAmount;
+    this.totalStaked.value += stakeTxn.assetAmount;
     //reset start time
     this.stakeStartTime(this.txn.sender).value = globals.latestTimestamp;
     this.stakeDuration(this.txn.sender).value = 0;
 
     //calculate new reward rate
-    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
-    const userStakingWeight = wideRatio([this.staked(this.txn.sender).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
-    this.totalStakingWeight.value += userStakingWeight
-    this.userStakingWeight(this.txn.sender).value = userStakingWeight;
-
-    const userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
-
-    const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
-    let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
-    let denominator = PRECISION;
-
-    this.rewardRate(this.txn.sender).value = (wideRatio([this.injectedRewards.value, numerator], [denominator]) / 100);
+    this.calculateRewardRate(this.txn.sender);
   }
 
   unstake(): void {
