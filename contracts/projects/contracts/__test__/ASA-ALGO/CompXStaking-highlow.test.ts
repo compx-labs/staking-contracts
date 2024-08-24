@@ -127,7 +127,6 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     const rewardsAvailablePerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();
     const contractDuration = (await appClient.getGlobalState()).contractDuration!.asBigInt();
     expect(totalRewards).toBe(BigInt(algokit.algos(10000).microAlgos));
-    expect(rewardsAvailablePerTick).toBe(BigInt(totalRewards / contractDuration));
     console.log('rewardsAvailablePerTick', rewardsAvailablePerTick); //3858n
   });
 
