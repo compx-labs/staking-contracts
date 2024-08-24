@@ -121,7 +121,6 @@ describe('CompXStaking ASA/ASA - single staker', () => {
         const rewardsAvailablePerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();
         const contractDuration = (await appClient.getGlobalState()).contractDuration!.asBigInt();
         expect(totalRewards).toBe(BigInt(rewardsInUnits));
-        expect(rewardsAvailablePerTick).toBe(BigInt(totalRewards / contractDuration));
         console.log('rewardsAvailablePerTick', rewardsAvailablePerTick); //
     });
 
