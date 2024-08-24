@@ -687,411 +687,411 @@
     "teal": 88,
     "source": 64,
     "pc": [
-      441
+      441,
+      442
     ]
   },
   {
     "teal": 89,
     "source": 64,
     "pc": [
-      442
+      443
     ]
   },
   {
     "teal": 90,
     "source": 64,
     "pc": [
-      443
+      444
     ]
   },
   {
     "teal": 94,
     "source": 65,
     "pc": [
-      444,
-      445
+      445,
+      446
     ]
   },
   {
     "teal": 95,
     "source": 65,
     "pc": [
-      446,
-      447
+      447,
+      448
     ]
   },
   {
     "teal": 96,
     "source": 65,
     "pc": [
-      448
+      449
     ]
   },
   {
     "teal": 100,
     "source": 66,
     "pc": [
-      449,
-      450
+      450,
+      451
     ]
   },
   {
     "teal": 101,
     "source": 66,
     "pc": [
-      451
+      452
     ]
   },
   {
     "teal": 102,
     "source": 66,
     "pc": [
-      452
+      453
     ]
   },
   {
     "teal": 106,
     "source": 67,
     "pc": [
-      453,
-      454
+      454,
+      455
     ]
   },
   {
     "teal": 107,
     "source": 67,
     "pc": [
-      455
+      456
     ]
   },
   {
     "teal": 108,
     "source": 67,
     "pc": [
-      456
+      457
     ]
   },
   {
     "teal": 112,
     "source": 68,
     "pc": [
-      457,
-      458
+      458,
+      459
     ]
   },
   {
     "teal": 113,
     "source": 68,
     "pc": [
-      459,
-      460
+      460,
+      461
     ]
   },
   {
     "teal": 114,
     "source": 68,
     "pc": [
-      461
+      462
     ]
   },
   {
     "teal": 118,
     "source": 69,
     "pc": [
-      462,
-      463
+      463,
+      464
     ]
   },
   {
     "teal": 119,
     "source": 69,
     "pc": [
-      464,
-      465
+      465,
+      466
     ]
   },
   {
     "teal": 120,
     "source": 69,
     "pc": [
-      466
+      467
     ]
   },
   {
     "teal": 124,
     "source": 70,
     "pc": [
-      467,
-      468
+      468,
+      469
     ]
   },
   {
     "teal": 125,
     "source": 70,
     "pc": [
-      469
+      470
     ]
   },
   {
     "teal": 126,
     "source": 70,
     "pc": [
-      470
+      471
     ]
   },
   {
     "teal": 130,
     "source": 71,
     "pc": [
-      471,
-      472
+      472,
+      473
     ]
   },
   {
     "teal": 131,
     "source": 71,
     "pc": [
-      473
+      474
     ]
   },
   {
     "teal": 132,
     "source": 71,
     "pc": [
-      474
+      475
     ]
   },
   {
     "teal": 133,
     "source": 54,
     "pc": [
-      475
+      476
     ]
   },
   {
     "teal": 138,
     "source": 75,
     "pc": [
-      476,
       477,
-      478
+      478,
+      479
     ]
   },
   {
     "teal": 139,
     "source": 75,
     "pc": [
-      479
+      480
     ]
   },
   {
     "teal": 140,
     "source": 75,
     "pc": [
-      480
+      481
     ]
   },
   {
     "teal": 144,
     "source": 75,
     "pc": [
-      481,
       482,
-      483
+      483,
+      484
     ]
   },
   {
     "teal": 148,
     "source": 76,
     "pc": [
-      484,
-      485
+      485,
+      486
     ]
   },
   {
     "teal": 149,
     "source": 76,
     "pc": [
-      486
+      487
     ]
   },
   {
     "teal": 150,
     "source": 76,
     "pc": [
-      487
+      488
     ]
   },
   {
     "teal": 151,
     "source": 76,
     "pc": [
-      488
+      489
     ]
   },
   {
     "teal": 155,
     "source": 77,
     "pc": [
-      489,
-      490
+      490,
+      491
     ]
   },
   {
     "teal": 156,
     "source": 77,
     "pc": [
-      491,
-      492
+      492,
+      493
     ]
   },
   {
     "teal": 157,
     "source": 77,
     "pc": [
-      493
+      494
     ]
   },
   {
     "teal": 158,
     "source": 77,
     "pc": [
-      494
+      495
     ]
   },
   {
     "teal": 162,
     "source": 78,
     "pc": [
-      495,
-      496
+      496,
+      497
     ]
   },
   {
     "teal": 163,
     "source": 78,
     "pc": [
-      497,
-      498
+      498,
+      499
     ]
   },
   {
     "teal": 164,
     "source": 78,
     "pc": [
-      499
+      500
     ]
   },
   {
     "teal": 165,
     "source": 78,
     "pc": [
-      500
+      501
     ]
   },
   {
     "teal": 169,
     "source": 79,
     "pc": [
-      501,
-      502
+      502,
+      503
     ]
   },
   {
     "teal": 170,
     "source": 79,
     "pc": [
-      503,
-      504
+      504,
+      505
     ]
   },
   {
     "teal": 171,
     "source": 79,
     "pc": [
-      505
+      506
     ]
   },
   {
     "teal": 172,
     "source": 79,
     "pc": [
-      506
+      507
     ]
   },
   {
     "teal": 176,
     "source": 80,
     "pc": [
-      507,
-      508
+      508,
+      509
     ]
   },
   {
     "teal": 177,
     "source": 80,
     "pc": [
-      509,
-      510
+      510,
+      511
     ]
   },
   {
     "teal": 178,
     "source": 80,
     "pc": [
-      511
+      512
     ]
   },
   {
     "teal": 179,
     "source": 80,
     "pc": [
-      512
+      513
     ]
   },
   {
     "teal": 183,
     "source": 81,
     "pc": [
-      513,
-      514
+      514,
+      515
     ]
   },
   {
     "teal": 184,
     "source": 81,
     "pc": [
-      515,
-      516
+      516,
+      517
     ]
   },
   {
     "teal": 185,
     "source": 81,
     "pc": [
-      517
+      518
     ]
   },
   {
     "teal": 186,
     "source": 81,
     "pc": [
-      518
+      519
     ]
   },
   {
     "teal": 190,
     "source": 82,
     "pc": [
-      519,
-      520
+      520,
+      521
     ]
   },
   {
     "teal": 191,
     "source": 82,
     "pc": [
-      521,
       522
     ]
   },
@@ -3274,166 +3274,168 @@
     "teal": 754,
     "source": 176,
     "pc": [
-      964
+      964,
+      965
     ]
   },
   {
     "teal": 755,
     "source": 176,
     "pc": [
-      965
+      966
     ]
   },
   {
     "teal": 756,
     "source": 176,
     "pc": [
-      966,
-      967
+      967,
+      968
     ]
   },
   {
     "teal": 757,
     "source": 176,
     "pc": [
-      968,
-      969
+      969,
+      970
     ]
   },
   {
     "teal": 758,
     "source": 176,
     "pc": [
-      970
+      971
     ]
   },
   {
     "teal": 759,
     "source": 176,
     "pc": [
-      971
+      972
     ]
   },
   {
     "teal": 760,
     "source": 176,
     "pc": [
-      972
+      973,
+      974
     ]
   },
   {
     "teal": 761,
     "source": 176,
     "pc": [
-      973
+      975
     ]
   },
   {
     "teal": 762,
     "source": 176,
     "pc": [
-      974
+      976
     ]
   },
   {
     "teal": 767,
     "source": 178,
     "pc": [
-      975,
-      976
+      977,
+      978
     ]
   },
   {
     "teal": 768,
     "source": 178,
     "pc": [
-      977
+      979
     ]
   },
   {
     "teal": 769,
     "source": 178,
     "pc": [
-      978
+      980
     ]
   },
   {
     "teal": 770,
     "source": 178,
     "pc": [
-      979,
-      980
+      981,
+      982
     ]
   },
   {
     "teal": 771,
     "source": 178,
     "pc": [
-      981
+      983
     ]
   },
   {
     "teal": 772,
     "source": 178,
     "pc": [
-      982
+      984
     ]
   },
   {
     "teal": 773,
     "source": 178,
     "pc": [
-      983
+      985
     ]
   },
   {
     "teal": 774,
     "source": 178,
     "pc": [
-      984,
-      985
+      986,
+      987
     ]
   },
   {
     "teal": 775,
     "source": 178,
     "pc": [
-      986
+      988
     ]
   },
   {
     "teal": 776,
     "source": 178,
     "pc": [
-      987
+      989
     ]
   },
   {
     "teal": 777,
     "source": 178,
     "pc": [
-      988
+      990
     ]
   },
   {
     "teal": 778,
     "source": 178,
     "pc": [
-      989
+      991
     ]
   },
   {
     "teal": 779,
     "source": 178,
     "pc": [
-      990
+      992
     ]
   },
   {
     "teal": 780,
     "source": 178,
     "pc": [
-      991
+      993
     ]
   },
   {
@@ -3441,33 +3443,19 @@
     "source": 178,
     "errorMessage": "wideRatio failed",
     "pc": [
-      992
+      994
     ]
   },
   {
     "teal": 784,
     "source": 178,
     "pc": [
-      993,
-      994
-    ]
-  },
-  {
-    "teal": 788,
-    "source": 179,
-    "pc": [
-      995
-    ]
-  },
-  {
-    "teal": 789,
-    "source": 179,
-    "pc": [
+      995,
       996
     ]
   },
   {
-    "teal": 790,
+    "teal": 788,
     "source": 179,
     "pc": [
       997,
@@ -3475,51 +3463,51 @@
     ]
   },
   {
-    "teal": 791,
+    "teal": 789,
     "source": 179,
     "pc": [
       999
     ]
   },
   {
-    "teal": 792,
+    "teal": 790,
     "source": 179,
     "pc": [
-      1000
-    ]
-  },
-  {
-    "teal": 793,
-    "source": 179,
-    "pc": [
+      1000,
       1001
     ]
   },
   {
-    "teal": 794,
+    "teal": 791,
     "source": 179,
     "pc": [
       1002
     ]
   },
   {
-    "teal": 798,
-    "source": 180,
+    "teal": 792,
+    "source": 179,
     "pc": [
       1003,
       1004
     ]
   },
   {
-    "teal": 799,
-    "source": 180,
+    "teal": 793,
+    "source": 179,
     "pc": [
-      1005,
+      1005
+    ]
+  },
+  {
+    "teal": 794,
+    "source": 179,
+    "pc": [
       1006
     ]
   },
   {
-    "teal": 800,
+    "teal": 798,
     "source": 180,
     "pc": [
       1007,
@@ -3527,88 +3515,106 @@
     ]
   },
   {
+    "teal": 799,
+    "source": 180,
+    "pc": [
+      1009,
+      1010
+    ]
+  },
+  {
+    "teal": 800,
+    "source": 180,
+    "pc": [
+      1011,
+      1012
+    ]
+  },
+  {
     "teal": 801,
     "source": 180,
     "pc": [
-      1009
+      1013
     ]
   },
   {
     "teal": 805,
     "source": 182,
     "pc": [
-      1010,
-      1011
+      1014,
+      1015
     ]
   },
   {
     "teal": 806,
     "source": 182,
     "pc": [
-      1012
+      1016,
+      1017
     ]
   },
   {
     "teal": 807,
     "source": 182,
     "pc": [
-      1013
+      1018
     ]
   },
   {
     "teal": 808,
     "source": 182,
     "pc": [
-      1014
+      1019
     ]
   },
   {
     "teal": 809,
     "source": 182,
     "pc": [
-      1015
+      1020,
+      1021
     ]
   },
   {
     "teal": 810,
     "source": 182,
     "pc": [
-      1016
+      1022
     ]
   },
   {
     "teal": 811,
     "source": 182,
     "pc": [
-      1017
+      1023
     ]
   },
   {
     "teal": 812,
     "source": 182,
     "pc": [
-      1018
+      1024
     ]
   },
   {
     "teal": 813,
     "source": 182,
     "pc": [
-      1019
+      1025
     ]
   },
   {
     "teal": 814,
     "source": 182,
     "pc": [
-      1020
+      1026
     ]
   },
   {
     "teal": 815,
     "source": 182,
     "pc": [
-      1021
+      1027
     ]
   },
   {
@@ -3616,118 +3622,119 @@
     "source": 182,
     "errorMessage": "wideRatio failed",
     "pc": [
-      1022
+      1028
     ]
   },
   {
     "teal": 819,
     "source": 182,
     "pc": [
-      1023,
-      1024
+      1029,
+      1030
     ]
   },
   {
     "teal": 823,
     "source": 183,
     "pc": [
-      1025,
-      1026
+      1031,
+      1032
     ]
   },
   {
     "teal": 824,
     "source": 183,
     "pc": [
-      1027,
-      1028
+      1033,
+      1034
     ]
   },
   {
     "teal": 825,
     "source": 183,
     "pc": [
-      1029,
-      1030
+      1035,
+      1036
     ]
   },
   {
     "teal": 826,
     "source": 183,
     "pc": [
-      1031
+      1037
     ]
   },
   {
     "teal": 830,
     "source": 184,
     "pc": [
-      1032,
-      1033
+      1038,
+      1039
     ]
   },
   {
     "teal": 831,
     "source": 184,
     "pc": [
-      1034,
-      1035
+      1040,
+      1041
     ]
   },
   {
     "teal": 832,
     "source": 184,
     "pc": [
-      1036
+      1042
     ]
   },
   {
     "teal": 833,
     "source": 184,
     "pc": [
-      1037
+      1043
     ]
   },
   {
     "teal": 834,
     "source": 184,
     "pc": [
-      1038
+      1044,
+      1045
     ]
   },
   {
     "teal": 835,
     "source": 184,
     "pc": [
-      1039
+      1046
     ]
   },
   {
     "teal": 836,
     "source": 184,
     "pc": [
-      1040
+      1047
     ]
   },
   {
     "teal": 837,
     "source": 184,
     "pc": [
-      1041
+      1048
     ]
   },
   {
     "teal": 838,
     "source": 184,
     "pc": [
-      1042
+      1049
     ]
   },
   {
     "teal": 839,
     "source": 184,
     "pc": [
-      1043
+      1050
     ]
   },
   {
@@ -3735,81 +3742,50 @@
     "source": 184,
     "errorMessage": "wideRatio failed",
     "pc": [
-      1044
+      1051
     ]
   },
   {
     "teal": 843,
     "source": 184,
     "pc": [
-      1045,
-      1046
+      1052,
+      1053
     ]
   },
   {
     "teal": 847,
     "source": 185,
     "pc": [
-      1047,
-      1048
+      1054,
+      1055
     ]
   },
   {
     "teal": 848,
     "source": 185,
     "pc": [
-      1049,
-      1050
+      1056,
+      1057
     ]
   },
   {
     "teal": 849,
     "source": 185,
     "pc": [
-      1051,
-      1052
+      1058,
+      1059
     ]
   },
   {
     "teal": 850,
     "source": 185,
     "pc": [
-      1053
-    ]
-  },
-  {
-    "teal": 854,
-    "source": 187,
-    "pc": [
-      1054,
-      1055
-    ]
-  },
-  {
-    "teal": 855,
-    "source": 187,
-    "pc": [
-      1056,
-      1057
-    ]
-  },
-  {
-    "teal": 856,
-    "source": 187,
-    "pc": [
-      1058,
-      1059
-    ]
-  },
-  {
-    "teal": 857,
-    "source": 187,
-    "pc": [
       1060
     ]
   },
   {
-    "teal": 858,
+    "teal": 854,
     "source": 187,
     "pc": [
       1061,
@@ -3817,60 +3793,90 @@
     ]
   },
   {
-    "teal": 859,
+    "teal": 855,
     "source": 187,
     "pc": [
       1063
     ]
   },
   {
-    "teal": 860,
+    "teal": 856,
     "source": 187,
     "pc": [
-      1064
+      1064,
+      1065
     ]
   },
   {
-    "teal": 861,
+    "teal": 857,
     "source": 187,
     "pc": [
-      1065,
       1066
     ]
   },
   {
-    "teal": 862,
+    "teal": 858,
     "source": 187,
     "pc": [
-      1067
-    ]
-  },
-  {
-    "teal": 863,
-    "source": 187,
-    "pc": [
+      1067,
       1068
     ]
   },
   {
-    "teal": 864,
+    "teal": 859,
     "source": 187,
     "pc": [
       1069
     ]
   },
   {
-    "teal": 865,
+    "teal": 860,
     "source": 187,
     "pc": [
       1070
     ]
   },
   {
+    "teal": 861,
+    "source": 187,
+    "pc": [
+      1071,
+      1072
+    ]
+  },
+  {
+    "teal": 862,
+    "source": 187,
+    "pc": [
+      1073
+    ]
+  },
+  {
+    "teal": 863,
+    "source": 187,
+    "pc": [
+      1074
+    ]
+  },
+  {
+    "teal": 864,
+    "source": 187,
+    "pc": [
+      1075
+    ]
+  },
+  {
+    "teal": 865,
+    "source": 187,
+    "pc": [
+      1076
+    ]
+  },
+  {
     "teal": 866,
     "source": 187,
     "pc": [
-      1071
+      1077
     ]
   },
   {
@@ -3878,306 +3884,275 @@
     "source": 187,
     "errorMessage": "wideRatio failed",
     "pc": [
-      1072
+      1078
     ]
   },
   {
     "teal": 870,
     "source": 187,
     "pc": [
-      1073
-    ]
-  },
-  {
-    "teal": 871,
-    "source": 174,
-    "pc": [
-      1074
-    ]
-  },
-  {
-    "teal": 876,
-    "source": 191,
-    "pc": [
-      1075,
-      1076,
-      1077
-    ]
-  },
-  {
-    "teal": 877,
-    "source": 191,
-    "pc": [
-      1078
-    ]
-  },
-  {
-    "teal": 878,
-    "source": 191,
-    "pc": [
       1079
     ]
   },
   {
-    "teal": 879,
-    "source": 191,
+    "teal": 875,
+    "source": 188,
     "pc": [
       1080,
       1081
     ]
   },
   {
-    "teal": 880,
-    "source": 191,
+    "teal": 876,
+    "source": 188,
     "pc": [
       1082
     ]
   },
   {
-    "teal": 883,
-    "source": 191,
-    "errorMessage": "argument 0 (userAddress) for accrueRewards must be a address",
+    "teal": 877,
+    "source": 188,
     "pc": [
       1083
     ]
   },
   {
-    "teal": 886,
-    "source": 191,
+    "teal": 878,
+    "source": 188,
     "pc": [
-      1084,
-      1085,
-      1086
+      1084
     ]
   },
   {
-    "teal": 887,
-    "source": 191,
+    "teal": 879,
+    "source": 188,
     "pc": [
-      1087
+      1085
     ]
   },
   {
-    "teal": 888,
-    "source": 191,
+    "teal": 880,
+    "source": 188,
     "pc": [
+      1086,
+      1087,
       1088
     ]
   },
   {
-    "teal": 892,
-    "source": 191,
+    "teal": 885,
+    "source": 189,
     "pc": [
       1089,
-      1090,
+      1090
+    ]
+  },
+  {
+    "teal": 886,
+    "source": 189,
+    "pc": [
       1091
     ]
   },
   {
-    "teal": 896,
-    "source": 192,
+    "teal": 887,
+    "source": 189,
     "pc": [
       1092,
       1093
     ]
   },
   {
-    "teal": 897,
-    "source": 192,
+    "teal": 888,
+    "source": 189,
     "pc": [
       1094
     ]
   },
   {
-    "teal": 898,
-    "source": 192,
+    "teal": 891,
+    "source": 174,
     "pc": [
       1095
     ]
   },
   {
-    "teal": 899,
-    "source": 192,
+    "teal": 896,
+    "source": 194,
     "pc": [
-      1096
-    ]
-  },
-  {
-    "teal": 900,
-    "source": 192,
-    "pc": [
-      1097
-    ]
-  },
-  {
-    "teal": 903,
-    "source": 192,
-    "errorMessage": "User has no staked assets",
-    "pc": [
+      1096,
+      1097,
       1098
     ]
   },
   {
-    "teal": 907,
-    "source": 193,
+    "teal": 897,
+    "source": 194,
     "pc": [
-      1099,
+      1099
+    ]
+  },
+  {
+    "teal": 898,
+    "source": 194,
+    "pc": [
       1100
     ]
   },
   {
-    "teal": 908,
-    "source": 193,
+    "teal": 899,
+    "source": 194,
     "pc": [
       1101,
       1102
     ]
   },
   {
-    "teal": 909,
-    "source": 193,
+    "teal": 900,
+    "source": 194,
     "pc": [
       1103
     ]
   },
   {
-    "teal": 910,
-    "source": 193,
+    "teal": 903,
+    "source": 194,
+    "errorMessage": "argument 0 (userAddress) for accrueRewards must be a address",
     "pc": [
       1104
     ]
   },
   {
-    "teal": 911,
-    "source": 193,
-    "pc": [
-      1105
-    ]
-  },
-  {
-    "teal": 914,
-    "source": 193,
-    "errorMessage": "User has not staked assets",
-    "pc": [
-      1106
-    ]
-  },
-  {
-    "teal": 918,
+    "teal": 906,
     "source": 194,
     "pc": [
-      1107,
+      1105,
+      1106,
+      1107
+    ]
+  },
+  {
+    "teal": 907,
+    "source": 194,
+    "pc": [
       1108
     ]
   },
   {
-    "teal": 919,
+    "teal": 908,
     "source": 194,
     "pc": [
-      1109,
-      1110
+      1109
     ]
   },
   {
-    "teal": 920,
+    "teal": 912,
     "source": 194,
     "pc": [
+      1110,
       1111,
       1112
     ]
   },
   {
-    "teal": 921,
-    "source": 194,
+    "teal": 916,
+    "source": 195,
     "pc": [
       1113,
       1114
     ]
   },
   {
-    "teal": 922,
-    "source": 194,
+    "teal": 917,
+    "source": 195,
     "pc": [
-      1115,
+      1115
+    ]
+  },
+  {
+    "teal": 918,
+    "source": 195,
+    "pc": [
       1116
     ]
   },
   {
-    "teal": 923,
-    "source": 194,
+    "teal": 919,
+    "source": 195,
     "pc": [
       1117
     ]
   },
   {
-    "teal": 924,
-    "source": 194,
+    "teal": 920,
+    "source": 195,
     "pc": [
       1118
     ]
   },
   {
-    "teal": 925,
-    "source": 194,
+    "teal": 923,
+    "source": 195,
+    "errorMessage": "User has no staked assets",
     "pc": [
       1119
     ]
   },
   {
-    "teal": 929,
-    "source": 195,
+    "teal": 927,
+    "source": 196,
     "pc": [
       1120,
       1121
     ]
   },
   {
-    "teal": 930,
-    "source": 195,
+    "teal": 928,
+    "source": 196,
     "pc": [
       1122,
       1123
     ]
   },
   {
-    "teal": 931,
-    "source": 195,
+    "teal": 929,
+    "source": 196,
     "pc": [
       1124
     ]
   },
   {
-    "teal": 932,
-    "source": 195,
+    "teal": 930,
+    "source": 196,
     "pc": [
-      1125,
+      1125
+    ]
+  },
+  {
+    "teal": 931,
+    "source": 196,
+    "pc": [
       1126
     ]
   },
   {
-    "teal": 933,
-    "source": 195,
+    "teal": 934,
+    "source": 196,
+    "errorMessage": "User has not staked assets",
     "pc": [
       1127
     ]
   },
   {
-    "teal": 934,
-    "source": 195,
+    "teal": 938,
+    "source": 197,
     "pc": [
-      1128
-    ]
-  },
-  {
-    "teal": 937,
-    "source": 195,
-    "errorMessage": "User has not staked for minimum period",
-    "pc": [
+      1128,
       1129
     ]
   },
   {
-    "teal": 941,
+    "teal": 939,
     "source": 197,
     "pc": [
       1130,
@@ -4185,7 +4160,7 @@
     ]
   },
   {
-    "teal": 942,
+    "teal": 940,
     "source": 197,
     "pc": [
       1132,
@@ -4193,167 +4168,174 @@
     ]
   },
   {
+    "teal": 941,
+    "source": 197,
+    "pc": [
+      1134,
+      1135
+    ]
+  },
+  {
+    "teal": 942,
+    "source": 197,
+    "pc": [
+      1136,
+      1137
+    ]
+  },
+  {
     "teal": 943,
     "source": 197,
     "pc": [
-      1134
+      1138
     ]
   },
   {
     "teal": 944,
     "source": 197,
     "pc": [
-      1135,
-      1136
+      1139
     ]
   },
   {
     "teal": 945,
     "source": 197,
     "pc": [
-      1137,
-      1138
-    ]
-  },
-  {
-    "teal": 946,
-    "source": 197,
-    "pc": [
-      1139
-    ]
-  },
-  {
-    "teal": 947,
-    "source": 197,
-    "pc": [
       1140
     ]
   },
   {
-    "teal": 948,
-    "source": 197,
+    "teal": 949,
+    "source": 198,
     "pc": [
       1141,
       1142
     ]
   },
   {
-    "teal": 949,
-    "source": 197,
+    "teal": 950,
+    "source": 198,
     "pc": [
       1143,
       1144
     ]
   },
   {
-    "teal": 950,
-    "source": 197,
+    "teal": 951,
+    "source": 198,
     "pc": [
-      1145,
-      1146
+      1145
     ]
   },
   {
-    "teal": 951,
-    "source": 197,
+    "teal": 952,
+    "source": 198,
     "pc": [
+      1146,
       1147
     ]
   },
   {
-    "teal": 955,
+    "teal": 953,
     "source": 198,
     "pc": [
-      1148,
-      1149
+      1148
     ]
   },
   {
-    "teal": 956,
+    "teal": 954,
     "source": 198,
     "pc": [
-      1150
+      1149
     ]
   },
   {
     "teal": 957,
     "source": 198,
+    "errorMessage": "User has not staked for minimum period",
+    "pc": [
+      1150
+    ]
+  },
+  {
+    "teal": 961,
+    "source": 200,
     "pc": [
       1151,
       1152
     ]
   },
   {
-    "teal": 958,
-    "source": 198,
+    "teal": 962,
+    "source": 200,
     "pc": [
       1153,
       1154
     ]
   },
   {
-    "teal": 959,
-    "source": 198,
+    "teal": 963,
+    "source": 200,
     "pc": [
       1155
     ]
   },
   {
-    "teal": 960,
-    "source": 198,
+    "teal": 964,
+    "source": 200,
     "pc": [
-      1156
+      1156,
+      1157
     ]
   },
   {
-    "teal": 961,
-    "source": 198,
+    "teal": 965,
+    "source": 200,
     "pc": [
-      1157,
       1158
     ]
   },
   {
-    "teal": 962,
-    "source": 198,
+    "teal": 966,
+    "source": 200,
     "pc": [
       1159
     ]
   },
   {
-    "teal": 963,
-    "source": 198,
+    "teal": 967,
+    "source": 200,
     "pc": [
       1160
     ]
   },
   {
-    "teal": 967,
-    "source": 199,
+    "teal": 968,
+    "source": 200,
     "pc": [
       1161,
       1162
     ]
   },
   {
-    "teal": 968,
-    "source": 199,
+    "teal": 969,
+    "source": 200,
     "pc": [
       1163,
       1164
     ]
   },
   {
-    "teal": 969,
-    "source": 199,
+    "teal": 970,
+    "source": 200,
     "pc": [
       1165,
       1166
     ]
   },
   {
-    "teal": 970,
-    "source": 199,
+    "teal": 971,
+    "source": 200,
     "pc": [
       1167
     ]
@@ -4377,518 +4359,528 @@
     "teal": 977,
     "source": 201,
     "pc": [
-      1171
+      1171,
+      1172
     ]
   },
   {
     "teal": 978,
     "source": 201,
     "pc": [
-      1172
+      1173
     ]
   },
   {
     "teal": 979,
     "source": 201,
     "pc": [
-      1173
+      1174
     ]
   },
   {
     "teal": 980,
     "source": 201,
     "pc": [
-      1174,
-      1175,
-      1176
+      1175
     ]
   },
   {
-    "teal": 985,
-    "source": 203,
+    "teal": 981,
+    "source": 201,
     "pc": [
-      1177,
+      1176,
+      1177
+    ]
+  },
+  {
+    "teal": 982,
+    "source": 201,
+    "pc": [
       1178
     ]
   },
   {
-    "teal": 986,
-    "source": 203,
+    "teal": 983,
+    "source": 201,
     "pc": [
       1179
     ]
   },
   {
     "teal": 987,
-    "source": 203,
+    "source": 202,
     "pc": [
-      1180
+      1180,
+      1181
     ]
   },
   {
     "teal": 988,
-    "source": 203,
+    "source": 202,
     "pc": [
-      1181,
-      1182
+      1182,
+      1183
     ]
   },
   {
     "teal": 989,
-    "source": 203,
+    "source": 202,
     "pc": [
-      1183,
-      1184
-    ]
-  },
-  {
-    "teal": 990,
-    "source": 203,
-    "pc": [
+      1184,
       1185
     ]
   },
   {
-    "teal": 991,
-    "source": 203,
+    "teal": 990,
+    "source": 202,
     "pc": [
       1186
     ]
   },
   {
-    "teal": 992,
-    "source": 203,
+    "teal": 995,
+    "source": 204,
     "pc": [
       1187,
       1188
     ]
   },
   {
-    "teal": 993,
-    "source": 203,
+    "teal": 996,
+    "source": 204,
     "pc": [
       1189
     ]
   },
   {
-    "teal": 994,
-    "source": 203,
+    "teal": 997,
+    "source": 204,
     "pc": [
-      1190,
-      1191
+      1190
     ]
   },
   {
-    "teal": 995,
-    "source": 203,
+    "teal": 998,
+    "source": 204,
     "pc": [
-      1192
+      1191
     ]
   },
   {
     "teal": 999,
     "source": 204,
     "pc": [
-      1193
+      1192
     ]
   },
   {
     "teal": 1000,
     "source": 204,
     "pc": [
-      1194
+      1193,
+      1194,
+      1195
     ]
   },
   {
-    "teal": 1001,
-    "source": 204,
+    "teal": 1005,
+    "source": 206,
     "pc": [
-      1195,
-      1196
+      1196,
+      1197
     ]
   },
   {
-    "teal": 1002,
-    "source": 204,
+    "teal": 1006,
+    "source": 206,
     "pc": [
-      1197,
       1198
     ]
   },
   {
-    "teal": 1003,
-    "source": 204,
+    "teal": 1007,
+    "source": 206,
     "pc": [
       1199
     ]
   },
   {
-    "teal": 1004,
-    "source": 204,
+    "teal": 1008,
+    "source": 206,
     "pc": [
-      1200
-    ]
-  },
-  {
-    "teal": 1005,
-    "source": 204,
-    "pc": [
+      1200,
       1201
     ]
   },
   {
-    "teal": 1006,
-    "source": 204,
+    "teal": 1009,
+    "source": 206,
     "pc": [
       1202
     ]
   },
   {
-    "teal": 1007,
-    "source": 204,
+    "teal": 1010,
+    "source": 206,
     "pc": [
       1203
     ]
   },
   {
-    "teal": 1010,
-    "source": 191,
+    "teal": 1011,
+    "source": 206,
     "pc": [
       1204
     ]
   },
   {
-    "teal": 1015,
-    "source": 209,
+    "teal": 1012,
+    "source": 206,
     "pc": [
       1205,
-      1206,
+      1206
+    ]
+  },
+  {
+    "teal": 1013,
+    "source": 206,
+    "pc": [
       1207
     ]
   },
   {
-    "teal": 1016,
-    "source": 209,
+    "teal": 1014,
+    "source": 206,
     "pc": [
-      1208
+      1208,
+      1209
     ]
   },
   {
-    "teal": 1019,
-    "source": 209,
+    "teal": 1015,
+    "source": 206,
     "pc": [
-      1209,
       1210
     ]
   },
   {
-    "teal": 1020,
-    "source": 209,
+    "teal": 1019,
+    "source": 207,
     "pc": [
       1211
     ]
   },
   {
-    "teal": 1021,
-    "source": 209,
+    "teal": 1020,
+    "source": 207,
     "pc": [
       1212
     ]
   },
   {
-    "teal": 1022,
-    "source": 209,
+    "teal": 1021,
+    "source": 207,
     "pc": [
-      1213
+      1213,
+      1214
     ]
   },
   {
-    "teal": 1023,
-    "source": 209,
+    "teal": 1022,
+    "source": 207,
     "pc": [
-      1214,
       1215
     ]
   },
   {
-    "teal": 1024,
-    "source": 209,
+    "teal": 1023,
+    "source": 207,
     "pc": [
       1216
     ]
   },
   {
-    "teal": 1025,
-    "source": 209,
+    "teal": 1024,
+    "source": 207,
     "pc": [
       1217
     ]
   },
   {
-    "teal": 1028,
-    "source": 209,
-    "errorMessage": "argument 1 (stakeTxn) for restake must be a axfer transaction",
+    "teal": 1025,
+    "source": 207,
     "pc": [
       1218
     ]
   },
   {
-    "teal": 1031,
-    "source": 209,
+    "teal": 1026,
+    "source": 207,
     "pc": [
-      1219,
-      1220,
+      1219
+    ]
+  },
+  {
+    "teal": 1027,
+    "source": 207,
+    "pc": [
+      1220
+    ]
+  },
+  {
+    "teal": 1030,
+    "source": 194,
+    "pc": [
       1221
     ]
   },
   {
-    "teal": 1032,
-    "source": 209,
+    "teal": 1035,
+    "source": 212,
     "pc": [
-      1222
+      1222,
+      1223,
+      1224
     ]
   },
   {
-    "teal": 1033,
-    "source": 209,
+    "teal": 1036,
+    "source": 212,
     "pc": [
-      1223
+      1225
     ]
   },
   {
-    "teal": 1037,
-    "source": 209,
+    "teal": 1039,
+    "source": 212,
     "pc": [
-      1224,
-      1225,
-      1226
+      1226,
+      1227
     ]
   },
   {
     "teal": 1040,
-    "source": 209,
+    "source": 212,
     "pc": [
-      1227,
       1228
     ]
   },
   {
     "teal": 1041,
-    "source": 209,
+    "source": 212,
     "pc": [
-      1229,
+      1229
+    ]
+  },
+  {
+    "teal": 1042,
+    "source": 212,
+    "pc": [
       1230
     ]
   },
   {
-    "teal": 1045,
-    "source": 210,
+    "teal": 1043,
+    "source": 212,
     "pc": [
       1231,
       1232
     ]
   },
   {
-    "teal": 1046,
-    "source": 210,
+    "teal": 1044,
+    "source": 212,
     "pc": [
       1233
     ]
   },
   {
-    "teal": 1047,
-    "source": 210,
+    "teal": 1045,
+    "source": 212,
     "pc": [
       1234
     ]
   },
   {
-    "teal": 1050,
-    "source": 210,
-    "errorMessage": "Invalid quantity",
+    "teal": 1048,
+    "source": 212,
+    "errorMessage": "argument 1 (stakeTxn) for restake must be a axfer transaction",
     "pc": [
       1235
     ]
   },
   {
-    "teal": 1060,
+    "teal": 1051,
     "source": 212,
     "pc": [
       1236,
-      1237
+      1237,
+      1238
+    ]
+  },
+  {
+    "teal": 1052,
+    "source": 212,
+    "pc": [
+      1239
+    ]
+  },
+  {
+    "teal": 1053,
+    "source": 212,
+    "pc": [
+      1240
+    ]
+  },
+  {
+    "teal": 1057,
+    "source": 212,
+    "pc": [
+      1241,
+      1242,
+      1243
     ]
   },
   {
     "teal": 1061,
     "source": 213,
     "pc": [
-      1238,
-      1239
+      1244,
+      1245
     ]
   },
   {
     "teal": 1062,
     "source": 213,
     "pc": [
-      1240,
-      1241
+      1246
     ]
   },
   {
     "teal": 1063,
     "source": 213,
     "pc": [
-      1242
+      1247
     ]
   },
   {
     "teal": 1066,
     "source": 213,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"sender\",\"expected\":\"this.txn.sender\"}",
+    "errorMessage": "Invalid quantity",
     "pc": [
-      1243
+      1248
     ]
   },
   {
-    "teal": 1069,
-    "source": 212,
+    "teal": 1076,
+    "source": 215,
     "pc": [
-      1244,
-      1245
-    ]
-  },
-  {
-    "teal": 1070,
-    "source": 214,
-    "pc": [
-      1246,
-      1247
-    ]
-  },
-  {
-    "teal": 1071,
-    "source": 214,
-    "pc": [
-      1248,
-      1249
-    ]
-  },
-  {
-    "teal": 1072,
-    "source": 214,
-    "pc": [
+      1249,
       1250
     ]
   },
   {
-    "teal": 1075,
-    "source": 214,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetReceiver\",\"expected\":\"this.app.address\"}",
+    "teal": 1077,
+    "source": 216,
     "pc": [
-      1251
+      1251,
+      1252
     ]
   },
   {
     "teal": 1078,
-    "source": 212,
+    "source": 216,
     "pc": [
-      1252,
-      1253
+      1253,
+      1254
     ]
   },
   {
     "teal": 1079,
-    "source": 215,
+    "source": 216,
     "pc": [
-      1254,
       1255
     ]
   },
   {
-    "teal": 1080,
-    "source": 215,
+    "teal": 1082,
+    "source": 216,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"sender\",\"expected\":\"this.txn.sender\"}",
     "pc": [
       1256
     ]
   },
   {
-    "teal": 1081,
+    "teal": 1085,
     "source": 215,
     "pc": [
-      1257
-    ]
-  },
-  {
-    "teal": 1082,
-    "source": 215,
-    "pc": [
+      1257,
       1258
     ]
   },
   {
-    "teal": 1085,
-    "source": 215,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"xferAsset\",\"expected\":\"AssetID.fromUint64(this.stakedAssetId.value)\"}",
+    "teal": 1086,
+    "source": 217,
     "pc": [
-      1259
+      1259,
+      1260
+    ]
+  },
+  {
+    "teal": 1087,
+    "source": 217,
+    "pc": [
+      1261,
+      1262
     ]
   },
   {
     "teal": 1088,
-    "source": 212,
+    "source": 217,
     "pc": [
-      1260,
-      1261
-    ]
-  },
-  {
-    "teal": 1089,
-    "source": 216,
-    "pc": [
-      1262,
       1263
     ]
   },
   {
-    "teal": 1090,
-    "source": 216,
-    "pc": [
-      1264,
-      1265
-    ]
-  },
-  {
     "teal": 1091,
-    "source": 216,
+    "source": 217,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetReceiver\",\"expected\":\"this.app.address\"}",
     "pc": [
-      1266
+      1264
     ]
   },
   {
     "teal": 1094,
-    "source": 216,
-    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetAmount\",\"expected\":\"quantity\"}",
+    "source": 215,
     "pc": [
-      1267
+      1265,
+      1266
     ]
   },
   {
-    "teal": 1098,
+    "teal": 1095,
     "source": 218,
     "pc": [
-      1268,
+      1267,
+      1268
+    ]
+  },
+  {
+    "teal": 1096,
+    "source": 218,
+    "pc": [
       1269
     ]
   },
   {
-    "teal": 1099,
+    "teal": 1097,
     "source": 218,
     "pc": [
       1270
     ]
   },
   {
-    "teal": 1100,
+    "teal": 1098,
     "source": 218,
     "pc": [
       1271
@@ -4897,110 +4889,106 @@
   {
     "teal": 1101,
     "source": 218,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"xferAsset\",\"expected\":\"AssetID.fromUint64(this.stakedAssetId.value)\"}",
     "pc": [
-      1272,
-      1273
-    ]
-  },
-  {
-    "teal": 1102,
-    "source": 218,
-    "pc": [
-      1274,
-      1275
-    ]
-  },
-  {
-    "teal": 1103,
-    "source": 218,
-    "pc": [
-      1276
+      1272
     ]
   },
   {
     "teal": 1104,
-    "source": 218,
+    "source": 215,
+    "pc": [
+      1273,
+      1274
+    ]
+  },
+  {
+    "teal": 1105,
+    "source": 219,
+    "pc": [
+      1275,
+      1276
+    ]
+  },
+  {
+    "teal": 1106,
+    "source": 219,
     "pc": [
       1277,
       1278
     ]
   },
   {
-    "teal": 1105,
-    "source": 218,
+    "teal": 1107,
+    "source": 219,
     "pc": [
       1279
     ]
   },
   {
-    "teal": 1106,
-    "source": 218,
+    "teal": 1110,
+    "source": 219,
+    "errorMessage": "transaction verification failed: {\"txn\":\"stakeTxn\",\"field\":\"assetAmount\",\"expected\":\"quantity\"}",
     "pc": [
-      1280,
-      1281
+      1280
     ]
   },
   {
-    "teal": 1107,
-    "source": 218,
+    "teal": 1114,
+    "source": 221,
     "pc": [
+      1281,
       1282
     ]
   },
   {
-    "teal": 1111,
-    "source": 219,
+    "teal": 1115,
+    "source": 221,
     "pc": [
       1283
     ]
   },
   {
-    "teal": 1112,
-    "source": 219,
+    "teal": 1116,
+    "source": 221,
     "pc": [
       1284
     ]
   },
   {
-    "teal": 1113,
-    "source": 219,
+    "teal": 1117,
+    "source": 221,
     "pc": [
       1285,
       1286
     ]
   },
   {
-    "teal": 1114,
-    "source": 219,
+    "teal": 1118,
+    "source": 221,
     "pc": [
       1287,
       1288
     ]
   },
   {
-    "teal": 1115,
-    "source": 219,
+    "teal": 1119,
+    "source": 221,
     "pc": [
       1289
     ]
   },
   {
-    "teal": 1116,
-    "source": 219,
+    "teal": 1120,
+    "source": 221,
     "pc": [
-      1290
-    ]
-  },
-  {
-    "teal": 1117,
-    "source": 219,
-    "pc": [
+      1290,
       1291
     ]
   },
   {
-    "teal": 1118,
-    "source": 219,
+    "teal": 1121,
+    "source": 221,
     "pc": [
       1292
     ]
@@ -5017,27 +5005,33 @@
     "teal": 1123,
     "source": 221,
     "pc": [
-      1295,
+      1295
+    ]
+  },
+  {
+    "teal": 1127,
+    "source": 222,
+    "pc": [
       1296
     ]
   },
   {
-    "teal": 1124,
-    "source": 221,
+    "teal": 1128,
+    "source": 222,
     "pc": [
-      1297,
-      1298
-    ]
-  },
-  {
-    "teal": 1125,
-    "source": 221,
-    "pc": [
-      1299
+      1297
     ]
   },
   {
     "teal": 1129,
+    "source": 222,
+    "pc": [
+      1298,
+      1299
+    ]
+  },
+  {
+    "teal": 1130,
     "source": 222,
     "pc": [
       1300,
@@ -5045,716 +5039,612 @@
     ]
   },
   {
-    "teal": 1130,
-    "source": 222,
-    "pc": [
-      1302,
-      1303
-    ]
-  },
-  {
     "teal": 1131,
     "source": 222,
     "pc": [
-      1304
+      1302
     ]
   },
   {
     "teal": 1132,
     "source": 222,
     "pc": [
+      1303
+    ]
+  },
+  {
+    "teal": 1133,
+    "source": 222,
+    "pc": [
+      1304
+    ]
+  },
+  {
+    "teal": 1134,
+    "source": 222,
+    "pc": [
       1305
     ]
   },
   {
-    "teal": 1136,
-    "source": 225,
+    "teal": 1138,
+    "source": 224,
     "pc": [
-      1306
-    ]
-  },
-  {
-    "teal": 1137,
-    "source": 225,
-    "pc": [
+      1306,
       1307
     ]
   },
   {
-    "teal": 1138,
-    "source": 225,
+    "teal": 1139,
+    "source": 224,
     "pc": [
       1308,
       1309
     ]
   },
   {
-    "teal": 1139,
-    "source": 225,
+    "teal": 1140,
+    "source": 224,
     "pc": [
       1310,
       1311
     ]
   },
   {
-    "teal": 1140,
-    "source": 225,
+    "teal": 1141,
+    "source": 224,
     "pc": [
       1312
     ]
   },
   {
-    "teal": 1141,
+    "teal": 1145,
     "source": 225,
     "pc": [
-      1313
-    ]
-  },
-  {
-    "teal": 1142,
-    "source": 225,
-    "pc": [
+      1313,
       1314
     ]
   },
   {
-    "teal": 1143,
+    "teal": 1146,
     "source": 225,
     "pc": [
-      1315
-    ]
-  },
-  {
-    "teal": 1144,
-    "source": 225,
-    "pc": [
+      1315,
       1316
     ]
   },
   {
-    "teal": 1148,
-    "source": 226,
+    "teal": 1147,
+    "source": 225,
     "pc": [
-      1317,
+      1317
+    ]
+  },
+  {
+    "teal": 1148,
+    "source": 225,
+    "pc": [
       1318
     ]
   },
   {
-    "teal": 1149,
-    "source": 226,
+    "teal": 1152,
+    "source": 228,
     "pc": [
-      1319
-    ]
-  },
-  {
-    "teal": 1150,
-    "source": 226,
-    "pc": [
+      1319,
       1320
     ]
   },
   {
-    "teal": 1151,
-    "source": 226,
+    "teal": 1153,
+    "source": 228,
     "pc": [
       1321,
-      1322
-    ]
-  },
-  {
-    "teal": 1152,
-    "source": 226,
-    "pc": [
+      1322,
       1323
     ]
   },
   {
-    "teal": 1153,
-    "source": 226,
+    "teal": 1154,
+    "source": 212,
     "pc": [
       1324
     ]
   },
   {
-    "teal": 1154,
-    "source": 226,
+    "teal": 1159,
+    "source": 231,
     "pc": [
-      1325
-    ]
-  },
-  {
-    "teal": 1155,
-    "source": 226,
-    "pc": [
+      1325,
       1326,
       1327
     ]
   },
   {
-    "teal": 1156,
-    "source": 226,
+    "teal": 1160,
+    "source": 231,
     "pc": [
       1328
     ]
   },
   {
-    "teal": 1157,
-    "source": 226,
+    "teal": 1161,
+    "source": 231,
     "pc": [
       1329
     ]
   },
   {
-    "teal": 1158,
-    "source": 226,
+    "teal": 1165,
+    "source": 231,
     "pc": [
-      1330
-    ]
-  },
-  {
-    "teal": 1159,
-    "source": 226,
-    "pc": [
-      1331
-    ]
-  },
-  {
-    "teal": 1160,
-    "source": 226,
-    "pc": [
+      1330,
+      1331,
       1332
     ]
   },
   {
-    "teal": 1161,
-    "source": 226,
+    "teal": 1169,
+    "source": 232,
     "pc": [
-      1333
-    ]
-  },
-  {
-    "teal": 1164,
-    "source": 226,
-    "errorMessage": "wideRatio failed",
-    "pc": [
+      1333,
       1334
     ]
   },
   {
-    "teal": 1165,
-    "source": 226,
+    "teal": 1170,
+    "source": 232,
     "pc": [
-      1335,
+      1335
+    ]
+  },
+  {
+    "teal": 1171,
+    "source": 232,
+    "pc": [
       1336
     ]
   },
   {
-    "teal": 1169,
-    "source": 227,
+    "teal": 1172,
+    "source": 232,
     "pc": [
       1337
     ]
   },
   {
-    "teal": 1170,
-    "source": 227,
+    "teal": 1173,
+    "source": 232,
     "pc": [
       1338
     ]
   },
   {
-    "teal": 1171,
-    "source": 227,
+    "teal": 1176,
+    "source": 232,
+    "errorMessage": "No staked assets",
     "pc": [
-      1339,
-      1340
+      1339
     ]
   },
   {
-    "teal": 1172,
-    "source": 227,
+    "teal": 1180,
+    "source": 233,
     "pc": [
+      1340,
       1341
     ]
   },
   {
-    "teal": 1173,
-    "source": 227,
+    "teal": 1181,
+    "source": 233,
     "pc": [
-      1342
-    ]
-  },
-  {
-    "teal": 1174,
-    "source": 227,
-    "pc": [
+      1342,
       1343
     ]
   },
   {
-    "teal": 1175,
-    "source": 227,
+    "teal": 1182,
+    "source": 233,
     "pc": [
       1344
     ]
   },
   {
-    "teal": 1179,
-    "source": 228,
+    "teal": 1183,
+    "source": 233,
     "pc": [
-      1345,
+      1345
+    ]
+  },
+  {
+    "teal": 1184,
+    "source": 233,
+    "pc": [
       1346
     ]
   },
   {
-    "teal": 1180,
-    "source": 228,
+    "teal": 1187,
+    "source": 233,
+    "errorMessage": "User has not staked assets",
     "pc": [
-      1347,
-      1348
+      1347
     ]
   },
   {
-    "teal": 1181,
-    "source": 228,
+    "teal": 1191,
+    "source": 234,
     "pc": [
-      1349,
-      1350
+      1348,
+      1349
     ]
   },
   {
-    "teal": 1182,
-    "source": 228,
+    "teal": 1192,
+    "source": 234,
     "pc": [
+      1350,
       1351
     ]
   },
   {
-    "teal": 1186,
-    "source": 230,
+    "teal": 1193,
+    "source": 234,
     "pc": [
-      1352,
+      1352
+    ]
+  },
+  {
+    "teal": 1194,
+    "source": 234,
+    "pc": [
       1353
     ]
   },
   {
-    "teal": 1187,
-    "source": 230,
+    "teal": 1195,
+    "source": 234,
     "pc": [
       1354
     ]
   },
   {
-    "teal": 1188,
-    "source": 230,
+    "teal": 1198,
+    "source": 234,
+    "errorMessage": "User has not staked assets",
     "pc": [
       1355
     ]
   },
   {
-    "teal": 1189,
-    "source": 230,
+    "teal": 1203,
+    "source": 236,
     "pc": [
       1356
     ]
   },
   {
-    "teal": 1190,
-    "source": 230,
+    "teal": 1204,
+    "source": 236,
     "pc": [
       1357
     ]
   },
   {
-    "teal": 1191,
-    "source": 230,
+    "teal": 1205,
+    "source": 236,
     "pc": [
-      1358
-    ]
-  },
-  {
-    "teal": 1192,
-    "source": 230,
-    "pc": [
+      1358,
       1359
     ]
   },
   {
-    "teal": 1193,
-    "source": 230,
+    "teal": 1206,
+    "source": 236,
     "pc": [
       1360
     ]
   },
   {
-    "teal": 1194,
-    "source": 230,
+    "teal": 1207,
+    "source": 236,
     "pc": [
       1361
     ]
   },
   {
-    "teal": 1195,
-    "source": 230,
+    "teal": 1208,
+    "source": 236,
     "pc": [
-      1362
-    ]
-  },
-  {
-    "teal": 1196,
-    "source": 230,
-    "pc": [
-      1363
-    ]
-  },
-  {
-    "teal": 1199,
-    "source": 230,
-    "errorMessage": "wideRatio failed",
-    "pc": [
+      1362,
+      1363,
       1364
     ]
   },
   {
-    "teal": 1200,
-    "source": 230,
+    "teal": 1214,
+    "source": 237,
     "pc": [
-      1365,
+      1365
+    ]
+  },
+  {
+    "teal": 1215,
+    "source": 237,
+    "pc": [
       1366
     ]
   },
   {
-    "teal": 1204,
-    "source": 232,
+    "teal": 1216,
+    "source": 237,
     "pc": [
-      1367,
+      1367
+    ]
+  },
+  {
+    "teal": 1217,
+    "source": 237,
+    "pc": [
       1368
     ]
   },
   {
-    "teal": 1205,
-    "source": 232,
+    "teal": 1218,
+    "source": 237,
     "pc": [
       1369,
-      1370
-    ]
-  },
-  {
-    "teal": 1206,
-    "source": 232,
-    "pc": [
+      1370,
       1371
     ]
   },
   {
-    "teal": 1207,
-    "source": 232,
+    "teal": 1228,
+    "source": 238,
     "pc": [
       1372
     ]
   },
   {
-    "teal": 1208,
-    "source": 232,
+    "teal": 1229,
+    "source": 238,
     "pc": [
       1373
     ]
   },
   {
-    "teal": 1209,
-    "source": 232,
+    "teal": 1230,
+    "source": 238,
     "pc": [
-      1374
-    ]
-  },
-  {
-    "teal": 1210,
-    "source": 232,
-    "pc": [
+      1374,
       1375
     ]
   },
   {
-    "teal": 1211,
-    "source": 232,
+    "teal": 1234,
+    "source": 239,
     "pc": [
-      1376
-    ]
-  },
-  {
-    "teal": 1212,
-    "source": 232,
-    "pc": [
+      1376,
       1377
     ]
   },
   {
-    "teal": 1213,
-    "source": 232,
+    "teal": 1235,
+    "source": 239,
     "pc": [
       1378
     ]
   },
   {
-    "teal": 1216,
-    "source": 232,
-    "errorMessage": "wideRatio failed",
+    "teal": 1236,
+    "source": 239,
     "pc": [
       1379
     ]
   },
   {
-    "teal": 1217,
-    "source": 232,
+    "teal": 1237,
+    "source": 239,
     "pc": [
       1380,
       1381
     ]
   },
   {
-    "teal": 1221,
-    "source": 233,
+    "teal": 1241,
+    "source": 240,
     "pc": [
-      1382
+      1382,
+      1383
     ]
   },
   {
-    "teal": 1222,
-    "source": 233,
+    "teal": 1242,
+    "source": 240,
     "pc": [
-      1383,
-      1384
-    ]
-  },
-  {
-    "teal": 1223,
-    "source": 233,
-    "pc": [
+      1384,
       1385
     ]
   },
   {
-    "teal": 1224,
-    "source": 233,
+    "teal": 1246,
+    "source": 241,
     "pc": [
-      1386
-    ]
-  },
-  {
-    "teal": 1225,
-    "source": 233,
-    "pc": [
+      1386,
       1387
     ]
   },
   {
-    "teal": 1226,
-    "source": 233,
+    "teal": 1247,
+    "source": 241,
     "pc": [
-      1388
-    ]
-  },
-  {
-    "teal": 1227,
-    "source": 233,
-    "pc": [
+      1388,
       1389
     ]
   },
   {
-    "teal": 1228,
-    "source": 233,
+    "teal": 1251,
+    "source": 242,
     "pc": [
       1390
     ]
   },
   {
-    "teal": 1229,
-    "source": 233,
+    "teal": 1252,
+    "source": 242,
     "pc": [
-      1391
-    ]
-  },
-  {
-    "teal": 1230,
-    "source": 233,
-    "pc": [
+      1391,
       1392
     ]
   },
   {
-    "teal": 1231,
-    "source": 233,
+    "teal": 1255,
+    "source": 238,
     "pc": [
       1393
     ]
   },
   {
-    "teal": 1234,
-    "source": 233,
-    "errorMessage": "wideRatio failed",
+    "teal": 1256,
+    "source": 237,
     "pc": [
-      1394
-    ]
-  },
-  {
-    "teal": 1235,
-    "source": 233,
-    "pc": [
+      1394,
       1395,
       1396
     ]
   },
   {
-    "teal": 1239,
-    "source": 234,
+    "teal": 1267,
+    "source": 245,
     "pc": [
       1397
     ]
   },
   {
-    "teal": 1240,
-    "source": 234,
+    "teal": 1268,
+    "source": 245,
     "pc": [
-      1398,
-      1399
+      1398
     ]
   },
   {
-    "teal": 1244,
-    "source": 236,
+    "teal": 1269,
+    "source": 245,
     "pc": [
-      1400,
+      1399,
+      1400
+    ]
+  },
+  {
+    "teal": 1273,
+    "source": 246,
+    "pc": [
       1401
     ]
   },
   {
-    "teal": 1245,
-    "source": 236,
+    "teal": 1274,
+    "source": 246,
     "pc": [
-      1402,
-      1403
+      1402
     ]
   },
   {
-    "teal": 1246,
-    "source": 236,
+    "teal": 1275,
+    "source": 246,
     "pc": [
-      1404,
-      1405
+      1403,
+      1404
     ]
   },
   {
-    "teal": 1247,
-    "source": 236,
+    "teal": 1279,
+    "source": 247,
     "pc": [
+      1405,
       1406
     ]
   },
   {
-    "teal": 1248,
-    "source": 236,
+    "teal": 1280,
+    "source": 247,
     "pc": [
       1407,
       1408
     ]
   },
   {
-    "teal": 1249,
-    "source": 236,
+    "teal": 1284,
+    "source": 248,
     "pc": [
-      1409
-    ]
-  },
-  {
-    "teal": 1250,
-    "source": 236,
-    "pc": [
+      1409,
       1410
     ]
   },
   {
-    "teal": 1251,
-    "source": 236,
+    "teal": 1285,
+    "source": 248,
     "pc": [
-      1411
-    ]
-  },
-  {
-    "teal": 1252,
-    "source": 236,
-    "pc": [
+      1411,
       1412
     ]
   },
   {
-    "teal": 1253,
-    "source": 236,
+    "teal": 1289,
+    "source": 249,
     "pc": [
-      1413
-    ]
-  },
-  {
-    "teal": 1254,
-    "source": 236,
-    "pc": [
+      1413,
       1414
     ]
   },
   {
-    "teal": 1255,
-    "source": 236,
+    "teal": 1290,
+    "source": 249,
     "pc": [
       1415
     ]
   },
   {
-    "teal": 1256,
-    "source": 236,
+    "teal": 1291,
+    "source": 249,
     "pc": [
       1416
     ]
   },
   {
-    "teal": 1259,
-    "source": 236,
-    "errorMessage": "wideRatio failed",
+    "teal": 1292,
+    "source": 249,
     "pc": [
-      1417
+      1417,
+      1418
     ]
   },
   {
-    "teal": 1260,
-    "source": 236,
+    "teal": 1296,
+    "source": 250,
     "pc": [
-      1418,
       1419
     ]
   },
   {
-    "teal": 1261,
-    "source": 236,
+    "teal": 1297,
+    "source": 250,
     "pc": [
-      1420
-    ]
-  },
-  {
-    "teal": 1262,
-    "source": 236,
-    "pc": [
+      1420,
       1421
     ]
   },
   {
-    "teal": 1263,
-    "source": 209,
+    "teal": 1300,
+    "source": 245,
     "pc": [
       1422
     ]
   },
   {
-    "teal": 1268,
-    "source": 239,
+    "teal": 1303,
+    "source": 236,
     "pc": [
       1423,
       1424,
@@ -5762,1693 +5652,1197 @@
     ]
   },
   {
-    "teal": 1269,
-    "source": 239,
+    "teal": 1309,
+    "source": 255,
     "pc": [
       1426
     ]
   },
   {
-    "teal": 1270,
-    "source": 239,
+    "teal": 1310,
+    "source": 255,
     "pc": [
       1427
     ]
   },
   {
-    "teal": 1274,
-    "source": 239,
+    "teal": 1311,
+    "source": 255,
     "pc": [
-      1428,
-      1429,
-      1430
+      1428
     ]
   },
   {
-    "teal": 1278,
-    "source": 240,
+    "teal": 1312,
+    "source": 255,
     "pc": [
+      1429
+    ]
+  },
+  {
+    "teal": 1313,
+    "source": 255,
+    "pc": [
+      1430,
       1431,
       1432
     ]
   },
   {
-    "teal": 1279,
-    "source": 240,
+    "teal": 1323,
+    "source": 256,
     "pc": [
       1433
     ]
   },
   {
-    "teal": 1280,
-    "source": 240,
+    "teal": 1324,
+    "source": 256,
     "pc": [
       1434
     ]
   },
   {
-    "teal": 1281,
-    "source": 240,
+    "teal": 1325,
+    "source": 256,
     "pc": [
-      1435
-    ]
-  },
-  {
-    "teal": 1282,
-    "source": 240,
-    "pc": [
+      1435,
       1436
     ]
   },
   {
-    "teal": 1285,
-    "source": 240,
-    "errorMessage": "No staked assets",
+    "teal": 1329,
+    "source": 257,
     "pc": [
-      1437
+      1437,
+      1438
     ]
   },
   {
-    "teal": 1289,
-    "source": 241,
+    "teal": 1330,
+    "source": 257,
     "pc": [
-      1438,
       1439
     ]
   },
   {
-    "teal": 1290,
-    "source": 241,
+    "teal": 1331,
+    "source": 257,
     "pc": [
-      1440,
-      1441
+      1440
     ]
   },
   {
-    "teal": 1291,
-    "source": 241,
+    "teal": 1332,
+    "source": 257,
     "pc": [
+      1441,
       1442
     ]
   },
   {
-    "teal": 1292,
-    "source": 241,
+    "teal": 1336,
+    "source": 258,
     "pc": [
-      1443
-    ]
-  },
-  {
-    "teal": 1293,
-    "source": 241,
-    "pc": [
+      1443,
       1444
     ]
   },
   {
-    "teal": 1296,
-    "source": 241,
-    "errorMessage": "User has not staked assets",
+    "teal": 1337,
+    "source": 258,
     "pc": [
-      1445
+      1445,
+      1446
     ]
   },
   {
-    "teal": 1300,
-    "source": 242,
+    "teal": 1341,
+    "source": 259,
     "pc": [
-      1446,
-      1447
+      1447,
+      1448
     ]
   },
   {
-    "teal": 1301,
-    "source": 242,
+    "teal": 1342,
+    "source": 259,
     "pc": [
-      1448,
-      1449
-    ]
-  },
-  {
-    "teal": 1302,
-    "source": 242,
-    "pc": [
+      1449,
       1450
     ]
   },
   {
-    "teal": 1303,
-    "source": 242,
+    "teal": 1346,
+    "source": 260,
     "pc": [
       1451
     ]
   },
   {
-    "teal": 1304,
-    "source": 242,
+    "teal": 1347,
+    "source": 260,
     "pc": [
-      1452
-    ]
-  },
-  {
-    "teal": 1307,
-    "source": 242,
-    "errorMessage": "User has not staked assets",
-    "pc": [
+      1452,
       1453
     ]
   },
   {
-    "teal": 1312,
-    "source": 244,
+    "teal": 1350,
+    "source": 256,
     "pc": [
       1454
     ]
   },
   {
-    "teal": 1313,
-    "source": 244,
+    "teal": 1351,
+    "source": 255,
     "pc": [
-      1455
-    ]
-  },
-  {
-    "teal": 1314,
-    "source": 244,
-    "pc": [
+      1455,
       1456,
       1457
     ]
   },
   {
-    "teal": 1315,
-    "source": 244,
+    "teal": 1362,
+    "source": 263,
     "pc": [
       1458
     ]
   },
   {
-    "teal": 1316,
-    "source": 244,
+    "teal": 1363,
+    "source": 263,
     "pc": [
       1459
     ]
   },
   {
-    "teal": 1317,
-    "source": 244,
+    "teal": 1364,
+    "source": 263,
     "pc": [
       1460,
-      1461,
+      1461
+    ]
+  },
+  {
+    "teal": 1368,
+    "source": 264,
+    "pc": [
       1462
     ]
   },
   {
-    "teal": 1323,
-    "source": 245,
+    "teal": 1369,
+    "source": 264,
     "pc": [
       1463
     ]
   },
   {
-    "teal": 1324,
-    "source": 245,
+    "teal": 1370,
+    "source": 264,
     "pc": [
-      1464
-    ]
-  },
-  {
-    "teal": 1325,
-    "source": 245,
-    "pc": [
+      1464,
       1465
     ]
   },
   {
-    "teal": 1326,
-    "source": 245,
+    "teal": 1374,
+    "source": 265,
     "pc": [
-      1466
+      1466,
+      1467
     ]
   },
   {
-    "teal": 1327,
-    "source": 245,
+    "teal": 1375,
+    "source": 265,
     "pc": [
-      1467,
       1468,
       1469
     ]
   },
   {
-    "teal": 1337,
-    "source": 246,
+    "teal": 1379,
+    "source": 266,
     "pc": [
-      1470
-    ]
-  },
-  {
-    "teal": 1338,
-    "source": 246,
-    "pc": [
+      1470,
       1471
     ]
   },
   {
-    "teal": 1339,
-    "source": 246,
+    "teal": 1380,
+    "source": 266,
     "pc": [
       1472,
       1473
     ]
   },
   {
-    "teal": 1343,
-    "source": 247,
+    "teal": 1384,
+    "source": 267,
     "pc": [
       1474,
       1475
     ]
   },
   {
-    "teal": 1344,
-    "source": 247,
+    "teal": 1385,
+    "source": 267,
     "pc": [
       1476
     ]
   },
   {
-    "teal": 1345,
-    "source": 247,
+    "teal": 1386,
+    "source": 267,
     "pc": [
       1477
     ]
   },
   {
-    "teal": 1346,
-    "source": 247,
+    "teal": 1387,
+    "source": 267,
     "pc": [
       1478,
       1479
     ]
   },
   {
-    "teal": 1350,
-    "source": 248,
+    "teal": 1391,
+    "source": 268,
     "pc": [
-      1480,
-      1481
+      1480
     ]
   },
   {
-    "teal": 1351,
-    "source": 248,
+    "teal": 1392,
+    "source": 268,
     "pc": [
-      1482,
+      1481,
+      1482
+    ]
+  },
+  {
+    "teal": 1395,
+    "source": 263,
+    "pc": [
       1483
     ]
   },
   {
-    "teal": 1355,
-    "source": 249,
+    "teal": 1401,
+    "source": 271,
     "pc": [
       1484,
       1485
     ]
   },
   {
-    "teal": 1356,
-    "source": 249,
+    "teal": 1402,
+    "source": 271,
     "pc": [
       1486,
       1487
     ]
   },
   {
-    "teal": 1360,
-    "source": 250,
+    "teal": 1403,
+    "source": 271,
     "pc": [
-      1488,
+      1488
+    ]
+  },
+  {
+    "teal": 1404,
+    "source": 271,
+    "pc": [
       1489
     ]
   },
   {
-    "teal": 1361,
-    "source": 250,
+    "teal": 1405,
+    "source": 271,
     "pc": [
-      1490,
-      1491
+      1490
     ]
   },
   {
-    "teal": 1364,
-    "source": 246,
+    "teal": 1406,
+    "source": 271,
     "pc": [
-      1492
+      1491,
+      1492,
+      1493
     ]
   },
   {
-    "teal": 1365,
-    "source": 245,
+    "teal": 1412,
+    "source": 272,
     "pc": [
-      1493,
       1494,
       1495
     ]
   },
   {
-    "teal": 1376,
-    "source": 253,
+    "teal": 1413,
+    "source": 272,
     "pc": [
       1496
     ]
   },
   {
-    "teal": 1377,
-    "source": 253,
+    "teal": 1414,
+    "source": 272,
     "pc": [
       1497
     ]
   },
   {
-    "teal": 1378,
-    "source": 253,
+    "teal": 1415,
+    "source": 272,
     "pc": [
-      1498,
-      1499
+      1498
     ]
   },
   {
-    "teal": 1382,
-    "source": 254,
+    "teal": 1416,
+    "source": 272,
     "pc": [
-      1500
-    ]
-  },
-  {
-    "teal": 1383,
-    "source": 254,
-    "pc": [
+      1499,
+      1500,
       1501
     ]
   },
   {
-    "teal": 1384,
-    "source": 254,
+    "teal": 1426,
+    "source": 273,
     "pc": [
-      1502,
+      1502
+    ]
+  },
+  {
+    "teal": 1427,
+    "source": 273,
+    "pc": [
       1503
     ]
   },
   {
-    "teal": 1388,
-    "source": 255,
+    "teal": 1428,
+    "source": 273,
     "pc": [
       1504,
       1505
     ]
   },
   {
-    "teal": 1389,
-    "source": 255,
+    "teal": 1432,
+    "source": 274,
     "pc": [
       1506,
       1507
     ]
   },
   {
-    "teal": 1393,
-    "source": 256,
+    "teal": 1433,
+    "source": 274,
     "pc": [
       1508,
       1509
     ]
   },
   {
-    "teal": 1394,
-    "source": 256,
+    "teal": 1434,
+    "source": 274,
     "pc": [
-      1510,
-      1511
+      1510
     ]
   },
   {
-    "teal": 1398,
-    "source": 257,
+    "teal": 1435,
+    "source": 274,
     "pc": [
-      1512,
-      1513
+      1511,
+      1512
     ]
   },
   {
-    "teal": 1399,
-    "source": 257,
+    "teal": 1439,
+    "source": 275,
     "pc": [
+      1513,
       1514
     ]
   },
   {
-    "teal": 1400,
-    "source": 257,
+    "teal": 1440,
+    "source": 275,
     "pc": [
-      1515
+      1515,
+      1516
     ]
   },
   {
-    "teal": 1401,
-    "source": 257,
+    "teal": 1444,
+    "source": 276,
     "pc": [
-      1516,
-      1517
+      1517,
+      1518
     ]
   },
   {
-    "teal": 1405,
-    "source": 258,
+    "teal": 1445,
+    "source": 276,
     "pc": [
-      1518,
-      1519
+      1519,
+      1520
     ]
   },
   {
-    "teal": 1406,
-    "source": 258,
+    "teal": 1449,
+    "source": 277,
     "pc": [
-      1520,
       1521
     ]
   },
   {
-    "teal": 1409,
-    "source": 253,
+    "teal": 1450,
+    "source": 277,
     "pc": [
-      1522
+      1522,
+      1523
     ]
   },
   {
-    "teal": 1412,
-    "source": 244,
+    "teal": 1453,
+    "source": 273,
     "pc": [
-      1523,
-      1524,
-      1525
+      1524
     ]
   },
   {
-    "teal": 1418,
-    "source": 263,
+    "teal": 1454,
+    "source": 272,
     "pc": [
-      1526
-    ]
-  },
-  {
-    "teal": 1419,
-    "source": 263,
-    "pc": [
+      1525,
+      1526,
       1527
     ]
   },
   {
-    "teal": 1420,
-    "source": 263,
+    "teal": 1465,
+    "source": 280,
     "pc": [
       1528
     ]
   },
   {
-    "teal": 1421,
-    "source": 263,
+    "teal": 1466,
+    "source": 280,
     "pc": [
       1529
     ]
   },
   {
-    "teal": 1422,
-    "source": 263,
+    "teal": 1467,
+    "source": 280,
     "pc": [
       1530,
-      1531,
-      1532
+      1531
     ]
   },
   {
-    "teal": 1432,
-    "source": 264,
+    "teal": 1471,
+    "source": 281,
     "pc": [
+      1532,
       1533
     ]
   },
   {
-    "teal": 1433,
-    "source": 264,
+    "teal": 1472,
+    "source": 281,
     "pc": [
       1534
     ]
   },
   {
-    "teal": 1434,
-    "source": 264,
+    "teal": 1473,
+    "source": 281,
     "pc": [
       1535,
       1536
     ]
   },
   {
-    "teal": 1438,
-    "source": 265,
+    "teal": 1477,
+    "source": 282,
     "pc": [
       1537,
       1538
     ]
   },
   {
-    "teal": 1439,
-    "source": 265,
+    "teal": 1478,
+    "source": 282,
     "pc": [
-      1539
-    ]
-  },
-  {
-    "teal": 1440,
-    "source": 265,
-    "pc": [
+      1539,
       1540
     ]
   },
   {
-    "teal": 1441,
-    "source": 265,
+    "teal": 1482,
+    "source": 283,
     "pc": [
       1541,
       1542
     ]
   },
   {
-    "teal": 1445,
-    "source": 266,
+    "teal": 1483,
+    "source": 283,
     "pc": [
       1543,
       1544
     ]
   },
   {
-    "teal": 1446,
-    "source": 266,
+    "teal": 1484,
+    "source": 283,
     "pc": [
-      1545,
-      1546
+      1545
     ]
   },
   {
-    "teal": 1450,
-    "source": 267,
+    "teal": 1485,
+    "source": 283,
     "pc": [
-      1547,
-      1548
+      1546,
+      1547
     ]
   },
   {
-    "teal": 1451,
-    "source": 267,
+    "teal": 1489,
+    "source": 284,
     "pc": [
-      1549,
-      1550
+      1548,
+      1549
     ]
   },
   {
-    "teal": 1455,
-    "source": 268,
+    "teal": 1490,
+    "source": 284,
     "pc": [
-      1551,
+      1550,
+      1551
+    ]
+  },
+  {
+    "teal": 1494,
+    "source": 285,
+    "pc": [
       1552
     ]
   },
   {
-    "teal": 1456,
-    "source": 268,
+    "teal": 1495,
+    "source": 285,
     "pc": [
       1553,
       1554
     ]
   },
   {
-    "teal": 1459,
-    "source": 264,
+    "teal": 1498,
+    "source": 280,
     "pc": [
       1555
     ]
   },
   {
-    "teal": 1460,
-    "source": 263,
+    "teal": 1507,
+    "source": 292,
     "pc": [
       1556,
-      1557,
+      1557
+    ]
+  },
+  {
+    "teal": 1508,
+    "source": 292,
+    "pc": [
       1558
     ]
   },
   {
-    "teal": 1471,
-    "source": 271,
+    "teal": 1509,
+    "source": 292,
     "pc": [
-      1559
-    ]
-  },
-  {
-    "teal": 1472,
-    "source": 271,
-    "pc": [
+      1559,
       1560
     ]
   },
   {
-    "teal": 1473,
-    "source": 271,
+    "teal": 1510,
+    "source": 292,
     "pc": [
       1561,
       1562
     ]
   },
   {
-    "teal": 1477,
-    "source": 272,
+    "teal": 1511,
+    "source": 292,
     "pc": [
       1563
     ]
   },
   {
-    "teal": 1478,
-    "source": 272,
+    "teal": 1512,
+    "source": 292,
     "pc": [
       1564
     ]
   },
   {
-    "teal": 1479,
-    "source": 272,
+    "teal": 1513,
+    "source": 292,
     "pc": [
       1565,
       1566
     ]
   },
   {
-    "teal": 1483,
-    "source": 273,
+    "teal": 1514,
+    "source": 292,
     "pc": [
-      1567,
+      1567
+    ]
+  },
+  {
+    "teal": 1515,
+    "source": 292,
+    "pc": [
       1568
     ]
   },
   {
-    "teal": 1484,
-    "source": 273,
+    "teal": 1519,
+    "source": 293,
     "pc": [
-      1569,
+      1569
+    ]
+  },
+  {
+    "teal": 1520,
+    "source": 293,
+    "pc": [
       1570
     ]
   },
   {
-    "teal": 1488,
-    "source": 274,
+    "teal": 1521,
+    "source": 293,
     "pc": [
       1571,
       1572
     ]
   },
   {
-    "teal": 1489,
-    "source": 274,
+    "teal": 1522,
+    "source": 293,
     "pc": [
-      1573,
+      1573
+    ]
+  },
+  {
+    "teal": 1523,
+    "source": 293,
+    "pc": [
       1574
     ]
   },
   {
-    "teal": 1493,
-    "source": 275,
+    "teal": 1524,
+    "source": 293,
     "pc": [
-      1575,
+      1575
+    ]
+  },
+  {
+    "teal": 1525,
+    "source": 293,
+    "pc": [
       1576
     ]
   },
   {
-    "teal": 1494,
-    "source": 275,
+    "teal": 1526,
+    "source": 293,
     "pc": [
       1577
     ]
   },
   {
-    "teal": 1495,
-    "source": 275,
+    "teal": 1527,
+    "source": 293,
     "pc": [
       1578
     ]
   },
   {
-    "teal": 1496,
-    "source": 275,
+    "teal": 1531,
+    "source": 295,
     "pc": [
       1579,
       1580
     ]
   },
   {
-    "teal": 1500,
-    "source": 276,
+    "teal": 1532,
+    "source": 295,
     "pc": [
-      1581,
+      1581
+    ]
+  },
+  {
+    "teal": 1533,
+    "source": 295,
+    "pc": [
       1582
     ]
   },
   {
-    "teal": 1501,
-    "source": 276,
+    "teal": 1534,
+    "source": 295,
     "pc": [
-      1583,
-      1584
+      1583
     ]
   },
   {
-    "teal": 1504,
-    "source": 271,
+    "teal": 1538,
+    "source": 296,
     "pc": [
+      1584,
       1585
     ]
   },
   {
-    "teal": 1510,
-    "source": 279,
+    "teal": 1539,
+    "source": 296,
     "pc": [
       1586,
       1587
     ]
   },
   {
-    "teal": 1511,
-    "source": 279,
+    "teal": 1540,
+    "source": 296,
     "pc": [
-      1588,
+      1588
+    ]
+  },
+  {
+    "teal": 1541,
+    "source": 296,
+    "pc": [
       1589
     ]
   },
   {
-    "teal": 1512,
-    "source": 279,
+    "teal": 1545,
+    "source": 297,
     "pc": [
-      1590
-    ]
-  },
-  {
-    "teal": 1513,
-    "source": 279,
-    "pc": [
+      1590,
       1591
     ]
   },
   {
-    "teal": 1514,
-    "source": 279,
+    "teal": 1546,
+    "source": 297,
     "pc": [
       1592
     ]
   },
   {
-    "teal": 1515,
-    "source": 279,
+    "teal": 1547,
+    "source": 297,
     "pc": [
-      1593,
-      1594,
-      1595
+      1593
     ]
   },
   {
-    "teal": 1521,
-    "source": 280,
+    "teal": 1548,
+    "source": 297,
     "pc": [
-      1596,
-      1597
+      1594
     ]
   },
   {
-    "teal": 1522,
-    "source": 280,
+    "teal": 1552,
+    "source": 298,
     "pc": [
+      1595,
+      1596
+    ]
+  },
+  {
+    "teal": 1553,
+    "source": 298,
+    "pc": [
+      1597,
       1598
     ]
   },
   {
-    "teal": 1523,
-    "source": 280,
+    "teal": 1554,
+    "source": 298,
     "pc": [
       1599
     ]
   },
   {
-    "teal": 1524,
-    "source": 280,
+    "teal": 1555,
+    "source": 298,
     "pc": [
       1600
     ]
   },
   {
-    "teal": 1525,
-    "source": 280,
+    "teal": 1559,
+    "source": 299,
     "pc": [
       1601,
-      1602,
-      1603
+      1602
     ]
   },
   {
-    "teal": 1535,
-    "source": 281,
+    "teal": 1560,
+    "source": 299,
     "pc": [
+      1603,
       1604
     ]
   },
   {
-    "teal": 1536,
-    "source": 281,
+    "teal": 1561,
+    "source": 299,
     "pc": [
       1605
     ]
   },
   {
-    "teal": 1537,
-    "source": 281,
+    "teal": 1562,
+    "source": 299,
     "pc": [
-      1606,
-      1607
+      1606
     ]
   },
   {
-    "teal": 1541,
-    "source": 282,
+    "teal": 1566,
+    "source": 300,
     "pc": [
-      1608,
-      1609
+      1607,
+      1608
     ]
   },
   {
-    "teal": 1542,
-    "source": 282,
+    "teal": 1567,
+    "source": 300,
     "pc": [
-      1610,
+      1609,
+      1610
+    ]
+  },
+  {
+    "teal": 1568,
+    "source": 300,
+    "pc": [
       1611
     ]
   },
   {
-    "teal": 1543,
-    "source": 282,
+    "teal": 1569,
+    "source": 300,
     "pc": [
       1612
     ]
   },
   {
-    "teal": 1544,
-    "source": 282,
+    "teal": 1570,
+    "source": 231,
     "pc": [
-      1613,
-      1614
+      1613
     ]
   },
   {
-    "teal": 1548,
-    "source": 283,
+    "teal": 1573,
+    "source": 4,
     "pc": [
+      1614,
       1615,
-      1616
-    ]
-  },
-  {
-    "teal": 1549,
-    "source": 283,
-    "pc": [
+      1616,
       1617,
-      1618
+      1618,
+      1619
     ]
   },
   {
-    "teal": 1553,
-    "source": 284,
+    "teal": 1574,
+    "source": 4,
     "pc": [
-      1619,
-      1620
-    ]
-  },
-  {
-    "teal": 1554,
-    "source": 284,
-    "pc": [
+      1620,
       1621,
       1622
     ]
   },
   {
-    "teal": 1558,
-    "source": 285,
+    "teal": 1575,
+    "source": 4,
     "pc": [
       1623,
-      1624
-    ]
-  },
-  {
-    "teal": 1559,
-    "source": 285,
-    "pc": [
+      1624,
       1625,
       1626
     ]
   },
   {
-    "teal": 1562,
-    "source": 281,
+    "teal": 1578,
+    "source": 4,
+    "errorMessage": "this contract does not implement the given ABI method for create NoOp",
     "pc": [
       1627
     ]
   },
   {
-    "teal": 1563,
-    "source": 280,
+    "teal": 1581,
+    "source": 4,
     "pc": [
       1628,
       1629,
-      1630
-    ]
-  },
-  {
-    "teal": 1574,
-    "source": 288,
-    "pc": [
-      1631
-    ]
-  },
-  {
-    "teal": 1575,
-    "source": 288,
-    "pc": [
-      1632
-    ]
-  },
-  {
-    "teal": 1576,
-    "source": 288,
-    "pc": [
-      1633,
-      1634
-    ]
-  },
-  {
-    "teal": 1580,
-    "source": 289,
-    "pc": [
-      1635,
-      1636
-    ]
-  },
-  {
-    "teal": 1581,
-    "source": 289,
-    "pc": [
-      1637
+      1630,
+      1631,
+      1632,
+      1633
     ]
   },
   {
     "teal": 1582,
-    "source": 289,
+    "source": 4,
     "pc": [
+      1634,
+      1635,
+      1636,
+      1637,
       1638,
       1639
     ]
   },
   {
-    "teal": 1586,
-    "source": 290,
+    "teal": 1583,
+    "source": 4,
     "pc": [
       1640,
-      1641
-    ]
-  },
-  {
-    "teal": 1587,
-    "source": 290,
-    "pc": [
+      1641,
       1642,
-      1643
-    ]
-  },
-  {
-    "teal": 1591,
-    "source": 291,
-    "pc": [
+      1643,
       1644,
       1645
     ]
   },
   {
-    "teal": 1592,
-    "source": 291,
+    "teal": 1584,
+    "source": 4,
     "pc": [
       1646,
-      1647
-    ]
-  },
-  {
-    "teal": 1593,
-    "source": 291,
-    "pc": [
-      1648
-    ]
-  },
-  {
-    "teal": 1594,
-    "source": 291,
-    "pc": [
+      1647,
+      1648,
       1649,
-      1650
+      1650,
+      1651
     ]
   },
   {
-    "teal": 1598,
-    "source": 292,
+    "teal": 1585,
+    "source": 4,
     "pc": [
-      1651,
-      1652
-    ]
-  },
-  {
-    "teal": 1599,
-    "source": 292,
-    "pc": [
+      1652,
       1653,
-      1654
-    ]
-  },
-  {
-    "teal": 1603,
-    "source": 293,
-    "pc": [
+      1654,
       1655,
-      1656
+      1656,
+      1657
     ]
   },
   {
-    "teal": 1604,
-    "source": 293,
+    "teal": 1586,
+    "source": 4,
     "pc": [
-      1657,
-      1658
-    ]
-  },
-  {
-    "teal": 1607,
-    "source": 288,
-    "pc": [
-      1659
-    ]
-  },
-  {
-    "teal": 1616,
-    "source": 300,
-    "pc": [
-      1660
-    ]
-  },
-  {
-    "teal": 1617,
-    "source": 300,
-    "pc": [
-      1661
-    ]
-  },
-  {
-    "teal": 1618,
-    "source": 300,
-    "pc": [
+      1658,
+      1659,
+      1660,
+      1661,
       1662,
       1663
     ]
   },
   {
-    "teal": 1619,
-    "source": 300,
+    "teal": 1587,
+    "source": 4,
     "pc": [
       1664,
-      1665
-    ]
-  },
-  {
-    "teal": 1620,
-    "source": 300,
-    "pc": [
-      1666
-    ]
-  },
-  {
-    "teal": 1621,
-    "source": 300,
-    "pc": [
-      1667
-    ]
-  },
-  {
-    "teal": 1622,
-    "source": 300,
-    "pc": [
-      1668
-    ]
-  },
-  {
-    "teal": 1623,
-    "source": 300,
-    "pc": [
+      1665,
+      1666,
+      1667,
+      1668,
       1669
     ]
   },
   {
-    "teal": 1624,
-    "source": 300,
+    "teal": 1588,
+    "source": 4,
     "pc": [
-      1670
-    ]
-  },
-  {
-    "teal": 1628,
-    "source": 301,
-    "pc": [
-      1671
-    ]
-  },
-  {
-    "teal": 1629,
-    "source": 301,
-    "pc": [
-      1672
-    ]
-  },
-  {
-    "teal": 1630,
-    "source": 301,
-    "pc": [
+      1670,
+      1671,
+      1672,
       1673,
-      1674
-    ]
-  },
-  {
-    "teal": 1631,
-    "source": 301,
-    "pc": [
+      1674,
       1675
     ]
   },
   {
-    "teal": 1632,
-    "source": 301,
+    "teal": 1589,
+    "source": 4,
     "pc": [
-      1676
+      1676,
+      1677,
+      1678,
+      1679,
+      1680,
+      1681
     ]
   },
   {
-    "teal": 1633,
-    "source": 301,
+    "teal": 1590,
+    "source": 4,
     "pc": [
-      1677
-    ]
-  },
-  {
-    "teal": 1634,
-    "source": 301,
-    "pc": [
-      1678
-    ]
-  },
-  {
-    "teal": 1635,
-    "source": 301,
-    "pc": [
-      1679
-    ]
-  },
-  {
-    "teal": 1636,
-    "source": 301,
-    "pc": [
-      1680
-    ]
-  },
-  {
-    "teal": 1640,
-    "source": 303,
-    "pc": [
-      1681,
-      1682
-    ]
-  },
-  {
-    "teal": 1641,
-    "source": 303,
-    "pc": [
-      1683
-    ]
-  },
-  {
-    "teal": 1642,
-    "source": 303,
-    "pc": [
+      1682,
+      1683,
       1684
     ]
   },
   {
-    "teal": 1643,
-    "source": 303,
+    "teal": 1591,
+    "source": 4,
     "pc": [
-      1685
-    ]
-  },
-  {
-    "teal": 1647,
-    "source": 304,
-    "pc": [
+      1685,
       1686,
-      1687
-    ]
-  },
-  {
-    "teal": 1648,
-    "source": 304,
-    "pc": [
+      1687,
       1688,
-      1689
-    ]
-  },
-  {
-    "teal": 1649,
-    "source": 304,
-    "pc": [
-      1690
-    ]
-  },
-  {
-    "teal": 1650,
-    "source": 304,
-    "pc": [
-      1691
-    ]
-  },
-  {
-    "teal": 1654,
-    "source": 305,
-    "pc": [
+      1689,
+      1690,
+      1691,
       1692,
-      1693
-    ]
-  },
-  {
-    "teal": 1655,
-    "source": 305,
-    "pc": [
+      1693,
       1694,
-      1695
-    ]
-  },
-  {
-    "teal": 1656,
-    "source": 305,
-    "pc": [
-      1696
-    ]
-  },
-  {
-    "teal": 1657,
-    "source": 305,
-    "pc": [
-      1697
-    ]
-  },
-  {
-    "teal": 1661,
-    "source": 306,
-    "pc": [
+      1695,
+      1696,
+      1697,
       1698,
-      1699
-    ]
-  },
-  {
-    "teal": 1662,
-    "source": 306,
-    "pc": [
+      1699,
       1700,
-      1701
+      1701,
+      1702,
+      1703,
+      1704
     ]
   },
   {
-    "teal": 1663,
-    "source": 306,
+    "teal": 1594,
+    "source": 4,
+    "errorMessage": "this contract does not implement the given ABI method for call NoOp",
     "pc": [
-      1702
-    ]
-  },
-  {
-    "teal": 1664,
-    "source": 306,
-    "pc": [
-      1703
-    ]
-  },
-  {
-    "teal": 1668,
-    "source": 307,
-    "pc": [
-      1704,
       1705
     ]
   },
   {
-    "teal": 1669,
-    "source": 307,
+    "teal": 1597,
+    "source": 4,
     "pc": [
       1706,
-      1707
-    ]
-  },
-  {
-    "teal": 1670,
-    "source": 307,
-    "pc": [
-      1708
-    ]
-  },
-  {
-    "teal": 1671,
-    "source": 307,
-    "pc": [
-      1709
-    ]
-  },
-  {
-    "teal": 1675,
-    "source": 308,
-    "pc": [
+      1707,
+      1708,
+      1709,
       1710,
       1711
     ]
   },
   {
-    "teal": 1676,
-    "source": 308,
+    "teal": 1598,
+    "source": 4,
     "pc": [
       1712,
-      1713
-    ]
-  },
-  {
-    "teal": 1677,
-    "source": 308,
-    "pc": [
+      1713,
       1714
     ]
   },
   {
-    "teal": 1678,
-    "source": 308,
-    "pc": [
-      1715
-    ]
-  },
-  {
-    "teal": 1679,
-    "source": 239,
-    "pc": [
-      1716
-    ]
-  },
-  {
-    "teal": 1682,
+    "teal": 1599,
     "source": 4,
     "pc": [
+      1715,
+      1716,
       1717,
-      1718,
-      1719,
+      1718
+    ]
+  },
+  {
+    "teal": 1602,
+    "source": 4,
+    "errorMessage": "this contract does not implement the given ABI method for call OptIn",
+    "pc": [
+      1719
+    ]
+  },
+  {
+    "teal": 1605,
+    "source": 4,
+    "pc": [
       1720,
       1721,
-      1722
-    ]
-  },
-  {
-    "teal": 1683,
-    "source": 4,
-    "pc": [
+      1722,
       1723,
       1724,
       1725
     ]
   },
   {
-    "teal": 1684,
+    "teal": 1606,
     "source": 4,
     "pc": [
       1726,
       1727,
-      1728,
-      1729
+      1728
     ]
   },
   {
-    "teal": 1687,
-    "source": 4,
-    "errorMessage": "this contract does not implement the given ABI method for create NoOp",
-    "pc": [
-      1730
-    ]
-  },
-  {
-    "teal": 1690,
+    "teal": 1607,
     "source": 4,
     "pc": [
+      1729,
+      1730,
       1731,
-      1732,
-      1733,
-      1734,
-      1735,
-      1736
+      1732
     ]
   },
   {
-    "teal": 1691,
-    "source": 4,
-    "pc": [
-      1737,
-      1738,
-      1739,
-      1740,
-      1741,
-      1742
-    ]
-  },
-  {
-    "teal": 1692,
-    "source": 4,
-    "pc": [
-      1743,
-      1744,
-      1745,
-      1746,
-      1747,
-      1748
-    ]
-  },
-  {
-    "teal": 1693,
-    "source": 4,
-    "pc": [
-      1749,
-      1750,
-      1751,
-      1752,
-      1753,
-      1754
-    ]
-  },
-  {
-    "teal": 1694,
-    "source": 4,
-    "pc": [
-      1755,
-      1756,
-      1757,
-      1758,
-      1759,
-      1760
-    ]
-  },
-  {
-    "teal": 1695,
-    "source": 4,
-    "pc": [
-      1761,
-      1762,
-      1763,
-      1764,
-      1765,
-      1766
-    ]
-  },
-  {
-    "teal": 1696,
-    "source": 4,
-    "pc": [
-      1767,
-      1768,
-      1769,
-      1770,
-      1771,
-      1772
-    ]
-  },
-  {
-    "teal": 1697,
-    "source": 4,
-    "pc": [
-      1773,
-      1774,
-      1775,
-      1776,
-      1777,
-      1778
-    ]
-  },
-  {
-    "teal": 1698,
-    "source": 4,
-    "pc": [
-      1779,
-      1780,
-      1781,
-      1782,
-      1783,
-      1784
-    ]
-  },
-  {
-    "teal": 1699,
-    "source": 4,
-    "pc": [
-      1785,
-      1786,
-      1787
-    ]
-  },
-  {
-    "teal": 1700,
-    "source": 4,
-    "pc": [
-      1788,
-      1789,
-      1790,
-      1791,
-      1792,
-      1793,
-      1794,
-      1795,
-      1796,
-      1797,
-      1798,
-      1799,
-      1800,
-      1801,
-      1802,
-      1803,
-      1804,
-      1805,
-      1806,
-      1807
-    ]
-  },
-  {
-    "teal": 1703,
-    "source": 4,
-    "errorMessage": "this contract does not implement the given ABI method for call NoOp",
-    "pc": [
-      1808
-    ]
-  },
-  {
-    "teal": 1706,
-    "source": 4,
-    "pc": [
-      1809,
-      1810,
-      1811,
-      1812,
-      1813,
-      1814
-    ]
-  },
-  {
-    "teal": 1707,
-    "source": 4,
-    "pc": [
-      1815,
-      1816,
-      1817
-    ]
-  },
-  {
-    "teal": 1708,
-    "source": 4,
-    "pc": [
-      1818,
-      1819,
-      1820,
-      1821
-    ]
-  },
-  {
-    "teal": 1711,
-    "source": 4,
-    "errorMessage": "this contract does not implement the given ABI method for call OptIn",
-    "pc": [
-      1822
-    ]
-  },
-  {
-    "teal": 1714,
-    "source": 4,
-    "pc": [
-      1823,
-      1824,
-      1825,
-      1826,
-      1827,
-      1828
-    ]
-  },
-  {
-    "teal": 1715,
-    "source": 4,
-    "pc": [
-      1829,
-      1830,
-      1831
-    ]
-  },
-  {
-    "teal": 1716,
-    "source": 4,
-    "pc": [
-      1832,
-      1833,
-      1834,
-      1835
-    ]
-  },
-  {
-    "teal": 1719,
+    "teal": 1610,
     "source": 4,
     "errorMessage": "this contract does not implement the given ABI method for call DeleteApplication",
     "pc": [
-      1836
+      1733
     ]
   }
 ]

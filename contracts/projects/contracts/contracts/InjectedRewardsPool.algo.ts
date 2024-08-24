@@ -185,6 +185,9 @@ export class InjectedRewardsPool extends Contract {
     this.userSharePercentage(userAddress).value = userSharePercentage;
 
     this.rewardRate(userAddress).value = wideRatio([this.injectedRewards.value, userSharePercentage], [100]);
+    if (this.rewardRate(userAddress).value === 0) {
+      this.rewardRate(userAddress).value = 10;
+    }
   }
 
 
@@ -222,18 +225,7 @@ export class InjectedRewardsPool extends Contract {
     this.stakeDuration(this.txn.sender).value = 0;
 
     //calculate new reward rate
-    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
-    const userStakingWeight = wideRatio([this.staked(this.txn.sender).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
-    this.totalStakingWeight.value += userStakingWeight
-    this.userStakingWeight(this.txn.sender).value = userStakingWeight;
-
-    const userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
-
-    const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
-    let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
-    let denominator = PRECISION;
-
-    this.rewardRate(this.txn.sender).value = (wideRatio([this.injectedRewards.value, numerator], [denominator]) / 100);
+    this.calculateRewardRate(this.txn.sender);
   }
 
   unstake(): void {
