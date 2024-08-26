@@ -18,6 +18,8 @@ export class InjectedRewardsPool extends Contract {
 
   lastRewardInjectionTime = GlobalStateKey<uint64>();
 
+  lastInjectedRewards = GlobalStateKey<uint64>();
+
   totalRewardsInjected = GlobalStateKey<uint64>();
 
   totalStakingWeight = GlobalStateKey<uint64>();
@@ -112,6 +114,7 @@ export class InjectedRewardsPool extends Contract {
       assetAmount: quantity,
     });
     this.injectedRewards.value += quantity;
+    this.lastInjectedRewards.value = quantity;
     this.lastRewardInjectionTime.value = globals.latestTimestamp;
     this.totalRewardsInjected.value += quantity;
   }
@@ -184,7 +187,9 @@ export class InjectedRewardsPool extends Contract {
     const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
     this.userSharePercentage(userAddress).value = userSharePercentage;
 
-    this.rewardRate(userAddress).value = wideRatio([this.injectedRewards.value, userSharePercentage], [100]);
+    const availableRewards = this.injectedRewards.value > 0 ? this.injectedRewards.value : this.lastInjectedRewards.value;
+
+    this.rewardRate(userAddress).value = wideRatio([availableRewards, userSharePercentage], [100]);
     if (this.rewardRate(userAddress).value === 0) {
       this.rewardRate(userAddress).value = 10;
     }
