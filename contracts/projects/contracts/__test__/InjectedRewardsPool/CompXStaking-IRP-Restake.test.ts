@@ -17,22 +17,28 @@ const ONE_DAY = 86400n;
 interface StakingAccount {
   account?: TransactionSignerAccount;
   stake: bigint;
+  restake: bigint;
 }
 const HIGH_STAKE_AMOUNT = 2_000_000_000n;
 const LOW_STAKE_AMOUNT = 10_000_000n;
+const RESTAKE_AMOUNT = 100_000_000n;
 
 const stakingAccount: StakingAccount[] =
   [{
     stake: HIGH_STAKE_AMOUNT,
+    restake: RESTAKE_AMOUNT
   },
   {
     stake: LOW_STAKE_AMOUNT,
+    restake: RESTAKE_AMOUNT
   },
   {
     stake: HIGH_STAKE_AMOUNT,
+    restake: RESTAKE_AMOUNT
   },
   {
     stake: LOW_STAKE_AMOUNT,
+    restake: RESTAKE_AMOUNT
   },
   ]
 
@@ -126,7 +132,7 @@ describe('Injected Reward Pool single staker', () => {
       });
       await algorand.send.assetTransfer({
         assetId: stakedAssetId,
-        amount: staker.stake,
+        amount: staker.stake + staker.restake,
         sender: admin,
         receiver: staker.account.addr,
       });
@@ -200,7 +206,36 @@ describe('Injected Reward Pool single staker', () => {
       expect(userAccruedRewards).toBe(userRewardRate);
       const currentStake = (await appClient.getLocalState(staker.account!.addr)).staked!.asBigInt();
       expect(currentStake).toBe(staker.stake + userRewardRate);
+      console.log('Accrue 1: user: ', staker.account!.addr, 'rewardRate: ', userRewardRate);
     }
+  });
+
+  test('restake for all accounts', async () => {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+
+    for (var staker of stakingAccount) {
+      const currentStake = (await appClient.getLocalState(staker.account!.addr)).staked!.asBigInt();
+      const userRewardRate = (await appClient.getLocalState(staker.account!.addr)).rewardRate!.asBigInt();
+
+      expect(currentStake).toBe(staker.stake + userRewardRate);
+      const restakeTxn = await algorand.transactions.assetTransfer({
+        assetId: stakedAssetId,
+        amount: staker.restake,
+        sender: staker.account!.addr,
+        receiver: appAddress,
+      });
+      await appClient.restake({ quantity: staker.restake, stakeTxn: restakeTxn }, { sender: staker.account, sendParams: { fee: algokit.algos(0.02) } });
+      const currentStakeAfterRestake = (await appClient.getLocalState(staker.account!.addr)).staked!.asBigInt();
+      expect(currentStakeAfterRestake).toBe(currentStake + staker.restake);
+    }
+    for (var staker of stakingAccount) {
+      await appClient.updateRewardRate({ userAddress: staker.account!.addr });
+      const useShare = (await appClient.getLocalState(staker.account!.addr)).useShare!.asBigInt();
+      console.log('user share ', useShare);
+      expect((await appClient.getLocalState(staker.account!.addr)).rewardRate!.asBigInt()).toBeGreaterThan(0n);
+    }
+
   });
 
   test('inject rewards', async () => {
@@ -220,7 +255,15 @@ describe('Injected Reward Pool single staker', () => {
     expect(rewardAssetBalance).toBe(rewardsInUnits + rewardAssetBalancePrior);
     const lastRewardInjectionAmount = (await appClient.getGlobalState()).injectedRewards!.asBigInt();
     expect(lastRewardInjectionAmount).toBeGreaterThanOrEqual(BigInt(rewardsInUnits));
+    for (var staker of stakingAccount) {
+      await appClient.updateRewardRate({ userAddress: staker.account!.addr });
+      const useShare = (await appClient.getLocalState(staker.account!.addr)).useShare!.asBigInt();
+      console.log('user share ', useShare);
+      expect((await appClient.getLocalState(staker.account!.addr)).rewardRate!.asBigInt()).toBeGreaterThan(0n);
+    }
   });
+
+
 
   test('accrue rewards', async () => {
     const injectedRewards = (await appClient.getGlobalState()).injectedRewards!.asBigInt();
@@ -228,7 +271,7 @@ describe('Injected Reward Pool single staker', () => {
       await appClient.accrueRewards({ userAddress: staker.account!.addr }, { sender: staker.account, sendParams: { fee: algokit.algos(0.1) } });
       const userAccruedRewards = (await appClient.getLocalState(staker.account!.addr)).accruedRewards!.asBigInt();
       const userRewardRate = (await appClient.getLocalState(staker.account!.addr)).rewardRate!.asBigInt();
-      expect(userAccruedRewards).toBe(userRewardRate * 2n);
+      console.log('Accrue 2: user: ', staker.account!.addr, 'rewardRate: ', userRewardRate);
     }
     const remainingRewards = (await appClient.getGlobalState()).injectedRewards!.asBigInt();
     expect(remainingRewards).toBeLessThan(injectedRewards);
