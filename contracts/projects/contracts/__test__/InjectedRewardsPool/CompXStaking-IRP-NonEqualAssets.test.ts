@@ -63,18 +63,26 @@ describe('Injected Reward Pool single staker', () => {
       algorand.client.algod,
     )
 
-    const stakeAssetCreate = algorand.send.assetCreate({
+    const stakeAssetCreate = await algorand.send.assetCreate({
       sender: admin,
       total: 999_999_999_000n,
       decimals: 6,
-      assetName: 'Stake and Reward Token',
+      assetName: 'Stake Token',
     });
-    stakedAssetId = BigInt((await stakeAssetCreate).confirmation.assetIndex!);
-    rewardAssetId = stakedAssetId;
+    stakedAssetId = BigInt(stakeAssetCreate.confirmation.assetIndex!);
+
+    const rewardAssetCreate = await algorand.send.assetCreate({
+      sender: admin,
+      total: 999_999_999_999n,
+      decimals: 6,
+      assetName: 'Reward Token',
+    });
+
+    rewardAssetId = BigInt(rewardAssetCreate.confirmation.assetIndex!);
 
     await appClient.create.createApplication({
       stakedAsset: stakedAssetId,
-      rewardAsset: stakedAssetId,
+      rewardAsset: rewardAssetId,
       oracleAdmin: admin,
       adminAddress: admin,
       minStakePeriodForRewards: 0n,
@@ -125,11 +133,21 @@ describe('Injected Reward Pool single staker', () => {
         receiver: staker.account.addr,
       });
       await algorand.send.assetTransfer({
+        assetId: rewardAssetId,
+        amount: 0n,
+        sender: staker.account.addr,
+        receiver: staker.account.addr,
+      });
+      await algorand.send.assetTransfer({
         assetId: stakedAssetId,
         amount: staker.stake,
         sender: admin,
         receiver: staker.account.addr,
       });
+      const { balance: stakedAssetBalance } = await algorand.account.getAssetInformation(staker.account.addr, stakedAssetId);
+      const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(staker.account.addr, rewardAssetId);
+      expect(stakedAssetBalance).toBe(staker.stake);
+      expect(rewardAssetBalance).toBe(0n);
     }
   });
 
@@ -155,9 +173,11 @@ describe('Injected Reward Pool single staker', () => {
       amount: rewardsInUnits,
     });
     const { balance: rewardAssetBalancePrior } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
-
+    expect(rewardAssetBalancePrior).toBe(0n);
     await appClient.injectRewards({ rewardTxn: axferTxn, quantity: rewardsInUnits }, { sendParams: { fee: algokit.algos(0.1) } });
+
     const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
+
     expect(rewardAssetBalance).toBe(rewardsInUnits + rewardAssetBalancePrior);
     const lastRewardInjectionAmount = (await appClient.getGlobalState()).injectedRewards!.asBigInt();
     expect(lastRewardInjectionAmount).toBe(BigInt(rewardsInUnits));
@@ -176,6 +196,7 @@ describe('Injected Reward Pool single staker', () => {
         receiver: appAddress,
       });
       await appClient.stake({ quantity: staker.stake, stakeTxn }, { sender: staker.account, sendParams: { fee: algokit.algos(0.02) } });
+
       expect((await appClient.getLocalState(staker.account!.addr)).staked!.asBigInt()).toBe(staker.stake);
       const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
       expect((await appClient.getLocalState(staker.account!.addr)).accruedRewards!.asBigInt()).toBe(0n);
@@ -199,7 +220,7 @@ describe('Injected Reward Pool single staker', () => {
       const userRewardRate = (await appClient.getLocalState(staker.account!.addr)).rewardRate!.asBigInt();
       expect(userAccruedRewards).toBe(userRewardRate);
       const currentStake = (await appClient.getLocalState(staker.account!.addr)).staked!.asBigInt();
-      expect(currentStake).toBe(staker.stake + userRewardRate);
+      expect(currentStake).toBe(staker.stake);
     }
   });
 
@@ -247,14 +268,17 @@ describe('Injected Reward Pool single staker', () => {
       const compoundedStake = (await appClient.getLocalState(staker.account!.addr)).staked!.asBigInt();
       console.log('user accrued compounded stake', compoundedStake);
       console.log('user accrued rewards unstake', accruedRewards);
-
+      expect(compoundedStake).toBe(staker.stake);
+      const rewardRate = (await appClient.getLocalState(staker.account!.addr)).rewardRate!.asBigInt();
       await appClient.unstake({ quantity: 0n }, { sender: staker.account, sendParams: { fee: algokit.algos(0.02) }, assets: [Number(stakedAssetId), Number(rewardAssetId)] });
 
       const rewardAssetBalanceAfter = (await algorand.account.getAssetInformation(staker.account!.addr, rewardAssetId)).balance;
       const stakeAssetBalanceAfter = (await algorand.account.getAssetInformation(staker.account!.addr, stakedAssetId)).balance;
       console.log('user stake balance after unstake', stakeAssetBalanceAfter);
       console.log('user reward balance after unstake', rewardAssetBalanceAfter);
-      expect(rewardAssetBalanceAfter).toBe(compoundedStake);
+      
+      expect(rewardRate).toBeGreaterThan(0n);
+      expect(rewardAssetBalanceAfter).toBe(rewardRate * 2n);
     }
   });
 

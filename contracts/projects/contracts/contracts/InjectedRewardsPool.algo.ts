@@ -175,7 +175,7 @@ export class InjectedRewardsPool extends Contract {
     if (this.userStakingWeight(userAddress).value > 0) {
       this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
     }
-    const userStakingWeight = wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
+    const userStakingWeight = (wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value])) / 2;
     this.totalStakingWeight.value += userStakingWeight
     this.userStakingWeight(userAddress).value = userStakingWeight;
 
@@ -228,7 +228,36 @@ export class InjectedRewardsPool extends Contract {
     this.calculateRewardRate(this.txn.sender);
   }
 
-  unstake(): void {
+  claimRewards(): void {
+    assert(this.stakedAssetId.value !== this.rewardAssetId.value, 'Claim rewards not allowed for same asset');
+    assert(this.accruedRewards(this.txn.sender).value > 0, 'No accrued rewards');
+    assert(this.staked(this.txn.sender).value > 0, 'No staked assets');
+    assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets');
+    assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets');
+
+    if (this.accruedRewards(this.txn.sender).value > 0) {
+      if (this.rewardAssetId.value === 0) {
+        sendPayment({
+          amount: this.accruedRewards(this.txn.sender).value,
+          receiver: this.txn.sender,
+          sender: this.app.address,
+          fee: 1_000,
+        });
+      } else {
+        sendAssetTransfer({
+          xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+          assetReceiver: this.txn.sender,
+          assetAmount: this.accruedRewards(this.txn.sender).value,
+          sender: this.app.address,
+          fee: 1_000,
+        });
+      }
+    }
+    this.accruedRewards(this.txn.sender).value = 0;
+
+  }
+
+  unstake(quantity: uint64): void {
     assert(this.staked(this.txn.sender).value > 0, 'No staked assets');
     assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets');
     assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets');
@@ -236,7 +265,7 @@ export class InjectedRewardsPool extends Contract {
     if (this.stakedAssetId.value === this.rewardAssetId.value) {
       if (this.stakedAssetId.value === 0) {
         sendPayment({
-          amount: this.staked(this.txn.sender).value,
+          amount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
           receiver: this.txn.sender,
           sender: this.app.address,
           fee: 1_000,
@@ -246,7 +275,7 @@ export class InjectedRewardsPool extends Contract {
           xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
           assetReceiver: this.txn.sender,
           sender: this.app.address,
-          assetAmount: this.staked(this.txn.sender).value,
+          assetAmount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
           fee: 1_000,
         });
       }
@@ -254,7 +283,7 @@ export class InjectedRewardsPool extends Contract {
 
       if (this.stakedAssetId.value === 0) {
         sendPayment({
-          amount: this.staked(this.txn.sender).value,
+          amount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
           receiver: this.txn.sender,
           sender: this.app.address,
           fee: 1_000,
@@ -264,7 +293,7 @@ export class InjectedRewardsPool extends Contract {
           xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
           assetReceiver: this.txn.sender,
           sender: this.app.address,
-          assetAmount: this.staked(this.txn.sender).value,
+          assetAmount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
           fee: 1_000,
         });
       }
