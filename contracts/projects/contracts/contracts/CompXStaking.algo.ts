@@ -126,8 +126,8 @@ export class CompXStaking extends Contract {
     });
     this.totalRewards.value += quantity;
     this.remainingRewards.value += quantity;
-    const maxRewardsPerTick = wideRatio([this.totalRewards.value, PRECISION], [this.contractDuration.value]);
-    this.rewardsAvailablePerTick.value = ((maxRewardsPerTick / 100) * 98) / PRECISION;
+    const maxRewardsPerTick = wideRatio([quantity, PRECISION], [this.contractDuration.value]);
+    this.rewardsAvailablePerTick.value = wideRatio([(maxRewardsPerTick / 100), 98], [PRECISION])
   }
 
   addRewardsAlgo(payTxn: PayTxn, quantity: uint64): void {

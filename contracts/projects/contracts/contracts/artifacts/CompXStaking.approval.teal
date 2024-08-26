@@ -489,9 +489,8 @@ addRewards:
 	app_global_put
 
 	// contracts/CompXStaking.algo.ts:129
-	// maxRewardsPerTick = wideRatio([this.totalRewards.value, PRECISION], [this.contractDuration.value])
-	byte 0x746f74616c52657761726473 // "totalRewards"
-	app_global_get
+	// maxRewardsPerTick = wideRatio([quantity, PRECISION], [this.contractDuration.value])
+	frame_dig -2 // quantity: uint64
 	int 1000000000000000
 	mulw
 	int 0
@@ -508,15 +507,23 @@ addRewards:
 	frame_bury 0 // maxRewardsPerTick: uint64
 
 	// contracts/CompXStaking.algo.ts:130
-	// this.rewardsAvailablePerTick.value = ((maxRewardsPerTick / 100) * 98) / PRECISION
+	// this.rewardsAvailablePerTick.value = wideRatio([(maxRewardsPerTick / 100), 98], [PRECISION])
 	byte 0x72657761726473417661696c61626c655065725469636b // "rewardsAvailablePerTick"
 	frame_dig 0 // maxRewardsPerTick: uint64
 	int 100
 	/
 	int 98
-	*
+	mulw
+	int 0
 	int 1000000000000000
-	/
+	divmodw
+	pop
+	pop
+	swap
+	!
+
+	// wideRatio failed
+	assert
 	app_global_put
 	retsub
 
