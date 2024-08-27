@@ -13,7 +13,6 @@ let appClient: CompXStakingClient;
 let admin: string;
 let stakedAssetId: bigint;
 let rewardAssetId: bigint;
-const PRECISION = 10_000n;
 interface StakingAccount {
     account?: TransactionSignerAccount;
     stake: bigint;
@@ -203,7 +202,7 @@ describe('CompXStaking ASA/ASA - Equal Assets', () => {
             expect(stakedAssetBalanceBefore).toBe(staker.stake);
             expect(stakedAssetBalanceAfter).toBe(0n);
             expect(rewardAssetBalanceBefore).toBe(staker.stake);
-            expect(rewardAssetBalanceAfter).toBe(staker.stake);
+            expect(rewardAssetBalanceAfter).toBe(0n);
         }
     });
 

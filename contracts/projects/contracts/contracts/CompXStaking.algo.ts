@@ -124,10 +124,10 @@ export class CompXStaking extends Contract {
       xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
       assetAmount: quantity,
     });
-    this.totalRewards.value += quantity;
-    this.remainingRewards.value += quantity;
-    const maxRewardsPerTick = wideRatio([quantity, PRECISION], [this.contractDuration.value]);
-    this.rewardsAvailablePerTick.value = wideRatio([(maxRewardsPerTick / 100), 98], [PRECISION])
+    this.totalRewards.value += rewardTxn.assetAmount;
+    this.remainingRewards.value += rewardTxn.assetAmount;
+    const maxRewardsPerTick = wideRatio([quantity, PRECISION], [this.contractDuration.value, PRECISION]);
+    this.rewardsAvailablePerTick.value = ((maxRewardsPerTick / 100) * 98);
   }
 
   addRewardsAlgo(payTxn: PayTxn, quantity: uint64): void {
@@ -143,8 +143,8 @@ export class CompXStaking extends Contract {
 
     this.totalRewards.value += payTxn.amount;
     this.remainingRewards.value += payTxn.amount;
-    const maxRewardsPerTick = wideRatio([this.totalRewards.value, PRECISION], [this.contractDuration.value]);
-    this.rewardsAvailablePerTick.value = ((maxRewardsPerTick / 100) * 98) / PRECISION;
+    const maxRewardsPerTick = wideRatio([this.totalRewards.value, PRECISION], [this.contractDuration.value, PRECISION]);
+    this.rewardsAvailablePerTick.value = ((maxRewardsPerTick / 100) * 98);
   }
 
   removeRewards(quantity: uint64): void {
@@ -187,7 +187,7 @@ export class CompXStaking extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
     assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
-    if (this.rewardAssetId.value !== 0) {
+   /*  if (this.rewardAssetId.value !== 0) {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
         assetReceiver: this.app.creator,
@@ -204,7 +204,7 @@ export class CompXStaking extends Contract {
         assetAmount: 0,
         sender: this.app.address,
         assetCloseTo: this.app.creator,
-
+        fee: 1_000,
       });
     }
 
@@ -213,7 +213,7 @@ export class CompXStaking extends Contract {
       receiver: this.adminAddress.value,
       sender: this.app.address,
       fee: 1_000,
-    });
+    }); */
   }
 
   setPrices(stakeTokenPrice: uint64, rewardTokenPrice: uint64): void {
