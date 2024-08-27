@@ -299,7 +299,7 @@ export class CompXStaking extends Contract {
 
   unstake(): void {
     assert(this.staked(this.txn.sender).value > 0, 'No staked assets');
-    //assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp), 'unlock time not reached'); // add in this check
+    assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp), 'unlock time not reached'); // add in this check
     assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets');
     assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets');
 
