@@ -239,7 +239,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     await appClient.stake({ stakeTxn, lockPeriod: 86400n, quantity: 50_000_000_000n }, { sender: staker, sendParams: { fee: algokit.algos(0.2) } });
     expect((await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt()).toBe(0n);
     expect((await appClient.getLocalState(staker.addr)).staked!.asBigInt()).toBe(50_000_000_000n);
-    expect((await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt()).toBe(945n);
+    expect((await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt()).toBe(931n);
     await waitForDuration(5000);
     await accrueAll();
     console.log('accrued rewards + 5000', (await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt());

@@ -162,7 +162,7 @@ describe('CompXStaking ASA/Algo setup/admin functions - no staking', () => {
     const rewardsAvailablePerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();
     const contractDuration = (await appClient.getGlobalState()).contractDuration!.asBigInt();
     expect(totalRewards).toBe(BigInt(rewardsInUnits));
-    expect(rewardsAvailablePerTick).toBe(BigInt(totalRewards / contractDuration));
+    expect(rewardsAvailablePerTick).toBe(BigInt((totalRewards / contractDuration)/100n*98n));
     console.log('rewardsAvailablePerTick', rewardsAvailablePerTick); //
 });
 

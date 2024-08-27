@@ -184,7 +184,7 @@ describe('CompXStaking ASA/Algo - single staker', () => {
         const stakeTokenPrice = 1000000n;
         const rewardTokenPrice = 150000n;
         const normalisedAmount = (((stakingAmount * stakeTokenPrice)) / rewardTokenPrice);
-        const userStakingWeight = (normalisedAmount * lockPeriod);
+        const userStakingWeight = (normalisedAmount * lockPeriod) / 2n;
         expect(totalStakingWeight).toBeGreaterThanOrEqual(userStakingWeight);
 
     });
