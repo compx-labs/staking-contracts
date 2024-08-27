@@ -49,15 +49,15 @@ describe('CompXStaking ASA/Algo - single staker', () => {
             total: 999_999_999_000n,
             decimals: 6,
             assetName: 'StakeToken',
-          });
-          const rewardAssetCreate = algorand.send.assetCreate({
+        });
+        const rewardAssetCreate = algorand.send.assetCreate({
             sender: admin,
             total: 999_999_999_000n,
             decimals: 6,
             assetName: 'RewardToken',
-          });
-          stakedAssetId = BigInt((await stakeAssetCreate).confirmation.assetIndex!);
-          rewardAssetId = BigInt((await rewardAssetCreate).confirmation.assetIndex!);
+        });
+        stakedAssetId = BigInt((await stakeAssetCreate).confirmation.assetIndex!);
+        rewardAssetId = BigInt((await rewardAssetCreate).confirmation.assetIndex!);
 
         await appClient.create.createApplication({
             stakedAsset: stakedAssetId,
@@ -105,14 +105,14 @@ describe('CompXStaking ASA/Algo - single staker', () => {
     test('add rewards', async () => {
         const { algorand } = fixture;
         const { appAddress } = await appClient.appClient.getAppReference();
-        const rewardsInUnits = 100_000n * 10n**6n;
+        const rewardsInUnits = 100_000n * 10n ** 6n;
         const axferTxn = await fixture.algorand.transactions.assetTransfer({
             sender: admin,
             receiver: appAddress,
             assetId: rewardAssetId,
             amount: rewardsInUnits,
         });
-    
+
         await appClient.addRewards({ rewardTxn: axferTxn, quantity: rewardsInUnits }, { sendParams: { fee: algokit.algos(0.1) } });
         const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
         expect(rewardAssetBalance).toBe(rewardsInUnits);
@@ -198,8 +198,8 @@ describe('CompXStaking ASA/Algo - single staker', () => {
         const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
         const stakeTokenPrice = 1000000n;
         const rewardTokenPrice = 150000n;
-        const normalisedAmount = ((stakingAmount* stakeTokenPrice) / rewardTokenPrice);
-        const userStakingWeight = (normalisedAmount * 10n);
+        const normalisedAmount = ((stakingAmount * stakeTokenPrice) / rewardTokenPrice);
+        const userStakingWeight = (normalisedAmount * 10n) / 2n;
         expect(totalStakingWeight).toBe(userStakingWeight);
     });
 

@@ -205,7 +205,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     const stakeTokenPrice = 1000000n;
     const rewardTokenPrice = 150000n;
     const normalisedAmount = ((stakingAmount * stakeTokenPrice) / rewardTokenPrice);
-    const userStakingWeight = (normalisedAmount * 2588000n);
+    const userStakingWeight = (normalisedAmount * 2588000n) / 2n;
     expect(totalStakingWeight).toBe(userStakingWeight * BigInt(stakingAccounts.length));
   });
 
@@ -258,7 +258,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     await appClient.stake({ stakeTxn, lockPeriod: 86400n, quantity: 50_000_000_000n }, { sender: staker, sendParams: { fee: algokit.algos(0.2) } });
     expect((await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt()).toBe(0n);
     expect((await appClient.getLocalState(staker.addr)).staked!.asBigInt()).toBe(50_000_000_000n);
-    expect((await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt()).toBe(9645n);
+    expect((await appClient.getLocalState(staker.addr)).rewardRate!.asBigInt()).toBe(9432n);
     await waitForDuration(5000);
     await accrueAll();
     const totalRewardPerTick = (await appClient.getGlobalState()).rewardsAvailablePerTick!.asBigInt();

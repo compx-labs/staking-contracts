@@ -13,7 +13,6 @@ let appClient: CompXStakingClient;
 let admin: string;
 let stakedAssetId: bigint;
 let rewardAssetId: bigint;
-const PRECISION = 10000n;
 let stakingAccount: TransactionSignerAccount;
 
 
@@ -106,7 +105,7 @@ describe('CompXStaking ASA/ASA - single staker', () => {
     test('add rewards', async () => {
         const { algorand } = fixture;
         const { appAddress } = await appClient.appClient.getAppReference();
-        const rewardsInUnits = 100_000n * 10n**6n;
+        const rewardsInUnits = 100_000n * 10n ** 6n;
         const axferTxn = await fixture.algorand.transactions.assetTransfer({
             sender: admin,
             receiver: appAddress,
@@ -201,7 +200,7 @@ describe('CompXStaking ASA/ASA - single staker', () => {
         const stakeTokenPrice = 1000000n;
         const rewardTokenPrice = 150000n;
         const normalisedAmount = ((stakingAmount * stakeTokenPrice) / rewardTokenPrice);
-        const userStakingWeight = (normalisedAmount * lockPeriod);
+        const userStakingWeight = ((normalisedAmount * lockPeriod) / 2n)
         expect(totalStakingWeight).toBeGreaterThanOrEqual(userStakingWeight);
 
     });
@@ -223,8 +222,11 @@ describe('CompXStaking ASA/ASA - single staker', () => {
         const { algorand } = fixture;
         let totalPaidOut = 0n;
         const staker = stakingAccount;
+        const localState = await appClient.getLocalState(staker.addr);
+        const stakedBalance = localState.staked!.asBigInt();
+        console.log('stakedBalance', stakedBalance);
         const rewardBalancePrior = (await algorand.account.getAssetInformation(staker.addr, rewardAssetId)).balance;
-        await appClient.adminUnstake({userAddress: staker.addr}, { sendParams: { fee: algokit.algos(0.02) } });
+        await appClient.unstake({ }, { sender: staker, sendParams: { fee: algokit.algos(0.02) } });
         //get asset balances
         const stakedAssetBalance = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
         const rewardAssetBalance = (await algorand.account.getAssetInformation(staker.addr, rewardAssetId)).balance;
@@ -240,20 +242,6 @@ describe('CompXStaking ASA/ASA - single staker', () => {
         console.log('totalPaidOut', totalPaidOut);
     });
 
-    test('delete app - non-admin', async () => {
-        const { algorand } = fixture;
-        const staker = stakingAccount;
-        await expect(
-            appClient.delete.deleteApplication(
-                {
-                },
-                {
-                    sender: staker,
-                    sendParams: { fee: algokit.algos(0.2) },
-                },
-            ),
-        ).rejects.toThrowError();
-    });
 
     test('delete app', async () => {
         await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.02) } });

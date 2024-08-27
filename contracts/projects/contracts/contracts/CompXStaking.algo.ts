@@ -242,8 +242,8 @@ export class CompXStaking extends Contract {
     let denominator = PRECISION;
 
     this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100);
-    if (this.rewardRate(this.txn.sender).value === 0) {
-      this.rewardRate(this.txn.sender).value = 10;
+    if (this.rewardRate(userAddress).value === 0) {
+      this.rewardRate(userAddress).value = 10;
     }
   }
 

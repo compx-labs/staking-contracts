@@ -1163,8 +1163,8 @@ calculateRewardRateAndGetUserStakingWeight:
 
 	// *if5_condition
 	// contracts/CompXStaking.algo.ts:245
-	// this.rewardRate(this.txn.sender).value === 0
-	txn Sender
+	// this.rewardRate(userAddress).value === 0
+	frame_dig -1 // userAddress: Address
 	byte 0x72657761726452617465 // "rewardRate"
 	app_local_get
 	int 0
@@ -1173,8 +1173,8 @@ calculateRewardRateAndGetUserStakingWeight:
 
 	// *if5_consequent
 	// contracts/CompXStaking.algo.ts:246
-	// this.rewardRate(this.txn.sender).value = 10
-	txn Sender
+	// this.rewardRate(userAddress).value = 10
+	frame_dig -1 // userAddress: Address
 	byte 0x72657761726452617465 // "rewardRate"
 	int 10
 	app_local_put
@@ -1563,17 +1563,6 @@ unstake:
 	>
 
 	// No staked assets
-	assert
-
-	// contracts/CompXStaking.algo.ts:302
-	// assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp), 'unlock time not reached')
-	txn Sender
-	byte 0x756e6c6f636b54696d65 // "unlockTime"
-	app_local_get
-	global LatestTimestamp
-	<
-
-	// unlock time not reached
 	assert
 
 	// contracts/CompXStaking.algo.ts:303
