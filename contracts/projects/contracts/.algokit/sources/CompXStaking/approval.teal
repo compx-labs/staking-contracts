@@ -1565,6 +1565,17 @@ unstake:
 	// No staked assets
 	assert
 
+	// contracts/CompXStaking.algo.ts:302
+	// assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp), 'unlock time not reached')
+	txn Sender
+	byte 0x756e6c6f636b54696d65 // "unlockTime"
+	app_local_get
+	global LatestTimestamp
+	<
+
+	// unlock time not reached
+	assert
+
 	// contracts/CompXStaking.algo.ts:303
 	// assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets')
 	txn Sender
