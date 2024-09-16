@@ -5,6 +5,7 @@ import * as algokit from '@algorandfoundation/algokit-utils';
 import { CompXStakingClient } from '../../contracts/clients/CompXStakingClient';
 import algosdk, { TransactionSigner } from 'algosdk';
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
+import { byteArrayToUint128 } from '../utils';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
@@ -78,7 +79,9 @@ describe('CompXStaking ASA/ASA - single staker', () => {
         expect(globalState.minLockUp!.asBigInt()).toBe(10n);
         expect(globalState.contractDuration!.asBigInt()).toBe(2592000n);
         expect(globalState.rewardsAvailablePerTick!.asBigInt()).toBe(0n);
-        expect(globalState.totalStakingWeight!.asBigInt()).toBe(0n);
+        const tsw_ba = globalState.totalStakingWeight!.asByteArray();
+        const tsw = byteArrayToUint128(tsw_ba);
+        expect(tsw).toBe(0n);
         expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin);
     });
 
@@ -196,7 +199,8 @@ describe('CompXStaking ASA/ASA - single staker', () => {
         expect(rewardAssetBalanceBefore).toBe(0n);
         expect(rewardAssetBalanceAfter).toBe(0n);
 
-        const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
+        const totalStakingWeight_ba = (await appClient.getGlobalState()).totalStakingWeight!.asByteArray();
+        const totalStakingWeight = byteArrayToUint128(totalStakingWeight_ba);
         const stakeTokenPrice = 1000000n;
         const rewardTokenPrice = 150000n;
         const normalisedAmount = ((stakingAmount * stakeTokenPrice) / rewardTokenPrice);
@@ -226,7 +230,7 @@ describe('CompXStaking ASA/ASA - single staker', () => {
         const stakedBalance = localState.staked!.asBigInt();
         console.log('stakedBalance', stakedBalance);
         const rewardBalancePrior = (await algorand.account.getAssetInformation(staker.addr, rewardAssetId)).balance;
-        await appClient.unstake({ }, { sender: staker, sendParams: { fee: algokit.algos(0.02) } });
+        await appClient.unstake({}, { sender: staker, sendParams: { fee: algokit.algos(0.02) } });
         //get asset balances
         const stakedAssetBalance = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
         const rewardAssetBalance = (await algorand.account.getAssetInformation(staker.addr, rewardAssetId)).balance;

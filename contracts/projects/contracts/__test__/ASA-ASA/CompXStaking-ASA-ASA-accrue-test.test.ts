@@ -5,6 +5,7 @@ import * as algokit from '@algorandfoundation/algokit-utils';
 import { CompXStakingClient } from '../../contracts/clients/CompXStakingClient';
 import algosdk, { TransactionSigner } from 'algosdk';
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
+import { byteArrayToUint128 } from '../utils';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
@@ -15,7 +16,6 @@ let stakedAssetId: bigint;
 let rewardAssetId: bigint;
 const PRECISION = 10000n;
 let stakingAccounts: any[] = [];
-
 
 describe('CompXStaking ASA/Algo - with staking', () => {
   beforeEach(fixture.beforeEach);
@@ -62,7 +62,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     await appClient.create.createApplication({
       stakedAsset: stakedAssetId,
       rewardAsset: rewardAssetId,
-      minLockUp: 10n, // 1 Day
+      minLockUp: 10n, // 10 seconds
       contractDuration: 2592000n, // 30 Days
       startTimestamp: BigInt(Math.floor(Date.now() / 1000)),
       oracleAdmin: admin,
@@ -79,7 +79,9 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     expect(globalState.minLockUp!.asBigInt()).toBe(10n);
     expect(globalState.contractDuration!.asBigInt()).toBe(2592000n);
     expect(globalState.rewardsAvailablePerTick!.asBigInt()).toBe(0n);
-    expect(globalState.totalStakingWeight!.asBigInt()).toBe(0n);
+    const tsw_ba = globalState.totalStakingWeight!.asByteArray();
+    const tsw = byteArrayToUint128(tsw_ba);
+    expect(tsw).toBe(0n);
     expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin);
   });
 
@@ -201,7 +203,8 @@ describe('CompXStaking ASA/Algo - with staking', () => {
       expect(rewardAssetBalanceBefore).toBe(0n);
       expect(rewardAssetBalanceAfter).toBe(0n);
     }
-    const totalStakingWeight = (await appClient.getGlobalState()).totalStakingWeight!.asBigInt();
+    const totalStakingWeight_ba = (await appClient.getGlobalState()).totalStakingWeight!.asByteArray();
+    const totalStakingWeight = byteArrayToUint128(totalStakingWeight_ba);
     const stakeTokenPrice = 1000000n;
     const rewardTokenPrice = 150000n;
     const normalisedAmount = ((stakingAmount * stakeTokenPrice) / rewardTokenPrice);
@@ -220,6 +223,9 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     await waitForDuration(5000);
     accrueAll();
   });
+
+  
+  
 
 
   test('intermitant stakers', async () => {
@@ -278,7 +284,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
       const accruedRewards = (await appClient.getLocalState(staker.addr)).accruedRewards!.asBigInt();
       console.log('rewardBalancePrior', rewardBalancePrior);
       console.log('accruedRewards', accruedRewards);
-      await appClient.adminUnstake({ userAddress: staker.addr }, { sendParams: { fee: algokit.algos(0.002) } });
+      await appClient.unstake({ }, { sender: staker, sendParams: { fee: algokit.algos(0.002) } });
       //get asset balances
       const stakedAssetBalance = (await algorand.account.getAssetInformation(staker.addr, stakedAssetId)).balance;
       const rewardAssetBalance = (await algorand.account.getAssetInformation(staker.addr, rewardAssetId)).balance;

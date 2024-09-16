@@ -5,6 +5,7 @@ import * as algokit from '@algorandfoundation/algokit-utils';
 import { CompXStakingClient } from '../../contracts/clients/CompXStakingClient';
 import algosdk, { TransactionSigner } from 'algosdk';
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
+import { byteArrayToUint128 } from '../utils';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
@@ -77,7 +78,9 @@ describe('CompXStaking ASA/Algo setup/admin functions - no staking', () => {
     expect(globalState.minLockUp!.asBigInt()).toBe(10n);
     expect(globalState.contractDuration!.asBigInt()).toBe(6034400n);
     expect(globalState.rewardsAvailablePerTick!.asBigInt()).toBe(0n);
-    expect(globalState.totalStakingWeight!.asBigInt()).toBe(0n);
+    const tsw_ba = globalState.totalStakingWeight!.asByteArray();
+    const tsw = byteArrayToUint128(tsw_ba);
+    expect(tsw).toBe(0n);
     expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin);
   });
 

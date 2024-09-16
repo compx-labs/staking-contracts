@@ -22,7 +22,7 @@ export class CompXStaking extends Contract {
 
   contractEndTimestamp = GlobalStateKey<uint64>();
 
-  totalStakingWeight = GlobalStateKey<uint64>();
+  totalStakingWeight = GlobalStateKey<uint128>();
 
   remainingRewards = GlobalStateKey<uint64>();
 
@@ -70,7 +70,7 @@ export class CompXStaking extends Contract {
     this.contractDuration.value = contractDuration;
     this.contractStartTimestamp.value = startTimestamp;
     this.contractEndTimestamp.value = startTimestamp + contractDuration;
-    this.totalStakingWeight.value = 0;
+    this.totalStakingWeight.value = 0 as uint128;
     this.remainingRewards.value = 0;
     this.oracleAdminAddress.value = oracleAdmin;
     this.stakeTokenPrice.value = 0;
@@ -228,14 +228,14 @@ export class CompXStaking extends Contract {
   private calculateRewardRateAndGetUserStakingWeight(userAddress: Address): void {
 
     if (this.userStakingWeight(userAddress).value > 0) {
-      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value as uint128;
     }
     const normalisedAmount = wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
     const userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(userAddress).value], [2]);
-    this.totalStakingWeight.value += userStakingWeight;
+    this.totalStakingWeight.value += userStakingWeight as uint128;
     this.userStakingWeight(userAddress).value = userStakingWeight;
 
-    const userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
+    const userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64]);
 
     const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
     let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
@@ -284,13 +284,13 @@ export class CompXStaking extends Contract {
     assert(this.stakeDuration(userAddress).value > 0, 'User has not staked assets');
 
     if (this.unlockTime(userAddress).value > globals.latestTimestamp) {
-      this.calculateRewardRateAndGetUserStakingWeight(this.txn.sender);
+      this.calculateRewardRateAndGetUserStakingWeight(userAddress);
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * ((globals.latestTimestamp) - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
 
     }
     else if (this.lastUpdateTime(userAddress).value !== this.unlockTime(userAddress).value) {
-      this.calculateRewardRateAndGetUserStakingWeight(this.txn.sender);
+      this.calculateRewardRateAndGetUserStakingWeight(userAddress);
       this.accruedRewards(userAddress).value += (this.rewardRate(userAddress).value * (this.unlockTime(userAddress).value - this.lastUpdateTime(userAddress).value));
       this.lastUpdateTime(userAddress).value = this.unlockTime(userAddress).value;
     }
@@ -299,7 +299,7 @@ export class CompXStaking extends Contract {
 
   unstake(): void {
     assert(this.staked(this.txn.sender).value > 0, 'No staked assets');
-    assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp), 'unlock time not reached'); // add in this check
+    //assert(this.unlockTime(this.txn.sender).value < (globals.latestTimestamp), 'unlock time not reached'); // add in this check
     assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets');
     assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets');
 
@@ -352,7 +352,7 @@ export class CompXStaking extends Contract {
     }
 
     // Update the total staking weight
-    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
+    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value as uint128;
     this.remainingRewards.value -= this.accruedRewards(this.txn.sender).value;
     this.totalStaked.value -= this.staked(this.txn.sender).value;
 
@@ -414,7 +414,7 @@ export class CompXStaking extends Contract {
     }
 
     // Update the total staking weight
-    this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+    this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value as uint128;
     this.remainingRewards.value -= this.accruedRewards(userAddress).value;
     this.totalStaked.value -= this.staked(userAddress).value;
 
