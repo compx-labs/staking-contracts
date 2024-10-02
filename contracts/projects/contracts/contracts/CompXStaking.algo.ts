@@ -228,15 +228,15 @@ export class CompXStaking extends Contract {
   private calculateRewardRateAndGetUserStakingWeight(userAddress: Address): void {
 
     if (this.userStakingWeight(userAddress).value > 0) {
-      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value as uint128;
+      this.totalStakingWeight.value = this.totalStakingWeight.value - (this.userStakingWeight(userAddress).value as uint128);
     }
     const normalisedAmount = wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
     const userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(userAddress).value], [2]);
-    this.totalStakingWeight.value += userStakingWeight as uint128;
     this.userStakingWeight(userAddress).value = userStakingWeight;
+    this.totalStakingWeight.value = this.totalStakingWeight.value + (userStakingWeight as uint128);
 
     const userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64]);
-
+    
     const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
     let numerator = wideRatio([userSharePercentage * PRECISION], [1]);
     let denominator = PRECISION;
@@ -352,7 +352,7 @@ export class CompXStaking extends Contract {
     }
 
     // Update the total staking weight
-    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value as uint128;
+    this.totalStakingWeight.value = this.totalStakingWeight.value - (this.userStakingWeight(this.txn.sender).value as uint128);
     this.remainingRewards.value -= this.accruedRewards(this.txn.sender).value;
     this.totalStaked.value -= this.staked(this.txn.sender).value;
 

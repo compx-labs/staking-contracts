@@ -22,7 +22,7 @@ export class InjectedRewardsPool extends Contract {
 
   totalRewardsInjected = GlobalStateKey<uint64>();
 
-  totalStakingWeight = GlobalStateKey<uint64>();
+  totalStakingWeight = GlobalStateKey<uint128>();
 
   stakeTokenPrice = GlobalStateKey<uint64>();
 
@@ -63,7 +63,7 @@ export class InjectedRewardsPool extends Contract {
     this.stakedAssetId.value = stakedAsset;
     this.rewardAssetId.value = rewardAsset;
     this.totalStaked.value = 0;
-    this.totalStakingWeight.value = 0;
+    this.totalStakingWeight.value = 0 as uint128;
     this.oracleAdminAddress.value = oracleAdmin;
     this.stakeTokenPrice.value = 0;
     this.rewardTokenPrice.value = 0;
@@ -176,13 +176,13 @@ export class InjectedRewardsPool extends Contract {
 
   private calculateRewardRate(userAddress: Address): void {
     if (this.userStakingWeight(userAddress).value > 0) {
-      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value;
+      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value as uint128;
     }
     const userStakingWeight = (wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value])) / 2;
-    this.totalStakingWeight.value += userStakingWeight
+    this.totalStakingWeight.value += userStakingWeight as uint128
     this.userStakingWeight(userAddress).value = userStakingWeight;
 
-    const userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value]);
+    const userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64]);
     this.useShare(userAddress).value = userShare;
     const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
     this.userSharePercentage(userAddress).value = userSharePercentage;
@@ -323,7 +323,7 @@ export class InjectedRewardsPool extends Contract {
     }
 
     // Update the total staking weight
-    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value;
+    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value as uint128;
     this.totalStaked.value -= this.staked(this.txn.sender).value;
 
     this.staked(this.txn.sender).value = 0;

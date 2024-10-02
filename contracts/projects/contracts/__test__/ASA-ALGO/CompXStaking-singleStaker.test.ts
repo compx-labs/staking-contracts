@@ -193,7 +193,7 @@ describe('CompXStaking ASA/Algo - single staker', () => {
 
     });
 
-    async function waitForDuration(duration: number) {
+     async function waitForDuration(duration: number) {
         return new Promise((resolve) => {
             setTimeout(resolve, duration);
         });
@@ -245,5 +245,5 @@ describe('CompXStaking ASA/Algo - single staker', () => {
 
     test('delete app', async () => {
         await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });
-    });
+    }); 
 });
