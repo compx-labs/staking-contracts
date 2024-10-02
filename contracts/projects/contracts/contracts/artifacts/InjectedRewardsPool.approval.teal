@@ -16,7 +16,7 @@ int 6
 *
 txn OnCompletion
 +
-switch *call_NoOp *call_OptIn *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *call_DeleteApplication *create_NoOp *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED
+switch *call_NoOp *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *call_DeleteApplication *create_NoOp *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED
 
 *NOT_IMPLEMENTED:
 	// The requested action is not implemented in this contract. Are you using the correct OnComplete? Did you set your app ID?
@@ -65,209 +65,71 @@ switch *call_NoOp *call_OptIn *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED
 createApplication:
 	proto 5 0
 
-	// contracts/InjectedRewardsPool.algo.ts:63
+	// contracts/InjectedRewardsPool.algo.ts:84
 	// this.stakedAssetId.value = stakedAsset
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	frame_dig -1 // stakedAsset: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:64
+	// contracts/InjectedRewardsPool.algo.ts:85
 	// this.rewardAssetId.value = rewardAsset
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	frame_dig -2 // rewardAsset: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:65
+	// contracts/InjectedRewardsPool.algo.ts:86
 	// this.totalStaked.value = 0
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:66
+	// contracts/InjectedRewardsPool.algo.ts:87
 	// this.totalStakingWeight.value = 0 as uint128
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	byte 0x00000000000000000000000000000000
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:67
+	// contracts/InjectedRewardsPool.algo.ts:88
 	// this.oracleAdminAddress.value = oracleAdmin
 	byte 0x6f7261636c6541646d696e41646472657373 // "oracleAdminAddress"
 	frame_dig -4 // oracleAdmin: Address
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:68
+	// contracts/InjectedRewardsPool.algo.ts:89
 	// this.stakeTokenPrice.value = 0
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:69
+	// contracts/InjectedRewardsPool.algo.ts:90
 	// this.rewardTokenPrice.value = 0
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:70
+	// contracts/InjectedRewardsPool.algo.ts:91
 	// this.adminAddress.value = adminAddress
 	byte 0x61646d696e41646472657373 // "adminAddress"
 	frame_dig -5 // adminAddress: Address
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:71
+	// contracts/InjectedRewardsPool.algo.ts:92
 	// this.minStakePeriodForRewards.value = minStakePeriodForRewards
 	byte 0x6d696e5374616b65506572696f64466f7252657761726473 // "minStakePeriodForRewards"
 	frame_dig -3 // minStakePeriodForRewards: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:72
+	// contracts/InjectedRewardsPool.algo.ts:93
 	// this.injectedRewards.value = 0
 	byte 0x696e6a656374656452657761726473 // "injectedRewards"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:73
+	// contracts/InjectedRewardsPool.algo.ts:94
 	// this.lastRewardInjectionTime.value = 0
 	byte 0x6c617374526577617264496e6a656374696f6e54696d65 // "lastRewardInjectionTime"
 	int 0
 	app_global_put
-	retsub
-
-// optInToApplication()void
-*abi_route_optInToApplication:
-	// execute optInToApplication()void
-	callsub optInToApplication
-	int 1
-	return
-
-// optInToApplication(): void
-optInToApplication:
-	proto 0 0
-
-	// contracts/InjectedRewardsPool.algo.ts:78
-	// this.staked(this.txn.sender).value = 0
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	int 0
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:79
-	// this.stakeStartTime(this.txn.sender).value = 0
-	txn Sender
-	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
-	int 0
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:80
-	// this.stakeDuration(this.txn.sender).value = 0
-	txn Sender
-	byte 0x7374616b654475726174696f6e // "stakeDuration"
-	int 0
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:81
-	// this.userStakingWeight(this.txn.sender).value = 0
-	txn Sender
-	byte 0x757365725374616b696e67576569676874 // "userStakingWeight"
-	int 0
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:82
-	// this.accruedRewards(this.txn.sender).value = 0
-	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	int 0
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:83
-	// this.lastUpdateTime(this.txn.sender).value = 0
-	txn Sender
-	byte 0x6c61737455706461746554696d65 // "lastUpdateTime"
-	int 0
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:84
-	// this.rewardRate(this.txn.sender).value = 0
-	txn Sender
-	byte 0x72657761726452617465 // "rewardRate"
-	int 0
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:85
-	// this.useShare(this.txn.sender).value = 0
-	txn Sender
-	byte 0x7573655368617265 // "useShare"
-	int 0
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:86
-	// this.userSharePercentage(this.txn.sender).value = 0
-	txn Sender
-	byte 0x75736572536861726550657263656e74616765 // "userSharePercentage"
-	int 0
-	app_local_put
-	retsub
-
-// optInToAsset(uint64)void
-*abi_route_optInToAsset:
-	// asset: uint64
-	txna ApplicationArgs 1
-	btoi
-
-	// execute optInToAsset(uint64)void
-	callsub optInToAsset
-	int 1
-	return
-
-// optInToAsset(asset: AssetID): void
-optInToAsset:
-	proto 1 0
-
-	// contracts/InjectedRewardsPool.algo.ts:90
-	// assert(this.txn.sender === this.app.creator)
-	txn Sender
-	txna Applications 0
-	app_params_get AppCreator
-	pop
-	==
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:92
-	// sendAssetTransfer({
-	//       xferAsset: asset,
-	//       assetAmount: 0,
-	//       assetReceiver: this.app.address,
-	//       sender: this.app.address,
-	//     })
-	itxn_begin
-	int axfer
-	itxn_field TypeEnum
-
-	// contracts/InjectedRewardsPool.algo.ts:93
-	// xferAsset: asset
-	frame_dig -1 // asset: AssetID
-	itxn_field XferAsset
-
-	// contracts/InjectedRewardsPool.algo.ts:94
-	// assetAmount: 0
-	int 0
-	itxn_field AssetAmount
-
-	// contracts/InjectedRewardsPool.algo.ts:95
-	// assetReceiver: this.app.address
-	global CurrentApplicationAddress
-	itxn_field AssetReceiver
-
-	// contracts/InjectedRewardsPool.algo.ts:96
-	// sender: this.app.address
-	global CurrentApplicationAddress
-	itxn_field Sender
-
-	// Fee field not set, defaulting to 0
-	int 0
-	itxn_field Fee
-
-	// Submit inner transaction
-	itxn_submit
 	retsub
 
 // updateParams(uint64)void
@@ -285,7 +147,7 @@ optInToAsset:
 updateParams:
 	proto 1 0
 
-	// contracts/InjectedRewardsPool.algo.ts:102
+	// contracts/InjectedRewardsPool.algo.ts:112
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can update params')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -295,11 +157,161 @@ updateParams:
 	// Only admin can update params
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:103
+	// contracts/InjectedRewardsPool.algo.ts:113
 	// this.minStakePeriodForRewards.value = minStakePeriodForRewards
 	byte 0x6d696e5374616b65506572696f64466f7252657761726473 // "minStakePeriodForRewards"
 	frame_dig -1 // minStakePeriodForRewards: uint64
 	app_global_put
+	retsub
+
+// costForBoxStorage(totalNumBytes: uint64): uint64
+costForBoxStorage:
+	proto 1 1
+
+	// contracts/InjectedRewardsPool.algo.ts:120
+	// return SCBOX_PERBOX + totalNumBytes * SCBOX_PERBYTE
+	int 2500
+	frame_dig -1 // totalNumBytes: uint64
+	int 400
+	*
+	+
+	retsub
+
+// initStorage(pay)void
+*abi_route_initStorage:
+	// mbrPayment: pay
+	txn GroupIndex
+	int 1
+	-
+	dup
+	gtxns TypeEnum
+	int pay
+	==
+
+	// argument 0 (mbrPayment) for initStorage must be a pay transaction
+	assert
+
+	// execute initStorage(pay)void
+	callsub initStorage
+	int 1
+	return
+
+// initStorage(mbrPayment: PayTxn): void
+initStorage:
+	proto 1 0
+
+	// Push empty bytes after the frame pointer to reserve space for local variables
+	byte 0x
+	dup
+
+	// contracts/InjectedRewardsPool.algo.ts:124
+	// assert(!this.stakers.exists, 'staking pool already initialized')
+	byte 0x7374616b657273 // "stakers"
+	box_len
+	swap
+	pop
+	!
+
+	// staking pool already initialized
+	assert
+
+	// contracts/InjectedRewardsPool.algo.ts:125
+	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can init storage')
+	txn Sender
+	byte 0x61646d696e41646472657373 // "adminAddress"
+	app_global_get
+	==
+
+	// Only admin can init storage
+	assert
+
+	// contracts/InjectedRewardsPool.algo.ts:127
+	// isTokenEligible = this.rewardAssetId.value !== 0
+	byte 0x72657761726441737365744964 // "rewardAssetId"
+	app_global_get
+	int 0
+	!=
+	frame_bury 0 // isTokenEligible: bool
+
+	// contracts/InjectedRewardsPool.algo.ts:129
+	// PoolInitMbr =
+	//       ALGORAND_ACCOUNT_MIN_BALANCE +
+	//       extraMBR +
+	//       this.costForBoxStorage(7 + len<StakeInfo>() * MAX_STAKERS_PER_POOL)
+	int 200000
+	int 11200007
+	callsub costForBoxStorage
+	+
+	frame_bury 1 // PoolInitMbr: uint64
+
+	// contracts/InjectedRewardsPool.algo.ts:135
+	// verifyPayTxn(mbrPayment, { receiver: this.app.address, amount: PoolInitMbr })
+	// verify receiver
+	frame_dig -1 // mbrPayment: PayTxn
+	gtxns Receiver
+	global CurrentApplicationAddress
+	==
+
+	// transaction verification failed: {"txn":"mbrPayment","field":"receiver","expected":"this.app.address"}
+	assert
+
+	// verify amount
+	frame_dig -1 // mbrPayment: PayTxn
+	gtxns Amount
+	frame_dig 1 // PoolInitMbr: uint64
+	==
+
+	// transaction verification failed: {"txn":"mbrPayment","field":"amount","expected":"PoolInitMbr"}
+	assert
+
+	// contracts/InjectedRewardsPool.algo.ts:136
+	// this.stakers.create()
+	byte 0x7374616b657273 // "stakers"
+	int 11200000
+	box_create
+	pop
+
+	// *if0_condition
+	// contracts/InjectedRewardsPool.algo.ts:138
+	// isTokenEligible
+	frame_dig 0 // isTokenEligible: bool
+	bz *if0_end
+
+	// *if0_consequent
+	// contracts/InjectedRewardsPool.algo.ts:140
+	// sendAssetTransfer({
+	//         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+	//         assetReceiver: this.app.address,
+	//         assetAmount: 0,
+	//       })
+	itxn_begin
+	int axfer
+	itxn_field TypeEnum
+
+	// contracts/InjectedRewardsPool.algo.ts:141
+	// xferAsset: AssetID.fromUint64(this.rewardAssetId.value)
+	byte 0x72657761726441737365744964 // "rewardAssetId"
+	app_global_get
+	itxn_field XferAsset
+
+	// contracts/InjectedRewardsPool.algo.ts:142
+	// assetReceiver: this.app.address
+	global CurrentApplicationAddress
+	itxn_field AssetReceiver
+
+	// contracts/InjectedRewardsPool.algo.ts:143
+	// assetAmount: 0
+	int 0
+	itxn_field AssetAmount
+
+	// Fee field not set, defaulting to 0
+	int 0
+	itxn_field Fee
+
+	// Submit inner transaction
+	itxn_submit
+
+*if0_end:
 	retsub
 
 // injectRewards(axfer,uint64)void
@@ -329,7 +341,7 @@ updateParams:
 injectRewards:
 	proto 2 0
 
-	// contracts/InjectedRewardsPool.algo.ts:108
+	// contracts/InjectedRewardsPool.algo.ts:150
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -339,7 +351,7 @@ injectRewards:
 	// Only admin can inject rewards
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:110
+	// contracts/InjectedRewardsPool.algo.ts:152
 	// verifyAssetTransferTxn(rewardTxn, {
 	//       sender: this.app.creator,
 	//       assetReceiver: this.app.address,
@@ -385,7 +397,7 @@ injectRewards:
 	// transaction verification failed: {"txn":"rewardTxn","field":"assetAmount","expected":"quantity"}
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:116
+	// contracts/InjectedRewardsPool.algo.ts:158
 	// this.injectedRewards.value += quantity
 	byte 0x696e6a656374656452657761726473 // "injectedRewards"
 	app_global_get
@@ -395,19 +407,19 @@ injectRewards:
 	swap
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:117
+	// contracts/InjectedRewardsPool.algo.ts:159
 	// this.lastInjectedRewards.value = quantity
 	byte 0x6c617374496e6a656374656452657761726473 // "lastInjectedRewards"
 	frame_dig -2 // quantity: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:118
+	// contracts/InjectedRewardsPool.algo.ts:160
 	// this.lastRewardInjectionTime.value = globals.latestTimestamp
 	byte 0x6c617374526577617264496e6a656374696f6e54696d65 // "lastRewardInjectionTime"
 	global LatestTimestamp
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:119
+	// contracts/InjectedRewardsPool.algo.ts:161
 	// this.totalRewardsInjected.value += quantity
 	byte 0x746f74616c52657761726473496e6a6563746564 // "totalRewardsInjected"
 	app_global_get
@@ -429,7 +441,7 @@ injectRewards:
 deleteApplication:
 	proto 0 0
 
-	// contracts/InjectedRewardsPool.algo.ts:123
+	// contracts/InjectedRewardsPool.algo.ts:165
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -439,7 +451,7 @@ deleteApplication:
 	// Only admin can delete application
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:124
+	// contracts/InjectedRewardsPool.algo.ts:166
 	// assert(this.totalStaked.value === 0, 'Staked assets still exist')
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	app_global_get
@@ -469,7 +481,7 @@ deleteApplication:
 setPrices:
 	proto 2 0
 
-	// contracts/InjectedRewardsPool.algo.ts:135
+	// contracts/InjectedRewardsPool.algo.ts:177
 	// assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices')
 	txn Sender
 	byte 0x6f7261636c6541646d696e41646472657373 // "oracleAdminAddress"
@@ -479,7 +491,7 @@ setPrices:
 	// Only oracle admin can set prices
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:136
+	// contracts/InjectedRewardsPool.algo.ts:178
 	// assert(stakeTokenPrice > 0, 'Invalid stake token price')
 	frame_dig -1 // stakeTokenPrice: uint64
 	int 0
@@ -488,7 +500,7 @@ setPrices:
 	// Invalid stake token price
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:137
+	// contracts/InjectedRewardsPool.algo.ts:179
 	// assert(rewardTokenPrice > 0, 'Invalid reward token price')
 	frame_dig -2 // rewardTokenPrice: uint64
 	int 0
@@ -497,13 +509,13 @@ setPrices:
 	// Invalid reward token price
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:139
+	// contracts/InjectedRewardsPool.algo.ts:181
 	// this.stakeTokenPrice.value = stakeTokenPrice
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	frame_dig -1 // stakeTokenPrice: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:140
+	// contracts/InjectedRewardsPool.algo.ts:182
 	// this.rewardTokenPrice.value = rewardTokenPrice
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	frame_dig -2 // rewardTokenPrice: uint64
@@ -539,13 +551,14 @@ stake:
 
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
+	dupn 3
 
-	// contracts/InjectedRewardsPool.algo.ts:147
+	// contracts/InjectedRewardsPool.algo.ts:189
 	// currentTimeStamp = globals.latestTimestamp
 	global LatestTimestamp
 	frame_bury 0 // currentTimeStamp: uint64
 
-	// contracts/InjectedRewardsPool.algo.ts:148
+	// contracts/InjectedRewardsPool.algo.ts:190
 	// assert(this.stakeTokenPrice.value > 0, 'Stake token price not set')
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
@@ -555,7 +568,7 @@ stake:
 	// Stake token price not set
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:149
+	// contracts/InjectedRewardsPool.algo.ts:191
 	// assert(this.rewardTokenPrice.value > 0, 'Reward token price not set')
 	byte 0x726577617264546f6b656e5072696365 // "rewardTokenPrice"
 	app_global_get
@@ -565,18 +578,7 @@ stake:
 	// Reward token price not set
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:150
-	// assert(this.staked(this.txn.sender).value === 0, 'User already staked, use Restake method instead')
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
-	int 0
-	==
-
-	// User already staked, use Restake method instead
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:151
+	// contracts/InjectedRewardsPool.algo.ts:192
 	// assert(quantity > 0, 'Invalid quantity')
 	frame_dig -2 // quantity: uint64
 	int 0
@@ -585,7 +587,7 @@ stake:
 	// Invalid quantity
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:153
+	// contracts/InjectedRewardsPool.algo.ts:194
 	// verifyAssetTransferTxn(stakeTxn, {
 	//       sender: this.txn.sender,
 	//       assetReceiver: this.app.address,
@@ -629,148 +631,290 @@ stake:
 	// transaction verification failed: {"txn":"stakeTxn","field":"assetAmount","expected":"quantity"}
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:159
-	// this.staked(this.txn.sender).value = stakeTxn.assetAmount
+	// contracts/InjectedRewardsPool.algo.ts:200
+	// actionComplete: boolean = false
+	int 0
+	frame_bury 1 // actionComplete: boolean
+
+	// contracts/InjectedRewardsPool.algo.ts:201
+	// for (let i = 0; i < this.stakers.value.length; i += 1)
+	int 0
+	frame_bury 2 // i: uint64
+
+*for_0:
+	// contracts/InjectedRewardsPool.algo.ts:201
+	// i < this.stakers.value.length
+	frame_dig 2 // i: uint64
+	int 100000
+	<
+	bz *for_0_end
+
+	// *if1_condition
+	// contracts/InjectedRewardsPool.algo.ts:202
+	// actionComplete
+	frame_dig 1 // actionComplete: boolean
+	bz *if1_end
+
+	// *if1_consequent
+	b *for_0_end
+
+*if1_end:
+	// *if2_condition
+	// contracts/InjectedRewardsPool.algo.ts:204
+	// globals.opcodeBudget < 300
+	global OpcodeBudget
+	int 300
+	<
+	bz *if2_end
+
+	// *if2_consequent
+	// contracts/InjectedRewardsPool.algo.ts:205
+	// increaseOpcodeBudget()
+	itxn_begin
+	int appl
+	itxn_field TypeEnum
+	int 0
+	itxn_field Fee
+	byte b64 CoEB // #pragma version 10; int 1
+	dup
+	itxn_field ApprovalProgram
+	itxn_field ClearStateProgram
+	int DeleteApplication
+	itxn_field OnCompletion
+	itxn_submit
+
+*if2_end:
+	// contracts/InjectedRewardsPool.algo.ts:207
+	// staker = clone(this.stakers.value[i])
+	frame_dig 2 // i: uint64
+	int 112
+	* // acc * typeLength
+	int 112
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_extract
+	frame_bury 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+
+	// *if3_condition
+	// contracts/InjectedRewardsPool.algo.ts:208
+	// staker.account === this.txn.sender
+	frame_dig 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 0 32
 	txn Sender
-	byte 0x7374616b6564 // "staked"
+	==
+	bz *if3_elseif1_condition
+
+	// *if3_consequent
+	// contracts/InjectedRewardsPool.algo.ts:209
+	// staker.stake += stakeTxn.assetAmount
+	frame_dig 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 32 // headOffset
+	frame_dig 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 32 8
+	btoi
 	frame_dig -1 // stakeTxn: AssetTransferTxn
 	gtxns AssetAmount
-	app_local_put
+	+
+	itob
+	replace3
+	frame_bury 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:161
-	// this.calculateRewardRate(this.txn.sender)
-	txn Sender
-	callsub calculateRewardRate
+	// contracts/InjectedRewardsPool.algo.ts:210
+	// this.stakers.value[i] = staker
+	frame_dig 2 // i: uint64
+	int 112
+	* // acc * typeLength
+	frame_dig 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_replace
 
-	// contracts/InjectedRewardsPool.algo.ts:162
-	// this.totalStaked.value += this.staked(this.txn.sender).value
+	// contracts/InjectedRewardsPool.algo.ts:211
+	// actionComplete = true
+	int 1
+	frame_bury 1 // actionComplete: boolean
+	b *if3_end
+
+*if3_elseif1_condition:
+	// contracts/InjectedRewardsPool.algo.ts:213
+	// this.stakers.value[i].account === globals.zeroAddress
+	frame_dig 2 // i: uint64
+	int 112
+	* // acc * typeLength
+	int 0
+	+
+	int 32
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_extract
+	global ZeroAddress
+	==
+	bz *if3_end
+
+	// *if3_elseif1_consequent
+	// contracts/InjectedRewardsPool.algo.ts:215
+	// this.totalStaked.value += stakeTxn.assetAmount
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	app_global_get
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
+	frame_dig -1 // stakeTxn: AssetTransferTxn
+	gtxns AssetAmount
 	+
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	swap
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:163
-	// this.stakeStartTime(this.txn.sender).value = currentTimeStamp
+	// contracts/InjectedRewardsPool.algo.ts:217
+	// this.stakers.value[i] = {
+	//           account: this.txn.sender,
+	//           stake: stakeTxn.assetAmount,
+	//           stakeDuration: 0,
+	//           stakeStartTime: currentTimeStamp,
+	//           userStakingWeight: 0,
+	//           lastRewardRate: 0,
+	//           accruedRewards: 0,
+	//           lastUpdateTime: currentTimeStamp,
+	//           rewardRate: 0,
+	//           userShare: 0,
+	//           userSharePercentage: 0
+	//         }
+	frame_dig 2 // i: uint64
+	int 112
+	* // acc * typeLength
 	txn Sender
-	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
+	frame_dig -1 // stakeTxn: AssetTransferTxn
+	gtxns AssetAmount
+	itob
+	concat
+	byte 0x0000000000000000
+	concat
 	frame_dig 0 // currentTimeStamp: uint64
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:164
-	// this.lastUpdateTime(this.txn.sender).value = currentTimeStamp
-	txn Sender
-	byte 0x6c61737455706461746554696d65 // "lastUpdateTime"
+	itob
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
 	frame_dig 0 // currentTimeStamp: uint64
-	app_local_put
+	itob
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_replace
 
-	// contracts/InjectedRewardsPool.algo.ts:165
-	// this.accruedRewards(this.txn.sender).value = 0
-	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	int 0
-	app_local_put
-	retsub
-
-// updateRewardRate(address)void
-*abi_route_updateRewardRate:
-	// userAddress: address
-	txna ApplicationArgs 1
-	dup
-	len
-	int 32
-	==
-
-	// argument 0 (userAddress) for updateRewardRate must be a address
-	assert
-
-	// execute updateRewardRate(address)void
-	callsub updateRewardRate
+	// contracts/InjectedRewardsPool.algo.ts:230
+	// actionComplete = true
 	int 1
-	return
+	frame_bury 1 // actionComplete: boolean
 
-// updateRewardRate(userAddress: Address): void
-updateRewardRate:
-	proto 1 0
+*if3_end:
 
-	// contracts/InjectedRewardsPool.algo.ts:170
-	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can update rewards rates')
-	txn Sender
-	byte 0x61646d696e41646472657373 // "adminAddress"
-	app_global_get
-	==
+*for_0_continue:
+	// contracts/InjectedRewardsPool.algo.ts:201
+	// i += 1
+	frame_dig 2 // i: uint64
+	int 1
+	+
+	frame_bury 2 // i: uint64
+	b *for_0
 
-	// Only admin can update rewards rates
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:172
-	// this.stakeDuration(userAddress).value = globals.latestTimestamp - this.stakeStartTime(userAddress).value
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b654475726174696f6e // "stakeDuration"
-	global LatestTimestamp
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
-	app_local_get
-	-
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:173
-	// assert(this.stakeDuration(userAddress).value >= this.minStakePeriodForRewards.value, 'User has not staked for minimum period')
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b654475726174696f6e // "stakeDuration"
-	app_local_get
-	byte 0x6d696e5374616b65506572696f64466f7252657761726473 // "minStakePeriodForRewards"
-	app_global_get
-	>=
-
-	// User has not staked for minimum period
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:174
-	// this.calculateRewardRate(userAddress)
-	frame_dig -1 // userAddress: Address
-	callsub calculateRewardRate
+*for_0_end:
+	// contracts/InjectedRewardsPool.algo.ts:233
+	// this.calculateRewardRates()
+	callsub calculateRewardRates
 	retsub
 
-// calculateRewardRate(userAddress: Address): void
-calculateRewardRate:
-	proto 1 0
+// calculateRewardRates(): void
+calculateRewardRates:
+	proto 0 0
 
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
 	dupn 3
 
-	// *if0_condition
-	// contracts/InjectedRewardsPool.algo.ts:178
-	// this.userStakingWeight(userAddress).value > 0
-	frame_dig -1 // userAddress: Address
-	byte 0x757365725374616b696e67576569676874 // "userStakingWeight"
-	app_local_get
+	// contracts/InjectedRewardsPool.algo.ts:237
+	// for (let i = 0; i < this.stakers.value.length; i += 1)
+	int 0
+	frame_bury 0 // i: uint64
+
+*for_1:
+	// contracts/InjectedRewardsPool.algo.ts:237
+	// i < this.stakers.value.length
+	frame_dig 0 // i: uint64
+	int 100000
+	<
+	bz *for_1_end
+
+	// *if4_condition
+	// contracts/InjectedRewardsPool.algo.ts:238
+	// globals.opcodeBudget < 300
+	global OpcodeBudget
+	int 300
+	<
+	bz *if4_end
+
+	// *if4_consequent
+	// contracts/InjectedRewardsPool.algo.ts:239
+	// increaseOpcodeBudget()
+	itxn_begin
+	int appl
+	itxn_field TypeEnum
+	int 0
+	itxn_field Fee
+	byte b64 CoEB // #pragma version 10; int 1
+	dup
+	itxn_field ApprovalProgram
+	itxn_field ClearStateProgram
+	int DeleteApplication
+	itxn_field OnCompletion
+	itxn_submit
+
+*if4_end:
+	// contracts/InjectedRewardsPool.algo.ts:241
+	// staker = clone(this.stakers.value[i])
+	frame_dig 0 // i: uint64
+	int 112
+	* // acc * typeLength
+	int 112
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_extract
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+
+	// *if5_condition
+	// contracts/InjectedRewardsPool.algo.ts:242
+	// staker.userStakingWeight > 0
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 56 8
+	btoi
 	int 0
 	>
-	bz *if0_end
+	bz *if5_end
 
-	// *if0_consequent
-	// contracts/InjectedRewardsPool.algo.ts:179
-	// this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value as uint128
+	// *if5_consequent
+	// contracts/InjectedRewardsPool.algo.ts:243
+	// this.totalStakingWeight.value = this.totalStakingWeight.value - (staker.userStakingWeight as uint128)
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
+	dup
 	app_global_get
-	frame_dig -1 // userAddress: Address
-	byte 0x757365725374616b696e67576569676874 // "userStakingWeight"
-	app_local_get
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 56 8
+	btoi
 	itob
 	b-
-	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	dup
 	bitlen
 	int 128
 	<=
 
-	// this.totalStakingWeight.value overflowed 128 bits
+	// this.totalStakingWeight.value - (staker.userStakingWeight as uint128) overflowed 128 bits
 	assert
 	byte 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 	b&
@@ -781,15 +925,14 @@ calculateRewardRate:
 	-
 	swap
 	substring3
-	swap
 	app_global_put
 
-*if0_end:
-	// contracts/InjectedRewardsPool.algo.ts:181
-	// userStakingWeight = (wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value])) / 2
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b6564 // "staked"
-	app_local_get
+*if5_end:
+	// contracts/InjectedRewardsPool.algo.ts:245
+	// userStakingWeight = (wideRatio([staker.stake, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]))
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 32 8
+	btoi
 	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
 	app_global_get
 	mulw
@@ -804,24 +947,31 @@ calculateRewardRate:
 
 	// wideRatio failed
 	assert
-	int 2
-	/
-	frame_bury 0 // userStakingWeight: uint64
+	frame_bury 2 // userStakingWeight: uint64
 
-	// contracts/InjectedRewardsPool.algo.ts:182
-	// this.totalStakingWeight.value += userStakingWeight as uint128
+	// contracts/InjectedRewardsPool.algo.ts:246
+	// staker.userStakingWeight = userStakingWeight
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 56 // headOffset
+	frame_dig 2 // userStakingWeight: uint64
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+
+	// contracts/InjectedRewardsPool.algo.ts:247
+	// this.totalStakingWeight.value = this.totalStakingWeight.value + (userStakingWeight as uint128)
 	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
+	dup
 	app_global_get
-	frame_dig 0 // userStakingWeight: uint64
+	frame_dig 2 // userStakingWeight: uint64
 	itob
 	b+
-	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	dup
 	bitlen
 	int 128
 	<=
 
-	// this.totalStakingWeight.value overflowed 128 bits
+	// this.totalStakingWeight.value + (userStakingWeight as uint128) overflowed 128 bits
 	assert
 	byte 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 	b&
@@ -832,19 +982,13 @@ calculateRewardRate:
 	-
 	swap
 	substring3
-	swap
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:183
-	// this.userStakingWeight(userAddress).value = userStakingWeight
-	frame_dig -1 // userAddress: Address
-	byte 0x757365725374616b696e67576569676874 // "userStakingWeight"
-	frame_dig 0 // userStakingWeight: uint64
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:185
-	// userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64])
-	frame_dig 0 // userStakingWeight: uint64
+	// contracts/InjectedRewardsPool.algo.ts:249
+	// staker.userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64])
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 96 // headOffset
+	frame_dig 2 // userStakingWeight: uint64
 	int 1000000000000000
 	mulw
 	int 0
@@ -867,18 +1011,17 @@ calculateRewardRate:
 
 	// wideRatio failed
 	assert
-	frame_bury 1 // userShare: uint64
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:186
-	// this.useShare(userAddress).value = userShare
-	frame_dig -1 // userAddress: Address
-	byte 0x7573655368617265 // "useShare"
-	frame_dig 1 // userShare: uint64
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:187
-	// userSharePercentage = wideRatio([userShare, 100], [PRECISION])
-	frame_dig 1 // userShare: uint64
+	// contracts/InjectedRewardsPool.algo.ts:250
+	// staker.userSharePercentage = wideRatio([staker.userShare, 100], [PRECISION])
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 104 // headOffset
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 96 8
+	btoi
 	int 100
 	mulw
 	int 0
@@ -891,16 +1034,11 @@ calculateRewardRate:
 
 	// wideRatio failed
 	assert
-	frame_bury 2 // userSharePercentage: uint64
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:188
-	// this.userSharePercentage(userAddress).value = userSharePercentage
-	frame_dig -1 // userAddress: Address
-	byte 0x75736572536861726550657263656e74616765 // "userSharePercentage"
-	frame_dig 2 // userSharePercentage: uint64
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:190
+	// contracts/InjectedRewardsPool.algo.ts:252
 	// availableRewards = this.injectedRewards.value > 0 ? this.injectedRewards.value : this.lastInjectedRewards.value
 	byte 0x696e6a656374656452657761726473 // "injectedRewards"
 	app_global_get
@@ -918,12 +1056,14 @@ calculateRewardRate:
 *ternary0_end:
 	frame_bury 3 // availableRewards: uint64
 
-	// contracts/InjectedRewardsPool.algo.ts:192
-	// this.rewardRate(userAddress).value = wideRatio([availableRewards, userSharePercentage], [100])
-	frame_dig -1 // userAddress: Address
-	byte 0x72657761726452617465 // "rewardRate"
+	// contracts/InjectedRewardsPool.algo.ts:254
+	// staker.rewardRate = wideRatio([availableRewards, staker.userSharePercentage], [100])
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 88 // headOffset
 	frame_dig 3 // availableRewards: uint64
-	frame_dig 2 // userSharePercentage: uint64
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 104 8
+	btoi
 	mulw
 	int 0
 	int 100
@@ -935,290 +1075,258 @@ calculateRewardRate:
 
 	// wideRatio failed
 	assert
-	app_local_put
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// *if1_condition
-	// contracts/InjectedRewardsPool.algo.ts:193
-	// this.rewardRate(userAddress).value === 0
-	frame_dig -1 // userAddress: Address
-	byte 0x72657761726452617465 // "rewardRate"
-	app_local_get
+	// *if6_condition
+	// contracts/InjectedRewardsPool.algo.ts:256
+	// staker.rewardRate === 0
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 88 8
+	btoi
 	int 0
 	==
-	bz *if1_end
+	bz *if6_end
 
-	// *if1_consequent
-	// contracts/InjectedRewardsPool.algo.ts:194
-	// this.rewardRate(userAddress).value = 10
-	frame_dig -1 // userAddress: Address
-	byte 0x72657761726452617465 // "rewardRate"
-	int 10
-	app_local_put
+	// *if6_consequent
+	// contracts/InjectedRewardsPool.algo.ts:257
+	// staker.rewardRate = 1
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	byte 0x0000000000000001
+	replace2 88
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-*if1_end:
+*if6_end:
+	// contracts/InjectedRewardsPool.algo.ts:259
+	// this.stakers.value[i] = staker
+	frame_dig 0 // i: uint64
+	int 112
+	* // acc * typeLength
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_replace
+
+*for_1_continue:
+	// contracts/InjectedRewardsPool.algo.ts:237
+	// i += 1
+	frame_dig 0 // i: uint64
+	int 1
+	+
+	frame_bury 0 // i: uint64
+	b *for_1
+
+*for_1_end:
 	retsub
 
-// accrueRewards(address)void
+// accrueRewards()void
 *abi_route_accrueRewards:
-	// userAddress: address
-	txna ApplicationArgs 1
-	dup
-	len
-	int 32
-	==
-
-	// argument 0 (userAddress) for accrueRewards must be a address
-	assert
-
-	// execute accrueRewards(address)void
+	// execute accrueRewards()void
 	callsub accrueRewards
 	int 1
 	return
 
-// accrueRewards(userAddress: Address): void
+// accrueRewards(): void
 accrueRewards:
-	proto 1 0
+	proto 0 0
 
-	// contracts/InjectedRewardsPool.algo.ts:200
-	// assert(this.staked(userAddress).value > 0, 'User has no staked assets')
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b6564 // "staked"
-	app_local_get
+	// Push empty bytes after the frame pointer to reserve space for local variables
+	byte 0x
+	dup
+
+	// contracts/InjectedRewardsPool.algo.ts:265
+	// for (let i = 0; i < this.stakers.value.length; i += 1)
+	int 0
+	frame_bury 0 // i: uint64
+
+*for_2:
+	// contracts/InjectedRewardsPool.algo.ts:265
+	// i < this.stakers.value.length
+	frame_dig 0 // i: uint64
+	int 100000
+	<
+	bz *for_2_end
+
+	// *if7_condition
+	// contracts/InjectedRewardsPool.algo.ts:266
+	// globals.opcodeBudget < 300
+	global OpcodeBudget
+	int 300
+	<
+	bz *if7_end
+
+	// *if7_consequent
+	// contracts/InjectedRewardsPool.algo.ts:267
+	// increaseOpcodeBudget()
+	itxn_begin
+	int appl
+	itxn_field TypeEnum
+	int 0
+	itxn_field Fee
+	byte b64 CoEB // #pragma version 10; int 1
+	dup
+	itxn_field ApprovalProgram
+	itxn_field ClearStateProgram
+	int DeleteApplication
+	itxn_field OnCompletion
+	itxn_submit
+
+*if7_end:
+	// contracts/InjectedRewardsPool.algo.ts:269
+	// staker = clone(this.stakers.value[i])
+	frame_dig 0 // i: uint64
+	int 112
+	* // acc * typeLength
+	int 112
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_extract
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+
+	// *if8_condition
+	// contracts/InjectedRewardsPool.algo.ts:270
+	// staker.stake > 0
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 32 8
+	btoi
 	int 0
 	>
+	bz *if8_end
 
-	// User has no staked assets
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:201
-	// assert(this.stakeStartTime(userAddress).value > 0, 'User has not staked assets')
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
-	app_local_get
-	int 0
-	>
-
-	// User has not staked assets
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:202
-	// this.stakeDuration(userAddress).value = globals.latestTimestamp - this.stakeStartTime(userAddress).value
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b654475726174696f6e // "stakeDuration"
+	// *if8_consequent
+	// contracts/InjectedRewardsPool.algo.ts:271
+	// staker.stakeDuration = globals.latestTimestamp - staker.stakeStartTime
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 40 // headOffset
 	global LatestTimestamp
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
-	app_local_get
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 48 8
+	btoi
 	-
-	app_local_put
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:203
-	// assert(this.stakeDuration(userAddress).value >= this.minStakePeriodForRewards.value, 'User has not staked for minimum period')
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b654475726174696f6e // "stakeDuration"
-	app_local_get
+	// *if9_condition
+	// contracts/InjectedRewardsPool.algo.ts:272
+	// staker.stakeDuration < this.minStakePeriodForRewards.value
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 40 8
+	btoi
 	byte 0x6d696e5374616b65506572696f64466f7252657761726473 // "minStakePeriodForRewards"
 	app_global_get
-	>=
+	<
+	bz *if9_end
 
-	// User has not staked for minimum period
-	assert
+	// *if9_consequent
+	// contracts/InjectedRewardsPool.algo.ts:272
+	// return;
+	retsub
 
-	// contracts/InjectedRewardsPool.algo.ts:205
-	// this.accruedRewards(userAddress).value += this.rewardRate(userAddress).value
-	frame_dig -1 // userAddress: Address
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	app_local_get
-	frame_dig -1 // userAddress: Address
-	byte 0x72657761726452617465 // "rewardRate"
-	app_local_get
+*if9_end:
+	// contracts/InjectedRewardsPool.algo.ts:274
+	// staker.accruedRewards = staker.accruedRewards + staker.rewardRate
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 72 // headOffset
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 72 8
+	btoi
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 88 8
+	btoi
 	+
-	frame_dig -1 // userAddress: Address
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	uncover 2
-	app_local_put
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:206
-	// this.injectedRewards.value -= this.rewardRate(userAddress).value
+	// contracts/InjectedRewardsPool.algo.ts:275
+	// this.injectedRewards.value
 	byte 0x696e6a656374656452657761726473 // "injectedRewards"
 	app_global_get
-	frame_dig -1 // userAddress: Address
-	byte 0x72657761726452617465 // "rewardRate"
-	app_local_get
-	-
+
+	// contracts/InjectedRewardsPool.algo.ts:275
+	// this.injectedRewards.value
 	byte 0x696e6a656374656452657761726473 // "injectedRewards"
-	swap
-	app_global_put
+	app_global_get
+	-
 
-	// contracts/InjectedRewardsPool.algo.ts:207
-	// this.lastUpdateTime(userAddress).value = globals.latestTimestamp
-	frame_dig -1 // userAddress: Address
-	byte 0x6c61737455706461746554696d65 // "lastUpdateTime"
+	// contracts/InjectedRewardsPool.algo.ts:275
+	// staker.rewardRate
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 88 8
+	btoi
+	-
+
+	// contracts/InjectedRewardsPool.algo.ts:276
+	// staker.lastUpdateTime = globals.latestTimestamp
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 80 // headOffset
 	global LatestTimestamp
-	app_local_put
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// *if2_condition
-	// contracts/InjectedRewardsPool.algo.ts:209
+	// *if10_condition
+	// contracts/InjectedRewardsPool.algo.ts:278
 	// this.rewardAssetId.value === this.stakedAssetId.value
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
 	==
-	bz *if2_end
+	bz *if10_end
 
-	// *if2_consequent
-	// contracts/InjectedRewardsPool.algo.ts:211
-	// this.staked(userAddress).value += this.rewardRate(userAddress).value
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b6564 // "staked"
-	app_local_get
-	frame_dig -1 // userAddress: Address
-	byte 0x72657761726452617465 // "rewardRate"
-	app_local_get
-	+
-	frame_dig -1 // userAddress: Address
-	byte 0x7374616b6564 // "staked"
-	uncover 2
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:212
-	// this.totalStaked.value += this.rewardRate(userAddress).value
-	byte 0x746f74616c5374616b6564 // "totalStaked"
-	app_global_get
-	frame_dig -1 // userAddress: Address
-	byte 0x72657761726452617465 // "rewardRate"
-	app_local_get
-	+
-	byte 0x746f74616c5374616b6564 // "totalStaked"
-	swap
-	app_global_put
-
-*if2_end:
-	retsub
-
-// restake(axfer,uint64)void
-*abi_route_restake:
-	// quantity: uint64
-	txna ApplicationArgs 1
+	// *if10_consequent
+	// contracts/InjectedRewardsPool.algo.ts:280
+	// staker.stake += staker.rewardRate
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 32 // headOffset
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 32 8
 	btoi
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 88 8
+	btoi
+	+
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// stakeTxn: axfer
-	txn GroupIndex
-	int 1
-	-
+	// contracts/InjectedRewardsPool.algo.ts:281
+	// this.totalStaked.value = this.totalStaked.value + staker.rewardRate
+	byte 0x746f74616c5374616b6564 // "totalStaked"
 	dup
-	gtxns TypeEnum
-	int axfer
-	==
-
-	// argument 1 (stakeTxn) for restake must be a axfer transaction
-	assert
-
-	// execute restake(axfer,uint64)void
-	callsub restake
-	int 1
-	return
-
-// restake(stakeTxn: AssetTransferTxn, quantity: uint64): void
-restake:
-	proto 2 0
-
-	// contracts/InjectedRewardsPool.algo.ts:218
-	// assert(quantity > 0, 'Invalid quantity')
-	frame_dig -2 // quantity: uint64
-	int 0
-	>
-
-	// Invalid quantity
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:220
-	// verifyAssetTransferTxn(stakeTxn, {
-	//       sender: this.txn.sender,
-	//       assetReceiver: this.app.address,
-	//       xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
-	//       assetAmount: quantity,
-	//     })
-	// verify sender
-	frame_dig -1 // stakeTxn: AssetTransferTxn
-	gtxns Sender
-	txn Sender
-	==
-
-	// transaction verification failed: {"txn":"stakeTxn","field":"sender","expected":"this.txn.sender"}
-	assert
-
-	// verify assetReceiver
-	frame_dig -1 // stakeTxn: AssetTransferTxn
-	gtxns AssetReceiver
-	global CurrentApplicationAddress
-	==
-
-	// transaction verification failed: {"txn":"stakeTxn","field":"assetReceiver","expected":"this.app.address"}
-	assert
-
-	// verify xferAsset
-	frame_dig -1 // stakeTxn: AssetTransferTxn
-	gtxns XferAsset
-	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
-	==
-
-	// transaction verification failed: {"txn":"stakeTxn","field":"xferAsset","expected":"AssetID.fromUint64(this.stakedAssetId.value)"}
-	assert
-
-	// verify assetAmount
-	frame_dig -1 // stakeTxn: AssetTransferTxn
-	gtxns AssetAmount
-	frame_dig -2 // quantity: uint64
-	==
-
-	// transaction verification failed: {"txn":"stakeTxn","field":"assetAmount","expected":"quantity"}
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:226
-	// this.staked(this.txn.sender).value += stakeTxn.assetAmount
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
-	frame_dig -1 // stakeTxn: AssetTransferTxn
-	gtxns AssetAmount
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 88 8
+	btoi
 	+
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	uncover 2
-	app_local_put
-
-	// contracts/InjectedRewardsPool.algo.ts:227
-	// this.totalStaked.value += stakeTxn.assetAmount
-	byte 0x746f74616c5374616b6564 // "totalStaked"
-	app_global_get
-	frame_dig -1 // stakeTxn: AssetTransferTxn
-	gtxns AssetAmount
-	+
-	byte 0x746f74616c5374616b6564 // "totalStaked"
-	swap
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:229
-	// this.stakeStartTime(this.txn.sender).value = globals.latestTimestamp
-	txn Sender
-	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
-	global LatestTimestamp
-	app_local_put
+*if10_end:
+	// contracts/InjectedRewardsPool.algo.ts:283
+	// this.stakers.value[i] = staker
+	frame_dig 0 // i: uint64
+	int 112
+	* // acc * typeLength
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_replace
 
-	// contracts/InjectedRewardsPool.algo.ts:230
-	// this.stakeDuration(this.txn.sender).value = 0
-	txn Sender
-	byte 0x7374616b654475726174696f6e // "stakeDuration"
-	int 0
-	app_local_put
+*if8_end:
 
-	// contracts/InjectedRewardsPool.algo.ts:233
-	// this.calculateRewardRate(this.txn.sender)
-	txn Sender
-	callsub calculateRewardRate
+*for_2_continue:
+	// contracts/InjectedRewardsPool.algo.ts:265
+	// i += 1
+	frame_dig 0 // i: uint64
+	int 1
+	+
+	frame_bury 0 // i: uint64
+	b *for_2
+
+*for_2_end:
 	retsub
 
 // claimRewards()void
@@ -1232,156 +1340,164 @@ restake:
 claimRewards:
 	proto 0 0
 
-	// contracts/InjectedRewardsPool.algo.ts:237
-	// assert(this.stakedAssetId.value !== this.rewardAssetId.value, 'Claim rewards not allowed for same asset')
-	byte 0x7374616b656441737365744964 // "stakedAssetId"
-	app_global_get
-	byte 0x72657761726441737365744964 // "rewardAssetId"
-	app_global_get
-	!=
+	// Push empty bytes after the frame pointer to reserve space for local variables
+	byte 0x
+	dup
 
-	// Claim rewards not allowed for same asset
-	assert
+	// contracts/InjectedRewardsPool.algo.ts:290
+	// for (let i = 0; i < this.stakers.value.length; i += 1)
+	int 0
+	frame_bury 0 // i: uint64
 
-	// contracts/InjectedRewardsPool.algo.ts:238
-	// assert(this.accruedRewards(this.txn.sender).value > 0, 'No accrued rewards')
+*for_3:
+	// contracts/InjectedRewardsPool.algo.ts:290
+	// i < this.stakers.value.length
+	frame_dig 0 // i: uint64
+	int 100000
+	<
+	bz *for_3_end
+
+	// *if11_condition
+	// contracts/InjectedRewardsPool.algo.ts:291
+	// globals.opcodeBudget < 300
+	global OpcodeBudget
+	int 300
+	<
+	bz *if11_end
+
+	// *if11_consequent
+	// contracts/InjectedRewardsPool.algo.ts:292
+	// increaseOpcodeBudget()
+	itxn_begin
+	int appl
+	itxn_field TypeEnum
+	int 0
+	itxn_field Fee
+	byte b64 CoEB // #pragma version 10; int 1
+	dup
+	itxn_field ApprovalProgram
+	itxn_field ClearStateProgram
+	int DeleteApplication
+	itxn_field OnCompletion
+	itxn_submit
+
+*if11_end:
+	// contracts/InjectedRewardsPool.algo.ts:294
+	// staker = clone(this.stakers.value[i])
+	frame_dig 0 // i: uint64
+	int 112
+	* // acc * typeLength
+	int 112
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_extract
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+
+	// *if12_condition
+	// contracts/InjectedRewardsPool.algo.ts:296
+	// staker.account === this.txn.sender
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 0 32
 	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	app_local_get
+	==
+	bz *if12_end
+
+	// *if12_consequent
+	// *if13_condition
+	// contracts/InjectedRewardsPool.algo.ts:297
+	// staker.accruedRewards > 0
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 72 8
+	btoi
 	int 0
 	>
+	bz *if13_end
 
-	// No accrued rewards
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:239
-	// assert(this.staked(this.txn.sender).value > 0, 'No staked assets')
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
-	int 0
-	>
-
-	// No staked assets
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:240
-	// assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets')
-	txn Sender
-	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
-	app_local_get
-	int 0
-	>
-
-	// User has not staked assets
-	assert
-
-	// contracts/InjectedRewardsPool.algo.ts:241
-	// assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets')
-	txn Sender
-	byte 0x7374616b654475726174696f6e // "stakeDuration"
-	app_local_get
-	int 0
-	>
-
-	// User has not staked assets
-	assert
-
-	// *if3_condition
-	// contracts/InjectedRewardsPool.algo.ts:243
-	// this.accruedRewards(this.txn.sender).value > 0
-	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	app_local_get
-	int 0
-	>
-	bz *if3_end
-
-	// *if3_consequent
-	// *if4_condition
-	// contracts/InjectedRewardsPool.algo.ts:244
+	// *if13_consequent
+	// *if14_condition
+	// contracts/InjectedRewardsPool.algo.ts:299
 	// this.rewardAssetId.value === 0
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
 	int 0
 	==
-	bz *if4_else
+	bz *if14_else
 
-	// *if4_consequent
-	// contracts/InjectedRewardsPool.algo.ts:245
+	// *if14_consequent
+	// contracts/InjectedRewardsPool.algo.ts:300
 	// sendPayment({
-	//           amount: this.accruedRewards(this.txn.sender).value,
-	//           receiver: this.txn.sender,
-	//           sender: this.app.address,
-	//           fee: 1_000,
-	//         })
+	//               amount: staker.accruedRewards,
+	//               receiver: this.txn.sender,
+	//               sender: this.app.address,
+	//               fee: 1_000,
+	//             })
 	itxn_begin
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:246
-	// amount: this.accruedRewards(this.txn.sender).value
-	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	app_local_get
+	// contracts/InjectedRewardsPool.algo.ts:301
+	// amount: staker.accruedRewards
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 72 8
+	btoi
 	itxn_field Amount
 
-	// contracts/InjectedRewardsPool.algo.ts:247
+	// contracts/InjectedRewardsPool.algo.ts:302
 	// receiver: this.txn.sender
 	txn Sender
 	itxn_field Receiver
 
-	// contracts/InjectedRewardsPool.algo.ts:248
+	// contracts/InjectedRewardsPool.algo.ts:303
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPool.algo.ts:249
+	// contracts/InjectedRewardsPool.algo.ts:304
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
 
 	// Submit inner transaction
 	itxn_submit
-	b *if4_end
+	b *if14_end
 
-*if4_else:
-	// contracts/InjectedRewardsPool.algo.ts:252
+*if14_else:
+	// contracts/InjectedRewardsPool.algo.ts:307
 	// sendAssetTransfer({
-	//           xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-	//           assetReceiver: this.txn.sender,
-	//           assetAmount: this.accruedRewards(this.txn.sender).value,
-	//           sender: this.app.address,
-	//           fee: 1_000,
-	//         })
+	//               xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+	//               assetReceiver: this.txn.sender,
+	//               assetAmount: staker.accruedRewards,
+	//               sender: this.app.address,
+	//               fee: 1_000,
+	//             })
 	itxn_begin
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:253
+	// contracts/InjectedRewardsPool.algo.ts:308
 	// xferAsset: AssetID.fromUint64(this.rewardAssetId.value)
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPool.algo.ts:254
+	// contracts/InjectedRewardsPool.algo.ts:309
 	// assetReceiver: this.txn.sender
 	txn Sender
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPool.algo.ts:255
-	// assetAmount: this.accruedRewards(this.txn.sender).value
-	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	app_local_get
+	// contracts/InjectedRewardsPool.algo.ts:310
+	// assetAmount: staker.accruedRewards
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 72 8
+	btoi
 	itxn_field AssetAmount
 
-	// contracts/InjectedRewardsPool.algo.ts:256
+	// contracts/InjectedRewardsPool.algo.ts:311
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPool.algo.ts:257
+	// contracts/InjectedRewardsPool.algo.ts:312
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -1389,15 +1505,47 @@ claimRewards:
 	// Submit inner transaction
 	itxn_submit
 
-*if4_end:
+*if14_end:
 
-*if3_end:
-	// contracts/InjectedRewardsPool.algo.ts:261
-	// this.accruedRewards(this.txn.sender).value = 0
-	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	int 0
-	app_local_put
+*if13_end:
+	// contracts/InjectedRewardsPool.algo.ts:316
+	// staker.accruedRewards = 0
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	byte 0x0000000000000000
+	replace2 72
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+
+	// contracts/InjectedRewardsPool.algo.ts:317
+	// staker.lastUpdateTime = globals.latestTimestamp
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 80 // headOffset
+	global LatestTimestamp
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+
+	// contracts/InjectedRewardsPool.algo.ts:318
+	// this.stakers.value[i] = staker
+	frame_dig 0 // i: uint64
+	int 112
+	* // acc * typeLength
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_replace
+
+*if12_end:
+
+*for_3_continue:
+	// contracts/InjectedRewardsPool.algo.ts:290
+	// i += 1
+	frame_dig 0 // i: uint64
+	int 1
+	+
+	frame_bury 0 // i: uint64
+	b *for_3
+
+*for_3_end:
 	retsub
 
 // unstake(uint64)void
@@ -1415,301 +1563,83 @@ claimRewards:
 unstake:
 	proto 1 0
 
-	// contracts/InjectedRewardsPool.algo.ts:266
-	// assert(this.staked(this.txn.sender).value > 0, 'No staked assets')
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
+	// Push empty bytes after the frame pointer to reserve space for local variables
+	byte 0x
+	dup
+
+	// contracts/InjectedRewardsPool.algo.ts:327
+	// for (let i = 0; i < this.stakers.value.length; i += 1)
 	int 0
-	>
+	frame_bury 0 // i: uint64
 
-	// No staked assets
-	assert
+*for_4:
+	// contracts/InjectedRewardsPool.algo.ts:327
+	// i < this.stakers.value.length
+	frame_dig 0 // i: uint64
+	int 100000
+	<
+	bz *for_4_end
 
-	// contracts/InjectedRewardsPool.algo.ts:267
-	// assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets')
-	txn Sender
-	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
-	app_local_get
+	// *if15_condition
+	// contracts/InjectedRewardsPool.algo.ts:328
+	// globals.opcodeBudget < 300
+	global OpcodeBudget
+	int 300
+	<
+	bz *if15_end
+
+	// *if15_consequent
+	// contracts/InjectedRewardsPool.algo.ts:329
+	// increaseOpcodeBudget()
+	itxn_begin
+	int appl
+	itxn_field TypeEnum
 	int 0
-	>
+	itxn_field Fee
+	byte b64 CoEB // #pragma version 10; int 1
+	dup
+	itxn_field ApprovalProgram
+	itxn_field ClearStateProgram
+	int DeleteApplication
+	itxn_field OnCompletion
+	itxn_submit
 
-	// User has not staked assets
-	assert
+*if15_end:
+	// contracts/InjectedRewardsPool.algo.ts:331
+	// staker = clone(this.stakers.value[i])
+	frame_dig 0 // i: uint64
+	int 112
+	* // acc * typeLength
+	int 112
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_extract
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:268
-	// assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets')
-	txn Sender
-	byte 0x7374616b654475726174696f6e // "stakeDuration"
-	app_local_get
-	int 0
-	>
-
-	// User has not staked assets
-	assert
-
-	// *if5_condition
-	// contracts/InjectedRewardsPool.algo.ts:270
+	// *if16_condition
+	// contracts/InjectedRewardsPool.algo.ts:333
 	// this.stakedAssetId.value === this.rewardAssetId.value
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
 	==
-	bz *if5_else
+	bz *if16_else
 
-	// *if5_consequent
-	// *if6_condition
-	// contracts/InjectedRewardsPool.algo.ts:271
+	// *if16_consequent
+	// *if17_condition
+	// contracts/InjectedRewardsPool.algo.ts:335
 	// this.stakedAssetId.value === 0
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
 	int 0
 	==
-	bz *if6_else
+	bz *if17_else
 
-	// *if6_consequent
-	// contracts/InjectedRewardsPool.algo.ts:272
+	// *if17_consequent
+	// contracts/InjectedRewardsPool.algo.ts:336
 	// sendPayment({
-	//           amount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
-	//           receiver: this.txn.sender,
-	//           sender: this.app.address,
-	//           fee: 1_000,
-	//         })
-	itxn_begin
-	int pay
-	itxn_field TypeEnum
-
-	// contracts/InjectedRewardsPool.algo.ts:273
-	// amount: quantity === 0 ? this.staked(this.txn.sender).value : quantity
-	frame_dig -1 // quantity: uint64
-	int 0
-	==
-	bz *ternary1_false
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
-	b *ternary1_end
-
-*ternary1_false:
-	frame_dig -1 // quantity: uint64
-
-*ternary1_end:
-	itxn_field Amount
-
-	// contracts/InjectedRewardsPool.algo.ts:274
-	// receiver: this.txn.sender
-	txn Sender
-	itxn_field Receiver
-
-	// contracts/InjectedRewardsPool.algo.ts:275
-	// sender: this.app.address
-	global CurrentApplicationAddress
-	itxn_field Sender
-
-	// contracts/InjectedRewardsPool.algo.ts:276
-	// fee: 1_000
-	int 1_000
-	itxn_field Fee
-
-	// Submit inner transaction
-	itxn_submit
-	b *if6_end
-
-*if6_else:
-	// contracts/InjectedRewardsPool.algo.ts:279
-	// sendAssetTransfer({
-	//           xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
-	//           assetReceiver: this.txn.sender,
-	//           sender: this.app.address,
-	//           assetAmount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
-	//           fee: 1_000,
-	//         })
-	itxn_begin
-	int axfer
-	itxn_field TypeEnum
-
-	// contracts/InjectedRewardsPool.algo.ts:280
-	// xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
-	byte 0x7374616b656441737365744964 // "stakedAssetId"
-	app_global_get
-	itxn_field XferAsset
-
-	// contracts/InjectedRewardsPool.algo.ts:281
-	// assetReceiver: this.txn.sender
-	txn Sender
-	itxn_field AssetReceiver
-
-	// contracts/InjectedRewardsPool.algo.ts:282
-	// sender: this.app.address
-	global CurrentApplicationAddress
-	itxn_field Sender
-
-	// contracts/InjectedRewardsPool.algo.ts:283
-	// assetAmount: quantity === 0 ? this.staked(this.txn.sender).value : quantity
-	frame_dig -1 // quantity: uint64
-	int 0
-	==
-	bz *ternary2_false
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
-	b *ternary2_end
-
-*ternary2_false:
-	frame_dig -1 // quantity: uint64
-
-*ternary2_end:
-	itxn_field AssetAmount
-
-	// contracts/InjectedRewardsPool.algo.ts:284
-	// fee: 1_000
-	int 1_000
-	itxn_field Fee
-
-	// Submit inner transaction
-	itxn_submit
-
-*if6_end:
-	b *if5_end
-
-*if5_else:
-	// *if7_condition
-	// contracts/InjectedRewardsPool.algo.ts:289
-	// this.stakedAssetId.value === 0
-	byte 0x7374616b656441737365744964 // "stakedAssetId"
-	app_global_get
-	int 0
-	==
-	bz *if7_else
-
-	// *if7_consequent
-	// contracts/InjectedRewardsPool.algo.ts:290
-	// sendPayment({
-	//           amount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
-	//           receiver: this.txn.sender,
-	//           sender: this.app.address,
-	//           fee: 1_000,
-	//         })
-	itxn_begin
-	int pay
-	itxn_field TypeEnum
-
-	// contracts/InjectedRewardsPool.algo.ts:291
-	// amount: quantity === 0 ? this.staked(this.txn.sender).value : quantity
-	frame_dig -1 // quantity: uint64
-	int 0
-	==
-	bz *ternary3_false
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
-	b *ternary3_end
-
-*ternary3_false:
-	frame_dig -1 // quantity: uint64
-
-*ternary3_end:
-	itxn_field Amount
-
-	// contracts/InjectedRewardsPool.algo.ts:292
-	// receiver: this.txn.sender
-	txn Sender
-	itxn_field Receiver
-
-	// contracts/InjectedRewardsPool.algo.ts:293
-	// sender: this.app.address
-	global CurrentApplicationAddress
-	itxn_field Sender
-
-	// contracts/InjectedRewardsPool.algo.ts:294
-	// fee: 1_000
-	int 1_000
-	itxn_field Fee
-
-	// Submit inner transaction
-	itxn_submit
-	b *if7_end
-
-*if7_else:
-	// contracts/InjectedRewardsPool.algo.ts:297
-	// sendAssetTransfer({
-	//           xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
-	//           assetReceiver: this.txn.sender,
-	//           sender: this.app.address,
-	//           assetAmount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
-	//           fee: 1_000,
-	//         })
-	itxn_begin
-	int axfer
-	itxn_field TypeEnum
-
-	// contracts/InjectedRewardsPool.algo.ts:298
-	// xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
-	byte 0x7374616b656441737365744964 // "stakedAssetId"
-	app_global_get
-	itxn_field XferAsset
-
-	// contracts/InjectedRewardsPool.algo.ts:299
-	// assetReceiver: this.txn.sender
-	txn Sender
-	itxn_field AssetReceiver
-
-	// contracts/InjectedRewardsPool.algo.ts:300
-	// sender: this.app.address
-	global CurrentApplicationAddress
-	itxn_field Sender
-
-	// contracts/InjectedRewardsPool.algo.ts:301
-	// assetAmount: quantity === 0 ? this.staked(this.txn.sender).value : quantity
-	frame_dig -1 // quantity: uint64
-	int 0
-	==
-	bz *ternary4_false
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
-	b *ternary4_end
-
-*ternary4_false:
-	frame_dig -1 // quantity: uint64
-
-*ternary4_end:
-	itxn_field AssetAmount
-
-	// contracts/InjectedRewardsPool.algo.ts:302
-	// fee: 1_000
-	int 1_000
-	itxn_field Fee
-
-	// Submit inner transaction
-	itxn_submit
-
-*if7_end:
-	// *if8_condition
-	// contracts/InjectedRewardsPool.algo.ts:305
-	// this.accruedRewards(this.txn.sender).value > 0
-	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	app_local_get
-	int 0
-	>
-	bz *if8_end
-
-	// *if8_consequent
-	// *if9_condition
-	// contracts/InjectedRewardsPool.algo.ts:306
-	// this.rewardAssetId.value === 0
-	byte 0x72657761726441737365744964 // "rewardAssetId"
-	app_global_get
-	int 0
-	==
-	bz *if9_else
-
-	// *if9_consequent
-	// contracts/InjectedRewardsPool.algo.ts:307
-	// sendPayment({
-	//             amount: this.accruedRewards(this.txn.sender).value,
+	//             amount: quantity === 0 ? staker.stake : quantity,
 	//             receiver: this.txn.sender,
 	//             sender: this.app.address,
 	//             fee: 1_000,
@@ -1718,69 +1648,89 @@ unstake:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:308
-	// amount: this.accruedRewards(this.txn.sender).value
-	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	app_local_get
+	// contracts/InjectedRewardsPool.algo.ts:337
+	// amount: quantity === 0 ? staker.stake : quantity
+	frame_dig -1 // quantity: uint64
+	int 0
+	==
+	bz *ternary1_false
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 32 8
+	btoi
+	b *ternary1_end
+
+*ternary1_false:
+	frame_dig -1 // quantity: uint64
+
+*ternary1_end:
 	itxn_field Amount
 
-	// contracts/InjectedRewardsPool.algo.ts:309
+	// contracts/InjectedRewardsPool.algo.ts:338
 	// receiver: this.txn.sender
 	txn Sender
 	itxn_field Receiver
 
-	// contracts/InjectedRewardsPool.algo.ts:310
+	// contracts/InjectedRewardsPool.algo.ts:339
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPool.algo.ts:311
+	// contracts/InjectedRewardsPool.algo.ts:340
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
 
 	// Submit inner transaction
 	itxn_submit
-	b *if9_end
+	b *if17_end
 
-*if9_else:
-	// contracts/InjectedRewardsPool.algo.ts:314
+*if17_else:
+	// contracts/InjectedRewardsPool.algo.ts:343
 	// sendAssetTransfer({
-	//             xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+	//             xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
 	//             assetReceiver: this.txn.sender,
-	//             assetAmount: this.accruedRewards(this.txn.sender).value,
 	//             sender: this.app.address,
+	//             assetAmount: quantity === 0 ? staker.stake : quantity,
 	//             fee: 1_000,
 	//           })
 	itxn_begin
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:315
-	// xferAsset: AssetID.fromUint64(this.rewardAssetId.value)
-	byte 0x72657761726441737365744964 // "rewardAssetId"
+	// contracts/InjectedRewardsPool.algo.ts:344
+	// xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
+	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPool.algo.ts:316
+	// contracts/InjectedRewardsPool.algo.ts:345
 	// assetReceiver: this.txn.sender
 	txn Sender
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPool.algo.ts:317
-	// assetAmount: this.accruedRewards(this.txn.sender).value
-	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	app_local_get
-	itxn_field AssetAmount
-
-	// contracts/InjectedRewardsPool.algo.ts:318
+	// contracts/InjectedRewardsPool.algo.ts:346
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPool.algo.ts:319
+	// contracts/InjectedRewardsPool.algo.ts:347
+	// assetAmount: quantity === 0 ? staker.stake : quantity
+	frame_dig -1 // quantity: uint64
+	int 0
+	==
+	bz *ternary2_false
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 32 8
+	btoi
+	b *ternary2_end
+
+*ternary2_false:
+	frame_dig -1 // quantity: uint64
+
+*ternary2_end:
+	itxn_field AssetAmount
+
+	// contracts/InjectedRewardsPool.algo.ts:348
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -1788,27 +1738,245 @@ unstake:
 	// Submit inner transaction
 	itxn_submit
 
-*if9_end:
+*if17_end:
+	b *if16_end
 
-*if8_end:
-
-*if5_end:
-	// contracts/InjectedRewardsPool.algo.ts:326
-	// this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value as uint128
-	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
+*if16_else:
+	// *if18_condition
+	// contracts/InjectedRewardsPool.algo.ts:353
+	// this.stakedAssetId.value === 0
+	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
+	int 0
+	==
+	bz *if18_else
+
+	// *if18_consequent
+	// contracts/InjectedRewardsPool.algo.ts:355
+	// sendPayment({
+	//             amount: quantity === 0 ? staker.stake : quantity,
+	//             receiver: this.txn.sender,
+	//             sender: this.app.address,
+	//             fee: 1_000,
+	//           })
+	itxn_begin
+	int pay
+	itxn_field TypeEnum
+
+	// contracts/InjectedRewardsPool.algo.ts:356
+	// amount: quantity === 0 ? staker.stake : quantity
+	frame_dig -1 // quantity: uint64
+	int 0
+	==
+	bz *ternary3_false
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 32 8
+	btoi
+	b *ternary3_end
+
+*ternary3_false:
+	frame_dig -1 // quantity: uint64
+
+*ternary3_end:
+	itxn_field Amount
+
+	// contracts/InjectedRewardsPool.algo.ts:357
+	// receiver: this.txn.sender
 	txn Sender
-	byte 0x757365725374616b696e67576569676874 // "userStakingWeight"
-	app_local_get
+	itxn_field Receiver
+
+	// contracts/InjectedRewardsPool.algo.ts:358
+	// sender: this.app.address
+	global CurrentApplicationAddress
+	itxn_field Sender
+
+	// contracts/InjectedRewardsPool.algo.ts:359
+	// fee: 1_000
+	int 1_000
+	itxn_field Fee
+
+	// Submit inner transaction
+	itxn_submit
+	b *if18_end
+
+*if18_else:
+	// contracts/InjectedRewardsPool.algo.ts:362
+	// sendAssetTransfer({
+	//             xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
+	//             assetReceiver: this.txn.sender,
+	//             sender: this.app.address,
+	//             assetAmount: quantity === 0 ? staker.stake : quantity,
+	//             fee: 1_000,
+	//           })
+	itxn_begin
+	int axfer
+	itxn_field TypeEnum
+
+	// contracts/InjectedRewardsPool.algo.ts:363
+	// xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
+	byte 0x7374616b656441737365744964 // "stakedAssetId"
+	app_global_get
+	itxn_field XferAsset
+
+	// contracts/InjectedRewardsPool.algo.ts:364
+	// assetReceiver: this.txn.sender
+	txn Sender
+	itxn_field AssetReceiver
+
+	// contracts/InjectedRewardsPool.algo.ts:365
+	// sender: this.app.address
+	global CurrentApplicationAddress
+	itxn_field Sender
+
+	// contracts/InjectedRewardsPool.algo.ts:366
+	// assetAmount: quantity === 0 ? staker.stake : quantity
+	frame_dig -1 // quantity: uint64
+	int 0
+	==
+	bz *ternary4_false
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 32 8
+	btoi
+	b *ternary4_end
+
+*ternary4_false:
+	frame_dig -1 // quantity: uint64
+
+*ternary4_end:
+	itxn_field AssetAmount
+
+	// contracts/InjectedRewardsPool.algo.ts:367
+	// fee: 1_000
+	int 1_000
+	itxn_field Fee
+
+	// Submit inner transaction
+	itxn_submit
+
+*if18_end:
+	// *if19_condition
+	// contracts/InjectedRewardsPool.algo.ts:370
+	// staker.accruedRewards > 0
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 72 8
+	btoi
+	int 0
+	>
+	bz *if19_end
+
+	// *if19_consequent
+	// *if20_condition
+	// contracts/InjectedRewardsPool.algo.ts:371
+	// this.rewardAssetId.value === 0
+	byte 0x72657761726441737365744964 // "rewardAssetId"
+	app_global_get
+	int 0
+	==
+	bz *if20_else
+
+	// *if20_consequent
+	// contracts/InjectedRewardsPool.algo.ts:372
+	// sendPayment({
+	//               amount: staker.accruedRewards,
+	//               receiver: this.txn.sender,
+	//               sender: this.app.address,
+	//               fee: 1_000,
+	//             })
+	itxn_begin
+	int pay
+	itxn_field TypeEnum
+
+	// contracts/InjectedRewardsPool.algo.ts:373
+	// amount: staker.accruedRewards
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 72 8
+	btoi
+	itxn_field Amount
+
+	// contracts/InjectedRewardsPool.algo.ts:374
+	// receiver: this.txn.sender
+	txn Sender
+	itxn_field Receiver
+
+	// contracts/InjectedRewardsPool.algo.ts:375
+	// sender: this.app.address
+	global CurrentApplicationAddress
+	itxn_field Sender
+
+	// contracts/InjectedRewardsPool.algo.ts:376
+	// fee: 1_000
+	int 1_000
+	itxn_field Fee
+
+	// Submit inner transaction
+	itxn_submit
+	b *if20_end
+
+*if20_else:
+	// contracts/InjectedRewardsPool.algo.ts:379
+	// sendAssetTransfer({
+	//               xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+	//               assetReceiver: this.txn.sender,
+	//               assetAmount: staker.accruedRewards,
+	//               sender: this.app.address,
+	//               fee: 1_000,
+	//             })
+	itxn_begin
+	int axfer
+	itxn_field TypeEnum
+
+	// contracts/InjectedRewardsPool.algo.ts:380
+	// xferAsset: AssetID.fromUint64(this.rewardAssetId.value)
+	byte 0x72657761726441737365744964 // "rewardAssetId"
+	app_global_get
+	itxn_field XferAsset
+
+	// contracts/InjectedRewardsPool.algo.ts:381
+	// assetReceiver: this.txn.sender
+	txn Sender
+	itxn_field AssetReceiver
+
+	// contracts/InjectedRewardsPool.algo.ts:382
+	// assetAmount: staker.accruedRewards
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 72 8
+	btoi
+	itxn_field AssetAmount
+
+	// contracts/InjectedRewardsPool.algo.ts:383
+	// sender: this.app.address
+	global CurrentApplicationAddress
+	itxn_field Sender
+
+	// contracts/InjectedRewardsPool.algo.ts:384
+	// fee: 1_000
+	int 1_000
+	itxn_field Fee
+
+	// Submit inner transaction
+	itxn_submit
+
+*if20_end:
+
+*if19_end:
+
+*if16_end:
+	// contracts/InjectedRewardsPool.algo.ts:391
+	// this.totalStakingWeight.value = this.totalStakingWeight.value - (staker.userStakingWeight as uint128)
+	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
+	dup
+	app_global_get
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 56 8
+	btoi
 	itob
 	b-
-	byte 0x746f74616c5374616b696e67576569676874 // "totalStakingWeight"
 	dup
 	bitlen
 	int 128
 	<=
 
-	// this.totalStakingWeight.value overflowed 128 bits
+	// this.totalStakingWeight.value - (staker.userStakingWeight as uint128) overflowed 128 bits
 	assert
 	byte 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 	b&
@@ -1819,62 +1987,123 @@ unstake:
 	-
 	swap
 	substring3
-	swap
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:327
-	// this.totalStaked.value -= this.staked(this.txn.sender).value
+	// contracts/InjectedRewardsPool.algo.ts:392
+	// this.totalStaked.value = this.totalStaked.value - staker.stake
 	byte 0x746f74616c5374616b6564 // "totalStaked"
+	dup
 	app_global_get
-	txn Sender
-	byte 0x7374616b6564 // "staked"
-	app_local_get
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 32 8
+	btoi
 	-
-	byte 0x746f74616c5374616b6564 // "totalStaked"
-	swap
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:329
-	// this.staked(this.txn.sender).value = 0
-	txn Sender
-	byte 0x7374616b6564 // "staked"
+	// *if21_condition
+	// contracts/InjectedRewardsPool.algo.ts:394
+	// quantity === 0
+	frame_dig -1 // quantity: uint64
 	int 0
-	app_local_put
+	==
+	bz *if21_else
 
-	// contracts/InjectedRewardsPool.algo.ts:330
-	// this.accruedRewards(this.txn.sender).value = 0
-	txn Sender
-	byte 0x6163637275656452657761726473 // "accruedRewards"
-	int 0
-	app_local_put
+	// *if21_consequent
+	// contracts/InjectedRewardsPool.algo.ts:395
+	// this.stakers.value[i] = {
+	//           account: globals.zeroAddress,
+	//           stake: 0,
+	//           stakeDuration: 0,
+	//           stakeStartTime: 0,
+	//           userStakingWeight: 0,
+	//           lastRewardRate: 0,
+	//           accruedRewards: 0,
+	//           lastUpdateTime: 0,
+	//           rewardRate: 0,
+	//           userShare: 0,
+	//           userSharePercentage: 0
+	//         }
+	frame_dig 0 // i: uint64
+	int 112
+	* // acc * typeLength
+	global ZeroAddress
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x0000000000000000
+	concat
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_replace
+	b *if21_end
 
-	// contracts/InjectedRewardsPool.algo.ts:331
-	// this.rewardRate(this.txn.sender).value = 0
-	txn Sender
-	byte 0x72657761726452617465 // "rewardRate"
-	int 0
-	app_local_put
+*if21_else:
+	// contracts/InjectedRewardsPool.algo.ts:409
+	// staker.stake = staker.stake - quantity
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 32 // headOffset
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 32 8
+	btoi
+	frame_dig -1 // quantity: uint64
+	-
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:332
-	// this.userStakingWeight(this.txn.sender).value = 0
-	txn Sender
-	byte 0x757365725374616b696e67576569676874 // "userStakingWeight"
-	int 0
-	app_local_put
+	// contracts/InjectedRewardsPool.algo.ts:410
+	// staker.accruedRewards = 0
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	byte 0x0000000000000000
+	replace2 72
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:333
-	// this.stakeDuration(this.txn.sender).value = 0
-	txn Sender
-	byte 0x7374616b654475726174696f6e // "stakeDuration"
-	int 0
-	app_local_put
+	// contracts/InjectedRewardsPool.algo.ts:411
+	// staker.lastUpdateTime = globals.latestTimestamp
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	int 80 // headOffset
+	global LatestTimestamp
+	itob
+	replace3
+	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:334
-	// this.stakeStartTime(this.txn.sender).value = 0
-	txn Sender
-	byte 0x7374616b65537461727454696d65 // "stakeStartTime"
-	int 0
-	app_local_put
+	// contracts/InjectedRewardsPool.algo.ts:412
+	// this.stakers.value[i] = staker
+	frame_dig 0 // i: uint64
+	int 112
+	* // acc * typeLength
+	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_replace
+
+*if21_end:
+
+*for_4_continue:
+	// contracts/InjectedRewardsPool.algo.ts:327
+	// i += 1
+	frame_dig 0 // i: uint64
+	int 1
+	+
+	frame_bury 0 // i: uint64
+	b *for_4
+
+*for_4_end:
 	retsub
 
 *create_NoOp:
@@ -1886,28 +2115,18 @@ unstake:
 	err
 
 *call_NoOp:
-	method "optInToAsset(uint64)void"
 	method "updateParams(uint64)void"
+	method "initStorage(pay)void"
 	method "injectRewards(axfer,uint64)void"
 	method "setPrices(uint64,uint64)void"
 	method "stake(axfer,uint64)void"
-	method "updateRewardRate(address)void"
-	method "accrueRewards(address)void"
-	method "restake(axfer,uint64)void"
+	method "accrueRewards()void"
 	method "claimRewards()void"
 	method "unstake(uint64)void"
 	txna ApplicationArgs 0
-	match *abi_route_optInToAsset *abi_route_updateParams *abi_route_injectRewards *abi_route_setPrices *abi_route_stake *abi_route_updateRewardRate *abi_route_accrueRewards *abi_route_restake *abi_route_claimRewards *abi_route_unstake
+	match *abi_route_updateParams *abi_route_initStorage *abi_route_injectRewards *abi_route_setPrices *abi_route_stake *abi_route_accrueRewards *abi_route_claimRewards *abi_route_unstake
 
 	// this contract does not implement the given ABI method for call NoOp
-	err
-
-*call_OptIn:
-	method "optInToApplication()void"
-	txna ApplicationArgs 0
-	match *abi_route_optInToApplication
-
-	// this contract does not implement the given ABI method for call OptIn
 	err
 
 *call_DeleteApplication:

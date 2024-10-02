@@ -31,17 +31,10 @@
       }
     },
     {
-      "name": "optInToApplication",
-      "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "optInToAsset",
+      "name": "updateParams",
       "args": [
         {
-          "name": "asset",
+          "name": "minStakePeriodForRewards",
           "type": "uint64"
         }
       ],
@@ -50,11 +43,11 @@
       }
     },
     {
-      "name": "updateParams",
+      "name": "initStorage",
       "args": [
         {
-          "name": "minStakePeriodForRewards",
-          "type": "uint64"
+          "name": "mbrPayment",
+          "type": "pay"
         }
       ],
       "returns": {
@@ -117,41 +110,8 @@
       }
     },
     {
-      "name": "updateRewardRate",
-      "args": [
-        {
-          "name": "userAddress",
-          "type": "address"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
       "name": "accrueRewards",
-      "args": [
-        {
-          "name": "userAddress",
-          "type": "address"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "restake",
-      "args": [
-        {
-          "name": "stakeTxn",
-          "type": "axfer"
-        },
-        {
-          "name": "quantity",
-          "type": "uint64"
-        }
-      ],
+      "args": [],
       "returns": {
         "type": "void"
       }
