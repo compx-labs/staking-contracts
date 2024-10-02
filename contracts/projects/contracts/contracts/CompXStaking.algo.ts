@@ -36,6 +36,8 @@ export class CompXStaking extends Contract {
 
   rewardsAvailablePerTick = GlobalStateKey<uint64>();
 
+  scaleFactor = GlobalStateKey<uint64>();
+
   //Local State
   staked = LocalStateKey<uint64>();
 
@@ -60,7 +62,8 @@ export class CompXStaking extends Contract {
     contractDuration: uint64,
     startTimestamp: uint64,
     oracleAdmin: Address,
-    adminAddress: Address
+    adminAddress: Address,
+    scaleFactor: uint64,
   ): void {
     this.stakedAssetId.value = stakedAsset;
     this.rewardAssetId.value = rewardAsset;
@@ -77,6 +80,7 @@ export class CompXStaking extends Contract {
     this.rewardTokenPrice.value = 0;
     this.rewardsAvailablePerTick.value = 0;
     this.adminAddress.value = adminAddress;
+    this.scaleFactor.value = scaleFactor;
   }
 
   optInToApplication(): void {
@@ -231,7 +235,7 @@ export class CompXStaking extends Contract {
       this.totalStakingWeight.value = this.totalStakingWeight.value - (this.userStakingWeight(userAddress).value as uint128);
     }
     const normalisedAmount = wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
-    const userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(userAddress).value], [2]);
+    const userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(userAddress).value], [1]);
     this.userStakingWeight(userAddress).value = userStakingWeight;
     this.totalStakingWeight.value = this.totalStakingWeight.value + (userStakingWeight as uint128);
 
@@ -243,7 +247,7 @@ export class CompXStaking extends Contract {
 
     this.rewardRate(userAddress).value = (wideRatio([this.rewardsAvailablePerTick.value, numerator], [denominator]) / 100);
     if (this.rewardRate(userAddress).value === 0) {
-      this.rewardRate(userAddress).value = 10;
+      this.rewardRate(userAddress).value = 1;
     }
   }
 

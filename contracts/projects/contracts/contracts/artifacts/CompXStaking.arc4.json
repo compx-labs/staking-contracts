@@ -32,6 +32,10 @@
         {
           "name": "adminAddress",
           "type": "address"
+        },
+        {
+          "name": "scaleFactor",
+          "type": "uint64"
         }
       ],
       "returns": {

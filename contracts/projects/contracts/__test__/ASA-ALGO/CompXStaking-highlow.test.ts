@@ -21,7 +21,7 @@ interface StakingAccount {
 }
 let stakingAccounts: StakingAccount[] = [
   {
-    stake: 7_000_000_000n,
+    stake: 70_000_000_000n,
     lockPeriod: 2592000n,
   },
   {
@@ -78,6 +78,7 @@ describe('CompXStaking ASA/Algo - with staking', () => {
       startTimestamp: BigInt(Math.floor(Date.now() / 1000)),
       oracleAdmin: admin,
       adminAddress: admin,
+      scaleFactor: 12000n
     });
   });
 
@@ -170,9 +171,9 @@ describe('CompXStaking ASA/Algo - with staking', () => {
     for (var staker of stakingAccounts) {
 
       await appClient.accrueRewards({ userAddress: staker.account!.addr }, { sender: staker.account, sendParams: { fee: algokit.algos(0.1) } });
-      const userAccruedRewards = (await appClient.getLocalState(staker.account!.addr)).accruedRewards!.asBigInt();
+      //const userAccruedRewards = (await appClient.getLocalState(staker.account!.addr)).accruedRewards!.asBigInt();
       const userRewardRate = (await appClient.getLocalState(staker.account!.addr)).rewardRate!.asBigInt();
-      console.log('userAccruedRewards', userAccruedRewards);
+      console.log('userRewardRate', userRewardRate);
       expect(userRewardRate).toBeGreaterThan(0n);
     }
   }
