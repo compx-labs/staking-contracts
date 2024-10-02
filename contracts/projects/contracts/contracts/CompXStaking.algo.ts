@@ -231,7 +231,7 @@ export class CompXStaking extends Contract {
       this.totalStakingWeight.value = this.totalStakingWeight.value - (this.userStakingWeight(userAddress).value as uint128);
     }
     const normalisedAmount = wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value]);
-    const userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(userAddress).value], [2]);
+    const userStakingWeight = wideRatio([normalisedAmount, this.stakeDuration(userAddress).value], [1]);
     this.userStakingWeight(userAddress).value = userStakingWeight;
     this.totalStakingWeight.value = this.totalStakingWeight.value + (userStakingWeight as uint128);
 
