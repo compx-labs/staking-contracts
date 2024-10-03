@@ -62,21 +62,10 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     rewardAssetId = BigInt((await rewardAssetCreate).confirmation.assetIndex!);
 
     await appClient.create.createApplication({
-      adminAddress: admin,
-    });
-    const { appAddress } = await appClient.appClient.getAppReference();
-
-    await fixture.algorand.send.payment({
-      sender: admin,
-      receiver: appAddress,
-      amount: algokit.microAlgos(200000),
-    });
-
-
-    await appClient.initApplication({
       stakedAsset: stakedAssetId,
       rewardAssets: [rewardAssetId, 0n, 0n, 0n, 0n],
       oracleAdmin: admin,
+      adminAddress: admin,
       minStakePeriodForRewards: ONE_DAY,
     });
   });
@@ -85,9 +74,21 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     const globalState = await appClient.getGlobalState();
     expect(globalState.stakeAssetPrice!.asBigInt()).toBe(0n);
     expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
+    //expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetId);
+    //expect(globalState.totalStakingWeight!.asBigInt()).toBe(0n);
+    //expect(globalState.injectedRewards!.asBigInt()).toBe(0n);
     expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
     expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(ONE_DAY);
     expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin);
+    const { appAddress } = await appClient.appClient.getAppReference();
+    console.log('appAddress', appAddress)
+
+    await fixture.algorand.send.payment({
+      sender: admin,
+      receiver: appAddress,
+      amount: algokit.microAlgos(200000),
+    });
+
   });
 
   test('init storage', async () => {
