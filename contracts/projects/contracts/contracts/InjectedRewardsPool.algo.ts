@@ -4,17 +4,6 @@ const PRECISION = 1_000_000_000_000_000;
 export type StakeInfo = {
   account: Address
   stake: uint64
-  stakeDuration: uint64
-  stakeStartTime: uint64
-  userStakingWeight: uint64
-  lastRewardRate: uint64
-  accruedRewards: StaticArray<uint64, 5>
-  algoAccuredRewards: uint64
-  lastUpdateTime: uint64
-  rewardRate: StaticArray<uint64, 5>
-  algoRewardRate: uint64
-  userShare: uint64
-  userSharePercentage: uint64
 }
 export type mbrReturn = {
   mbrPayment: uint64;
@@ -29,7 +18,7 @@ export class InjectedRewardsPool extends Contract {
   programVersion = 9;
 
 
-  //Global State
+  //Global State 
 
   stakers = BoxKey<StaticArray<StakeInfo, typeof MAX_STAKERS_PER_POOL>>({ key: 'stakers' })
 
@@ -63,6 +52,27 @@ export class InjectedRewardsPool extends Contract {
 
   numRewards = GlobalStateKey<uint64>();
 
+  //Local state
+  rewardRate = LocalStateKey<StaticArray<uint64, 5>>();
+
+  accruedRewards = LocalStateKey<StaticArray<uint64, 5>>();
+
+  stakeDuration = LocalStateKey<uint64>();
+
+  stakeStartTime = LocalStateKey<uint64>();
+
+  userStakingWeight = LocalStateKey<uint64>();
+
+  lastRewardRate = LocalStateKey<uint64>();
+
+  algoAccuredRewards = LocalStateKey<uint64>();
+
+  lastUpdateTime = LocalStateKey<uint64>();
+
+  algoRewardRate = LocalStateKey<uint64>();
+
+  userShare = LocalStateKey<uint64>();
+
 
   createApplication(adminAddress: Address): void {
     this.adminAddress.value = adminAddress;
@@ -87,6 +97,19 @@ export class InjectedRewardsPool extends Contract {
     this.injectedRewards.create();
     this.lastRewardInjectionTime.value = 0;
 
+  }
+
+  optInToApplication(): void {
+    this.stakeDuration(this.txn.sender).value = 0;
+    this.stakeStartTime(this.txn.sender).value = globals.latestTimestamp;
+    this.userStakingWeight(this.txn.sender).value = 0;
+    this.lastRewardRate(this.txn.sender).value = 0;
+    this.algoAccuredRewards(this.txn.sender).value = 0;
+    this.lastUpdateTime(this.txn.sender).value = 0;
+    this.algoRewardRate(this.txn.sender).value = 0;
+    this.userShare(this.txn.sender).value = 0;
+    this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
+    this.rewardRate(this.txn.sender).value = [0, 0, 0, 0, 0];
   }
 
   //ADMIN FUNCTIONS
@@ -230,9 +253,9 @@ export class InjectedRewardsPool extends Contract {
     for (let i = 0; i < this.stakers.value.length; i += 1) {
       if (actionComplete) break;
 
-      if (globals.opcodeBudget < 300) {
+     /*  if (globals.opcodeBudget < 300) {
         increaseOpcodeBudget()
-      }
+      } */
       const staker = clone(this.stakers.value[i])
       if (staker.account === this.txn.sender) {
         staker.stake += stakeTxn.assetAmount
@@ -240,24 +263,15 @@ export class InjectedRewardsPool extends Contract {
         actionComplete = true;
 
       } else if (this.stakers.value[i].account === globals.zeroAddress) {
-
+        //create new staker
         this.totalStaked.value += stakeTxn.assetAmount;
 
         this.stakers.value[i] = {
           account: this.txn.sender,
           stake: stakeTxn.assetAmount,
-          stakeDuration: 0,
-          stakeStartTime: currentTimeStamp,
-          userStakingWeight: 0,
-          lastRewardRate: 0,
-          algoAccuredRewards: 0,
-          accruedRewards: [0, 0, 0, 0, 0],
-          lastUpdateTime: currentTimeStamp,
-          rewardRate: [0, 0, 0, 0, 0],
-          algoRewardRate: 0,
-          userShare: 0,
-          userSharePercentage: 0
         }
+        this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0]
+        this.rewardRate(this.txn.sender).value = [0, 0, 0, 0, 0]
         actionComplete = true;
       }
     }
@@ -266,14 +280,14 @@ export class InjectedRewardsPool extends Contract {
   private calculateRewardRates(): void {
     for (let i = 0; i < this.stakers.value.length; i += 1) {
 
-      if (globals.opcodeBudget < 300) {
+      /* if (globals.opcodeBudget < 300) {
         increaseOpcodeBudget()
-      }
+      } */
       const staker = clone(this.stakers.value[i])
       if (staker.account === globals.zeroAddress) continue;
 
-      if (staker.userStakingWeight > 0) {
-        this.totalStakingWeight.value = this.totalStakingWeight.value - (staker.userStakingWeight as uint128);
+      if (this.userStakingWeight(staker.account).value > 0) {
+        this.totalStakingWeight.value = this.totalStakingWeight.value - (this.userStakingWeight(staker.account).value as uint128);
       }
       let userStakingWeight = 0;
 
@@ -283,17 +297,17 @@ export class InjectedRewardsPool extends Contract {
         userStakingWeight = userStakingWeight + (wideRatio([staker.stake, this.stakeAssetPrice.value], [this.rewardAssetPrices.value[j]]));
       }
 
-      staker.userStakingWeight = userStakingWeight;
+      this.userStakingWeight(staker.account).value = userStakingWeight;
       this.totalStakingWeight.value = this.totalStakingWeight.value + (userStakingWeight as uint128);
 
-      staker.userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64]);
-      staker.userSharePercentage = wideRatio([staker.userShare, 100], [PRECISION]);
+      this.userShare(staker.account).value = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64]);
+      const userSharePercentage = wideRatio([this.userShare(staker.account).value, 100], [PRECISION]);
 
       for (var k = 0; k < this.rewardAssets.value.length; k += 1) {
         if (this.injectedRewards.value[k] === 0) continue;
-        staker.rewardRate[k] = wideRatio([this.injectedRewards.value[k], staker.userSharePercentage], [100]);
-        if (staker.rewardRate[k] === 0) {
-          staker.rewardRate[k] = 1;
+        this.rewardRate(staker.account).value[k] = wideRatio([this.injectedRewards.value[k], userSharePercentage], [100]);
+        if (this.rewardRate(staker.account).value[k] === 0) {
+          this.rewardRate(staker.account).value[k] = 1;
         }
       }
 
@@ -305,36 +319,36 @@ export class InjectedRewardsPool extends Contract {
   accrueRewards(): void {
     this.calculateRewardRates();
     for (let i = 0; i < this.stakers.value.length; i += 1) {
-      if (globals.opcodeBudget < 300) {
+      /* if (globals.opcodeBudget < 300) {
         increaseOpcodeBudget()
-      }
+      } */
       const staker = clone(this.stakers.value[i])
       if (staker.account === globals.zeroAddress) continue;
 
       if (staker.stake > 0) {
-        staker.stakeDuration = globals.latestTimestamp - staker.stakeStartTime;
-        if (staker.stakeDuration < this.minStakePeriodForRewards.value) return;
+        this.stakeDuration(staker.account).value = globals.latestTimestamp - this.stakeStartTime(staker.account).value;
+        if (this.stakeDuration(staker.account).value < this.minStakePeriodForRewards.value) return;
 
-        staker.algoAccuredRewards = staker.algoAccuredRewards + staker.algoRewardRate;
-        this.algoInjectedRewards.value = this.algoInjectedRewards.value - staker.algoRewardRate;
+        this.algoAccuredRewards(staker.account).value = this.algoAccuredRewards(staker.account).value + this.algoRewardRate(staker.account).value;
+        this.algoInjectedRewards.value = this.algoInjectedRewards.value - this.algoRewardRate(staker.account).value;
 
         if (this.stakedAssetId.value === 0) {
-          staker.stake = staker.stake + staker.algoRewardRate;
-          this.totalStaked.value = this.totalStaked.value + staker.algoRewardRate;
+          staker.stake = staker.stake + this.algoRewardRate(staker.account).value;
+          this.totalStaked.value = this.totalStaked.value + this.algoRewardRate(staker.account).value;
         }
 
         for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
 
-          staker.accruedRewards[j] = staker.accruedRewards[j] + staker.rewardRate[j];
-          this.injectedRewards.value[j] = this.injectedRewards.value[j] - staker.rewardRate[j];
+          this.accruedRewards(staker.account).value[j] = this.accruedRewards(staker.account).value[j] + this.rewardRate(staker.account).value[j];
+          this.injectedRewards.value[j] = this.injectedRewards.value[j] - this.rewardRate(staker.account).value[j];
 
           if (this.rewardAssets.value[j] === this.stakedAssetId.value) {
             //Compound rewards
-            staker.stake = staker.stake + staker.rewardRate[j];
-            this.totalStaked.value = this.totalStaked.value + staker.rewardRate[j];
+            staker.stake = staker.stake + this.rewardRate(staker.account).value[j];
+            this.totalStaked.value = this.totalStaked.value + this.rewardRate(staker.account).value[j];
           }
         }
-        staker.lastUpdateTime = globals.latestTimestamp;
+        this.lastUpdateTime(staker.account).value = globals.latestTimestamp;
         this.stakers.value[i] = staker;
       }
     }
@@ -343,37 +357,37 @@ export class InjectedRewardsPool extends Contract {
   claimRewards(): void {
 
     for (let i = 0; i < this.stakers.value.length; i += 1) {
-      if (globals.opcodeBudget < 300) {
+      /* if (globals.opcodeBudget < 300) {
         increaseOpcodeBudget()
-      }
+      } */
       const staker = clone(this.stakers.value[i])
 
       if (staker.account === this.txn.sender) {
-        if (staker.algoAccuredRewards > 0) {
+        if (this.algoAccuredRewards(staker.account).value > 0) {
           sendPayment({
-            amount: staker.algoAccuredRewards,
+            amount: this.algoAccuredRewards(staker.account).value,
             receiver: this.txn.sender,
             sender: this.app.address,
             fee: 1_000,
           });
-          staker.algoAccuredRewards = 0;
+          this.algoAccuredRewards(staker.account).value = 0;
         }
 
         for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
-          if (staker.accruedRewards[j] > 0) {
+          if (this.accruedRewards(staker.account).value[j] > 0) {
             sendAssetTransfer({
               xferAsset: AssetID.fromUint64(this.rewardAssets.value[j]),
               assetReceiver: this.txn.sender,
               sender: this.app.address,
-              assetAmount: staker.accruedRewards[j],
+              assetAmount: this.accruedRewards(staker.account).value[j],
               fee: 1_000,
             });
           }
-          staker.accruedRewards[j] = 0;
+          this.accruedRewards(staker.account).value[j] = 0;
           this.stakers.value[i] = staker;
         }
       }
-      staker.lastUpdateTime = globals.latestTimestamp;
+      this.lastUpdateTime(staker.account).value = globals.latestTimestamp;
     }
   }
 
@@ -382,9 +396,9 @@ export class InjectedRewardsPool extends Contract {
         assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets');
         assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets'); */
     for (let i = 0; i < this.stakers.value.length; i += 1) {
-      if (globals.opcodeBudget < 300) {
+      /* if (globals.opcodeBudget < 300) {
         increaseOpcodeBudget()
-      }
+      } */
       const staker = clone(this.stakers.value[i])
 
       //unstake - all rewards are claimed and unstaked, quantity only affects stake token.
@@ -411,54 +425,54 @@ export class InjectedRewardsPool extends Contract {
       }
 
       //check for algo rewards
-      if (staker.algoAccuredRewards > 0) {
+      if (this.algoAccuredRewards(staker.account).value > 0) {
         sendPayment({
-          amount: staker.algoAccuredRewards,
+          amount: this.algoAccuredRewards(staker.account).value,
           receiver: this.txn.sender,
           sender: this.app.address,
           fee: 1_000,
         });
-        staker.algoAccuredRewards = 0;
+        this.algoAccuredRewards(staker.account).value = 0;
       }
       //check other rewards
       for (let j = 0; j < this.rewardAssets.value.length; j += 1) {
-        if (staker.accruedRewards[j] > 0) {
+        if (this.accruedRewards(staker.account).value[j] > 0) {
           sendAssetTransfer({
             xferAsset: AssetID.fromUint64(this.rewardAssets.value[j]),
             assetReceiver: this.txn.sender,
             sender: this.app.address,
-            assetAmount: staker.accruedRewards[j],
+            assetAmount: this.accruedRewards(staker.account).value[j],
             fee: 1_000,
           });
-          staker.accruedRewards[j] = 0;
+          this.accruedRewards(staker.account).value[j] = 0;
         }
       }
 
       // Update the total staking weight
-      this.totalStakingWeight.value = this.totalStakingWeight.value - (staker.userStakingWeight as uint128);
+      this.totalStakingWeight.value = this.totalStakingWeight.value - (this.userStakingWeight(staker.account).value as uint128);
       this.totalStaked.value = this.totalStaked.value - staker.stake;
 
       if (quantity === 0) {
         this.stakers.value[i] = {
           account: globals.zeroAddress,
           stake: 0,
-          stakeDuration: 0,
-          stakeStartTime: 0,
-          userStakingWeight: 0,
-          lastRewardRate: 0,
-          accruedRewards: [0, 0, 0, 0, 0],
-          lastUpdateTime: 0,
-          rewardRate: [0, 0, 0, 0, 0],
-          userShare: 0,
-          userSharePercentage: 0,
-          algoAccuredRewards: 0,
-          algoRewardRate: 0
         }
+        this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
+        this.rewardRate(this.txn.sender).value = [0, 0, 0, 0, 0];
+        this.stakeDuration(this.txn.sender).value = 0;
+        this.stakeStartTime(this.txn.sender).value = 0;
+        this.userStakingWeight(this.txn.sender).value = 0;
+        this.lastRewardRate(this.txn.sender).value = 0;
+        this.algoAccuredRewards(this.txn.sender).value = 0;
+        this.lastUpdateTime(this.txn.sender).value = 0;
+        this.algoRewardRate(this.txn.sender).value = 0;
+        this.userShare(this.txn.sender).value = 0;
+        
       } else {
         staker.stake = staker.stake - quantity;
-        staker.accruedRewards = [0, 0, 0, 0, 0];
+        this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
       }
-      staker.lastUpdateTime = globals.latestTimestamp;
+      this.lastUpdateTime(this.txn.sender).value = globals.latestTimestamp;
       this.stakers.value[i] = staker;
     }
   }
