@@ -10,8 +10,8 @@
           "type": "uint64"
         },
         {
-          "name": "rewardAsset",
-          "type": "uint64"
+          "name": "rewardAssets",
+          "type": "uint64[5]"
         },
         {
           "name": "minStakePeriodForRewards",
@@ -43,6 +43,13 @@
       }
     },
     {
+      "name": "getMBRForPoolCreation",
+      "args": [],
+      "returns": {
+        "type": "(uint64)"
+      }
+    },
+    {
       "name": "initStorage",
       "args": [
         {
@@ -64,6 +71,26 @@
         {
           "name": "quantity",
           "type": "uint64"
+        },
+        {
+          "name": "rewardAssetId",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "injectAlgoRewards",
+      "args": [
+        {
+          "name": "payTxn",
+          "type": "pay"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
         }
       ],
       "returns": {
@@ -81,12 +108,12 @@
       "name": "setPrices",
       "args": [
         {
-          "name": "stakeTokenPrice",
+          "name": "stakeAssetPrice",
           "type": "uint64"
         },
         {
-          "name": "rewardTokenPrice",
-          "type": "uint64"
+          "name": "rewardTokenPrices",
+          "type": "uint64[5]"
         }
       ],
       "returns": {
