@@ -41,7 +41,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
       {
         accountToFund: admin,
         fundingSource: await algokit.getDispenserAccount(algorand.client.algod, algorand.client.kmd!),
-        minSpendingBalance: algokit.algos(100),
+        minSpendingBalance: algokit.algos(20),
       },
       algorand.client.algod,
     )
@@ -69,7 +69,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     await fixture.algorand.send.payment({
       sender: admin,
       receiver: appAddress,
-      amount: algokit.microAlgos(20_000_000),
+      amount: algokit.microAlgos(200000),
     });
 
 

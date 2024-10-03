@@ -39,13 +39,6 @@
       }
     },
     {
-      "name": "optInToApplication",
-      "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
       "name": "updateParams",
       "args": [
         {
