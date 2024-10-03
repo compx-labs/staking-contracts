@@ -20,7 +20,7 @@ export type mbrReturn = {
   mbrPayment: uint64;
 }
 
-const MAX_STAKERS_PER_POOL = 100000;
+const MAX_STAKERS_PER_POOL = 100;
 const ASSET_HOLDING_FEE = 100000 // creation/holding fee for asset
 const ALGORAND_ACCOUNT_MIN_BALANCE = 100000
 
@@ -64,13 +64,17 @@ export class InjectedRewardsPool extends Contract {
   numRewards = GlobalStateKey<uint64>();
 
 
-  createApplication(
-    stakedAsset: uint64,
+  createApplication(adminAddress: Address): void {
+    this.adminAddress.value = adminAddress;
+  }
+
+  initApplication(stakedAsset: uint64,
     rewardAssets: StaticArray<uint64, 5>,
     minStakePeriodForRewards: uint64,
     oracleAdmin: Address,
-    adminAddress: Address
   ): void {
+    assert(this.adminAddress.value !== globals.zeroAddress, 'Admin address not set');
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
     this.stakedAssetId.value = stakedAsset;
     this.rewardAssets.value = rewardAssets;
     this.numRewards.value = rewardAssets.length;
@@ -79,7 +83,6 @@ export class InjectedRewardsPool extends Contract {
     this.oracleAdminAddress.value = oracleAdmin;
     this.stakeAssetPrice.value = 0;
     this.rewardAssetPrices.create();
-    this.adminAddress.value = adminAddress;
     this.minStakePeriodForRewards.value = minStakePeriodForRewards;
     this.injectedRewards.create();
     this.lastRewardInjectionTime.value = 0;
@@ -110,7 +113,7 @@ export class InjectedRewardsPool extends Contract {
       nonAlgoRewardMBR +
       this.costForBoxStorage(7 + len<StakeInfo>() * MAX_STAKERS_PER_POOL) +
       this.costForBoxStorage(7 + len<uint64>() * 15)
-      
+
     return {
       mbrPayment: mbr
     }

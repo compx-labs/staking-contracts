@@ -6,6 +6,18 @@
       "name": "createApplication",
       "args": [
         {
+          "name": "adminAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "initApplication",
+      "args": [
+        {
           "name": "stakedAsset",
           "type": "uint64"
         },
@@ -19,10 +31,6 @@
         },
         {
           "name": "oracleAdmin",
-          "type": "address"
-        },
-        {
-          "name": "adminAddress",
           "type": "address"
         }
       ],
