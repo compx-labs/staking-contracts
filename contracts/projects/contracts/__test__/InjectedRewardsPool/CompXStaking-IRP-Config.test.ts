@@ -10,7 +10,7 @@ const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
 
 let appClient: InjectedRewardsPoolClient;
-let admin: string;
+let admin: TransactionSignerAccount;
 let stakedAssetId: bigint;
 let rewardAssetId: bigint;
 const ONE_DAY = 86400n;
@@ -27,7 +27,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     await fixture.beforeEach();
     const { testAccount } = fixture.context;
     const { algorand } = fixture;
-    admin = testAccount.addr;
+    admin = testAccount;
 
     appClient = new InjectedRewardsPoolClient(
       {
@@ -41,20 +41,20 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
       {
         accountToFund: admin,
         fundingSource: await algokit.getDispenserAccount(algorand.client.algod, algorand.client.kmd!),
-        minSpendingBalance: algokit.algos(20),
+        minSpendingBalance: algokit.algos(100),
       },
       algorand.client.algod,
     )
 
     const stakeAssetCreate = algorand.send.assetCreate({
-      sender: admin,
+      sender: admin.addr,
       total: 999_999_999_000n,
       decimals: 6,
       assetName: 'Stake Token',
     });
     stakedAssetId = BigInt((await stakeAssetCreate).confirmation.assetIndex!);
     const rewardAssetCreate = algorand.send.assetCreate({
-      sender: admin,
+      sender: admin.addr,
       total: 999_999_999_000n,
       decimals: 6,
       assetName: 'Reward Token',
@@ -62,52 +62,66 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     rewardAssetId = BigInt((await rewardAssetCreate).confirmation.assetIndex!);
 
     await appClient.create.createApplication({
+      adminAddress: admin.addr,
+    });
+    const { appAddress } = await appClient.appClient.getAppReference();
+
+    await fixture.algorand.send.payment({
+      sender: admin.addr,
+      receiver: appAddress,
+      amount: algokit.algos(20),
+    });
+
+    await appClient.initApplication({
       stakedAsset: stakedAssetId,
       rewardAssets: [rewardAssetId, 0n, 0n, 0n, 0n],
-      oracleAdmin: admin,
-      adminAddress: admin,
+      oracleAdmin: admin.addr,
       minStakePeriodForRewards: ONE_DAY,
-    });
+    })
   });
 
   test('confirm global state on initialisation', async () => {
     const globalState = await appClient.getGlobalState();
     expect(globalState.stakeAssetPrice!.asBigInt()).toBe(0n);
     expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
-    //expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetId);
-    //expect(globalState.totalStakingWeight!.asBigInt()).toBe(0n);
-    //expect(globalState.injectedRewards!.asBigInt()).toBe(0n);
     expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
     expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(ONE_DAY);
-    expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin);
-    const { appAddress } = await appClient.appClient.getAppReference();
-    console.log('appAddress', appAddress)
-
-    await fixture.algorand.send.payment({
-      sender: admin,
-      receiver: appAddress,
-      amount: algokit.microAlgos(200000),
-    });
-
+    expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin.addr);
   });
 
   test('init storage', async () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
 
-
-
     const [mbrPayment] = await getMBRFromAppClient();
     console.log('mbrPayment', mbrPayment)
     console.log('mbrPayment as number', Number(mbrPayment))
-
     const payTxn = await algorand.transactions.payment({
-      sender: admin,
+      sender: admin.addr,
       receiver: appAddress,
-      amount: algokit.algos(Number(mbrPayment)),
+      amount: algokit.microAlgos(Number(mbrPayment)),
     });
 
-    await appClient.initStorage({ mbrPayment: payTxn }, { sendParams: { fee: algokit.algos(0.1) } });
+
+    const response = await appClient.compose()
+      .gas({}, { note: '1' })
+      .gas({}, { note: '2' })
+      .initStorage({
+        mbrPayment: {
+          transaction: payTxn,
+          signer: { signer: admin.signer, addr: admin.addr } as TransactionSignerAccount
+        },
+      },
+      {
+        sendParams: {
+          fee: algokit.algos(0.2),
+        },
+      },)
+      .execute({ populateAppCallResources: true })
+
+      console.log(response)
+
+   // await appClient.initStorage({ mbrPayment: payTxn }, { sendParams: { fee: algokit.algos(0.1) } });
     const boxNames = await appClient.appClient.getBoxNames();
     console.log('boxNames', boxNames)
   });
