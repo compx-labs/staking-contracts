@@ -216,7 +216,7 @@
       }
     },
     {
-      "name": "calulateRewards",
+      "name": "calculateShares",
       "args": [],
       "returns": {
         "type": "void"

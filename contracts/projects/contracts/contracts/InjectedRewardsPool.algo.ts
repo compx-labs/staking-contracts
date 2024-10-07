@@ -10,7 +10,6 @@ export type StakeInfo = {
   lastRewardRate: uint64
   algoAccuredRewards: uint64
   lastUpdateTime: uint64
-  algoRewardRate: uint64
   userShare: uint64
   userSharePercentage: uint64
 }
@@ -66,7 +65,6 @@ export class InjectedRewardsPool extends Contract {
   //Local State
   accruedRewards = LocalStateKey<StaticArray<uint64, 5>>({ key: 'accruedRewards' })
 
-  rewardRate = LocalStateKey<StaticArray<uint64, 5>>({ key: 'rewardRate' })
 
   createApplication(
     adminAddress: Address
@@ -315,7 +313,6 @@ export class InjectedRewardsPool extends Contract {
           lastRewardRate: 0,
           algoAccuredRewards: 0,
           lastUpdateTime: currentTimeStamp,
-          algoRewardRate: 0,
           userShare: 0,
           userSharePercentage: 0
         }
@@ -324,14 +321,14 @@ export class InjectedRewardsPool extends Contract {
         actionComplete = true;
       }
     }
-    this.calculateRewardRates();
+    this.calculateRewardShares();
   }
 
-  calulateRewards(): void {
-    this.calculateRewardRates();
+  calculateShares(): void {
+    this.calculateRewardShares();
   }
 
-  private calculateRewardRates(): void {
+  private calculateRewardShares(): void {
     for (let i = 0; i < this.stakers.value.length; i += 1) {
 
       if (globals.opcodeBudget < 300) {
@@ -357,18 +354,18 @@ export class InjectedRewardsPool extends Contract {
       staker.userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64]);
       staker.userSharePercentage = wideRatio([staker.userShare, 100], [PRECISION]);
 
-      staker.algoRewardRate = wideRatio([this.algoInjectedRewards.value, staker.userSharePercentage], [100]);
+/*       staker.algoRewardRate = wideRatio([this.algoInjectedRewards.value, staker.userSharePercentage], [100]);
       if (staker.algoRewardRate === 0) {
         staker.algoRewardRate = 1;
-      }
+      } */
 
-      for (var k = 0; k < this.rewardAssets.value.length; k += 1) {
+/*       for (var k = 0; k < this.rewardAssets.value.length; k += 1) {
         if (this.injectedRewards.value[k] === 0) continue;
         this.rewardRate(this.txn.sender).value[k] = wideRatio([this.injectedRewards.value[k], staker.userSharePercentage], [100]);
         if (this.rewardRate(this.txn.sender).value[k] === 0) {
           this.rewardRate(this.txn.sender).value[k] = 1;
         }
-      }
+      } */
 
       this.stakers.value[i] = staker;
     }
@@ -388,24 +385,26 @@ export class InjectedRewardsPool extends Contract {
         if (staker.stakeDuration < this.minStakePeriodForRewards.value) return;
 
         if (this.algoInjectedRewards.value > 0) {
-          staker.algoAccuredRewards = staker.algoAccuredRewards + staker.algoRewardRate;
-          this.algoInjectedRewards.value = this.algoInjectedRewards.value - staker.algoRewardRate;
+          const algoRewardRate = wideRatio([this.algoInjectedRewards.value, staker.userSharePercentage], [100]);
+          staker.algoAccuredRewards = staker.algoAccuredRewards + algoRewardRate;
+          this.algoInjectedRewards.value = this.algoInjectedRewards.value - algoRewardRate;
 
 
           if (this.stakedAssetId.value === 0) {
-            staker.stake = staker.stake + staker.algoRewardRate;
-            this.totalStaked.value = this.totalStaked.value + staker.algoRewardRate;
+            staker.stake = staker.stake + algoRewardRate;
+            this.totalStaked.value = this.totalStaked.value + algoRewardRate;
           }
         }
         for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
           if (this.injectedRewards.value[j] > 0) {
-            this.accruedRewards(this.txn.sender).value[j] = this.accruedRewards(this.txn.sender).value[j] + this.rewardRate(this.txn.sender).value[j];
-            this.injectedRewards.value[j] = this.injectedRewards.value[j] - this.rewardRate(this.txn.sender).value[j];
+            const rewardRate = wideRatio([this.injectedRewards.value[j], staker.userSharePercentage], [100]);
+            this.accruedRewards(this.txn.sender).value[j] = this.accruedRewards(this.txn.sender).value[j] + rewardRate;
+            this.injectedRewards.value[j] = this.injectedRewards.value[j] - rewardRate;
 
             if (this.rewardAssets.value[j] === this.stakedAssetId.value) {
               //Compound rewards
-              staker.stake = staker.stake + this.rewardRate(this.txn.sender).value[j];
-              this.totalStaked.value = this.totalStaked.value + this.rewardRate(this.txn.sender).value[j];
+              staker.stake = staker.stake + rewardRate;
+              this.totalStaked.value = this.totalStaked.value + rewardRate;
             }
           }
           staker.lastUpdateTime = globals.latestTimestamp;
@@ -430,7 +429,6 @@ export class InjectedRewardsPool extends Contract {
       lastRewardRate: 0,
       lastUpdateTime: 0,
       algoAccuredRewards: 0,
-      algoRewardRate: 0,
       userShare: 0,
       userSharePercentage: 0
     }
@@ -550,11 +548,9 @@ export class InjectedRewardsPool extends Contract {
         userShare: 0,
         userSharePercentage: 0,
         algoAccuredRewards: 0,
-        algoRewardRate: 0
       }
       this.setStaker(removedStaker);
       this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
-      this.rewardRate(this.txn.sender).value = [0, 0, 0, 0, 0];
       this.numStakers.value = this.numStakers.value - 1;
     } else {
       staker.stake = staker.stake - quantity;

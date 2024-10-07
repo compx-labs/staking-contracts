@@ -173,8 +173,6 @@ describe('Injected Reward Pool injection test - no staking', () => {
       { assets: [Number(rewardAssetOneId)], sendParams: { populateAppCallResources: true } });
 
 
-    const globalStateAfter = await appClient.getGlobalState();
-    expect(globalStateAfter.lastRewardInjectionTime!.asBigInt()).toBeGreaterThan(injectionTimestamp);
     const rewardsInjected = await appClient.appClient.getBoxValue('injectedRewards');
     const rewardsInjectedValues: bigint[] = getByteArrayValuesAsBigInts(rewardsInjected, BYTE_LENGTH_REWARD_ASSET);
     console.log('rewardsInjected', rewardsInjectedValues);

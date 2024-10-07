@@ -243,15 +243,8 @@ describe('Injected Reward Pool injection test - no staking', () => {
     const response = await appClient.compose()
       .gas({}, { note: '1' })
       .gas({}, { note: '2' })
-      .calulateRewards({}, { sendParams: { fee: algokit.algos(0.1) } })
+      .calculateShares({}, { sendParams: { fee: algokit.algos(0.1) } })
       .execute({ populateAppCallResources: true })
-
-      const stakerBox = await appClient.appClient.getBoxValue('stakers');
-      const stakerBoxValues: bigint[] = getByteArrayValuesAsBigInts(stakerBox, BYTE_LENGTH_STAKER);
-      const staker1 = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
-      const staker2 = getStakingAccount(stakerBox.slice(BYTE_LENGTH_STAKER, BYTE_LENGTH_STAKER * 2), 8);
-      console.log('staker1', staker1);
-      console.log('staker2', staker2);
 
       const response2 = await appClient.compose()
       .gas({}, { note: '1' })
@@ -259,11 +252,15 @@ describe('Injected Reward Pool injection test - no staking', () => {
       .accrueRewards({}, { sendParams: { fee: algokit.algos(0.1) } })
       .execute({ populateAppCallResources: true })
 
-
+      const stakerBox = await appClient.appClient.getBoxValue('stakers');
+      const staker1 = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
+      const staker2 = getStakingAccount(stakerBox.slice(BYTE_LENGTH_STAKER, BYTE_LENGTH_STAKER * 2), 8);
+      console.log('staker1', staker1);
+      console.log('staker2', staker2);
 
   });
 
-  /*
+  
     test('inject rewards ASA 1', async () => {
       const { algorand } = fixture;
       const { appAddress } = await appClient.appClient.getAppReference();
@@ -287,7 +284,7 @@ describe('Injected Reward Pool injection test - no staking', () => {
       expect(rewardsInjectedValues[0]).toBe(10n * 10n ** 6n);
     });
   
-  
+  /*
     test('Add Reward asset', async () => {
       const globalStateBefore = await appClient.getGlobalState();
       const rewards = await appClient.appClient.getBoxValue('rewardAssets');
