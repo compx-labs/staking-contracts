@@ -5,6 +5,7 @@ import * as algokit from '@algorandfoundation/algokit-utils';
 import { InjectedRewardsPoolClient } from '../../contracts/clients/InjectedRewardsPoolClient';
 import algosdk, { TransactionSigner } from 'algosdk';
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
+import { byteArrayToUint128, getByteArrayValuesAsBigInts } from '../utils';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
@@ -12,8 +13,10 @@ algokit.Config.configure({ populateAppCallResources: true });
 let appClient: InjectedRewardsPoolClient;
 let admin: TransactionSignerAccount;
 let stakedAssetId: bigint;
-let rewardAssetId: bigint;
+let rewardAssetOneId: bigint;
+let rewardAssetTwoId: bigint;
 const ONE_DAY = 86400n;
+const BYTE_LENGTH_REWARD_ASSET = 8;
 
 async function getMBRFromAppClient() {
   const result = await appClient.compose().getMbrForPoolCreation({}, {}).simulate({ allowUnnamedResources: true })
@@ -53,13 +56,22 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
       assetName: 'Stake Token',
     });
     stakedAssetId = BigInt((await stakeAssetCreate).confirmation.assetIndex!);
-    const rewardAssetCreate = algorand.send.assetCreate({
+
+    const rewardAssetOneCreate = algorand.send.assetCreate({
       sender: admin.addr,
       total: 999_999_999_000n,
       decimals: 6,
-      assetName: 'Reward Token',
+      assetName: 'Reward Token one',
     });
-    rewardAssetId = BigInt((await rewardAssetCreate).confirmation.assetIndex!);
+    rewardAssetOneId = BigInt((await rewardAssetOneCreate).confirmation.assetIndex!);
+
+    const rewardAssetTwoCreate = algorand.send.assetCreate({
+      sender: admin.addr,
+      total: 999_999_999_000n,
+      decimals: 6,
+      assetName: 'Reward Token two',
+    });
+    rewardAssetTwoId = BigInt((await rewardAssetTwoCreate).confirmation.assetIndex!);
 
     await appClient.create.createApplication({
       adminAddress: admin.addr,
@@ -74,7 +86,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
 
     await appClient.initApplication({
       stakedAsset: stakedAssetId,
-      rewardAssets: [rewardAssetId, 0n, 0n, 0n, 0n],
+      rewardAssets: [rewardAssetOneId, 0n, 0n, 0n, 0n],
       oracleAdmin: admin.addr,
       minStakePeriodForRewards: ONE_DAY,
     })
@@ -109,122 +121,154 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
           signer: { signer: admin.signer, addr: admin.addr } as TransactionSignerAccount
         },
       },
-      {
-        sendParams: {
-          fee: algokit.algos(0.2),
-        },
-      },)
+        {
+          sendParams: {
+            fee: algokit.algos(0.2),
+          },
+        },)
       .execute({ populateAppCallResources: true })
-
-      console.log(response)
 
     const boxNames = await appClient.appClient.getBoxNames();
     expect(boxNames.length).toBe(4);
   });
 
-  /* test.skip('updateParams', async () => {
-    await appClient.updateParams({ minStakePeriodForRewards: 2n * ONE_DAY });
+  test('update min staking period', async () => {
+    await appClient.updateMinStakePeriod({ minStakePeriodForRewards: 2n * ONE_DAY });
     const globalStateAfter = await appClient.getGlobalState();
     expect(globalStateAfter.minStakePeriodForRewards!.asBigInt()).toBe(2n * ONE_DAY);
   });
-  
-  test.skip('update params by non-admin', async () => {
-    //create new account
+
+  test('update min staking period by non-admin', async () => {
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
     await expect(
-      appClient.updateParams(
+      appClient.updateMinStakePeriod(
         { minStakePeriodForRewards: 2n * ONE_DAY },
         { sender: nonAdminAccount },
       ),
     ).rejects.toThrowError()
-  }); */
-
-  /* test.skip('opt app in', async () => {
-    const { algorand } = fixture;
-    const { appAddress } = await appClient.appClient.getAppReference();
-  
-    await algorand.send.payment({
-      sender: admin,
-      receiver: appAddress,
-      amount: algokit.algos(10),
-    });
-  
-    await appClient.optInToAsset({ asset: stakedAssetId }, { sendParams: { fee: algokit.algos(0.1) } });
-    await appClient.optInToAsset({ asset: rewardAssetId }, { sendParams: { fee: algokit.algos(0.1) } });
-  
-    const { balance: stakedAssetBalance } = await algorand.account.getAssetInformation(appAddress, stakedAssetId);
-    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
-    expect(stakedAssetBalance).toBe(0n);
-    expect(rewardAssetBalance).toBe(0n);
   });
-  
-  test('inject rewards non admin', async () => {
-    const { algorand } = fixture;
-    const { appAddress } = await appClient.appClient.getAppReference();
+
+  test('update updateTotalStakingWeight', async () => {
+    await appClient.updateTotalStakingWeight({ totalStakingWeight: 100n });
+    const globalStateAfter = await appClient.getGlobalState();
+    const tsw_ba = globalStateAfter.totalStakingWeight!.asByteArray();
+    const tsw = byteArrayToUint128(tsw_ba);
+    expect(tsw).toBe(100n);
+  });
+
+  test('update updateTotalStakingWeight by non-admin', async () => {
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-  
-    const rewardsInUnits = 100_000n * 10n ** 6n;
-    const axferTxn = await fixture.algorand.transactions.assetTransfer({
-      sender: admin,
-      receiver: appAddress,
-      assetId: rewardAssetId,
-      amount: rewardsInUnits,
-    });
-  
     await expect(
-      appClient.injectRewards(
-        { rewardTxn: axferTxn, quantity: rewardsInUnits },
+      appClient.updateTotalStakingWeight(
+        { totalStakingWeight: 100n },
         { sender: nonAdminAccount },
       ),
     ).rejects.toThrowError()
-  
-    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
-    expect(rewardAssetBalance).toBe(0n);
-    expect((await appClient.getGlobalState()).injectedRewards?.asBigInt()).toBe(0n);
-    expect((await appClient.getGlobalState()).lastRewardInjectionTime?.asBigInt()).toBe(0n);
   });
-  
-  test('inject rewards', async () => {
-    const { algorand } = fixture;
-    const { appAddress } = await appClient.appClient.getAppReference();
-    const rewardsInUnits = 100n * 10n ** 6n;
-    const axferTxn = await fixture.algorand.transactions.assetTransfer({
-      sender: admin,
-      receiver: appAddress,
-      assetId: rewardAssetId,
-      amount: rewardsInUnits,
-    });
-  
-    await appClient.injectRewards({ rewardTxn: axferTxn, quantity: rewardsInUnits }, { sendParams: { fee: algokit.algos(0.1) } });
-    const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
-    expect(rewardAssetBalance).toBe(rewardsInUnits);
-    const lastRewardInjectionAmount = (await appClient.getGlobalState()).injectedRewards!.asBigInt();
-    expect(lastRewardInjectionAmount).toBe(BigInt(rewardsInUnits));
+
+  test('Add Reward asset', async () => {
+    const globalStateBefore = await appClient.getGlobalState();
+    const rewards = await appClient.appClient.getBoxValue('rewardAssets');
+    const rewardsBefore: bigint[] = getByteArrayValuesAsBigInts(rewards, BYTE_LENGTH_REWARD_ASSET);
+    
+    console.log('rewardsBefore', rewardsBefore);
+    expect (rewardsBefore[0]).toBe(rewardAssetOneId);
+    expect (rewardsBefore[1]).toBe(0n);
+    expect (rewardsBefore[2]).toBe(0n);
+    expect (rewardsBefore[3]).toBe(0n);
+    expect (rewardsBefore[4]).toBe(0n);
+
+    //Add new reward asset
+    await appClient.addRewardAsset({ rewardAssetId: rewardAssetTwoId });
+    const globalStateAfter = await appClient.getGlobalState();
+    const rewardsAfter = await appClient.appClient.getBoxValue('rewardAssets');
+    const rewardsAfterValues: bigint[] = getByteArrayValuesAsBigInts(rewardsAfter, BYTE_LENGTH_REWARD_ASSET);
+    console.log('rewardsAfter', rewardsAfterValues);
+    expect (rewardsAfterValues[0]).toBe(rewardAssetOneId);
+    expect (rewardsAfterValues[1]).toBe(rewardAssetTwoId);
+    expect (rewardsAfterValues[2]).toBe(0n);
+    expect (rewardsAfterValues[3]).toBe(0n);
+    expect (rewardsAfterValues[4]).toBe(0n);
+
+
   });
-  
-  test('set Prices', async () => {
-    await appClient.setPrices({
-      stakeTokenPrice: 1000000n,
-      rewardTokenPrice: 150000n,
-    });
-    const stakedTokenPrice = (await appClient.getGlobalState()).stakeTokenPrice!.asBigInt();
-    const rewardTokenPrice = (await appClient.getGlobalState()).rewardTokenPrice!.asBigInt();
-    expect(stakedTokenPrice).toBe(1000000n);
-    expect(rewardTokenPrice).toBe(150000n);
+
+  test('Remove Reward asset', async () => {
+    const globalStateBefore = await appClient.getGlobalState();
+    const rewards = await appClient.appClient.getBoxValue('rewardAssets');
+    const rewardsBefore: bigint[] = getByteArrayValuesAsBigInts(rewards, BYTE_LENGTH_REWARD_ASSET);
+    
+    console.log('rewardsBefore', rewardsBefore);
+    expect (rewardsBefore[0]).toBe(rewardAssetOneId);
+    expect (rewardsBefore[1]).toBe(rewardAssetTwoId);
+    expect (rewardsBefore[2]).toBe(0n);
+    expect (rewardsBefore[3]).toBe(0n);
+    expect (rewardsBefore[4]).toBe(0n);
+
+    //Add new reward asset
+    await appClient.removeRewardAsset({ rewardAssetId: rewardAssetTwoId });
+    const globalStateAfter = await appClient.getGlobalState();
+    const rewardsAfter = await appClient.appClient.getBoxValue('rewardAssets');
+    const rewardsAfterValues: bigint[] = getByteArrayValuesAsBigInts(rewardsAfter, BYTE_LENGTH_REWARD_ASSET);
+    console.log('rewardsAfter', rewardsAfterValues);
+    expect (rewardsAfterValues[0]).toBe(rewardAssetOneId);
+    expect (rewardsAfterValues[1]).toBe(0n);
+    expect (rewardsAfterValues[2]).toBe(0n);
+    expect (rewardsAfterValues[3]).toBe(0n);
+    expect (rewardsAfterValues[4]).toBe(0n);
+    
   });
-  
-  test('set Prices, non admin', async () => {
-    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await expect(
-      appClient.setPrices(
-        {
-          stakeTokenPrice: 1000000n,
-          rewardTokenPrice: 150000n,
-        },
-        { sender: nonAdminAccount },
-      ),
-    ).rejects.toThrowError();
-  }); */
+
+  /*  test('inject rewards non admin', async () => {
+     const { algorand } = fixture;
+     const { appAddress } = await appClient.appClient.getAppReference();
+     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+   
+     const rewardsInUnits = 100_000n * 10n ** 6n;
+     const axferTxn = await fixture.algorand.transactions.assetTransfer({
+       sender: admin,
+       receiver: appAddress,
+       assetId: rewardAssetId,
+       amount: rewardsInUnits,
+     });
+   
+     await expect(
+       appClient.injectRewards(
+         { rewardTxn: axferTxn, quantity: rewardsInUnits },
+         { sender: nonAdminAccount },
+       ),
+     ).rejects.toThrowError()
+   
+     const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
+     expect(rewardAssetBalance).toBe(0n);
+     expect((await appClient.getGlobalState()).injectedRewards?.asBigInt()).toBe(0n);
+     expect((await appClient.getGlobalState()).lastRewardInjectionTime?.asBigInt()).toBe(0n);
+   }); */
+
+
+  /* test('set Prices', async () => {
+     await appClient.setPrices({
+       stakeTokenPrice: 1000000n,
+       rewardTokenPrice: 150000n,
+     });
+     const stakedTokenPrice = (await appClient.getGlobalState()).stakeTokenPrice!.asBigInt();
+     const rewardTokenPrice = (await appClient.getGlobalState()).rewardTokenPrice!.asBigInt();
+     expect(stakedTokenPrice).toBe(1000000n);
+     expect(rewardTokenPrice).toBe(150000n);
+   });
+   
+   test('set Prices, non admin', async () => {
+     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+     await expect(
+       appClient.setPrices(
+         {
+           stakeTokenPrice: 1000000n,
+           rewardTokenPrice: 150000n,
+         },
+         { sender: nonAdminAccount },
+       ),
+     ).rejects.toThrowError();
+   }); */
 
   test('deleteApplication', async () => {
     await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });

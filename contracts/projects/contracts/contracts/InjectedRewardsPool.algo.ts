@@ -179,7 +179,6 @@ export class InjectedRewardsPool extends Contract {
         return;
       }
     }
-    throw new Error('Max reward assets reached');
   }
   removeRewardAsset(rewardAssetId: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can remove reward asset');
@@ -191,7 +190,6 @@ export class InjectedRewardsPool extends Contract {
         return;
       }
     }
-    throw new Error('Reward asset not found');
   }
 
   /*

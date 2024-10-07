@@ -46,11 +46,47 @@
       }
     },
     {
-      "name": "updateParams",
+      "name": "updateMinStakePeriod",
       "args": [
         {
           "name": "minStakePeriodForRewards",
           "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateTotalStakingWeight",
+      "args": [
+        {
+          "name": "totalStakingWeight",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateAdminAddress",
+      "args": [
+        {
+          "name": "adminAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateOracleAdminAddress",
+      "args": [
+        {
+          "name": "oracleAdminAddress",
+          "type": "address"
         }
       ],
       "returns": {
@@ -70,6 +106,30 @@
         {
           "name": "mbrPayment",
           "type": "pay"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "addRewardAsset",
+      "args": [
+        {
+          "name": "rewardAssetId",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "removeRewardAsset",
+      "args": [
+        {
+          "name": "rewardAssetId",
+          "type": "uint64"
         }
       ],
       "returns": {

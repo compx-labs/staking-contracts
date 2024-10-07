@@ -8,3 +8,11 @@ export function byteArrayToUint128(byteArray: Uint8Array): bigint {
   
     return result;
   }
+
+  export function getByteArrayValuesAsBigInts(byteArray: Uint8Array, byteLength: number): bigint[] {
+    const values: bigint[] = [];
+    for (let i = 0; i < byteArray.length; i += byteLength) {
+      values.push(byteArrayToUint128(byteArray.slice(i, i + byteLength)));
+    }
+    return values;
+  }
