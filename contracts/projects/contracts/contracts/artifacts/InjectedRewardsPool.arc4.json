@@ -6,12 +6,24 @@
       "name": "createApplication",
       "args": [
         {
+          "name": "adminAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "initApplication",
+      "args": [
+        {
           "name": "stakedAsset",
           "type": "uint64"
         },
         {
-          "name": "rewardAsset",
-          "type": "uint64"
+          "name": "rewardAssets",
+          "type": "uint64[5]"
         },
         {
           "name": "minStakePeriodForRewards",
@@ -19,10 +31,6 @@
         },
         {
           "name": "oracleAdmin",
-          "type": "address"
-        },
-        {
-          "name": "adminAddress",
           "type": "address"
         }
       ],
@@ -38,10 +46,10 @@
       }
     },
     {
-      "name": "optInToAsset",
+      "name": "updateMinStakePeriod",
       "args": [
         {
-          "name": "asset",
+          "name": "minStakePeriodForRewards",
           "type": "uint64"
         }
       ],
@@ -50,10 +58,77 @@
       }
     },
     {
-      "name": "updateParams",
+      "name": "updateTotalStakingWeight",
       "args": [
         {
-          "name": "minStakePeriodForRewards",
+          "name": "totalStakingWeight",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateAdminAddress",
+      "args": [
+        {
+          "name": "adminAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateOracleAdminAddress",
+      "args": [
+        {
+          "name": "oracleAdminAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "getMBRForPoolCreation",
+      "args": [],
+      "returns": {
+        "type": "(uint64)"
+      }
+    },
+    {
+      "name": "initStorage",
+      "args": [
+        {
+          "name": "mbrPayment",
+          "type": "pay"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "addRewardAsset",
+      "args": [
+        {
+          "name": "rewardAssetId",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "removeRewardAsset",
+      "args": [
+        {
+          "name": "rewardAssetId",
           "type": "uint64"
         }
       ],
@@ -67,6 +142,26 @@
         {
           "name": "rewardTxn",
           "type": "axfer"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
+        },
+        {
+          "name": "rewardAssetId",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "injectAlgoRewards",
+      "args": [
+        {
+          "name": "payTxn",
+          "type": "pay"
         },
         {
           "name": "quantity",
@@ -88,11 +183,15 @@
       "name": "setPrices",
       "args": [
         {
-          "name": "stakeTokenPrice",
+          "name": "stakeAssetPrice",
           "type": "uint64"
         },
         {
-          "name": "rewardTokenPrice",
+          "name": "rewardTokenPrices",
+          "type": "uint64[5]"
+        },
+        {
+          "name": "algoPrice",
           "type": "uint64"
         }
       ],
@@ -117,41 +216,15 @@
       }
     },
     {
-      "name": "updateRewardRate",
-      "args": [
-        {
-          "name": "userAddress",
-          "type": "address"
-        }
-      ],
+      "name": "calculateShares",
+      "args": [],
       "returns": {
         "type": "void"
       }
     },
     {
       "name": "accrueRewards",
-      "args": [
-        {
-          "name": "userAddress",
-          "type": "address"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "restake",
-      "args": [
-        {
-          "name": "stakeTxn",
-          "type": "axfer"
-        },
-        {
-          "name": "quantity",
-          "type": "uint64"
-        }
-      ],
+      "args": [],
       "returns": {
         "type": "void"
       }
@@ -171,6 +244,13 @@
           "type": "uint64"
         }
       ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "gas",
+      "args": [],
       "returns": {
         "type": "void"
       }

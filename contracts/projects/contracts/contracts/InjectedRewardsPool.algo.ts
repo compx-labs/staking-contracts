@@ -1,127 +1,256 @@
 import { Contract } from '@algorandfoundation/tealscript';
 const PRECISION = 1_000_000_000_000_000;
 
+export type StakeInfo = {
+  account: Address
+  stake: uint64
+  stakeDuration: uint64
+  stakeStartTime: uint64
+  userStakingWeight: uint64
+  lastRewardRate: uint64
+  algoAccuredRewards: uint64
+  lastUpdateTime: uint64
+  userShare: uint64
+  userSharePercentage: uint64
+}
+export type mbrReturn = {
+  mbrPayment: uint64;
+}
+
+const MAX_STAKERS_PER_POOL = 100;
+const ASSET_HOLDING_FEE = 100000 // creation/holding fee for asset
+const ALGORAND_ACCOUNT_MIN_BALANCE = 100000
+
+
 export class InjectedRewardsPool extends Contract {
   programVersion = 9;
 
 
   //Global State
+
+  stakers = BoxKey<StaticArray<StakeInfo, typeof MAX_STAKERS_PER_POOL>>({ key: 'stakers' })
+
   stakedAssetId = GlobalStateKey<uint64>();
 
-  rewardAssetId = GlobalStateKey<uint64>();
+  rewardAssets = BoxKey<StaticArray<uint64, 5>>({ key: 'rewardAssets' })
 
   minStakePeriodForRewards = GlobalStateKey<uint64>();
 
   totalStaked = GlobalStateKey<uint64>();
 
-  injectedRewards = GlobalStateKey<uint64>();
+  algoInjectedRewards = GlobalStateKey<uint64>();
+
+  injectedRewards = BoxKey<StaticArray<uint64, 5>>({ key: 'injectedRewards' })
 
   lastRewardInjectionTime = GlobalStateKey<uint64>();
 
-  lastInjectedRewards = GlobalStateKey<uint64>();
-
-  totalRewardsInjected = GlobalStateKey<uint64>();
-
   totalStakingWeight = GlobalStateKey<uint128>();
 
-  stakeTokenPrice = GlobalStateKey<uint64>();
+  stakeAssetPrice = GlobalStateKey<uint64>();
 
-  rewardTokenPrice = GlobalStateKey<uint64>();
+  algoPrice = GlobalStateKey<uint64>();
+
+  rewardAssetPrices = BoxKey<StaticArray<uint64, 5>>({ key: 'rewardAssetPrices' })
 
   oracleAdminAddress = GlobalStateKey<Address>();
 
   adminAddress = GlobalStateKey<Address>();
 
+  minimumBalance = GlobalStateKey<uint64>();
+
+  numRewards = GlobalStateKey<uint64>();
+
+  numStakers = GlobalStateKey<uint64>();
+
   //Local State
-  staked = LocalStateKey<uint64>();
+  accruedRewards = LocalStateKey<StaticArray<uint64, 5>>({ key: 'accruedRewards' })
 
-  stakeDuration = LocalStateKey<uint64>();
-
-  stakeStartTime = LocalStateKey<uint64>();
-
-  userStakingWeight = LocalStateKey<uint64>();
-
-  lastRewardRate = LocalStateKey<uint64>();
-
-  accruedRewards = LocalStateKey<uint64>();
-
-  lastUpdateTime = LocalStateKey<uint64>();
-
-  rewardRate = LocalStateKey<uint64>();
-
-  useShare = LocalStateKey<uint64>();
-
-  userSharePercentage = LocalStateKey<uint64>();
 
   createApplication(
-    stakedAsset: uint64,
-    rewardAsset: uint64,
-    minStakePeriodForRewards: uint64,
-    oracleAdmin: Address,
     adminAddress: Address
   ): void {
+    this.adminAddress.value = adminAddress;
+  }
+
+  initApplication(stakedAsset: uint64,
+    rewardAssets: StaticArray<uint64, 5>,
+    minStakePeriodForRewards: uint64,
+    oracleAdmin: Address,): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
+
     this.stakedAssetId.value = stakedAsset;
-    this.rewardAssetId.value = rewardAsset;
+    this.rewardAssets.value = rewardAssets;
+    this.numRewards.value = rewardAssets.length;
     this.totalStaked.value = 0;
     this.totalStakingWeight.value = 0 as uint128;
     this.oracleAdminAddress.value = oracleAdmin;
-    this.stakeTokenPrice.value = 0;
-    this.rewardTokenPrice.value = 0;
-    this.adminAddress.value = adminAddress;
+    this.stakeAssetPrice.value = 0;
+    this.rewardAssetPrices.create();
     this.minStakePeriodForRewards.value = minStakePeriodForRewards;
-    this.injectedRewards.value = 0;
+    this.injectedRewards.create();
     this.lastRewardInjectionTime.value = 0;
+
+    sendAssetTransfer({
+      xferAsset: AssetID.fromUint64(stakedAsset),
+      assetReceiver: this.app.address,
+      assetAmount: 0,
+    })
 
   }
 
   optInToApplication(): void {
-    this.staked(this.txn.sender).value = 0;
-    this.stakeStartTime(this.txn.sender).value = 0;
-    this.stakeDuration(this.txn.sender).value = 0;
-    this.userStakingWeight(this.txn.sender).value = 0;
-    this.accruedRewards(this.txn.sender).value = 0;
-    this.lastUpdateTime(this.txn.sender).value = 0;
-    this.rewardRate(this.txn.sender).value = 0;
-    this.useShare(this.txn.sender).value = 0;
-    this.userSharePercentage(this.txn.sender).value = 0;
-  }
-
-  optInToAsset(asset: AssetID): void {
-    assert(this.txn.sender === this.app.creator);
-
-    sendAssetTransfer({
-      xferAsset: asset,
-      assetAmount: 0,
-      assetReceiver: this.app.address,
-      sender: this.app.address,
-    });
+    this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
   }
 
   //ADMIN FUNCTIONS
-  updateParams(minStakePeriodForRewards: uint64): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update params');
+  updateMinStakePeriod(minStakePeriodForRewards: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update min stake period');
     this.minStakePeriodForRewards.value = minStakePeriodForRewards;
   }
+  updateTotalStakingWeight(totalStakingWeight: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update total staking weight');
+    this.totalStakingWeight.value = totalStakingWeight as uint128;
+  }
+  updateAdminAddress(adminAddress: Address): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address');
+    this.adminAddress.value = adminAddress;
+  }
+  updateOracleAdminAddress(oracleAdminAddress: Address): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update oracle admin address');
+    this.oracleAdminAddress.value = oracleAdminAddress;
+  }
 
+  private costForBoxStorage(totalNumBytes: uint64): uint64 {
+    const SCBOX_PERBOX = 2500
+    const SCBOX_PERBYTE = 400
 
-  injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64): void {
+    return SCBOX_PERBOX + totalNumBytes * SCBOX_PERBYTE
+  }
+
+  getMBRForPoolCreation(): mbrReturn {
+    let nonAlgoRewardMBR = 0;
+    for (var i = 0; i < this.rewardAssets.value.length; i += 1) {
+      if (this.rewardAssets.value[i] !== 0) {
+        nonAlgoRewardMBR += ASSET_HOLDING_FEE;
+      }
+    }
+    const mbr = ALGORAND_ACCOUNT_MIN_BALANCE +
+      nonAlgoRewardMBR +
+      this.costForBoxStorage(7 + len<StakeInfo>() * MAX_STAKERS_PER_POOL) +
+      this.costForBoxStorage(7 + len<uint64>() * 15)
+
+    return {
+      mbrPayment: mbr
+    }
+  }
+
+  initStorage(mbrPayment: PayTxn): void {
+    assert(!this.stakers.exists, 'staking pool already initialized')
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can init storage');
+
+    let nonAlgoRewardMBR = 0;
+    for (var i = 0; i < this.rewardAssets.value.length; i += 1) {
+      if (this.rewardAssets.value[i] !== 0) {
+        nonAlgoRewardMBR += ASSET_HOLDING_FEE;
+      }
+    }
+    const poolMBR = ALGORAND_ACCOUNT_MIN_BALANCE +
+      nonAlgoRewardMBR +
+      this.costForBoxStorage(7 + len<StakeInfo>() * MAX_STAKERS_PER_POOL) +
+      this.costForBoxStorage(7 + len<uint64>() * 15)
+
+    // the pay transaction must exactly match our MBR requirement.
+    verifyPayTxn(mbrPayment, { receiver: this.app.address, amount: poolMBR })
+    this.stakers.create()
+    this.minimumBalance.value = poolMBR;
+
+    if (nonAlgoRewardMBR > 0) {
+      // opt into additional reward tokens
+      for (var i = 0; i < this.rewardAssets.value.length; i += 1) {
+        if (this.rewardAssets.value[i] !== 0) {
+          sendAssetTransfer({
+            xferAsset: AssetID.fromUint64(this.rewardAssets.value[i]),
+            assetReceiver: this.app.address,
+            assetAmount: 0,
+          })
+        }
+      }
+    }
+  }
+
+  addRewardAsset(rewardAssetId: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can add reward asset');
+    assert(rewardAssetId !== 0, 'Invalid reward asset');
+
+    for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
+      if (this.rewardAssets.value[i] === 0) {
+        this.rewardAssets.value[i] = rewardAssetId;
+        sendAssetTransfer({
+          xferAsset: AssetID.fromUint64(rewardAssetId),
+          assetReceiver: this.app.address,
+          assetAmount: 0,
+        })
+        return;
+      }
+    }
+  }
+  removeRewardAsset(rewardAssetId: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can remove reward asset');
+    assert(rewardAssetId !== 0, 'Invalid reward asset');
+
+    for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
+      if (this.rewardAssets.value[i] === rewardAssetId) {
+        this.rewardAssets.value[i] = 0;
+        this.injectedRewards.value[i] = 0;
+        this.rewardAssetPrices.value[i] = 0;
+        sendAssetTransfer({
+          xferAsset: AssetID.fromUint64(rewardAssetId),
+          assetReceiver: this.app.address,
+          assetAmount: this.app.address.assetBalance(rewardAssetId),
+          assetCloseTo: this.adminAddress.value,
+        })
+        return;
+      }
+    }
+  }
+
+  /*
+  * Inject rewards into the pool - one reward asset at a time
+  */
+  injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64, rewardAssetId: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
+    //assert(this.txn.numAssets > 1, 'Invalid number of assets');
+
+    for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
+      if (this.rewardAssets.value[i] === rewardAssetId) {
+        verifyAssetTransferTxn(rewardTxn, {
+          sender: this.adminAddress.value,
+          assetReceiver: this.app.address,
+          xferAsset: AssetID.fromUint64(rewardAssetId),
+          assetAmount: quantity,
+        });
+        this.injectedRewards.value[i] += quantity;
+        this.lastRewardInjectionTime.value = globals.latestTimestamp;
+      }
+    }
+  }
+
+  injectAlgoRewards(payTxn: PayTxn, quantity: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
 
-    verifyAssetTransferTxn(rewardTxn, {
-      sender: this.app.creator,
-      assetReceiver: this.app.address,
-      xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-      assetAmount: quantity,
+    verifyPayTxn(payTxn, {
+      receiver: this.app.address,
+      amount: quantity,
     });
-    this.injectedRewards.value += quantity;
-    this.lastInjectedRewards.value = quantity;
+
+    this.algoInjectedRewards.value += quantity;
     this.lastRewardInjectionTime.value = globals.latestTimestamp;
-    this.totalRewardsInjected.value += quantity;
   }
+
 
   deleteApplication(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
-    assert(this.totalStaked.value === 0, 'Staked assets still exist');
+    //assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
     /* sendPayment({
       amount: (this.adminAddress.value.balance - this.adminAddress.value.minBalance),
@@ -131,13 +260,17 @@ export class InjectedRewardsPool extends Contract {
     }); */
   }
 
-  setPrices(stakeTokenPrice: uint64, rewardTokenPrice: uint64): void {
+  /*
+  * Set prices for the stake token and reward tokens
+  */
+  setPrices(stakeAssetPrice: uint64, rewardTokenPrices: StaticArray<uint64, 5>, algoPrice: uint64): void {
     assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices');
-    assert(stakeTokenPrice > 0, 'Invalid stake token price');
-    assert(rewardTokenPrice > 0, 'Invalid reward token price');
+    assert(stakeAssetPrice > 0, 'Invalid stake token price');
+    assert(rewardTokenPrices.length === this.numRewards.value, 'Invalid number of reward token prices');
 
-    this.stakeTokenPrice.value = stakeTokenPrice;
-    this.rewardTokenPrice.value = rewardTokenPrice;
+    this.stakeAssetPrice.value = stakeAssetPrice;
+    this.rewardAssetPrices.value = rewardTokenPrices;
+    this.algoPrice.value = algoPrice;
   }
 
   stake(
@@ -145,9 +278,6 @@ export class InjectedRewardsPool extends Contract {
     quantity: uint64,
   ): void {
     const currentTimeStamp = globals.latestTimestamp;
-    assert(this.stakeTokenPrice.value > 0, 'Stake token price not set');
-    assert(this.rewardTokenPrice.value > 0, 'Reward token price not set');
-    assert(this.staked(this.txn.sender).value === 0, 'User already staked, use Restake method instead');
     assert(quantity > 0, 'Invalid quantity');
 
     verifyAssetTransferTxn(stakeTxn, {
@@ -156,184 +286,273 @@ export class InjectedRewardsPool extends Contract {
       xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
       assetAmount: quantity,
     });
-    this.staked(this.txn.sender).value = stakeTxn.assetAmount;
+    let actionComplete: boolean = false;
+    for (let i = 0; i < this.stakers.value.length; i += 1) {
+      if (actionComplete) break;
 
-    this.calculateRewardRate(this.txn.sender);
-    this.totalStaked.value += this.staked(this.txn.sender).value;
-    this.stakeStartTime(this.txn.sender).value = currentTimeStamp;
-    this.lastUpdateTime(this.txn.sender).value = currentTimeStamp;
-    this.accruedRewards(this.txn.sender).value = 0;
-  }
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
+      const staker = clone(this.stakers.value[i])
 
-  //called after any user stake, unstake or restake
-  updateRewardRate(userAddress: Address): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update rewards rates');
+      if (staker.account === this.txn.sender) {
+        staker.stake += stakeTxn.assetAmount
+        this.stakers.value[i] = staker
+        actionComplete = true;
 
-    this.stakeDuration(userAddress).value = globals.latestTimestamp - this.stakeStartTime(userAddress).value;
-    assert(this.stakeDuration(userAddress).value >= this.minStakePeriodForRewards.value, 'User has not staked for minimum period');
-    this.calculateRewardRate(userAddress);
-  }
+      } else if (staker.account === globals.zeroAddress) {
 
-  private calculateRewardRate(userAddress: Address): void {
-    if (this.userStakingWeight(userAddress).value > 0) {
-      this.totalStakingWeight.value -= this.userStakingWeight(userAddress).value as uint128;
+        this.totalStaked.value += stakeTxn.assetAmount;
+
+        this.stakers.value[i] = {
+          account: this.txn.sender,
+          stake: stakeTxn.assetAmount,
+          stakeDuration: 0,
+          stakeStartTime: currentTimeStamp,
+          userStakingWeight: 0,
+          lastRewardRate: 0,
+          algoAccuredRewards: 0,
+          lastUpdateTime: currentTimeStamp,
+          userShare: 0,
+          userSharePercentage: 0
+        }
+
+        this.numStakers.value = this.numStakers.value + 1;
+        actionComplete = true;
+      }
     }
-    const userStakingWeight = (wideRatio([this.staked(userAddress).value, this.stakeTokenPrice.value], [this.rewardTokenPrice.value])) / 2;
-    this.totalStakingWeight.value += userStakingWeight as uint128
-    this.userStakingWeight(userAddress).value = userStakingWeight;
+    this.calculateRewardShares();
+  }
 
-    const userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64]);
-    this.useShare(userAddress).value = userShare;
-    const userSharePercentage = wideRatio([userShare, 100], [PRECISION]);
-    this.userSharePercentage(userAddress).value = userSharePercentage;
+  calculateShares(): void {
+    this.calculateRewardShares();
+  }
 
-    const availableRewards = this.injectedRewards.value > 0 ? this.injectedRewards.value : this.lastInjectedRewards.value;
+  private calculateRewardShares(): void {
+    for (let i = 0; i < this.stakers.value.length; i += 1) {
 
-    this.rewardRate(userAddress).value = wideRatio([availableRewards, userSharePercentage], [100]);
-    if (this.rewardRate(userAddress).value === 0) {
-      this.rewardRate(userAddress).value = 10;
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
+      const staker = clone(this.stakers.value[i])
+      if (staker.account === globals.zeroAddress) continue;
+
+      if (staker.userStakingWeight > 0) {
+        this.totalStakingWeight.value = this.totalStakingWeight.value - (staker.userStakingWeight as uint128);
+      }
+      let userStakingWeight = 0;
+
+      userStakingWeight = staker.stake;
+
+      staker.userStakingWeight = userStakingWeight;
+      this.totalStakingWeight.value = this.totalStakingWeight.value + (userStakingWeight as uint128);
+
+      staker.userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64]);
+      staker.userSharePercentage = wideRatio([staker.userShare, 100], [PRECISION]);
+
+      this.stakers.value[i] = staker;
     }
   }
 
 
-  accrueRewards(userAddress: Address): void {
-    assert(this.staked(userAddress).value > 0, 'User has no staked assets');
-    assert(this.stakeStartTime(userAddress).value > 0, 'User has not staked assets');
-    this.stakeDuration(userAddress).value = globals.latestTimestamp - this.stakeStartTime(userAddress).value;
-    assert(this.stakeDuration(userAddress).value >= this.minStakePeriodForRewards.value, 'User has not staked for minimum period');
-
-    this.accruedRewards(userAddress).value += this.rewardRate(userAddress).value;
-    this.injectedRewards.value -= this.rewardRate(userAddress).value;
-    this.lastUpdateTime(userAddress).value = globals.latestTimestamp;
-
-    if (this.rewardAssetId.value === this.stakedAssetId.value) {
-      //Compound rewards
-      this.staked(userAddress).value += this.rewardRate(userAddress).value;
-      this.totalStaked.value += this.rewardRate(userAddress).value;
+  accrueRewards(): void {
+    const algoRewards = this.algoInjectedRewards.value;
+    const additionalRewards: uint64[] = [];
+    for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
+      additionalRewards.push(this.injectedRewards.value[i]);
     }
+    for (let i = 0; i < this.stakers.value.length; i += 1) {
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
+      const staker = clone(this.stakers.value[i])
+      if (staker.account === globals.zeroAddress) continue;
 
+      if (staker.stake > 0) {
+        staker.stakeDuration = globals.latestTimestamp - staker.stakeStartTime;
+        if (staker.stakeDuration < this.minStakePeriodForRewards.value) return;
+
+        if (this.algoInjectedRewards.value > 0) {
+          const algoRewardRate = wideRatio([algoRewards, staker.userSharePercentage], [100]);
+          staker.algoAccuredRewards = staker.algoAccuredRewards + algoRewardRate;
+          this.algoInjectedRewards.value = this.algoInjectedRewards.value - algoRewardRate;
+
+
+          if (this.stakedAssetId.value === 0) {
+            staker.stake = staker.stake + algoRewardRate;
+            this.totalStaked.value = this.totalStaked.value + algoRewardRate;
+          }
+        }
+        for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
+          if (this.injectedRewards.value[j] > 0) {
+            const rewardRate = wideRatio([additionalRewards[j], staker.userSharePercentage], [100]);
+
+            this.accruedRewards(staker.account).value[j] = this.accruedRewards(staker.account).value[j] + rewardRate;
+
+            this.injectedRewards.value[j] = this.injectedRewards.value[j] - rewardRate;
+
+            if (this.rewardAssets.value[j] === this.stakedAssetId.value) {
+              //Compound rewards
+              staker.stake = staker.stake + rewardRate;
+              this.totalStaked.value = this.totalStaked.value + rewardRate;
+            }
+          }
+          staker.lastUpdateTime = globals.latestTimestamp;
+          this.stakers.value[i] = staker;
+        }
+      }
+    }
   }
 
-  restake(stakeTxn: AssetTransferTxn, quantity: uint64): void {
-    assert(quantity > 0, 'Invalid quantity');
-
-    verifyAssetTransferTxn(stakeTxn, {
-      sender: this.txn.sender,
-      assetReceiver: this.app.address,
-      xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
-      assetAmount: quantity,
-    });
-    this.staked(this.txn.sender).value += stakeTxn.assetAmount;
-    this.totalStaked.value += stakeTxn.assetAmount;
-    //reset start time
-    this.stakeStartTime(this.txn.sender).value = globals.latestTimestamp;
-    this.stakeDuration(this.txn.sender).value = 0;
-
-    //calculate new reward rate
-    this.calculateRewardRate(this.txn.sender);
+  private getStaker(address: Address): StakeInfo {
+    for (let i = 0; i < this.stakers.value.length; i += 1) {
+      if (this.stakers.value[i].account === address) {
+        return clone(this.stakers.value[i]);
+      }
+    }
+    return {
+      account: globals.zeroAddress,
+      stake: 0,
+      stakeDuration: 0,
+      stakeStartTime: 0,
+      userStakingWeight: 0,
+      lastRewardRate: 0,
+      lastUpdateTime: 0,
+      algoAccuredRewards: 0,
+      userShare: 0,
+      userSharePercentage: 0
+    }
+  }
+  private setStaker(staker: StakeInfo): void {
+    for (let i = 0; i < this.stakers.value.length; i += 1) {
+      if (this.stakers.value[i].account === staker.account) {
+        this.stakers.value[i] = staker;
+        return;
+      }
+    }
   }
 
   claimRewards(): void {
-    assert(this.stakedAssetId.value !== this.rewardAssetId.value, 'Claim rewards not allowed for same asset');
-    assert(this.accruedRewards(this.txn.sender).value > 0, 'No accrued rewards');
-    assert(this.staked(this.txn.sender).value > 0, 'No staked assets');
-    assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets');
-    assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets');
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget()
+    }
+    const staker = this.getStaker(this.txn.sender);
 
-    if (this.accruedRewards(this.txn.sender).value > 0) {
-      if (this.rewardAssetId.value === 0) {
-        sendPayment({
-          amount: this.accruedRewards(this.txn.sender).value,
-          receiver: this.txn.sender,
-          sender: this.app.address,
-          fee: 1_000,
-        });
-      } else {
+    if (staker.algoAccuredRewards > 0) {
+      sendPayment({
+        amount: staker.algoAccuredRewards,
+        receiver: this.txn.sender,
+        sender: this.app.address,
+        fee: 1_000,
+      });
+      staker.algoAccuredRewards = 0;
+    }
+
+    for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
+      if (this.accruedRewards(this.txn.sender).value[j] > 0) {
         sendAssetTransfer({
-          xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+          xferAsset: AssetID.fromUint64(this.rewardAssets.value[j]),
           assetReceiver: this.txn.sender,
-          assetAmount: this.accruedRewards(this.txn.sender).value,
           sender: this.app.address,
+          assetAmount: this.accruedRewards(this.txn.sender).value[j],
           fee: 1_000,
         });
       }
+      this.accruedRewards(this.txn.sender).value[j] = 0;
+
     }
-    this.accruedRewards(this.txn.sender).value = 0;
+
+    staker.lastUpdateTime = globals.latestTimestamp;
+    this.setStaker(staker);
 
   }
 
   unstake(quantity: uint64): void {
-    assert(this.staked(this.txn.sender).value > 0, 'No staked assets');
-    assert(this.stakeStartTime(this.txn.sender).value > 0, 'User has not staked assets');
-    assert(this.stakeDuration(this.txn.sender).value > 0, 'User has not staked assets');
 
-    if (this.stakedAssetId.value === this.rewardAssetId.value) {
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget()
+    }
+
+    const staker = this.getStaker(this.txn.sender);
+
+    assert(staker.account !== globals.zeroAddress, 'Invalid staker');
+    assert(staker.stake > 0, 'No staked assets');
+
+    if (staker.stake > 0) {
       if (this.stakedAssetId.value === 0) {
         sendPayment({
-          amount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
+          amount: quantity === 0 ? staker.stake : quantity,
           receiver: this.txn.sender,
           sender: this.app.address,
           fee: 1_000,
         });
-      } else {
+      }
+      else {
         sendAssetTransfer({
           xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
           assetReceiver: this.txn.sender,
           sender: this.app.address,
-          assetAmount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
+          assetAmount: quantity === 0 ? staker.stake : quantity,
           fee: 1_000,
         });
       }
-    } else {
+    }
 
-      if (this.stakedAssetId.value === 0) {
-        sendPayment({
-          amount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
-          receiver: this.txn.sender,
-          sender: this.app.address,
-          fee: 1_000,
-        });
-      } else {
+    //check for algo rewards
+    if (staker.algoAccuredRewards > 0) {
+      sendPayment({
+        amount: staker.algoAccuredRewards,
+        receiver: this.txn.sender,
+        sender: this.app.address,
+        fee: 1_000,
+      });
+      staker.algoAccuredRewards = 0;
+    }
+    //check other rewards
+    for (let j = 0; j < this.rewardAssets.value.length; j += 1) {
+      if (this.accruedRewards(this.txn.sender).value[j] > 0) {
         sendAssetTransfer({
-          xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
+          xferAsset: AssetID.fromUint64(this.rewardAssets.value[j]),
           assetReceiver: this.txn.sender,
           sender: this.app.address,
-          assetAmount: quantity === 0 ? this.staked(this.txn.sender).value : quantity,
+          assetAmount: this.accruedRewards(this.txn.sender).value[j],
           fee: 1_000,
         });
-      }
-      if (this.accruedRewards(this.txn.sender).value > 0) {
-        if (this.rewardAssetId.value === 0) {
-          sendPayment({
-            amount: this.accruedRewards(this.txn.sender).value,
-            receiver: this.txn.sender,
-            sender: this.app.address,
-            fee: 1_000,
-          });
-        } else {
-          sendAssetTransfer({
-            xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-            assetReceiver: this.txn.sender,
-            assetAmount: this.accruedRewards(this.txn.sender).value,
-            sender: this.app.address,
-            fee: 1_000,
-          });
-        }
+        this.accruedRewards(this.txn.sender).value[j] = 0;
       }
     }
 
     // Update the total staking weight
-    this.totalStakingWeight.value -= this.userStakingWeight(this.txn.sender).value as uint128;
-    this.totalStaked.value -= this.staked(this.txn.sender).value;
+    this.totalStakingWeight.value = this.totalStakingWeight.value - (staker.userStakingWeight as uint128);
+    this.totalStaked.value = this.totalStaked.value - staker.stake;
 
-    this.staked(this.txn.sender).value = 0;
-    this.accruedRewards(this.txn.sender).value = 0;
-    this.rewardRate(this.txn.sender).value = 0;
-    this.userStakingWeight(this.txn.sender).value = 0;
-    this.stakeDuration(this.txn.sender).value = 0;
-    this.stakeStartTime(this.txn.sender).value = 0;
+    if (quantity === 0) {
+      const removedStaker: StakeInfo = {
+        account: globals.zeroAddress,
+        stake: 0,
+        stakeDuration: 0,
+        stakeStartTime: 0,
+        userStakingWeight: 0,
+        lastRewardRate: 0,
+        lastUpdateTime: 0,
+        userShare: 0,
+        userSharePercentage: 0,
+        algoAccuredRewards: 0,
+      }
+      this.setStaker(removedStaker);
+      this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
+      this.numStakers.value = this.numStakers.value - 1;
+    } else {
+      staker.stake = staker.stake - quantity;
+      this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
+    }
+    staker.lastUpdateTime = globals.latestTimestamp;
+    this.setStaker(staker);
   }
 
+
+  gas(): void { }
 }
+
 
 
