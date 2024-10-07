@@ -298,7 +298,7 @@ describe('Injected Reward Pool injection test - no staking', () => {
     }
   });
 
-  /*
+  
     test('Add Reward asset', async () => {
       const globalStateBefore = await appClient.getGlobalState();
       const rewards = await appClient.appClient.getBoxValue('rewardAssets');
@@ -347,7 +347,16 @@ describe('Injected Reward Pool injection test - no staking', () => {
       const rewardsInjectedValues: bigint[] = getByteArrayValuesAsBigInts(rewardsInjected, BYTE_LENGTH_REWARD_ASSET);
       console.log('rewardsInjected', rewardsInjectedValues);
       expect(rewardsInjectedValues[1]).toBe(10n * 10n ** 6n);
-    }); */
+
+      await accreRewards();
+
+      for (var staker of stakingAccounts) {
+        const localState = await appClient.getLocalState(staker.account!.addr);
+        const accruedRewards = localState.accruedRewards!.asByteArray();
+        const accruedRewardsValues: bigint[] = getByteArrayValuesAsBigInts(accruedRewards, BYTE_LENGTH_REWARD_ASSET);
+        console.log('accruedRewards', staker.account?.addr, accruedRewardsValues);
+      }
+    }); 
 
   test('deleteApplication', async () => {
     await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });
