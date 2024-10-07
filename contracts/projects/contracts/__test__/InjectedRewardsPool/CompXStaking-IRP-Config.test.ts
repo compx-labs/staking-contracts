@@ -15,6 +15,7 @@ let admin: TransactionSignerAccount;
 let stakedAssetId: bigint;
 let rewardAssetOneId: bigint;
 let rewardAssetTwoId: bigint;
+let rewardAssetThreeId: bigint;
 const ONE_DAY = 86400n;
 const BYTE_LENGTH_REWARD_ASSET = 8;
 
@@ -72,6 +73,14 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
       assetName: 'Reward Token two',
     });
     rewardAssetTwoId = BigInt((await rewardAssetTwoCreate).confirmation.assetIndex!);
+
+    const rewardAssetThreeCreate = algorand.send.assetCreate({
+      sender: admin.addr,
+      total: 999_999_999_000n,
+      decimals: 6,
+      assetName: 'Reward Token three',
+    });
+    rewardAssetThreeId = BigInt((await rewardAssetThreeCreate).confirmation.assetIndex!);
 
     await appClient.create.createApplication({
       adminAddress: admin.addr,
@@ -191,6 +200,70 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     expect (rewardsAfterValues[4]).toBe(0n);
 
 
+  });
+
+  test('Add reward Asset by non-admin', async () => {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+
+    const rewards = await appClient.appClient.getBoxValue('rewardAssets');
+    const rewardsBefore: bigint[] = getByteArrayValuesAsBigInts(rewards, BYTE_LENGTH_REWARD_ASSET);
+    console.log('rewardsBefore', rewardsBefore);
+    expect (rewardsBefore[0]).toBe(rewardAssetOneId);
+    expect (rewardsBefore[1]).toBe(rewardAssetTwoId);
+    expect (rewardsBefore[2]).toBe(0n);
+    expect (rewardsBefore[3]).toBe(0n);
+    expect (rewardsBefore[4]).toBe(0n);
+
+    await expect(
+      appClient.addRewardAsset(
+        { rewardAssetId: rewardAssetThreeId },
+        { sender: nonAdminAccount },
+      ),
+    ).rejects.toThrowError()
+
+    const rewardsAfter = await appClient.appClient.getBoxValue('rewardAssets');
+    const rewardsAfterValues: bigint[] = getByteArrayValuesAsBigInts(rewardsAfter, BYTE_LENGTH_REWARD_ASSET);
+    console.log('rewardsAfter', rewardsAfterValues);
+    expect (rewardsAfterValues[0]).toBe(rewardAssetOneId);
+    expect (rewardsAfterValues[1]).toBe(rewardAssetTwoId);
+    expect (rewardsAfterValues[2]).toBe(0n);
+    expect (rewardsAfterValues[3]).toBe(0n);
+    expect (rewardsAfterValues[4]).toBe(0n);
+  });
+
+  test('Remove Reward asset non admin', async () => {
+    const globalStateBefore = await appClient.getGlobalState();
+    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+    const rewards = await appClient.appClient.getBoxValue('rewardAssets');
+    const rewardsBefore: bigint[] = getByteArrayValuesAsBigInts(rewards, BYTE_LENGTH_REWARD_ASSET);
+    
+    console.log('rewardsBefore', rewardsBefore);
+    expect (rewardsBefore[0]).toBe(rewardAssetOneId);
+    expect (rewardsBefore[1]).toBe(rewardAssetTwoId);
+    expect (rewardsBefore[2]).toBe(0n);
+    expect (rewardsBefore[3]).toBe(0n);
+    expect (rewardsBefore[4]).toBe(0n);
+
+    //Add new reward asset
+    await expect(
+      appClient.removeRewardAsset(
+        { rewardAssetId: rewardAssetTwoId },
+        { sender: nonAdminAccount },
+      ),
+    ).rejects.toThrowError();
+
+    const globalStateAfter = await appClient.getGlobalState();
+    const rewardsAfter = await appClient.appClient.getBoxValue('rewardAssets');
+    const rewardsAfterValues: bigint[] = getByteArrayValuesAsBigInts(rewardsAfter, BYTE_LENGTH_REWARD_ASSET);
+    console.log('rewardsAfter', rewardsAfterValues);
+    expect (rewardsAfterValues[0]).toBe(rewardAssetOneId);
+    expect (rewardsAfterValues[1]).toBe(rewardAssetTwoId);
+    expect (rewardsAfterValues[2]).toBe(0n);
+    expect (rewardsAfterValues[3]).toBe(0n);
+    expect (rewardsAfterValues[4]).toBe(0n);
+    
   });
 
   test('Remove Reward asset', async () => {
