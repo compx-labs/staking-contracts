@@ -322,32 +322,6 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     ).rejects.toThrowError();
   });
 
-  /*  test('inject rewards non admin', async () => {
-     const { algorand } = fixture;
-     const { appAddress } = await appClient.appClient.getAppReference();
-     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-   
-     const rewardsInUnits = 100_000n * 10n ** 6n;
-     const axferTxn = await fixture.algorand.transactions.assetTransfer({
-       sender: admin,
-       receiver: appAddress,
-       assetId: rewardAssetId,
-       amount: rewardsInUnits,
-     });
-   
-     await expect(
-       appClient.injectRewards(
-         { rewardTxn: axferTxn, quantity: rewardsInUnits },
-         { sender: nonAdminAccount },
-       ),
-     ).rejects.toThrowError()
-   
-     const { balance: rewardAssetBalance } = await algorand.account.getAssetInformation(appAddress, rewardAssetId);
-     expect(rewardAssetBalance).toBe(0n);
-     expect((await appClient.getGlobalState()).injectedRewards?.asBigInt()).toBe(0n);
-     expect((await appClient.getGlobalState()).lastRewardInjectionTime?.asBigInt()).toBe(0n);
-   }); */
-
   test('deleteApplication', async () => {
     await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });
   });

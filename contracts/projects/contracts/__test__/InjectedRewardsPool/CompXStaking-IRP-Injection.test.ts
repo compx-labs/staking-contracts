@@ -25,7 +25,7 @@ async function getMBRFromAppClient() {
   return result.returns![0]
 }
 
-describe('Injected Reward Pool setup/admin functions - no staking', () => {
+describe('Injected Reward Pool injection test - no staking', () => {
   beforeEach(fixture.beforeEach);
 
   beforeAll(async () => {
@@ -230,6 +230,33 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     const rewardsInjectedValues: bigint[] = getByteArrayValuesAsBigInts(rewardsInjected, BYTE_LENGTH_REWARD_ASSET);
     console.log('rewardsInjected', rewardsInjectedValues);
     expect(rewardsInjectedValues[1]).toBe(10n * 10n ** 6n);
+  });
+
+  test('Remove reward that already has balance', async () => {
+    const rewards = await appClient.appClient.getBoxValue('rewardAssets');
+    const rewardsBefore: bigint[] = getByteArrayValuesAsBigInts(rewards, BYTE_LENGTH_REWARD_ASSET);
+    
+    console.log('rewardsBefore', rewardsBefore);
+    expect (rewardsBefore[0]).toBe(rewardAssetOneId);
+    expect (rewardsBefore[1]).toBe(rewardAssetTwoId);
+    expect (rewardsBefore[2]).toBe(0n);
+    expect (rewardsBefore[3]).toBe(0n);
+    expect (rewardsBefore[4]).toBe(0n);
+
+    //Add new reward asset
+    await appClient.removeRewardAsset({ rewardAssetId: rewardAssetTwoId }, {sendParams: {fee: algokit.algos(0.11)}});
+    const globalStateAfter = await appClient.getGlobalState();
+    const rewardsAfter = await appClient.appClient.getBoxValue('rewardAssets');
+    const rewardsAfterValues: bigint[] = getByteArrayValuesAsBigInts(rewardsAfter, BYTE_LENGTH_REWARD_ASSET);
+    console.log('rewardsAfter', rewardsAfterValues);
+    expect (rewardsAfterValues[0]).toBe(rewardAssetOneId);
+    expect (rewardsAfterValues[1]).toBe(0n);
+    expect (rewardsAfterValues[2]).toBe(0n);
+    expect (rewardsAfterValues[3]).toBe(0n);
+    expect (rewardsAfterValues[4]).toBe(0n);
+    const adminRewardTwoBalance = (await fixture.algorand.account.getAssetInformation(admin.addr, rewardAssetTwoId)).balance;
+    expect(adminRewardTwoBalance).toBe(999_999_999_000n);
+    
   });
   
   test('deleteApplication', async () => {

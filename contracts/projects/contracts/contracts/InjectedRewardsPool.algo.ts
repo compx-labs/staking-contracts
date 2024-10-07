@@ -192,6 +192,14 @@ export class InjectedRewardsPool extends Contract {
     for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
       if (this.rewardAssets.value[i] === rewardAssetId) {
         this.rewardAssets.value[i] = 0;
+        this.injectedRewards.value[i] = 0;
+        this.rewardAssetPrices.value[i] = 0;
+        sendAssetTransfer({
+          xferAsset: AssetID.fromUint64(rewardAssetId),
+          assetReceiver: this.app.address,
+          assetAmount: this.app.address.assetBalance(rewardAssetId),
+          assetCloseTo: this.adminAddress.value,
+        })
         return;
       }
     }
