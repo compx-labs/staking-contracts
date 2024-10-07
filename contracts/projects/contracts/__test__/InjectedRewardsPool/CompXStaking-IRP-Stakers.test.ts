@@ -18,7 +18,7 @@ let rewardAssetTwoId: bigint;
 let injectionTimestamp: bigint = 0n;
 const ONE_DAY = 86400n;
 const BYTE_LENGTH_REWARD_ASSET = 8;
-const BYTE_LENGTH_STAKER = 112;
+const BYTE_LENGTH_STAKER = 104;
 const numStakers = 2;
 let stakingAccounts: StakingAccount[] = [
   {
@@ -177,12 +177,35 @@ describe('Injected Reward Pool injection test - no staking', () => {
     const rewardsPricesAfter = await appClient.appClient.getBoxValue('rewardAssetPrices');
     const rewardsPricesAfterValues: bigint[] = getByteArrayValuesAsBigInts(rewardsPricesAfter, BYTE_LENGTH_REWARD_ASSET);
     console.log('rewardsPricesAfter', rewardsPricesAfterValues);
-    expect (rewardsPricesAfterValues[0]).toBe(140000n);
-    expect (rewardsPricesAfterValues[1]).toBe(0n);
-    expect (rewardsPricesAfterValues[2]).toBe(0n);
-    expect (rewardsPricesAfterValues[3]).toBe(0n);
-    expect (rewardsPricesAfterValues[4]).toBe(0n);
+    expect(rewardsPricesAfterValues[0]).toBe(140000n);
+    expect(rewardsPricesAfterValues[1]).toBe(0n);
+    expect(rewardsPricesAfterValues[2]).toBe(0n);
+    expect(rewardsPricesAfterValues[3]).toBe(0n);
+    expect(rewardsPricesAfterValues[4]).toBe(0n);
   });
+
+  async function accreRewards() {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+
+    const response = await appClient.compose()
+      .gas({}, { note: '1' })
+      .gas({}, { note: '2' })
+      .calculateShares({}, { sendParams: { fee: algokit.algos(0.1) } })
+      .execute({ populateAppCallResources: true })
+
+    const response2 = await appClient.compose()
+      .gas({}, { note: '1' })
+      .gas({}, { note: '2' })
+      .accrueRewards({}, { sendParams: { fee: algokit.algos(0.1) } })
+      .execute({ populateAppCallResources: true })
+
+    const stakerBox = await appClient.appClient.getBoxValue('stakers');
+    const staker1 = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
+    const staker2 = getStakingAccount(stakerBox.slice(BYTE_LENGTH_STAKER, BYTE_LENGTH_STAKER * 2), 8);
+    console.log('staker1', staker1);
+    console.log('staker2', staker2);
+  }
 
   test('staking', async () => {
     const { algorand } = fixture;
@@ -215,8 +238,14 @@ describe('Injected Reward Pool injection test - no staking', () => {
     expect(stakerBoxValues[0]).toBeGreaterThan(0n);
     expect(stakerBoxValues[1]).toBeGreaterThan(0n);
     expect(stakerBoxValues[2]).toBe(0n);
-/*     const staker1 = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
-    console.log('staker1', staker1); */
+    /*     const staker1 = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
+        console.log('staker1', staker1); */
+    const response = await appClient.compose()
+      .gas({}, { note: '1' })
+      .gas({}, { note: '2' })
+      .calculateShares({}, { sendParams: { fee: algokit.algos(0.1) } })
+      .execute({ populateAppCallResources: true })
+
   });
 
   test('inject rewards algo', async () => {
@@ -233,57 +262,42 @@ describe('Injected Reward Pool injection test - no staking', () => {
     expect(globalStateAfter.lastRewardInjectionTime!.asBigInt()).toBeGreaterThan(0n);
     injectionTimestamp = globalStateAfter.lastRewardInjectionTime!.asBigInt();
     expect(globalStateAfter.algoInjectedRewards!.asBigInt()).toBe(BigInt(algokit.algos(10).microAlgos));
-  });
-  
 
-  test('accrue rewards', async () => {
+    await accreRewards();
+  });
+
+  test('inject rewards ASA 1', async () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
 
-    const response = await appClient.compose()
-      .gas({}, { note: '1' })
-      .gas({}, { note: '2' })
-      .calculateShares({}, { sendParams: { fee: algokit.algos(0.1) } })
-      .execute({ populateAppCallResources: true })
+    const axferTxn = await algorand.transactions.assetTransfer({
+      sender: admin.addr,
+      receiver: appAddress,
+      assetId: rewardAssetOneId,
+      amount: 10n * 10n ** 6n,
+    });
 
-      const response2 = await appClient.compose()
-      .gas({}, { note: '1' })
-      .gas({}, { note: '2' })
-      .accrueRewards({}, { sendParams: { fee: algokit.algos(0.1) } })
-      .execute({ populateAppCallResources: true })
+    await appClient.injectRewards({ rewardTxn: axferTxn, quantity: 10n * 10n ** 6n, rewardAssetId: rewardAssetOneId },
+      { assets: [Number(rewardAssetOneId)], sendParams: { populateAppCallResources: true } });
 
-      const stakerBox = await appClient.appClient.getBoxValue('stakers');
-      const staker1 = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
-      const staker2 = getStakingAccount(stakerBox.slice(BYTE_LENGTH_STAKER, BYTE_LENGTH_STAKER * 2), 8);
-      console.log('staker1', staker1);
-      console.log('staker2', staker2);
 
+    const globalStateAfter = await appClient.getGlobalState();
+    const rewardsInjected = await appClient.appClient.getBoxValue('injectedRewards');
+    const rewardsInjectedValues: bigint[] = getByteArrayValuesAsBigInts(rewardsInjected, BYTE_LENGTH_REWARD_ASSET);
+    console.log('rewardsInjected', rewardsInjectedValues);
+    expect(rewardsInjectedValues[0]).toBe(10n * 10n ** 6n);
+
+    await accreRewards();
+
+    //check staker rewards
+    for (var staker of stakingAccounts) {
+      const localState = await appClient.getLocalState(staker.account!.addr);
+      const accruedRewards = localState.accruedRewards!.asByteArray();
+      const accruedRewardsValues: bigint[] = getByteArrayValuesAsBigInts(accruedRewards, BYTE_LENGTH_REWARD_ASSET);
+      console.log('accruedRewards', staker.account?.addr, accruedRewardsValues);
+    }
   });
 
-  
-    test('inject rewards ASA 1', async () => {
-      const { algorand } = fixture;
-      const { appAddress } = await appClient.appClient.getAppReference();
-  
-      const axferTxn = await algorand.transactions.assetTransfer({
-        sender: admin.addr,
-        receiver: appAddress,
-        assetId: rewardAssetOneId,
-        amount: 10n * 10n ** 6n,
-      });
-  
-      await appClient.injectRewards({ rewardTxn: axferTxn, quantity: 10n * 10n ** 6n, rewardAssetId: rewardAssetOneId },
-        { assets: [Number(rewardAssetOneId)], sendParams: { populateAppCallResources: true } });
-  
-  
-      const globalStateAfter = await appClient.getGlobalState();
-      expect(globalStateAfter.lastRewardInjectionTime!.asBigInt()).toBeGreaterThan(injectionTimestamp);
-      const rewardsInjected = await appClient.appClient.getBoxValue('injectedRewards');
-      const rewardsInjectedValues: bigint[] = getByteArrayValuesAsBigInts(rewardsInjected, BYTE_LENGTH_REWARD_ASSET);
-      console.log('rewardsInjected', rewardsInjectedValues);
-      expect(rewardsInjectedValues[0]).toBe(10n * 10n ** 6n);
-    });
-  
   /*
     test('Add Reward asset', async () => {
       const globalStateBefore = await appClient.getGlobalState();
