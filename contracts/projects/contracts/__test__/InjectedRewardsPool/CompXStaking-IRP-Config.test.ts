@@ -94,14 +94,11 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     const { appAddress } = await appClient.appClient.getAppReference();
 
     const [mbrPayment] = await getMBRFromAppClient();
-    console.log('mbrPayment', mbrPayment)
-    console.log('mbrPayment as number', Number(mbrPayment))
     const payTxn = await algorand.transactions.payment({
       sender: admin.addr,
       receiver: appAddress,
       amount: algokit.microAlgos(Number(mbrPayment)),
     });
-
 
     const response = await appClient.compose()
       .gas({}, { note: '1' })
@@ -121,9 +118,8 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
 
       console.log(response)
 
-   // await appClient.initStorage({ mbrPayment: payTxn }, { sendParams: { fee: algokit.algos(0.1) } });
     const boxNames = await appClient.appClient.getBoxNames();
-    console.log('boxNames', boxNames)
+    expect(boxNames.length).toBe(4);
   });
 
   /* test.skip('updateParams', async () => {

@@ -94,9 +94,21 @@ export class InjectedRewardsPool extends Contract {
   gas(): void {}
 
   //ADMIN FUNCTIONS
-  updateParams(minStakePeriodForRewards: uint64): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update params');
+  updateMinStakePeriod(minStakePeriodForRewards: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update min stake period');
     this.minStakePeriodForRewards.value = minStakePeriodForRewards;
+  }
+  updateTotalStakingWeight(totalStakingWeight: uint64): void{
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update total staking weight');
+    this.totalStakingWeight.value = totalStakingWeight as uint128;
+  }
+  updateAdminAddress(adminAddress: Address): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address');
+    this.adminAddress.value = adminAddress;
+  }
+  updateOracleAdminAddress(oracleAdminAddress: Address): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update oracle admin address');
+    this.oracleAdminAddress.value = oracleAdminAddress;
   }
 
   private costForBoxStorage(totalNumBytes: uint64): uint64 {
@@ -157,6 +169,30 @@ export class InjectedRewardsPool extends Contract {
     }
   }
 
+  addRewardAsset(rewardAssetId: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can add reward asset');
+    assert(rewardAssetId !== 0, 'Invalid reward asset');
+
+    for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
+      if (this.rewardAssets.value[i] === 0) {
+        this.rewardAssets.value[i] = rewardAssetId;
+        return;
+      }
+    }
+    throw new Error('Max reward assets reached');
+  }
+  removeRewardAsset(rewardAssetId: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can remove reward asset');
+    assert(rewardAssetId !== 0, 'Invalid reward asset');
+
+    for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
+      if (this.rewardAssets.value[i] === rewardAssetId) {
+        this.rewardAssets.value[i] = 0;
+        return;
+      }
+    }
+    throw new Error('Reward asset not found');
+  }
 
   /*
   * Inject rewards into the pool - one reward asset at a time
