@@ -342,11 +342,6 @@ export class InjectedRewardsPool extends Contract {
       }
       let userStakingWeight = 0;
 
-      /* userStakingWeight = userStakingWeight + (wideRatio([staker.stake, this.stakeAssetPrice.value], [this.algoPrice.value]));
-      for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
-        if (this.injectedRewards.value[j] === 0) continue;
-        userStakingWeight = userStakingWeight + (wideRatio([staker.stake, this.stakeAssetPrice.value], [this.rewardAssetPrices.value[j]]));
-      } */
       userStakingWeight = staker.stake;
 
       staker.userStakingWeight = userStakingWeight;
@@ -354,19 +349,6 @@ export class InjectedRewardsPool extends Contract {
 
       staker.userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64]);
       staker.userSharePercentage = wideRatio([staker.userShare, 100], [PRECISION]);
-
-      /*       staker.algoRewardRate = wideRatio([this.algoInjectedRewards.value, staker.userSharePercentage], [100]);
-            if (staker.algoRewardRate === 0) {
-              staker.algoRewardRate = 1;
-            } */
-
-      /*       for (var k = 0; k < this.rewardAssets.value.length; k += 1) {
-              if (this.injectedRewards.value[k] === 0) continue;
-              this.rewardRate(this.txn.sender).value[k] = wideRatio([this.injectedRewards.value[k], staker.userSharePercentage], [100]);
-              if (this.rewardRate(this.txn.sender).value[k] === 0) {
-                this.rewardRate(this.txn.sender).value[k] = 1;
-              }
-            } */
 
       this.stakers.value[i] = staker;
     }
