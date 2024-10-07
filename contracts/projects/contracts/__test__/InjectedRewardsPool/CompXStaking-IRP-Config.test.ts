@@ -292,6 +292,23 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     
   });
 
+  test('set Prices', async () => {
+    await appClient.setPrices({
+      rewardTokenPrices: [140000n, 0n, 0n, 0n, 0n],
+      stakeAssetPrice: 1000000n,
+    });
+    const globalStateAfter = await appClient.getGlobalState();
+    expect(globalStateAfter.stakeAssetPrice!.asBigInt()).toBe(1000000n);
+    const rewardsPricesAfter = await appClient.appClient.getBoxValue('rewardAssetPrices');
+    const rewardsPricesAfterValues: bigint[] = getByteArrayValuesAsBigInts(rewardsPricesAfter, BYTE_LENGTH_REWARD_ASSET);
+    console.log('rewardsPricesAfter', rewardsPricesAfterValues);
+    expect (rewardsPricesAfterValues[0]).toBe(140000n);
+    expect (rewardsPricesAfterValues[1]).toBe(0n);
+    expect (rewardsPricesAfterValues[2]).toBe(0n);
+    expect (rewardsPricesAfterValues[3]).toBe(0n);
+    expect (rewardsPricesAfterValues[4]).toBe(0n);
+  });
+
   /*  test('inject rewards non admin', async () => {
      const { algorand } = fixture;
      const { appAddress } = await appClient.appClient.getAppReference();
