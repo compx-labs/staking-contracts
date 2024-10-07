@@ -309,6 +309,19 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     expect (rewardsPricesAfterValues[4]).toBe(0n);
   });
 
+  test('set prices, non admin', async () => {
+    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+    await expect(
+      appClient.setPrices(
+        {
+          rewardTokenPrices: [140000n, 0n, 0n, 0n, 0n],
+          stakeAssetPrice: 1000000n,
+        },
+        { sender: nonAdminAccount },
+      ),
+    ).rejects.toThrowError();
+  });
+
   /*  test('inject rewards non admin', async () => {
      const { algorand } = fixture;
      const { appAddress } = await appClient.appClient.getAppReference();
