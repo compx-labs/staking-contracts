@@ -176,6 +176,11 @@ export class InjectedRewardsPool extends Contract {
     for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
       if (this.rewardAssets.value[i] === 0) {
         this.rewardAssets.value[i] = rewardAssetId;
+        sendAssetTransfer({
+          xferAsset: AssetID.fromUint64(rewardAssetId),
+          assetReceiver: this.app.address,
+          assetAmount: 0,
+        })
         return;
       }
     }
@@ -197,7 +202,7 @@ export class InjectedRewardsPool extends Contract {
   */
   injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64, rewardAssetId: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
-    assert(this.txn.numAssets > 1, 'Invalid number of assets');
+    //assert(this.txn.numAssets > 1, 'Invalid number of assets');
 
     for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
       if (this.rewardAssets.value[i] === rewardAssetId) {

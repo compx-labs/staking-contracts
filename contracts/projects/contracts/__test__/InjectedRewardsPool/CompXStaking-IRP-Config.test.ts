@@ -348,31 +348,6 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
      expect((await appClient.getGlobalState()).lastRewardInjectionTime?.asBigInt()).toBe(0n);
    }); */
 
-
-  /* test('set Prices', async () => {
-     await appClient.setPrices({
-       stakeTokenPrice: 1000000n,
-       rewardTokenPrice: 150000n,
-     });
-     const stakedTokenPrice = (await appClient.getGlobalState()).stakeTokenPrice!.asBigInt();
-     const rewardTokenPrice = (await appClient.getGlobalState()).rewardTokenPrice!.asBigInt();
-     expect(stakedTokenPrice).toBe(1000000n);
-     expect(rewardTokenPrice).toBe(150000n);
-   });
-   
-   test('set Prices, non admin', async () => {
-     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-     await expect(
-       appClient.setPrices(
-         {
-           stakeTokenPrice: 1000000n,
-           rewardTokenPrice: 150000n,
-         },
-         { sender: nonAdminAccount },
-       ),
-     ).rejects.toThrowError();
-   }); */
-
   test('deleteApplication', async () => {
     await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });
   });
