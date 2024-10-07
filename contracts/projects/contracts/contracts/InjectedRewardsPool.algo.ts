@@ -90,6 +90,12 @@ export class InjectedRewardsPool extends Contract {
     this.injectedRewards.create();
     this.lastRewardInjectionTime.value = 0;
 
+    sendAssetTransfer({
+      xferAsset: AssetID.fromUint64(stakedAsset),
+      assetReceiver: this.app.address,
+      assetAmount: 0,
+    })
+
   }
   gas(): void {}
 
@@ -254,14 +260,14 @@ export class InjectedRewardsPool extends Contract {
   /*
   * Set prices for the stake token and reward tokens
   */
-  setPrices(stakeAssetPrice: uint64, rewardTokenPrices: StaticArray<uint64, 5>): void {
+  setPrices(stakeAssetPrice: uint64, rewardTokenPrices: StaticArray<uint64, 5>, algoPrice: uint64): void {
     assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices');
     assert(stakeAssetPrice > 0, 'Invalid stake token price');
     assert(rewardTokenPrices.length === this.numRewards.value, 'Invalid number of reward token prices');
 
     this.stakeAssetPrice.value = stakeAssetPrice;
     this.rewardAssetPrices.value = rewardTokenPrices;
-
+    this.algoPrice.value = algoPrice;
   }
 
   stake(
@@ -285,12 +291,13 @@ export class InjectedRewardsPool extends Contract {
         increaseOpcodeBudget()
       }
       const staker = clone(this.stakers.value[i])
+
       if (staker.account === this.txn.sender) {
         staker.stake += stakeTxn.assetAmount
         this.stakers.value[i] = staker
         actionComplete = true;
 
-      } else if (this.stakers.value[i].account === globals.zeroAddress) {
+      } else if (staker.account === globals.zeroAddress) {
 
         this.totalStaked.value += stakeTxn.assetAmount;
 
@@ -313,6 +320,11 @@ export class InjectedRewardsPool extends Contract {
         actionComplete = true;
       }
     }
+    this.calculateRewardRates();
+  }
+
+  calulateRewards(): void {
+    this.calculateRewardRates();
   }
 
   private calculateRewardRates(): void {
@@ -341,6 +353,11 @@ export class InjectedRewardsPool extends Contract {
       staker.userShare = wideRatio([userStakingWeight, PRECISION], [this.totalStakingWeight.value as uint64]);
       staker.userSharePercentage = wideRatio([staker.userShare, 100], [PRECISION]);
 
+      staker.algoRewardRate = wideRatio([this.algoInjectedRewards.value, staker.userSharePercentage], [100]);
+      if (staker.algoRewardRate === 0) {
+        staker.algoRewardRate = 1;
+      }
+
       for (var k = 0; k < this.rewardAssets.value.length; k += 1) {
         if (this.injectedRewards.value[k] === 0) continue;
         staker.rewardRate[k] = wideRatio([this.injectedRewards.value[k], staker.userSharePercentage], [100]);
@@ -355,7 +372,6 @@ export class InjectedRewardsPool extends Contract {
 
 
   accrueRewards(): void {
-    this.calculateRewardRates();
     for (let i = 0; i < this.stakers.value.length; i += 1) {
       if (globals.opcodeBudget < 300) {
         increaseOpcodeBudget()

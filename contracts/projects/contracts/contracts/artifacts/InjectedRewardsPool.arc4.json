@@ -189,6 +189,10 @@
         {
           "name": "rewardTokenPrices",
           "type": "uint64[5]"
+        },
+        {
+          "name": "algoPrice",
+          "type": "uint64"
         }
       ],
       "returns": {
@@ -207,6 +211,13 @@
           "type": "uint64"
         }
       ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "calulateRewards",
+      "args": [],
       "returns": {
         "type": "void"
       }

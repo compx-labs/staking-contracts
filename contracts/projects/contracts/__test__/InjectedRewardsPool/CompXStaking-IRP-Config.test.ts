@@ -296,6 +296,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     await appClient.setPrices({
       rewardTokenPrices: [140000n, 0n, 0n, 0n, 0n],
       stakeAssetPrice: 1000000n,
+      algoPrice: 1000000n,
     });
     const globalStateAfter = await appClient.getGlobalState();
     expect(globalStateAfter.stakeAssetPrice!.asBigInt()).toBe(1000000n);
@@ -316,6 +317,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
         {
           rewardTokenPrices: [140000n, 0n, 0n, 0n, 0n],
           stakeAssetPrice: 1000000n,
+          algoPrice: 1000000n,
         },
         { sender: nonAdminAccount },
       ),
