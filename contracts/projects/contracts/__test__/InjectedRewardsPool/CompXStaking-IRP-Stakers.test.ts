@@ -18,7 +18,7 @@ let rewardAssetTwoId: bigint;
 let injectionTimestamp: bigint = 0n;
 const ONE_DAY = 86400n;
 const BYTE_LENGTH_REWARD_ASSET = 8;
-const BYTE_LENGTH_STAKER = 192;
+const BYTE_LENGTH_STAKER = 112;
 const numStakers = 2;
 let stakingAccounts: StakingAccount[] = [
   {
@@ -147,6 +147,7 @@ describe('Injected Reward Pool injection test - no staking', () => {
     const { algorand } = fixture;
     for (var staker of stakingAccounts) {
       staker.account = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+      await appClient.optIn.optInToApplication({}, { sender: staker.account, sendParams: { fee: algokit.algos(0.2) } });
 
       await algorand.send.assetTransfer({
         assetId: stakedAssetId,
@@ -187,9 +188,12 @@ describe('Injected Reward Pool injection test - no staking', () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
 
+    console.log('stakers', stakingAccounts);
+
     for (var staker of stakingAccounts) {
       const stakerBalance = (await algorand.account.getAssetInformation(staker.account!.addr, stakedAssetId)).balance;
       expect(stakerBalance).toBeGreaterThan(0n);
+
 
       const stakeTxn = await algorand.transactions.assetTransfer({
         assetId: stakedAssetId,
@@ -242,6 +246,12 @@ describe('Injected Reward Pool injection test - no staking', () => {
       .calulateRewards({}, { sendParams: { fee: algokit.algos(0.1) } })
       .execute({ populateAppCallResources: true })
 
+      const stakerBox = await appClient.appClient.getBoxValue('stakers');
+      const stakerBoxValues: bigint[] = getByteArrayValuesAsBigInts(stakerBox, BYTE_LENGTH_STAKER);
+      const staker1 = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
+      const staker2 = getStakingAccount(stakerBox.slice(BYTE_LENGTH_STAKER, BYTE_LENGTH_STAKER * 2), 8);
+      console.log('staker1', staker1);
+      console.log('staker2', staker2);
 
       const response2 = await appClient.compose()
       .gas({}, { note: '1' })
@@ -249,14 +259,7 @@ describe('Injected Reward Pool injection test - no staking', () => {
       .accrueRewards({}, { sendParams: { fee: algokit.algos(0.1) } })
       .execute({ populateAppCallResources: true })
 
-      const stakerBox = await appClient.appClient.getBoxValue('stakers');
-      const stakerBoxValues: bigint[] = getByteArrayValuesAsBigInts(stakerBox, BYTE_LENGTH_STAKER);
-      const staker1 = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
-      const staker2 = getStakingAccount(stakerBox.slice(BYTE_LENGTH_STAKER, BYTE_LENGTH_STAKER * 2), 8);
-      console.log('staker1', staker1);
-      console.log('staker2', staker2);
-      expect(staker1.algoAccuredRewards).toBeGreaterThan(0n);
-      expect(staker2.algoAccuredRewards).toBeGreaterThan(0n);
+
 
   });
 

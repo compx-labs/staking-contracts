@@ -99,7 +99,7 @@ describe('Injected Reward Pool injection test - no staking', () => {
       rewardAssets: [rewardAssetOneId, 0n, 0n, 0n, 0n],
       oracleAdmin: admin.addr,
       minStakePeriodForRewards: ONE_DAY,
-    })
+    }, { sendParams: { fee: algokit.algos(0.2) } });
   });
 
   test('confirm global state on initialisation', async () => {

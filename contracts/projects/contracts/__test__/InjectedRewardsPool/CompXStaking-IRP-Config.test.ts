@@ -98,7 +98,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
       rewardAssets: [rewardAssetOneId, 0n, 0n, 0n, 0n],
       oracleAdmin: admin.addr,
       minStakePeriodForRewards: ONE_DAY,
-    })
+    }, { sendParams: { fee: algokit.algos(0.2) } });
   });
 
   test('confirm global state on initialisation', async () => {
@@ -188,7 +188,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     expect (rewardsBefore[4]).toBe(0n);
 
     //Add new reward asset
-    await appClient.addRewardAsset({ rewardAssetId: rewardAssetTwoId });
+    await appClient.addRewardAsset({ rewardAssetId: rewardAssetTwoId }, { sendParams: { fee: algokit.algos(0.1) }});
     const globalStateAfter = await appClient.getGlobalState();
     const rewardsAfter = await appClient.appClient.getBoxValue('rewardAssets');
     const rewardsAfterValues: bigint[] = getByteArrayValuesAsBigInts(rewardsAfter, BYTE_LENGTH_REWARD_ASSET);
@@ -279,7 +279,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     expect (rewardsBefore[4]).toBe(0n);
 
     //Add new reward asset
-    await appClient.removeRewardAsset({ rewardAssetId: rewardAssetTwoId });
+    await appClient.removeRewardAsset({ rewardAssetId: rewardAssetTwoId }, { sendParams: { fee: algokit.algos(0.1) }});
     const globalStateAfter = await appClient.getGlobalState();
     const rewardsAfter = await appClient.appClient.getBoxValue('rewardAssets');
     const rewardsAfterValues: bigint[] = getByteArrayValuesAsBigInts(rewardsAfter, BYTE_LENGTH_REWARD_ASSET);

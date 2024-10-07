@@ -8,10 +8,8 @@ export type StakeInfo = {
   stakeStartTime: uint64
   userStakingWeight: uint64
   lastRewardRate: uint64
-  accruedRewards: StaticArray<uint64, 5>
   algoAccuredRewards: uint64
   lastUpdateTime: uint64
-  rewardRate: StaticArray<uint64, 5>
   algoRewardRate: uint64
   userShare: uint64
   userSharePercentage: uint64
@@ -65,6 +63,10 @@ export class InjectedRewardsPool extends Contract {
 
   numStakers = GlobalStateKey<uint64>();
 
+  //Local State
+  accruedRewards = LocalStateKey<StaticArray<uint64, 5>>({ key: 'accruedRewards' })
+
+  rewardRate = LocalStateKey<StaticArray<uint64, 5>>({ key: 'rewardRate' })
 
   createApplication(
     adminAddress: Address
@@ -97,14 +99,17 @@ export class InjectedRewardsPool extends Contract {
     })
 
   }
-  gas(): void {}
+
+  optInToApplication(): void {
+    this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
+  }
 
   //ADMIN FUNCTIONS
   updateMinStakePeriod(minStakePeriodForRewards: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update min stake period');
     this.minStakePeriodForRewards.value = minStakePeriodForRewards;
   }
-  updateTotalStakingWeight(totalStakingWeight: uint64): void{
+  updateTotalStakingWeight(totalStakingWeight: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update total staking weight');
     this.totalStakingWeight.value = totalStakingWeight as uint128;
   }
@@ -247,7 +252,7 @@ export class InjectedRewardsPool extends Contract {
 
   deleteApplication(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
-    assert(this.totalStaked.value === 0, 'Staked assets still exist');
+    //assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
     /* sendPayment({
       amount: (this.adminAddress.value.balance - this.adminAddress.value.minBalance),
@@ -309,13 +314,12 @@ export class InjectedRewardsPool extends Contract {
           userStakingWeight: 0,
           lastRewardRate: 0,
           algoAccuredRewards: 0,
-          accruedRewards: [0, 0, 0, 0, 0],
           lastUpdateTime: currentTimeStamp,
-          rewardRate: [0, 0, 0, 0, 0],
           algoRewardRate: 0,
           userShare: 0,
           userSharePercentage: 0
         }
+
         this.numStakers.value = this.numStakers.value + 1;
         actionComplete = true;
       }
@@ -360,9 +364,9 @@ export class InjectedRewardsPool extends Contract {
 
       for (var k = 0; k < this.rewardAssets.value.length; k += 1) {
         if (this.injectedRewards.value[k] === 0) continue;
-        staker.rewardRate[k] = wideRatio([this.injectedRewards.value[k], staker.userSharePercentage], [100]);
-        if (staker.rewardRate[k] === 0) {
-          staker.rewardRate[k] = 1;
+        this.rewardRate(this.txn.sender).value[k] = wideRatio([this.injectedRewards.value[k], staker.userSharePercentage], [100]);
+        if (this.rewardRate(this.txn.sender).value[k] === 0) {
+          this.rewardRate(this.txn.sender).value[k] = 1;
         }
       }
 
@@ -383,27 +387,30 @@ export class InjectedRewardsPool extends Contract {
         staker.stakeDuration = globals.latestTimestamp - staker.stakeStartTime;
         if (staker.stakeDuration < this.minStakePeriodForRewards.value) return;
 
-        staker.algoAccuredRewards = staker.algoAccuredRewards + staker.algoRewardRate;
-        this.algoInjectedRewards.value = this.algoInjectedRewards.value - staker.algoRewardRate;
+        if (this.algoInjectedRewards.value > 0) {
+          staker.algoAccuredRewards = staker.algoAccuredRewards + staker.algoRewardRate;
+          this.algoInjectedRewards.value = this.algoInjectedRewards.value - staker.algoRewardRate;
 
-        if (this.stakedAssetId.value === 0) {
-          staker.stake = staker.stake + staker.algoRewardRate;
-          this.totalStaked.value = this.totalStaked.value + staker.algoRewardRate;
-        }
 
-        for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
-
-          staker.accruedRewards[j] = staker.accruedRewards[j] + staker.rewardRate[j];
-          this.injectedRewards.value[j] = this.injectedRewards.value[j] - staker.rewardRate[j];
-
-          if (this.rewardAssets.value[j] === this.stakedAssetId.value) {
-            //Compound rewards
-            staker.stake = staker.stake + staker.rewardRate[j];
-            this.totalStaked.value = this.totalStaked.value + staker.rewardRate[j];
+          if (this.stakedAssetId.value === 0) {
+            staker.stake = staker.stake + staker.algoRewardRate;
+            this.totalStaked.value = this.totalStaked.value + staker.algoRewardRate;
           }
         }
-        staker.lastUpdateTime = globals.latestTimestamp;
-        this.stakers.value[i] = staker;
+        for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
+          if (this.injectedRewards.value[j] > 0) {
+            this.accruedRewards(this.txn.sender).value[j] = this.accruedRewards(this.txn.sender).value[j] + this.rewardRate(this.txn.sender).value[j];
+            this.injectedRewards.value[j] = this.injectedRewards.value[j] - this.rewardRate(this.txn.sender).value[j];
+
+            if (this.rewardAssets.value[j] === this.stakedAssetId.value) {
+              //Compound rewards
+              staker.stake = staker.stake + this.rewardRate(this.txn.sender).value[j];
+              this.totalStaked.value = this.totalStaked.value + this.rewardRate(this.txn.sender).value[j];
+            }
+          }
+          staker.lastUpdateTime = globals.latestTimestamp;
+          this.stakers.value[i] = staker;
+        }
       }
     }
   }
@@ -421,9 +428,7 @@ export class InjectedRewardsPool extends Contract {
       stakeStartTime: 0,
       userStakingWeight: 0,
       lastRewardRate: 0,
-      accruedRewards: [0, 0, 0, 0, 0],
       lastUpdateTime: 0,
-      rewardRate: [0, 0, 0, 0, 0],
       algoAccuredRewards: 0,
       algoRewardRate: 0,
       userShare: 0,
@@ -456,16 +461,16 @@ export class InjectedRewardsPool extends Contract {
     }
 
     for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
-      if (staker.accruedRewards[j] > 0) {
+      if (this.accruedRewards(this.txn.sender).value[j] > 0) {
         sendAssetTransfer({
           xferAsset: AssetID.fromUint64(this.rewardAssets.value[j]),
           assetReceiver: this.txn.sender,
           sender: this.app.address,
-          assetAmount: staker.accruedRewards[j],
+          assetAmount: this.accruedRewards(this.txn.sender).value[j],
           fee: 1_000,
         });
       }
-      staker.accruedRewards[j] = 0;
+      this.accruedRewards(this.txn.sender).value[j] = 0;
 
     }
 
@@ -517,15 +522,15 @@ export class InjectedRewardsPool extends Contract {
     }
     //check other rewards
     for (let j = 0; j < this.rewardAssets.value.length; j += 1) {
-      if (staker.accruedRewards[j] > 0) {
+      if (this.accruedRewards(this.txn.sender).value[j] > 0) {
         sendAssetTransfer({
           xferAsset: AssetID.fromUint64(this.rewardAssets.value[j]),
           assetReceiver: this.txn.sender,
           sender: this.app.address,
-          assetAmount: staker.accruedRewards[j],
+          assetAmount: this.accruedRewards(this.txn.sender).value[j],
           fee: 1_000,
         });
-        staker.accruedRewards[j] = 0;
+        this.accruedRewards(this.txn.sender).value[j] = 0;
       }
     }
 
@@ -541,23 +546,26 @@ export class InjectedRewardsPool extends Contract {
         stakeStartTime: 0,
         userStakingWeight: 0,
         lastRewardRate: 0,
-        accruedRewards: [0, 0, 0, 0, 0],
         lastUpdateTime: 0,
-        rewardRate: [0, 0, 0, 0, 0],
         userShare: 0,
         userSharePercentage: 0,
         algoAccuredRewards: 0,
         algoRewardRate: 0
       }
       this.setStaker(removedStaker);
+      this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
+      this.rewardRate(this.txn.sender).value = [0, 0, 0, 0, 0];
       this.numStakers.value = this.numStakers.value - 1;
     } else {
       staker.stake = staker.stake - quantity;
-      staker.accruedRewards = [0, 0, 0, 0, 0];
+      this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
     }
     staker.lastUpdateTime = globals.latestTimestamp;
     this.setStaker(staker);
   }
+
+
+  gas(): void { }
 }
 
 

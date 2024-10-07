@@ -15,10 +15,8 @@ export type StakeInfo = {
   stakeStartTime: bigint
   userStakingWeight: bigint
   lastRewardRate: bigint
-  accruedRewards: StaticArray<bigint, 5>
   algoAccuredRewards: bigint
   lastUpdateTime: bigint
-  rewardRate: StaticArray<bigint, 5>
   algoRewardRate: bigint
   userShare: bigint
   userSharePercentage: bigint
@@ -59,15 +57,10 @@ export function getStakingAccount(byteArray: Uint8Array, byteLength: number): St
   const lastRewardRate = byteArrayToUint128(byteArray.slice(index, index + byteLength));
   index += byteLength;
 
-  const accruedRewards = getByteArrayValuesAsBigInts(byteArray.slice(index, 5 * byteLength), byteLength);
-  index += 5 * byteLength;
-
   const algoAccuredRewards = byteArrayToUint128(byteArray.slice(index, index + byteLength));
   index += byteLength;
   const lastUpdateTime = byteArrayToUint128(byteArray.slice(index, index + byteLength));
   index += byteLength;
-  const rewardRate: bigint[] = getByteArrayValuesAsBigInts(byteArray.slice(index, 5 * byteLength), byteLength);
-  index += 5 * byteLength;
 
   const algoRewardRate = byteArrayToUint128(byteArray.slice(index, index + byteLength));
   index += byteLength;
@@ -82,10 +75,8 @@ export function getStakingAccount(byteArray: Uint8Array, byteLength: number): St
     stakeStartTime,
     userStakingWeight,
     lastRewardRate,
-    accruedRewards,
     algoAccuredRewards,
     lastUpdateTime,
-    rewardRate,
     algoRewardRate,
     userShare,
     userSharePercentage,

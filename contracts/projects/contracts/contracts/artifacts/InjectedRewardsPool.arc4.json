@@ -39,7 +39,7 @@
       }
     },
     {
-      "name": "gas",
+      "name": "optInToApplication",
       "args": [],
       "returns": {
         "type": "void"
@@ -244,6 +244,13 @@
           "type": "uint64"
         }
       ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "gas",
+      "args": [],
       "returns": {
         "type": "void"
       }
