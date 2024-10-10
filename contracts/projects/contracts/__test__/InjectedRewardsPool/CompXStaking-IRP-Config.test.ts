@@ -105,7 +105,6 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     const globalState = await appClient.getGlobalState();
     expect(globalState.stakeAssetPrice!.asBigInt()).toBe(0n);
     expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
-    expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
     expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(ONE_DAY);
     expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin.addr);
   });
@@ -138,7 +137,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
       .execute({ populateAppCallResources: true })
 
     const boxNames = await appClient.appClient.getBoxNames();
-    expect(boxNames.length).toBe(4);
+    expect(boxNames.length).toBe(3);
   });
 
   test('update min staking period', async () => {
