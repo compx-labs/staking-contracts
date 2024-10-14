@@ -180,26 +180,6 @@
       }
     },
     {
-      "name": "setPrices",
-      "args": [
-        {
-          "name": "stakeAssetPrice",
-          "type": "uint64"
-        },
-        {
-          "name": "rewardTokenPrices",
-          "type": "uint64[5]"
-        },
-        {
-          "name": "algoPrice",
-          "type": "uint64"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
       "name": "stake",
       "args": [
         {
@@ -242,6 +222,18 @@
         {
           "name": "quantity",
           "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "setFreeze",
+      "args": [
+        {
+          "name": "enabled",
+          "type": "bool"
         }
       ],
       "returns": {

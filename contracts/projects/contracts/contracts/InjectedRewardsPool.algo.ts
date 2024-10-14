@@ -46,12 +46,6 @@ export class InjectedRewardsPool extends Contract {
 
   totalStakingWeight = GlobalStateKey<uint128>();
 
-  stakeAssetPrice = GlobalStateKey<uint64>();
-
-  algoPrice = GlobalStateKey<uint64>();
-
-  rewardAssetPrices = BoxKey<StaticArray<uint64, 5>>({ key: 'rewardAssetPrices' })
-
   oracleAdminAddress = GlobalStateKey<Address>();
 
   adminAddress = GlobalStateKey<Address>();
@@ -61,6 +55,8 @@ export class InjectedRewardsPool extends Contract {
   numRewards = GlobalStateKey<uint64>();
 
   numStakers = GlobalStateKey<uint64>();
+
+  freeze = GlobalStateKey<boolean>();
 
   //Local State
   accruedRewards = LocalStateKey<StaticArray<uint64, 5>>({ key: 'accruedRewards' })
@@ -84,11 +80,10 @@ export class InjectedRewardsPool extends Contract {
     this.totalStaked.value = 0;
     this.totalStakingWeight.value = 0 as uint128;
     this.oracleAdminAddress.value = oracleAdmin;
-    this.stakeAssetPrice.value = 0;
-    this.rewardAssetPrices.create();
     this.minStakePeriodForRewards.value = minStakePeriodForRewards;
     this.injectedRewards.create();
     this.lastRewardInjectionTime.value = 0;
+    this.freeze.value = false;
 
     sendAssetTransfer({
       xferAsset: AssetID.fromUint64(stakedAsset),
@@ -202,7 +197,6 @@ export class InjectedRewardsPool extends Contract {
       if (this.rewardAssets.value[i] === rewardAssetId) {
         this.rewardAssets.value[i] = 0;
         this.injectedRewards.value[i] = 0;
-        this.rewardAssetPrices.value[i] = 0;
         sendAssetTransfer({
           xferAsset: AssetID.fromUint64(rewardAssetId),
           assetReceiver: this.app.address,
@@ -220,9 +214,10 @@ export class InjectedRewardsPool extends Contract {
   injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64, rewardAssetId: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
     //assert(this.txn.numAssets > 1, 'Invalid number of assets');
-
+    let rewardAssetFound = false;
     for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
       if (this.rewardAssets.value[i] === rewardAssetId) {
+        rewardAssetFound = true;
         verifyAssetTransferTxn(rewardTxn, {
           sender: this.adminAddress.value,
           assetReceiver: this.app.address,
@@ -233,6 +228,7 @@ export class InjectedRewardsPool extends Contract {
         this.lastRewardInjectionTime.value = globals.latestTimestamp;
       }
     }
+    assert(rewardAssetFound, 'Reward asset not found');
   }
 
   injectAlgoRewards(payTxn: PayTxn, quantity: uint64): void {
@@ -258,19 +254,6 @@ export class InjectedRewardsPool extends Contract {
       sender: this.app.address,
       fee: 1_000,
     }); */
-  }
-
-  /*
-  * Set prices for the stake token and reward tokens
-  */
-  setPrices(stakeAssetPrice: uint64, rewardTokenPrices: StaticArray<uint64, 5>, algoPrice: uint64): void {
-    assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices');
-    assert(stakeAssetPrice > 0, 'Invalid stake token price');
-    assert(rewardTokenPrices.length === this.numRewards.value, 'Invalid number of reward token prices');
-
-    this.stakeAssetPrice.value = stakeAssetPrice;
-    this.rewardAssetPrices.value = rewardTokenPrices;
-    this.algoPrice.value = algoPrice;
   }
 
   stake(
@@ -356,6 +339,7 @@ export class InjectedRewardsPool extends Contract {
 
 
   accrueRewards(): void {
+    if (this.freeze.value) return;
     const algoRewards = this.algoInjectedRewards.value;
     const additionalRewards: uint64[] = [];
     for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
@@ -550,6 +534,10 @@ export class InjectedRewardsPool extends Contract {
     this.setStaker(staker);
   }
 
+  setFreeze(enabled: boolean): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can freeze payouts');
+    this.freeze.value = enabled;
+  }
 
   gas(): void { }
 }

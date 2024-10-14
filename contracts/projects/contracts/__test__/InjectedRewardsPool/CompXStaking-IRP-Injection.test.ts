@@ -104,7 +104,6 @@ describe('Injected Reward Pool injection test - no staking', () => {
 
   test('confirm global state on initialisation', async () => {
     const globalState = await appClient.getGlobalState();
-    expect(globalState.stakeAssetPrice!.asBigInt()).toBe(0n);
     expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
     expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
     expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(ONE_DAY);
@@ -139,7 +138,7 @@ describe('Injected Reward Pool injection test - no staking', () => {
       .execute({ populateAppCallResources: true })
 
     const boxNames = await appClient.appClient.getBoxNames();
-    expect(boxNames.length).toBe(4);
+    expect(boxNames.length).toBe(3);
   });
 
   test('inject rewards algo', async () => {
