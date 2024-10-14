@@ -407,9 +407,9 @@ export class InjectedRewardsPool extends Contract {
       userSharePercentage: 0
     }
   }
-  private setStaker(staker: StakeInfo): void {
+  private setStaker(stakerAccount: Address, staker: StakeInfo): void {
     for (let i = 0; i < this.stakers.value.length; i += 1) {
-      if (this.stakers.value[i].account === staker.account) {
+      if (this.stakers.value[i].account === stakerAccount) {
         this.stakers.value[i] = staker;
         return;
       }
@@ -447,7 +447,7 @@ export class InjectedRewardsPool extends Contract {
     }
 
     staker.lastUpdateTime = globals.latestTimestamp;
-    this.setStaker(staker);
+    this.setStaker(staker.account, staker);
 
   }
 
@@ -523,7 +523,7 @@ export class InjectedRewardsPool extends Contract {
         userSharePercentage: 0,
         algoAccuredRewards: 0,
       }
-      this.setStaker(removedStaker);
+      this.setStaker(staker.account, removedStaker);
       this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
       this.numStakers.value = this.numStakers.value - 1;
     } else {
@@ -531,7 +531,7 @@ export class InjectedRewardsPool extends Contract {
       this.accruedRewards(this.txn.sender).value = [0, 0, 0, 0, 0];
     }
     staker.lastUpdateTime = globals.latestTimestamp;
-    this.setStaker(staker);
+    this.setStaker(staker.account, staker);
   }
 
   setFreeze(enabled: boolean): void {

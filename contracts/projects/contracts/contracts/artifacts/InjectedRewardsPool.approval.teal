@@ -2375,9 +2375,9 @@ getStaker:
 	frame_bury 0
 	retsub
 
-// setStaker(staker: StakeInfo): void
+// setStaker(stakerAccount: Address, staker: StakeInfo): void
 setStaker:
-	proto 1 0
+	proto 2 0
 
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
@@ -2397,7 +2397,7 @@ setStaker:
 
 	// *if23_condition
 	// contracts/InjectedRewardsPool.algo.ts:412
-	// this.stakers.value[i].account === staker.account
+	// this.stakers.value[i].account === stakerAccount
 	frame_dig 0 // i: uint64
 	int 104
 	* // acc * typeLength
@@ -2407,8 +2407,7 @@ setStaker:
 	byte 0x7374616b657273 // "stakers"
 	cover 2
 	box_extract
-	frame_dig -1 // staker: StakeInfo
-	extract 0 32
+	frame_dig -1 // stakerAccount: Address
 	==
 	bz *if23_end
 
@@ -2418,7 +2417,7 @@ setStaker:
 	frame_dig 0 // i: uint64
 	int 104
 	* // acc * typeLength
-	frame_dig -1 // staker: StakeInfo
+	frame_dig -2 // staker: StakeInfo
 	byte 0x7374616b657273 // "stakers"
 	cover 2
 	box_replace
@@ -2663,8 +2662,10 @@ claimRewards:
 	frame_bury 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 	// contracts/InjectedRewardsPool.algo.ts:450
-	// this.setStaker(staker)
+	// this.setStaker(staker.account, staker)
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 0 32
 	callsub setStaker
 	retsub
 
@@ -3114,8 +3115,10 @@ unstake:
 	frame_bury 2 // removedStaker: StakeInfo
 
 	// contracts/InjectedRewardsPool.algo.ts:526
-	// this.setStaker(removedStaker)
+	// this.setStaker(staker.account, removedStaker)
 	frame_dig 2 // removedStaker: StakeInfo
+	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 0 32
 	callsub setStaker
 
 	// contracts/InjectedRewardsPool.algo.ts:527
@@ -3167,8 +3170,10 @@ unstake:
 	frame_bury 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 	// contracts/InjectedRewardsPool.algo.ts:534
-	// this.setStaker(staker)
+	// this.setStaker(staker.account, staker)
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 0 32
 	callsub setStaker
 	retsub
 
