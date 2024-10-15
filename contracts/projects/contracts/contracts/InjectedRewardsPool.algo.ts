@@ -357,7 +357,10 @@ export class InjectedRewardsPool extends Contract {
         if (staker.stakeDuration < this.minStakePeriodForRewards.value) return;
 
         if (this.algoInjectedRewards.value > 0) {
-          const algoRewardRate = wideRatio([algoRewards, staker.userSharePercentage], [100]);
+          let algoRewardRate = wideRatio([algoRewards, staker.userSharePercentage], [100]);
+          if(algoRewardRate === 0){
+            algoRewardRate = 1;
+          }
           staker.algoAccuredRewards = staker.algoAccuredRewards + algoRewardRate;
           this.algoInjectedRewards.value = this.algoInjectedRewards.value - algoRewardRate;
 
@@ -369,8 +372,10 @@ export class InjectedRewardsPool extends Contract {
         }
         for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
           if (this.injectedRewards.value[j] > 0) {
-            const rewardRate = wideRatio([additionalRewards[j], staker.userSharePercentage], [100]);
-
+            let rewardRate = wideRatio([additionalRewards[j], staker.userSharePercentage], [100]);
+            if(rewardRate === 0){
+              rewardRate = 1;
+            }
             this.accruedRewards(staker.account).value[j] = this.accruedRewards(staker.account).value[j] + rewardRate;
 
             this.injectedRewards.value[j] = this.injectedRewards.value[j] - rewardRate;
