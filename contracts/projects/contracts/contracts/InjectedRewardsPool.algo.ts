@@ -216,6 +216,9 @@ export class InjectedRewardsPool extends Contract {
     //assert(this.txn.numAssets > 1, 'Invalid number of assets');
     let rewardAssetFound = false;
     for (let i = 0; i < this.rewardAssets.value.length; i += 1) {
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
       if (this.rewardAssets.value[i] === rewardAssetId) {
         rewardAssetFound = true;
         verifyAssetTransferTxn(rewardTxn, {
@@ -358,7 +361,7 @@ export class InjectedRewardsPool extends Contract {
 
         if (this.algoInjectedRewards.value > 0) {
           let algoRewardRate = wideRatio([algoRewards, staker.userSharePercentage], [100]);
-          if(algoRewardRate === 0){
+          if (algoRewardRate === 0) {
             algoRewardRate = 1;
           }
           staker.algoAccuredRewards = staker.algoAccuredRewards + algoRewardRate;
@@ -371,9 +374,12 @@ export class InjectedRewardsPool extends Contract {
           }
         }
         for (var j = 0; j < this.rewardAssets.value.length; j += 1) {
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
           if (this.injectedRewards.value[j] > 0) {
             let rewardRate = wideRatio([additionalRewards[j], staker.userSharePercentage], [100]);
-            if(rewardRate === 0){
+            if (rewardRate === 0) {
               rewardRate = 1;
             }
             this.accruedRewards(staker.account).value[j] = this.accruedRewards(staker.account).value[j] + rewardRate;
@@ -461,7 +467,7 @@ export class InjectedRewardsPool extends Contract {
 
   unstake(quantity: uint64): void {
 
-    
+
 
     const staker = this.getStaker(this.txn.sender);
 
