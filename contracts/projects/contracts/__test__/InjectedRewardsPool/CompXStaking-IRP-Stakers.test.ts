@@ -6,6 +6,8 @@ import { InjectedRewardsPoolClient } from '../../contracts/clients/InjectedRewar
 import algosdk, { TransactionSigner } from 'algosdk';
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
 import { byteArrayToUint128, getByteArrayValuesAsBigInts, getStakingAccount, StakingAccount } from '../utils';
+import { AlgoAmount } from '@algorandfoundation/algokit-utils/types/amount';
+import { consoleLogger } from '@algorandfoundation/algokit-utils/types/logging';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
@@ -178,16 +180,45 @@ describe('Injected Reward Pool injection test - no staking', () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
 
+    let calculateSharesFees = AlgoAmount.MicroAlgos(240_000);
+
+    const simulateShares = await appClient.compose()
+      .gas({}, { note: '1' })
+      .gas({}, { note: '2' })
+      .calculateShares({}, { sendParams: { fee: calculateSharesFees } })
+      //.execute({ populateAppCallResources: true })
+      .simulate({ allowUnnamedResources: true, allowMoreLogging: true })
+    calculateSharesFees = AlgoAmount.MicroAlgos(
+      2000 +
+      1000 *
+      Math.floor(((simulateShares.simulateResponse.txnGroups[0].appBudgetAdded as number) + 699) / 700),
+    )
+    consoleLogger.info(`calculateShares fees:${calculateSharesFees.toString()}`)
+
+    const shareResponse = await appClient.compose()
+    .gas({}, { note: '1' })
+    .gas({}, { note: '2' })
+    .calculateShares({}, { sendParams: { fee: calculateSharesFees} })
+    .execute({ populateAppCallResources: true })
+
+
+    let accrueRewardsFees = AlgoAmount.MicroAlgos(240_000);
+    const accrueSimulateResult = await appClient.compose()
+      .gas({}, { note: '1' })
+      .gas({}, { note: '2' })
+      .accrueRewards({}, { sendParams: { fee: accrueRewardsFees } })
+      .simulate({ allowUnnamedResources: true, allowMoreLogging: true })
+    //.execute({ populateAppCallResources: true })
+    accrueRewardsFees = AlgoAmount.MicroAlgos(
+      2000 +
+      1000 *
+      Math.floor(((accrueSimulateResult.simulateResponse.txnGroups[0].appBudgetAdded as number) + 699) / 700),
+    )
+    consoleLogger.info(`accrueRewards fees:${accrueRewardsFees.toString()}`)
     const response = await appClient.compose()
       .gas({}, { note: '1' })
       .gas({}, { note: '2' })
-      .calculateShares({}, { sendParams: { fee: algokit.algos(0.1) } })
-      .execute({ populateAppCallResources: true })
-
-    const response2 = await appClient.compose()
-      .gas({}, { note: '1' })
-      .gas({}, { note: '2' })
-      .accrueRewards({}, { sendParams: { fee: algokit.algos(0.1) } })
+      .accrueRewards({}, { sendParams: { fee: accrueRewardsFees } })
       .execute({ populateAppCallResources: true })
 
     const stakerBox = await appClient.appClient.getBoxValue('stakers');
@@ -214,12 +245,28 @@ describe('Injected Reward Pool injection test - no staking', () => {
         sender: staker.account!.addr,
         receiver: appAddress,
       });
-
-      const response = await appClient.compose()
+      let fees = AlgoAmount.MicroAlgos(240_000);
+      const simulateResults = await appClient.compose()
         .gas({}, { note: '1' })
         .gas({}, { note: '2' })
-        .stake({ quantity: staker.stake, stakeTxn: stakeTxn }, { sender: staker.account, sendParams: { fee: algokit.algos(0.1) } })
-        .execute({ populateAppCallResources: true })
+        .stake({ quantity: staker.stake, stakeTxn: stakeTxn },
+          { sender: staker.account, sendParams: { fee: fees } })
+        .simulate({ allowUnnamedResources: true, allowMoreLogging: true })
+
+      stakeTxn.group = undefined;
+      fees = AlgoAmount.MicroAlgos(
+        2000 +
+        1000 *
+        Math.floor(((simulateResults.simulateResponse.txnGroups[0].appBudgetAdded as number) + 699) / 700),
+      )
+      consoleLogger.info(`addStake fees:${fees.toString()}`)
+      const results = await appClient.compose()
+        .gas({}, { note: '1' })
+        .gas({}, { note: '2' })
+        .stake({ quantity: staker.stake, stakeTxn: stakeTxn },
+          { sender: staker.account, sendParams: { fee: fees } })
+
+        .execute({ populateAppCallResources: true, suppressLog: true })
 
     }
     //Check staker box array 
@@ -360,11 +407,25 @@ describe('Injected Reward Pool injection test - no staking', () => {
         const balanceBefore = (await algorand.account.getAssetInformation(staker.account!.addr, rewardTokens[i])).balance;
         expect(balanceBefore).toBe(0n);
       }
+      let fees = AlgoAmount.MicroAlgos(240_000);
       const response = await appClient.compose()
         .gas({}, { note: '1' })
         .gas({}, { note: '2' })
-        .claimRewards({}, { sender: staker.account, sendParams: { fee: algokit.algos(0.5) } })
-        .execute({ populateAppCallResources: true })
+        .claimRewards({}, { sender: staker.account, sendParams: { fee: fees } })
+       // .execute({ populateAppCallResources: true })
+       .simulate({ allowUnnamedResources: true, allowMoreLogging: true })
+
+      fees = AlgoAmount.MicroAlgos(
+        2000 +
+        1000 *
+        Math.floor(((response.simulateResponse.txnGroups[0].appBudgetAdded as number) + 699) / 700),)
+      consoleLogger.info(`claimRewards fees:${fees.toString()}`)
+
+      const claimResponse = await appClient.compose()
+        .gas({}, { note: '1' })
+        .gas({}, { note: '2' })
+        .claimRewards({}, { sender: staker.account, sendParams: { fee: fees } })
+        .execute({ populateAppCallResources: true, suppressLog: true })
 
       const localStateAfter = await appClient.getLocalState(staker.account!.addr);
       const accruedRewardsAfter = localStateAfter.accruedRewards!.asByteArray();
@@ -380,11 +441,24 @@ describe('Injected Reward Pool injection test - no staking', () => {
 
   test('unstake all', async () => {
     for (var staker of stakingAccounts) {
+      let fees = AlgoAmount.MicroAlgos(240_000);
       const response = await appClient.compose()
         .gas({}, { note: '1' })
         .gas({}, { note: '2' })
-        .unstake({ quantity: 0 }, { sender: staker.account, sendParams: { fee: algokit.algos(0.5) } })
-        .execute({ populateAppCallResources: true })
+        .unstake({ quantity: 0 }, { sender: staker.account, sendParams: { fee: fees} })
+        //.execute({ populateAppCallResources: true })
+        .simulate({ allowUnnamedResources: true, allowMoreLogging: true })
+
+      fees = AlgoAmount.MicroAlgos(
+        2000 +
+        1000 *
+        Math.floor(((response.simulateResponse.txnGroups[0].appBudgetAdded as number) + 699) / 700),)
+      consoleLogger.info(`unstake fees:${fees.toString()}`)
+      const response2 = await appClient.compose()
+        .gas({}, { note: '1' })
+        .gas({}, { note: '2' })
+        .unstake({ quantity: 0 }, { sender: staker.account, sendParams: { fee: fees } })
+        .execute({ populateAppCallResources: true, suppressLog: true })
     }
   });
 

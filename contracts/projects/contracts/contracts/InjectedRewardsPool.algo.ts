@@ -414,6 +414,9 @@ export class InjectedRewardsPool extends Contract {
   }
   private setStaker(stakerAccount: Address, staker: StakeInfo): void {
     for (let i = 0; i < this.stakers.value.length; i += 1) {
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
       if (this.stakers.value[i].account === stakerAccount) {
         this.stakers.value[i] = staker;
         return;
@@ -458,9 +461,7 @@ export class InjectedRewardsPool extends Contract {
 
   unstake(quantity: uint64): void {
 
-    if (globals.opcodeBudget < 300) {
-      increaseOpcodeBudget()
-    }
+    
 
     const staker = this.getStaker(this.txn.sender);
 
@@ -514,6 +515,9 @@ export class InjectedRewardsPool extends Contract {
     // Update the total staking weight
     this.totalStakingWeight.value = this.totalStakingWeight.value - (staker.userStakingWeight as uint128);
     this.totalStaked.value = this.totalStaked.value - staker.stake;
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget()
+    }
 
     if (quantity === 0) {
       const removedStaker: StakeInfo = {
