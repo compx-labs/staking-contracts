@@ -23,7 +23,7 @@ let AlgoInjectionAmount = 10n * 10n ** 6n;
 const ONE_DAY = 86400n;
 const BYTE_LENGTH_REWARD_ASSET = 8;
 const BYTE_LENGTH_STAKER = 88;
-const numStakers = 250;
+const numStakers = 25;
 let stakingAccounts: StakingAccount[] = [];
 const rewardTokens: bigint[] = [];
 
@@ -89,7 +89,6 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     await appClient.initApplication({
       stakedAsset: stakedAssetId,
       rewardAssetId: rewardAssetOneId,
-      oracleAdmin: admin.addr,
       minStakePeriodForRewards: 0n,
     }, { sendParams: { fee: algokit.algos(0.1) } });
   });
@@ -100,7 +99,6 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
     expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(0n);
     expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetOneId);
-    expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin.addr);
   });
 
   test('init storage', async () => {

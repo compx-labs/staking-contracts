@@ -28,10 +28,6 @@
         {
           "name": "minStakePeriodForRewards",
           "type": "uint64"
-        },
-        {
-          "name": "oracleAdmin",
-          "type": "address"
         }
       ],
       "returns": {
@@ -55,18 +51,6 @@
       "args": [
         {
           "name": "adminAddress",
-          "type": "address"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "updateOracleAdminAddress",
-      "args": [
-        {
-          "name": "oracleAdminAddress",
           "type": "address"
         }
       ],

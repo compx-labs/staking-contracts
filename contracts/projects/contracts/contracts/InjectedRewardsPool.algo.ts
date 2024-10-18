@@ -42,8 +42,6 @@ export class InjectedRewardsPool extends Contract {
 
   lastRewardInjectionTime = GlobalStateKey<uint64>();
 
-  oracleAdminAddress = GlobalStateKey<Address>();
-
   adminAddress = GlobalStateKey<Address>();
 
   minimumBalance = GlobalStateKey<uint64>();
@@ -63,13 +61,12 @@ export class InjectedRewardsPool extends Contract {
     stakedAsset: uint64,
     rewardAssetId: uint64,
     minStakePeriodForRewards: uint64,
-    oracleAdmin: Address,): void {
+    ): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
 
     this.stakedAssetId.value = stakedAsset;
     this.rewardAssetId.value = rewardAssetId;
     this.totalStaked.value = 0;
-    this.oracleAdminAddress.value = oracleAdmin;
     this.minStakePeriodForRewards.value = minStakePeriodForRewards;
     this.lastRewardInjectionTime.value = 0;
     this.freeze.value = false;
@@ -92,10 +89,6 @@ export class InjectedRewardsPool extends Contract {
   updateAdminAddress(adminAddress: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address');
     this.adminAddress.value = adminAddress;
-  }
-  updateOracleAdminAddress(oracleAdminAddress: Address): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update oracle admin address');
-    this.oracleAdminAddress.value = oracleAdminAddress;
   }
 
   private costForBoxStorage(totalNumBytes: uint64): uint64 {
@@ -148,11 +141,10 @@ export class InjectedRewardsPool extends Contract {
     }
   }
   /*
-  * Inject rewards into the pool - one reward asset at a time
+  * Inject rewards into the pool
   */
   injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64, rewardAssetId: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
-    //assert(this.txn.numAssets > 1, 'Invalid number of assets');
 
     verifyAssetTransferTxn(rewardTxn, {
       sender: this.adminAddress.value,
@@ -259,10 +251,12 @@ export class InjectedRewardsPool extends Contract {
         }
         actionComplete = true;
       }
+      
       if (globals.opcodeBudget < 300) {
         increaseOpcodeBudget()
       }
     }
+    assert(actionComplete, 'Stake  failed');
   }
 
 
