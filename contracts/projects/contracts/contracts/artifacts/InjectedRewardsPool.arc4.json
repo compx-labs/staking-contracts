@@ -22,8 +22,8 @@
           "type": "uint64"
         },
         {
-          "name": "rewardAssets",
-          "type": "uint64[5]"
+          "name": "rewardAssetId",
+          "type": "uint64"
         },
         {
           "name": "minStakePeriodForRewards",
@@ -39,29 +39,10 @@
       }
     },
     {
-      "name": "optInToApplication",
-      "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
       "name": "updateMinStakePeriod",
       "args": [
         {
           "name": "minStakePeriodForRewards",
-          "type": "uint64"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "updateTotalStakingWeight",
-      "args": [
-        {
-          "name": "totalStakingWeight",
           "type": "uint64"
         }
       ],
@@ -106,30 +87,6 @@
         {
           "name": "mbrPayment",
           "type": "pay"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "addRewardAsset",
-      "args": [
-        {
-          "name": "rewardAssetId",
-          "type": "uint64"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "removeRewardAsset",
-      "args": [
-        {
-          "name": "rewardAssetId",
-          "type": "uint64"
         }
       ],
       "returns": {
@@ -191,13 +148,6 @@
           "type": "uint64"
         }
       ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "calculateShares",
-      "args": [],
       "returns": {
         "type": "void"
       }

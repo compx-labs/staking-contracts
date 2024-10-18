@@ -66,22 +66,6 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     });
     rewardAssetOneId = BigInt((await rewardAssetOneCreate).confirmation.assetIndex!);
 
-    const rewardAssetTwoCreate = algorand.send.assetCreate({
-      sender: admin.addr,
-      total: 999_999_999_000n,
-      decimals: 6,
-      assetName: 'Reward Token two',
-    });
-    rewardAssetTwoId = BigInt((await rewardAssetTwoCreate).confirmation.assetIndex!);
-
-    const rewardAssetThreeCreate = algorand.send.assetCreate({
-      sender: admin.addr,
-      total: 999_999_999_000n,
-      decimals: 6,
-      assetName: 'Reward Token three',
-    });
-    rewardAssetThreeId = BigInt((await rewardAssetThreeCreate).confirmation.assetIndex!);
-
     await appClient.create.createApplication({
       adminAddress: admin.addr,
     });
@@ -95,7 +79,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
 
     await appClient.initApplication({
       stakedAsset: stakedAssetId,
-      rewardAssets: [rewardAssetOneId, 0n, 0n, 0n, 0n],
+      rewardAssetId: rewardAssetOneId,
       oracleAdmin: admin.addr,
       minStakePeriodForRewards: ONE_DAY,
     }, { sendParams: { fee: algokit.algos(0.2) } });
@@ -106,6 +90,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
     expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
     expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(ONE_DAY);
+    expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetOneId);
     expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin.addr);
   });
 
@@ -137,7 +122,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
       .execute({ populateAppCallResources: true })
 
     const boxNames = await appClient.appClient.getBoxNames();
-    expect(boxNames.length).toBe(3);
+    expect(boxNames.length).toBe(1);
   });
 
   test('update min staking period', async () => {
@@ -174,7 +159,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     ).rejects.toThrowError()
   });
 
-  test('Add Reward asset', async () => {
+  /* test('Add Reward asset', async () => {
     const globalStateBefore = await appClient.getGlobalState();
     const rewards = await appClient.appClient.getBoxValue('rewardAssets');
     const rewardsBefore: bigint[] = getByteArrayValuesAsBigInts(rewards, BYTE_LENGTH_REWARD_ASSET);
@@ -289,7 +274,7 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     expect (rewardsAfterValues[3]).toBe(0n);
     expect (rewardsAfterValues[4]).toBe(0n);
     
-  });
+  }); */
 
   test('freeze rewards', async () => {
     await appClient.setFreeze({ enabled: true });
