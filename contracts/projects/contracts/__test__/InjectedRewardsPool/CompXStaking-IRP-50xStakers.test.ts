@@ -23,7 +23,7 @@ let AlgoInjectionAmount = 10n * 10n ** 6n;
 const ONE_DAY = 86400n;
 const BYTE_LENGTH_REWARD_ASSET = 8;
 const BYTE_LENGTH_STAKER = 88;
-const numStakers = 25;
+const numStakers = 10;
 let stakingAccounts: StakingAccount[] = [];
 const rewardTokens: bigint[] = [];
 

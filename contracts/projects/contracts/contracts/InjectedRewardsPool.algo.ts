@@ -473,7 +473,13 @@ export class InjectedRewardsPool extends Contract {
         userSharePercentage: 0
       }
       this.setStaker(staker.account, removedStaker);
+      //move last staker to the removed staker position
+      const lastStaker = this.getStaker(this.stakers.value[this.numStakers.value].account);
+      this.setStaker(staker.account, lastStaker);
+
       this.numStakers.value = this.numStakers.value - 1;
+      
+      
     } else {
       staker.stake = staker.stake - quantity;
       staker.accruedASARewards = 0;

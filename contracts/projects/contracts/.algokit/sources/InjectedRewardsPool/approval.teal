@@ -2223,7 +2223,7 @@ unstake:
 
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
-	dup
+	dupn 2
 
 	// contracts/InjectedRewardsPool.algo.ts:410
 	// staker = this.getStaker(this.txn.sender)
@@ -2553,7 +2553,29 @@ unstake:
 	extract 0 32
 	callsub setStaker
 
-	// contracts/InjectedRewardsPool.algo.ts:476
+	// contracts/InjectedRewardsPool.algo.ts:477
+	// lastStaker = this.getStaker(this.stakers.value[this.numStakers.value].account)
+	byte 0x6e756d5374616b657273 // "numStakers"
+	app_global_get
+	int 88
+	* // acc * typeLength
+	int 0
+	+
+	int 32
+	byte 0x7374616b657273 // "stakers"
+	cover 2
+	box_extract
+	callsub getStaker
+	frame_bury 2 // lastStaker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+
+	// contracts/InjectedRewardsPool.algo.ts:478
+	// this.setStaker(staker.account, lastStaker)
+	frame_dig 2 // lastStaker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
+	extract 0 32
+	callsub setStaker
+
+	// contracts/InjectedRewardsPool.algo.ts:480
 	// this.numStakers.value = this.numStakers.value - 1
 	byte 0x6e756d5374616b657273 // "numStakers"
 	dup
@@ -2564,7 +2586,7 @@ unstake:
 	b *if42_end
 
 *if42_else:
-	// contracts/InjectedRewardsPool.algo.ts:478
+	// contracts/InjectedRewardsPool.algo.ts:484
 	// staker.stake = staker.stake - quantity
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 32 // headOffset
@@ -2577,7 +2599,7 @@ unstake:
 	replace3
 	frame_bury 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:479
+	// contracts/InjectedRewardsPool.algo.ts:485
 	// staker.accruedASARewards = 0
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	byte 0x0000000000000000
@@ -2585,7 +2607,7 @@ unstake:
 	frame_bury 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 *if42_end:
-	// contracts/InjectedRewardsPool.algo.ts:481
+	// contracts/InjectedRewardsPool.algo.ts:487
 	// staker.lastUpdateTime = globals.latestTimestamp
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 64 // headOffset
@@ -2594,7 +2616,7 @@ unstake:
 	replace3
 	frame_bury 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:482
+	// contracts/InjectedRewardsPool.algo.ts:488
 	// this.setStaker(staker.account, staker)
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
@@ -2625,7 +2647,7 @@ unstake:
 setFreeze:
 	proto 1 0
 
-	// contracts/InjectedRewardsPool.algo.ts:486
+	// contracts/InjectedRewardsPool.algo.ts:492
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can freeze payouts')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -2635,7 +2657,7 @@ setFreeze:
 	// Only admin can freeze payouts
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:487
+	// contracts/InjectedRewardsPool.algo.ts:493
 	// this.freeze.value = enabled
 	byte 0x667265657a65 // "freeze"
 	frame_dig -1 // enabled: boolean
