@@ -274,6 +274,8 @@ export class InjectedRewardsPool extends Contract {
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
         }
+        this.stakers.value[i].stakeDuration = globals.latestTimestamp - this.stakers.value[i].stakeStartTime;
+        
         if (this.stakers.value[i].stakeDuration >= this.minStakePeriodForRewards.value) {
           totalViableStake += this.stakers.value[i].stake;
         }
@@ -288,7 +290,7 @@ export class InjectedRewardsPool extends Contract {
 
       if (stake > 0) {
         const staker = clone(this.stakers.value[i])
-        staker.stakeDuration = globals.latestTimestamp - staker.stakeStartTime;
+        
         if (staker.stakeDuration > this.minStakePeriodForRewards.value) {
 
           //NOTE: add the usersharepercentage values back into the box to debug - values are being halved...for some reason
