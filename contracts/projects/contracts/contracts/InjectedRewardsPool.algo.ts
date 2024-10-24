@@ -212,12 +212,13 @@ export class InjectedRewardsPool extends Contract {
 
         const staker = clone(this.stakers.value[i])
         staker.stake += stakeTxn.assetAmount
-        this.stakers.value[i] = staker
+        
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
         }
         staker.stakeDuration = 0;
         staker.stakeStartTime = currentTimeStamp;
+        this.stakers.value[i] = staker
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
         }
@@ -275,7 +276,7 @@ export class InjectedRewardsPool extends Contract {
           increaseOpcodeBudget()
         }
         this.stakers.value[i].stakeDuration = globals.latestTimestamp - this.stakers.value[i].stakeStartTime;
-        
+
         if (this.stakers.value[i].stakeDuration >= this.minStakePeriodForRewards.value) {
           totalViableStake += this.stakers.value[i].stake;
         }
@@ -458,7 +459,8 @@ export class InjectedRewardsPool extends Contract {
     }
 
     // Update the total staking weight
-    this.totalStaked.value = this.totalStaked.value - staker.stake;
+    this.totalStaked.value = this.totalStaked.value - (quantity === 0 ? staker.stake : quantity);
+
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
