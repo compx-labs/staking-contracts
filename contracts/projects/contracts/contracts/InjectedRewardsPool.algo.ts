@@ -218,6 +218,9 @@ export class InjectedRewardsPool extends Contract {
         }
         staker.stakeDuration = 0;
         staker.stakeStartTime = currentTimeStamp;
+        if (globals.opcodeBudget < 300) {
+          increaseOpcodeBudget()
+        }
         this.stakers.value[i] = staker
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
