@@ -56,6 +56,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   lstTokenId = GlobalStateKey<uint64>();
 
+  commision = GlobalStateKey<uint64>();
+
 
   createApplication(
     adminAddress: Address
@@ -67,7 +69,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
     stakedAsset: uint64,
     rewardAssetId: uint64,
     minStakePeriodForRewards: uint64,
-    lstTokenId: uint64
+    lstTokenId: uint64,
+    commision: uint64
   ): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
 
@@ -82,6 +85,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.algoInjectedRewards.value = 0;
     this.totalConsensusRewards.value = 0;
     this.lstTokenId.value = lstTokenId;
+    this.commision.value = commision;
 
     if (this.stakedAssetId.value !== 0) {
       sendAssetTransfer({
@@ -99,6 +103,10 @@ export class InjectedRewardsPoolConsensus extends Contract {
   updateAdminAddress(adminAddress: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address');
     this.adminAddress.value = adminAddress;
+  }
+  updateCommision(commision: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commision');
+    this.commision.value = commision;
   }
 
   private costForBoxStorage(totalNumBytes: uint64): uint64 {
@@ -182,7 +190,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
   pickupAlgoRewards(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
 
-    const amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.algoInjectedRewards.value;
+    const amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.algoInjectedRewards.value - this.totalStaked.value;
     if (amount > MINIMUM_ALGO_REWARD) {
       this.algoInjectedRewards.value += amount;
       this.lastRewardInjectionTime.value = globals.latestTimestamp;
@@ -204,7 +212,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
   }
 
   stake(
-    stakeTxn: AssetTransferTxn,
+    payTxn: PayTxn,
     quantity: uint64,
   ): void {
     const currentTimeStamp = globals.latestTimestamp;
@@ -212,11 +220,10 @@ export class InjectedRewardsPoolConsensus extends Contract {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
-    verifyAssetTransferTxn(stakeTxn, {
+    verifyPayTxn(payTxn, {
       sender: this.txn.sender,
-      assetReceiver: this.app.address,
-      xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
-      assetAmount: quantity,
+      receiver: this.app.address,
+      amount: quantity,
     });
     let actionComplete: boolean = false;
     if (globals.opcodeBudget < 300) {
@@ -233,7 +240,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
         }
 
         const staker = clone(this.stakers.value[i])
-        staker.stake += stakeTxn.assetAmount
+        staker.stake += payTxn.amount
 
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
@@ -247,20 +254,20 @@ export class InjectedRewardsPoolConsensus extends Contract {
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
         }
-        this.totalStaked.value += stakeTxn.assetAmount;
+        this.totalStaked.value += payTxn.amount;
         actionComplete = true;
 
       } else if (this.stakers.value[i].account === globals.zeroAddress) {
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
         }
-        this.totalStaked.value = this.totalStaked.value + stakeTxn.assetAmount;
+        this.totalStaked.value = this.totalStaked.value + payTxn.amount;
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
         }
         this.stakers.value[i] = {
           account: this.txn.sender,
-          stake: stakeTxn.assetAmount,
+          stake: payTxn.amount,
           stakeDuration: 0,
           stakeStartTime: currentTimeStamp,
           algoAccuredRewards: 0,
@@ -289,7 +296,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
 
   accrueRewards(): void {
-    const algoRewards = this.algoInjectedRewards.value;//(this.algoInjectedRewards.value / 100 * 92) ;
+    const algoRewards = (this.algoInjectedRewards.value / 100 * (100 - this.commision.value));
 
     const additionalASARewards = this.injectedASARewards.value;
     if (globals.opcodeBudget < 300) {

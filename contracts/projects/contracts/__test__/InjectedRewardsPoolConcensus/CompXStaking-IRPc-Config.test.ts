@@ -78,6 +78,7 @@ describe('Injected Reward Pool setup/admin functions - no staking, specfially se
       rewardAssetId: rewardAssetOneId,
       minStakePeriodForRewards: ONE_DAY,
       lstTokenId: lstAssetId,
+      commision: 8n
     }, { sendParams: { fee: algokit.algos(0.2) } });
   });
 
@@ -127,6 +128,24 @@ describe('Injected Reward Pool setup/admin functions - no staking, specfially se
     await appClient.updateMinStakePeriod({ minStakePeriodForRewards: 2n * ONE_DAY });
     const globalStateAfter = await appClient.getGlobalState();
     expect(globalStateAfter.minStakePeriodForRewards!.asBigInt()).toBe(2n * ONE_DAY);
+  });
+  test('update commision', async () => {
+    const globalStateBefore = await appClient.getGlobalState();
+    expect(globalStateBefore.commision!.asBigInt()).toBe(8n);
+    await appClient.updateCommision({ commision: 10n });
+    const globalStateAfter = await appClient.getGlobalState();
+    expect(globalStateAfter.commision!.asBigInt()).toBe(10n);
+  });
+
+  test('update commision non-admin', async () => {
+    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+    const globalStateBefore = await appClient.getGlobalState();
+    expect(globalStateBefore.commision!.asBigInt()).toBe(10n);
+    await expect(
+      appClient.updateCommision({ commision: 5n }, { sender: nonAdminAccount }),
+    ).rejects.toThrowError();
+    const globalStateAfter = await appClient.getGlobalState();
+    expect(globalStateAfter.commision!.asBigInt()).toBe(10n);
   });
 
   test('update min staking period by non-admin', async () => {

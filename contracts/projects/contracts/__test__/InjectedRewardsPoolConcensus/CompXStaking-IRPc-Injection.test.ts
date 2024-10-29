@@ -1,11 +1,7 @@
 import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
 import * as algokit from '@algorandfoundation/algokit-utils';
-
-import { InjectedRewardsPoolClient } from '../../contracts/clients/InjectedRewardsPoolClient';
-import algosdk, { TransactionSigner } from 'algosdk';
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
-import { byteArrayToUint128, getByteArrayValuesAsBigInts } from '../utils';
 import { InjectedRewardsPoolConsensusClient } from '../../contracts/clients/InjectedRewardsPoolConsensusClient';
 
 const fixture = algorandFixture();
@@ -81,6 +77,7 @@ describe('Injected Reward Pool injection test - no staking', () => {
       rewardAssetId: rewardAssetOneId,
       minStakePeriodForRewards: ONE_DAY,
       lstTokenId: lstAssetId,
+      commision: 8n
     }, { sendParams: { fee: algokit.algos(0.2) } });
   });
 

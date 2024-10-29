@@ -32,6 +32,10 @@
         {
           "name": "lstTokenId",
           "type": "uint64"
+        },
+        {
+          "name": "commision",
+          "type": "uint64"
         }
       ],
       "returns": {
@@ -56,6 +60,18 @@
         {
           "name": "adminAddress",
           "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateCommision",
+      "args": [
+        {
+          "name": "commision",
+          "type": "uint64"
         }
       ],
       "returns": {
@@ -135,8 +151,8 @@
       "name": "stake",
       "args": [
         {
-          "name": "stakeTxn",
-          "type": "axfer"
+          "name": "payTxn",
+          "type": "pay"
         },
         {
           "name": "quantity",
