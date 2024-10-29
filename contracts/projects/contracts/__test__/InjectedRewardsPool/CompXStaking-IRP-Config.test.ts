@@ -80,7 +80,6 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     await appClient.initApplication({
       stakedAsset: stakedAssetId,
       rewardAssetId: rewardAssetOneId,
-      oracleAdmin: admin.addr,
       minStakePeriodForRewards: ONE_DAY,
     }, { sendParams: { fee: algokit.algos(0.2) } });
   });
@@ -91,7 +90,6 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
     expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(ONE_DAY);
     expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetOneId);
-    expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin.addr);
   });
 
   test('init storage', async () => {
@@ -141,23 +139,6 @@ describe('Injected Reward Pool setup/admin functions - no staking', () => {
     ).rejects.toThrowError()
   });
 
-  test('update updateTotalStakingWeight', async () => {
-    await appClient.updateTotalStakingWeight({ totalStakingWeight: 100n });
-    const globalStateAfter = await appClient.getGlobalState();
-    const tsw_ba = globalStateAfter.totalStakingWeight!.asByteArray();
-    const tsw = byteArrayToUint128(tsw_ba);
-    expect(tsw).toBe(100n);
-  });
-
-  test('update updateTotalStakingWeight by non-admin', async () => {
-    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await expect(
-      appClient.updateTotalStakingWeight(
-        { totalStakingWeight: 100n },
-        { sender: nonAdminAccount },
-      ),
-    ).rejects.toThrowError()
-  });
 
   /* test('Add Reward asset', async () => {
     const globalStateBefore = await appClient.getGlobalState();

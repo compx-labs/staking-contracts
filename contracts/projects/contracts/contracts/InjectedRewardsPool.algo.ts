@@ -143,7 +143,7 @@ export class InjectedRewardsPool extends Contract {
   /*
   * Inject rewards into the pool
   */
-  injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64, rewardAssetId: uint64): void {
+ /*  injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64, rewardAssetId: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
 
     verifyAssetTransferTxn(rewardTxn, {
@@ -166,7 +166,7 @@ export class InjectedRewardsPool extends Contract {
 
     this.algoInjectedRewards.value += quantity;
     this.lastRewardInjectionTime.value = globals.latestTimestamp;
-  }
+  } */
 
 
   deleteApplication(): void {
@@ -266,9 +266,12 @@ export class InjectedRewardsPool extends Contract {
 
 
   accrueRewards(): void {
-    const algoRewards = this.algoInjectedRewards.value;//(this.algoInjectedRewards.value / 100 * 92) ;
+    const algoRewards = this.app.address.balance - this.algoInjectedRewards.value - this.minimumBalance.value;
+    this.algoInjectedRewards.value = this.algoInjectedRewards.value + algoRewards;
 
-    const additionalASARewards = this.injectedASARewards.value;
+    const additionalASARewards = this.app.address.assetBalance(AssetID.fromUint64(this.rewardAssetId.value)) - this.injectedASARewards.value;
+    this.injectedASARewards.value = this.injectedASARewards.value + additionalASARewards;
+    
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
@@ -308,7 +311,6 @@ export class InjectedRewardsPool extends Contract {
               algoRewardRate = 1;
             }
             staker.algoAccuredRewards = staker.algoAccuredRewards + algoRewardRate;
-            this.algoInjectedRewards.value = this.algoInjectedRewards.value - algoRewardRate;
 
             if (this.stakedAssetId.value === 0) {
               staker.stake = staker.stake + algoRewardRate;
@@ -326,8 +328,6 @@ export class InjectedRewardsPool extends Contract {
               rewardRate = 1;
             }
 
-
-            this.injectedASARewards.value = this.injectedASARewards.value - rewardRate;
             if (this.rewardAssetId.value === this.stakedAssetId.value) {
               //Compound rewards
               staker.stake = staker.stake + rewardRate;
