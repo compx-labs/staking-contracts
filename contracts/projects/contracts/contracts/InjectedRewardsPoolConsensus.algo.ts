@@ -182,7 +182,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
   pickupAlgoRewards(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
 
-    const amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value;
+    const amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.algoInjectedRewards.value;
     if (amount > MINIMUM_ALGO_REWARD) {
       this.algoInjectedRewards.value += amount;
       this.lastRewardInjectionTime.value = globals.latestTimestamp;

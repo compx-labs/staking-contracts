@@ -727,7 +727,7 @@ pickupAlgoRewards:
 	assert
 
 	// contracts/InjectedRewardsPoolConsensus.algo.ts:185
-	// amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value
+	// amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.algoInjectedRewards.value
 	global CurrentApplicationAddress
 	acct_params_get AcctBalance
 	pop
@@ -735,6 +735,9 @@ pickupAlgoRewards:
 	app_global_get
 	-
 	byte 0x746f74616c436f6e73656e73757352657761726473 // "totalConsensusRewards"
+	app_global_get
+	-
+	byte 0x616c676f496e6a656374656452657761726473 // "algoInjectedRewards"
 	app_global_get
 	-
 	frame_bury 0 // amount: uint64
