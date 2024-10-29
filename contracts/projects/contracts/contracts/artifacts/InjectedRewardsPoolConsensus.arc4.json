@@ -28,6 +28,10 @@
         {
           "name": "minStakePeriodForRewards",
           "type": "uint64"
+        },
+        {
+          "name": "lstTokenId",
+          "type": "uint64"
         }
       ],
       "returns": {
@@ -109,6 +113,13 @@
           "type": "uint64"
         }
       ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "pickupAlgoRewards",
+      "args": [],
       "returns": {
         "type": "void"
       }
@@ -230,6 +241,34 @@
         },
         {
           "name": "nfdRegistryAppId",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "addLST",
+      "args": [
+        {
+          "name": "axferTxn",
+          "type": "axfer"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "mintLST",
+      "args": [
+        {
+          "name": "quantity",
           "type": "uint64"
         }
       ],

@@ -10,6 +10,7 @@ export type StakeInfo = {
   lastUpdateTime: uint64
   accruedASARewards: uint64
   userSharePercentage: uint64
+  lstMinted: uint64
 }
 export type mbrReturn = {
   mbrPayment: uint64;
@@ -18,10 +19,11 @@ export type mbrReturn = {
 const MAX_STAKERS_PER_POOL = 250;
 const ASSET_HOLDING_FEE = 100000 // creation/holding fee for asset
 const ALGORAND_ACCOUNT_MIN_BALANCE = 100000
+const MINIMUM_ALGO_REWARD = 1000000
 
 
 export class InjectedRewardsPoolConsensus extends Contract {
-  programVersion = 11;
+  programVersion = 10;
 
 
   //Global State
@@ -50,6 +52,10 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   freeze = GlobalStateKey<boolean>();
 
+  totalConsensusRewards = GlobalStateKey<uint64>();
+
+  lstTokenId = GlobalStateKey<uint64>();
+
 
   createApplication(
     adminAddress: Address
@@ -61,6 +67,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     stakedAsset: uint64,
     rewardAssetId: uint64,
     minStakePeriodForRewards: uint64,
+    lstTokenId: uint64
   ): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
 
@@ -73,13 +80,16 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.injectedASARewards.value = 0;
     this.numStakers.value = 0;
     this.algoInjectedRewards.value = 0;
+    this.totalConsensusRewards.value = 0;
+    this.lstTokenId.value = lstTokenId;
 
-    sendAssetTransfer({
-      xferAsset: AssetID.fromUint64(stakedAsset),
-      assetReceiver: this.app.address,
-      assetAmount: 0,
-    })
-
+    if (this.stakedAssetId.value !== 0) {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(stakedAsset),
+        assetReceiver: this.app.address,
+        assetAmount: 0,
+      })
+    }
   }
   //ADMIN FUNCTIONS
   updateMinStakePeriod(minStakePeriodForRewards: uint64): void {
@@ -168,6 +178,18 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.lastRewardInjectionTime.value = globals.latestTimestamp;
   }
 
+  //only userd for consensus rewards
+  pickupAlgoRewards(): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
+
+    const amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value;
+    if (amount > MINIMUM_ALGO_REWARD) {
+      this.algoInjectedRewards.value += amount;
+      this.lastRewardInjectionTime.value = globals.latestTimestamp;
+      this.totalConsensusRewards.value += amount;
+    }
+  }
+
 
   deleteApplication(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
@@ -244,7 +266,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
           algoAccuredRewards: 0,
           lastUpdateTime: currentTimeStamp,
           accruedASARewards: 0,
-          userSharePercentage: 0
+          userSharePercentage: 0,
+          lstMinted: 0
         }
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
@@ -296,8 +319,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
         const staker = clone(this.stakers.value[i])
 
         if (staker.stakeDuration > this.minStakePeriodForRewards.value) {
-
-          //NOTE: add the usersharepercentage values back into the box to debug - values are being halved...for some reason
 
           let stakerShare = wideRatio([stake, PRECISION], [totalViableStake]);
           staker.userSharePercentage = stakerShare;
@@ -360,7 +381,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
       lastUpdateTime: 0,
       algoAccuredRewards: 0,
       accruedASARewards: 0,
-      userSharePercentage: 0
+      userSharePercentage: 0,
+      lstMinted: 0
     }
   }
   private setStaker(stakerAccount: Address, staker: StakeInfo): void {
@@ -477,7 +499,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
         lastUpdateTime: 0,
         algoAccuredRewards: 0,
         accruedASARewards: 0,
-        userSharePercentage: 0
+        userSharePercentage: 0,
+        lstMinted: 0
       }
       this.setStaker(staker.account, removedStaker);
       //move last staker to the removed staker position
@@ -502,10 +525,10 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   private getGoOnlineFee(): uint64 {
     // this will be needed to determine if our pool is currently NOT eligible and we thus need to pay the fee.
-    if (!this.app.address.incentiveEligible) {
-      return globals.payoutsGoOnlineFee
-    }
-    return 0
+    /*  if (!this.app.address.incentiveEligible) {
+       return globals.payoutsGoOnlineFee
+     } */
+    return 2000;
   }
 
   goOnline(
@@ -547,6 +570,46 @@ export class InjectedRewardsPoolConsensus extends Contract {
       applications: [AppID.fromUint64(nfdAppId)],
     })
   }
+
+  addLST(axferTxn: AssetTransferTxn, quantity: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can send LST')
+    const lstTokenId = this.lstTokenId.value;
+
+    verifyAssetTransferTxn(axferTxn, {
+      assetAmount: quantity,
+      assetReceiver: this.app.address,
+      assetSender: this.txn.sender,
+      xferAsset: AssetID.fromUint64(lstTokenId)
+    });
+
+    sendAssetTransfer({
+      xferAsset: AssetID.fromUint64(lstTokenId),
+      assetReceiver: this.app.address,
+      sender: this.app.address,
+      assetAmount: 0,
+    });
+  }
+
+  mintLST(quantity: uint64): void {
+    const staker = this.getStaker(this.txn.sender);
+    assert(staker.account !== globals.zeroAddress, 'Invalid staker');
+    assert(staker.stake > 0, 'No staked assets');
+    assert(staker.stake < staker.lstMinted, 'Already minted max LST');
+    assert(quantity > 0, 'Invalid quantity');
+
+    const lstMintRemaining = staker.stake - staker.lstMinted;
+    assert(quantity <= lstMintRemaining, 'Invalid quantity');
+
+    sendAssetTransfer({
+      xferAsset: AssetID.fromUint64(this.lstTokenId.value),
+      assetReceiver: this.txn.sender,
+      sender: this.app.address,
+      assetAmount: quantity,
+    });
+    staker.lstMinted = staker.lstMinted + quantity;
+    this.setStaker(staker.account, staker);
+  }
+
 
   gas(): void { }
 }
