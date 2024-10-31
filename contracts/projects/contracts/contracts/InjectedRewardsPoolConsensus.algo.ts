@@ -25,7 +25,6 @@ const MINIMUM_ALGO_REWARD = 1000000
 export class InjectedRewardsPoolConsensus extends Contract {
   programVersion = 10;
 
-
   //Global State
 
   stakers = BoxKey<StaticArray<StakeInfo, typeof MAX_STAKERS_PER_POOL>>({ key: 'stakers' })
@@ -58,11 +57,19 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   commision = GlobalStateKey<uint64>();
 
+  lstPrice = GlobalStateKey<uint64>();
+
+  stakeTokenPrice = GlobalStateKey<uint64>();
+
+  oracleAdminAddress = GlobalStateKey<Address>();
+
 
   createApplication(
-    adminAddress: Address
+    adminAddress: Address,
+    oracleAdminAddress: Address
   ): void {
     this.adminAddress.value = adminAddress;
+    this.oracleAdminAddress.value = oracleAdminAddress;
   }
 
   initApplication(
@@ -104,9 +111,21 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address');
     this.adminAddress.value = adminAddress;
   }
+  updateOracleAdminAddress(oracleAdminAddress: Address): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update oracle admin address');
+    this.oracleAdminAddress.value = oracleAdminAddress;
+  }
   updateCommision(commision: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commision');
     this.commision.value = commision;
+  }
+  setPrices(stakeTokenPrice: uint64, lstPrice: uint64): void {
+    assert(this.txn.sender === this.oracleAdminAddress.value, 'Only oracle admin can set prices');
+    assert(stakeTokenPrice > 0, 'Invalid stake token price');
+    assert(lstPrice > 0, 'Invalid reward token price');
+
+    this.stakeTokenPrice.value = stakeTokenPrice;
+    this.lstPrice.value = lstPrice;
   }
 
   private costForBoxStorage(totalNumBytes: uint64): uint64 {
@@ -293,8 +312,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(actionComplete, 'Stake  failed');
   }
 
-
-
   accrueRewards(): void {
     const algoRewards = (this.algoInjectedRewards.value / 100 * (100 - this.commision.value));
 
@@ -441,41 +458,40 @@ export class InjectedRewardsPoolConsensus extends Contract {
     }
   }
 
-  unstake(quantity: uint64): void {
+  unstake(axferTxn: AssetTransferTxn, percentageQuantity: uint64): void {
     const staker = this.getStaker(this.txn.sender);
 
-    /*  assert(staker.account !== globals.zeroAddress, 'Invalid staker');
-     assert(staker.stake > 0, 'No staked assets'); */
+    //quantity as a percentage of total mintedLST
+    const burnQuantity = staker.lstMinted / 100 * (100 - percentageQuantity);
+    const unstakeQuantity = staker.stake / 100 * (100 - percentageQuantity);
+
+    verifyAssetTransferTxn(axferTxn, {
+      assetAmount: burnQuantity,
+      assetReceiver: this.app.address,
+      assetSender: this.txn.sender,
+      xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
+    });
 
     if (staker.stake > 0) {
+
       if (this.stakedAssetId.value === 0) {
         sendPayment({
-          amount: quantity === 0 ? staker.stake : quantity,
+          amount: unstakeQuantity,
           receiver: this.txn.sender,
           sender: this.app.address,
           fee: 1_000,
         });
+
       }
       else {
         sendAssetTransfer({
           xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
           assetReceiver: this.txn.sender,
           sender: this.app.address,
-          assetAmount: quantity === 0 ? staker.stake : quantity,
+          assetAmount: unstakeQuantity,
           fee: 1_000,
         });
       }
-    }
-
-    //check for algo rewards
-    if (staker.algoAccuredRewards > 0) {
-      sendPayment({
-        amount: staker.algoAccuredRewards,
-        receiver: this.txn.sender,
-        sender: this.app.address,
-        fee: 1_000,
-      });
-      staker.algoAccuredRewards = 0;
     }
     //check other rewards
 
@@ -490,14 +506,14 @@ export class InjectedRewardsPoolConsensus extends Contract {
       staker.accruedASARewards = 0;
     }
 
-    // Update the total staking weight
-    this.totalStaked.value = this.totalStaked.value - (quantity === 0 ? staker.stake : quantity);
+    // Update the total staking value
+    this.totalStaked.value = this.totalStaked.value - unstakeQuantity;
 
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
 
-    if (quantity === 0) {
+    if (percentageQuantity === 100) {
       const removedStaker: StakeInfo = {
         account: globals.zeroAddress,
         stake: 0,
@@ -518,7 +534,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
 
     } else {
-      staker.stake = staker.stake - quantity;
+      staker.stake = staker.stake - unstakeQuantity;
+      staker.lstMinted = staker.lstMinted - burnQuantity;
       staker.accruedASARewards = 0;
     }
     staker.lastUpdateTime = globals.latestTimestamp;
@@ -615,6 +632,42 @@ export class InjectedRewardsPoolConsensus extends Contract {
     });
     staker.lstMinted = staker.lstMinted + quantity;
     this.setStaker(staker.account, staker);
+  }
+
+
+  burnLST(axferTxn: AssetTransferTxn, quantity: uint64): void {
+
+
+    verifyAssetTransferTxn(axferTxn, {
+      assetAmount: quantity,
+      assetReceiver: this.app.address,
+      assetSender: this.txn.sender,
+      xferAsset: AssetID.fromUint64(this.lstTokenId.value)
+    });
+
+    const lstAmount = axferTxn.assetAmount;
+    const stakeTokenDue = wideRatio([lstAmount, this.lstPrice.value], [this.stakeTokenPrice.value]);
+    assert(stakeTokenDue > 0, 'Invalid quantity');
+    assert(stakeTokenDue <= this.totalStaked.value, 'Invalid quantity');
+
+    if (this.stakedAssetId.value === 0) {
+      sendPayment({
+        amount: stakeTokenDue,
+        receiver: this.txn.sender,
+        sender: this.app.address,
+        fee: 1_000,
+      });
+    } else {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
+        assetReceiver: this.txn.sender,
+        sender: this.app.address,
+        assetAmount: stakeTokenDue,
+        fee: 1_000,
+      });
+    }
+
+
   }
 
 

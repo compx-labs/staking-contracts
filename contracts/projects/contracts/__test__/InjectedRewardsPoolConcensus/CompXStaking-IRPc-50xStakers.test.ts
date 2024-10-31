@@ -75,6 +75,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
 
     await appClient.create.createApplication({
       adminAddress: admin.addr,
+      oracleAdminAddress: admin.addr,
     });
     const { appAddress } = await appClient.appClient.getAppReference();
 
@@ -362,7 +363,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
         .gas({}, { note: '1' })
         .gas({}, { note: '2' })
         .gas({}, { note: '3' })
-        .unstake({ quantity: 0 }, { sender: staker.account, sendParams: { fee: fees } })
+        .unstake({ percentageQuantity: 100n }, { sender: staker.account, sendParams: { fee: fees } })
         .simulate({ allowUnnamedResources: true, allowMoreLogging: true })
 
       fees = AlgoAmount.MicroAlgos(
@@ -374,7 +375,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
         .gas({}, { note: '1' })
         .gas({}, { note: '2' })
         .gas({}, { note: '3' })
-        .unstake({ quantity: 0 }, { sender: staker.account, sendParams: { fee: fees } })
+        .unstake({ percentageQuantity: 100n }, { sender: staker.account, sendParams: { fee: fees } })
         .execute({ populateAppCallResources: true, suppressLog: true })
     }
   });

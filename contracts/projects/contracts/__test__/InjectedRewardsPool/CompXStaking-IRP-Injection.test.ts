@@ -81,7 +81,6 @@ describe('Injected Reward Pool injection test - no staking', () => {
     await appClient.initApplication({
       stakedAsset: stakedAssetId,
       rewardAssetId: rewardAssetOneId,
-      oracleAdmin: admin.addr,
       minStakePeriodForRewards: ONE_DAY,
     }, { sendParams: { fee: algokit.algos(0.2) } });
   });
@@ -91,7 +90,6 @@ describe('Injected Reward Pool injection test - no staking', () => {
     expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
     expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
     expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(ONE_DAY);
-    expect(algosdk.encodeAddress(globalState.oracleAdminAddress!.asByteArray())).toBe(admin.addr);
   });
 
   test('init storage', async () => {

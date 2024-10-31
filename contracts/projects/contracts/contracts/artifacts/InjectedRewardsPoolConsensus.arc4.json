@@ -8,6 +8,10 @@
         {
           "name": "adminAddress",
           "type": "address"
+        },
+        {
+          "name": "oracleAdminAddress",
+          "type": "address"
         }
       ],
       "returns": {
@@ -67,10 +71,38 @@
       }
     },
     {
+      "name": "updateOracleAdminAddress",
+      "args": [
+        {
+          "name": "oracleAdminAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "updateCommision",
       "args": [
         {
           "name": "commision",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "setPrices",
+      "args": [
+        {
+          "name": "stakeTokenPrice",
+          "type": "uint64"
+        },
+        {
+          "name": "lstPrice",
           "type": "uint64"
         }
       ],
@@ -181,7 +213,11 @@
       "name": "unstake",
       "args": [
         {
-          "name": "quantity",
+          "name": "axferTxn",
+          "type": "axfer"
+        },
+        {
+          "name": "percentageQuantity",
           "type": "uint64"
         }
       ],
@@ -283,6 +319,22 @@
     {
       "name": "mintLST",
       "args": [
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "burnLST",
+      "args": [
+        {
+          "name": "axferTxn",
+          "type": "axfer"
+        },
         {
           "name": "quantity",
           "type": "uint64"

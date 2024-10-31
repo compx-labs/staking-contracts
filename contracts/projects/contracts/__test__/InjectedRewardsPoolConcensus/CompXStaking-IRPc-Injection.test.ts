@@ -63,6 +63,7 @@ describe('Injected Reward Pool injection test - no staking', () => {
 
     await appClient.create.createApplication({
       adminAddress: admin.addr,
+      oracleAdminAddress: admin.addr,
     });
     const { appAddress } = await appClient.appClient.getAppReference();
 
