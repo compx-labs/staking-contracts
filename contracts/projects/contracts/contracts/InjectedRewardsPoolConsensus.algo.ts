@@ -344,8 +344,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
   }
 
   accrueRewards(): void {
-    const algoRewards = (this.algoInjectedRewards.value / 100 * (100 - this.commision.value));
-    const commisionPayment = (this.algoInjectedRewards.value / 100 * this.commision.value);
+    const algoRewards = this.algoInjectedRewards.value;
 
     const additionalASARewards = this.injectedASARewards.value;
     if (globals.opcodeBudget < 300) {
