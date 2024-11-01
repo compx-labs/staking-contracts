@@ -67,6 +67,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   treasuryAddress = GlobalStateKey<Address>();
 
+  totalCommision = GlobalStateKey<uint64>();
+
 
   createApplication(
     adminAddress: Address,
@@ -104,6 +106,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.stakeTokenPrice.value = 0;
     this.lstBalance.value = 0;
     this.minimumBalance.value = payTxn.amount;
+    this.totalCommision.value = 0;
 
     if (this.stakedAssetId.value !== 0) {
       sendAssetTransfer({
@@ -231,7 +234,12 @@ export class InjectedRewardsPoolConsensus extends Contract {
   pickupAlgoRewards(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
 
-    const amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.algoInjectedRewards.value - this.totalStaked.value;
+    //total amount of newly paid in consensus rewards
+    let amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.algoInjectedRewards.value - this.totalStaked.value;
+    //less commision
+    const newCommisionPayment = this.totalCommision.value + (amount / 100 * this.commision.value);
+    amount = amount - newCommisionPayment;
+    this.totalCommision.value = this.totalCommision.value + newCommisionPayment;
     if (amount > MINIMUM_ALGO_REWARD) {
       this.algoInjectedRewards.value += amount;
       this.lastRewardInjectionTime.value = globals.latestTimestamp;
@@ -410,12 +418,12 @@ export class InjectedRewardsPoolConsensus extends Contract {
         this.stakers.value[i] = staker;
       }
     }
-    this.payCommision(commisionPayment);
   }
 
-  private payCommision(paymentAmount: uint64): void {
+  payCommision(): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can pay commision');
     sendPayment({
-      amount: paymentAmount,
+      amount: this.totalCommision.value,
       receiver: this.treasuryAddress.value,
       sender: this.app.address,
       fee: 1_000,
@@ -503,14 +511,15 @@ export class InjectedRewardsPoolConsensus extends Contract {
     const staker = this.getStaker(this.txn.sender);
 
     //quantity as a percentage of total mintedLST
-    const burnQuantity = staker.lstMinted / 100 * (100 - percentageQuantity);
-    const unstakeQuantity = staker.stake / 100 * (100 - percentageQuantity);
+    const burnQuantity = staker.lstMinted / 100 * percentageQuantity;
+    // 10000000n / 100 * 98 = 
+    const unstakeQuantity = staker.stake / 100 * percentageQuantity;
 
     verifyAssetTransferTxn(axferTxn, {
       assetAmount: burnQuantity,
       assetReceiver: this.app.address,
-      assetSender: this.txn.sender,
-      xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
+      sender: this.txn.sender,
+      xferAsset: AssetID.fromUint64(this.lstTokenId.value)
     });
 
     if (staker.stake > 0) {
@@ -651,10 +660,15 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.lstBalance.value = this.lstBalance.value + quantity;
   }
 
-  mintLST(quantity: uint64): void {
+  mintLST(quantity: uint64, payTxn: PayTxn): void {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
+    const minPayment = 1_000;
+    verifyPayTxn(payTxn, {
+      receiver: this.app.address,
+      amount: minPayment,
+    });
     const staker = this.getStaker(this.txn.sender);
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
