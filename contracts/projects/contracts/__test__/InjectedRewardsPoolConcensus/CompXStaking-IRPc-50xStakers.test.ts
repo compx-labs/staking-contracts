@@ -22,6 +22,7 @@ const BYTE_LENGTH_REWARD_ASSET = 8;
 const BYTE_LENGTH_STAKER = 96;
 const COMMISION = 8n;
 const numStakers = 1;
+let treasuryAccount: TransactionSignerAccount;
 let stakingAccounts: StakingAccount[] = [];
 const rewardTokens: bigint[] = [];
 
@@ -73,17 +74,27 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     rewardAssetOneId = BigInt((await rewardAssetOneCreate).confirmation.assetIndex!);
     rewardTokens.push(rewardAssetOneId);
 
+    treasuryAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(0), suppressLog: true });
+    /* await algokit.ensureFunded(
+      {
+        accountToFund: treasuryAccount,
+        fundingSource: await algokit.getDispenserAccount(algorand.client.algod, algorand.client.kmd!),
+        minSpendingBalance: algokit.algos(1),
+      },
+      algorand.client.algod,
+    ) */
     await appClient.create.createApplication({
       adminAddress: admin.addr,
       oracleAdminAddress: admin.addr,
+      treasuryAddress: treasuryAccount.addr,
     });
     const { appAddress } = await appClient.appClient.getAppReference();
 
-    /*     await fixture.algorand.send.payment({
-          sender: admin.addr,
-          receiver: appAddress,
-          amount: algokit.algos(20),
-        }); */
+    const payTxn = await fixture.algorand.transactions.payment({
+      sender: admin.addr,
+      receiver: appAddress,
+      amount: algokit.algos(0.2),
+    });
 
     await appClient.initApplication({
       stakedAsset: 0,
@@ -91,6 +102,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
       minStakePeriodForRewards: 0n,
       commision: COMMISION,
       lstTokenId: lstAssetId,
+      payTxn
     }, { sendParams: { fee: algokit.algos(0.1) } });
   });
 
@@ -157,9 +169,30 @@ describe('Injected Reward Pool - 50x stakers test', () => {
           receiver: staker.account.addr,
         }, { suppressLog: true });
       }
+      await algorand.send.assetTransfer({
+        assetId: lstAssetId,
+        amount: 0n,
+        sender: staker.account.addr,
+        receiver: staker.account.addr,
+      }, { suppressLog: true });
+
       stakingAccounts.push(staker);
     }
   }, 600000);
+
+  test('send lst balance to contract', async () => {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+    const axferTxn = await algorand.transactions.assetTransfer({
+      sender: admin.addr,
+      receiver: appAddress,
+      assetId: lstAssetId,
+      amount: 100_000_000_000n,
+    });
+    await appClient.addLst({ axferTxn, quantity: 100_000_000_000n }, { sender: admin, sendParams: { fee: algokit.algos(0.1) }, assets: [Number(lstAssetId)] });
+    const lstBalance = (await algorand.account.getAssetInformation(appAddress, lstAssetId)).balance;
+    expect(lstBalance).toBe(100_000_000_000n);
+  });
 
   async function accreRewards() {
     const { algorand } = fixture;
@@ -173,6 +206,8 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     const accrueSimulateResult = await appClient.compose()
       .gas({}, { note: '1' })
       .gas({}, { note: '2' })
+      .gas({}, { note: '3' })
+      .gas({}, { note: '4' })
       .accrueRewards({}, { sendParams: { fee: accrueRewardsFees } })
       .simulate({ allowUnnamedResources: true, allowMoreLogging: true })
     accrueRewardsFees = AlgoAmount.MicroAlgos(
@@ -184,6 +219,8 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     const response = await appClient.compose()
       .gas({}, { note: '1' })
       .gas({}, { note: '2' })
+      .gas({}, { note: '3' })
+      .gas({}, { note: '4' })
       .accrueRewards({}, { sendParams: { fee: accrueRewardsFees } })
       .execute({ populateAppCallResources: true })
 
@@ -245,6 +282,45 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     }
   });
 
+  test('mint lst tokens', async () => {
+    const { algorand } = fixture;
+    for (var staker of stakingAccounts) {
+      let fees = AlgoAmount.MicroAlgos(240_000);
+      const simulateResults = await appClient.compose()
+        .gas({}, { note: '1' })
+        .gas({}, { note: '2' })
+        .gas({}, { note: '3' })
+        .gas({}, { note: '4' })
+        .mintLst({ quantity: staker.stake },
+          {
+            sender: staker.account,
+            sendParams: { fee: fees }, assets: [Number(lstAssetId)]
+          })
+        .simulate({ allowUnnamedResources: true, allowMoreLogging: true })
+
+      fees = AlgoAmount.MicroAlgos(
+        2000 +
+        1000 *
+        Math.floor(((simulateResults.simulateResponse.txnGroups[0].appBudgetAdded as number) + 699) / 700),
+      )
+      console.log('mintLst fees:', fees.toString());
+      const results = await appClient.compose()
+        .gas({}, { note: '1' })
+        .gas({}, { note: '2' })
+        .gas({}, { note: '3' })
+        .gas({}, { note: '4' })
+        .mintLst({ quantity: staker.stake },
+          {
+            sender: staker.account,
+            sendParams: { fee: fees }, assets: [Number(lstAssetId)]
+          })
+        .execute({ populateAppCallResources: true })
+      const lstBalance = (await algorand.account.getAssetInformation(staker.account!.addr, lstAssetId)).balance;
+      console.log('lstBalance:', lstBalance);
+      expect(lstBalance).toBe(staker.stake);
+    };
+  });
+
   test.skip('inject rewards algo', async () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
@@ -287,21 +363,25 @@ describe('Injected Reward Pool - 50x stakers test', () => {
 
     await appClient.pickupAlgoRewards({}, { sendParams: { fee: algokit.algos(0.01) } });
     const globalState = await appClient.getGlobalState();
-    expect(globalState.algoInjectedRewards!.asBigInt()).toBe(2n * 10n ** 6n);
+    expect(globalState.algoInjectedRewards!.asBigInt()).toBe((2n * 10n ** 6n - 1_000n));
     expect(globalState.injectedASARewards!.asBigInt()).toBe(0n * 10n ** 6n);
-    expect(globalState.totalConsensusRewards!.asBigInt()).toBe(2n * 10n ** 6n);
+    expect(globalState.totalConsensusRewards!.asBigInt()).toBe((2n * 10n ** 6n - 1_000n));
   });
 
   test('accreRewards', async () => {
+    const { algorand } = fixture;
     await accreRewards();
     let index = 0;
     for (var staker of stakingAccounts) {
       const stakerBoxAfter = await appClient.appClient.getBoxValue('stakers');
       const stakerAfter = getStakingAccount(stakerBoxAfter.slice(index, BYTE_LENGTH_STAKER * (index + 1)), 8);
       console.log('staker info after accrue', stakerAfter);
-      expect(stakerAfter.algoAccuredRewards).toBe((2n * 10n ** 6n / 100n * (100n - COMMISION)));
+      expect(stakerAfter.algoAccuredRewards).toBe((2n * 10n ** 6n / 100n * (100n - COMMISION)) - 920n);
       index += BYTE_LENGTH_STAKER;
     }
+    const treasuryBalance = (await algorand.account.getInformation(treasuryAccount.addr)).amount;
+    console.log('treasuryBalance:', treasuryBalance);
+    expect(treasuryBalance).toBe(2n * 10n ** 6n / 100n * COMMISION);
   });
 
   test.skip('claim rewards', async () => {
@@ -357,13 +437,22 @@ describe('Injected Reward Pool - 50x stakers test', () => {
   });
 
   test.skip('unstake all', async () => {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+
     for (var staker of stakingAccounts) {
       let fees = AlgoAmount.MicroAlgos(240_000);
+      const axferTxn = await algorand.transactions.assetTransfer({
+        sender: staker.account!.addr,
+        receiver: appAddress,
+        assetId: lstAssetId,
+        amount: 0n,
+      });
       const response = await appClient.compose()
         .gas({}, { note: '1' })
         .gas({}, { note: '2' })
         .gas({}, { note: '3' })
-        .unstake({ percentageQuantity: 100n }, { sender: staker.account, sendParams: { fee: fees } })
+        .unstake({ axferTxn, percentageQuantity: 100n }, { sender: staker.account, sendParams: { fee: fees } })
         .simulate({ allowUnnamedResources: true, allowMoreLogging: true })
 
       fees = AlgoAmount.MicroAlgos(
@@ -375,7 +464,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
         .gas({}, { note: '1' })
         .gas({}, { note: '2' })
         .gas({}, { note: '3' })
-        .unstake({ percentageQuantity: 100n }, { sender: staker.account, sendParams: { fee: fees } })
+        .unstake({ axferTxn, percentageQuantity: 100n }, { sender: staker.account, sendParams: { fee: fees } })
         .execute({ populateAppCallResources: true, suppressLog: true })
     }
   });

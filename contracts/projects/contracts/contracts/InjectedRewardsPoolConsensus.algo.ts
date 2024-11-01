@@ -63,13 +63,19 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   oracleAdminAddress = GlobalStateKey<Address>();
 
+  lstBalance = GlobalStateKey<uint64>();
+
+  treasuryAddress = GlobalStateKey<Address>();
+
 
   createApplication(
     adminAddress: Address,
-    oracleAdminAddress: Address
+    oracleAdminAddress: Address,
+    treasuryAddress: Address
   ): void {
     this.adminAddress.value = adminAddress;
     this.oracleAdminAddress.value = oracleAdminAddress;
+    this.treasuryAddress.value = treasuryAddress;
   }
 
   initApplication(
@@ -77,7 +83,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
     rewardAssetId: uint64,
     minStakePeriodForRewards: uint64,
     lstTokenId: uint64,
-    commision: uint64
+    commision: uint64,
+    payTxn: PayTxn
   ): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
 
@@ -93,10 +100,21 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.totalConsensusRewards.value = 0;
     this.lstTokenId.value = lstTokenId;
     this.commision.value = commision;
+    this.lstPrice.value = 0;
+    this.stakeTokenPrice.value = 0;
+    this.lstBalance.value = 0;
+    this.minimumBalance.value = payTxn.amount;
 
     if (this.stakedAssetId.value !== 0) {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(stakedAsset),
+        assetReceiver: this.app.address,
+        assetAmount: 0,
+      })
+    }
+    if (this.lstTokenId.value !== 0) {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(this.lstTokenId.value),
         assetReceiver: this.app.address,
         assetAmount: 0,
       })
@@ -114,6 +132,10 @@ export class InjectedRewardsPoolConsensus extends Contract {
   updateOracleAdminAddress(oracleAdminAddress: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update oracle admin address');
     this.oracleAdminAddress.value = oracleAdminAddress;
+  }
+  updateTreasuryAddress(treasuryAddress: Address): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update treasury address');
+    this.treasuryAddress.value = treasuryAddress;
   }
   updateCommision(commision: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commision');
@@ -166,7 +188,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     // the pay transaction must exactly match our MBR requirement.
     verifyPayTxn(mbrPayment, { receiver: this.app.address, amount: poolMBR })
     this.stakers.create()
-    this.minimumBalance.value = poolMBR;
+    this.minimumBalance.value = this.minimumBalance.value + poolMBR;
 
     if (nonAlgoRewardMBR > 0) {
       // opt into additional reward token
@@ -244,76 +266,78 @@ export class InjectedRewardsPoolConsensus extends Contract {
       receiver: this.app.address,
       amount: quantity,
     });
-    let actionComplete: boolean = false;
+
+
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
-    for (let i = 0; i < this.stakers.value.length; i += 1) {
-      if (actionComplete) break;
 
-      if (this.stakers.value[i].account === this.txn.sender) {
+    const staker = this.getStaker(this.txn.sender);
+    if (staker.account !== globals.zeroAddress) {
 
-        //adding to current stake
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-
-        const staker = clone(this.stakers.value[i])
-        staker.stake += payTxn.amount
-
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        staker.stakeDuration = 0;
-        staker.stakeStartTime = currentTimeStamp;
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.stakers.value[i] = staker
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.totalStaked.value += payTxn.amount;
-        actionComplete = true;
-
-      } else if (this.stakers.value[i].account === globals.zeroAddress) {
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.totalStaked.value = this.totalStaked.value + payTxn.amount;
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.stakers.value[i] = {
-          account: this.txn.sender,
-          stake: payTxn.amount,
-          stakeDuration: 0,
-          stakeStartTime: currentTimeStamp,
-          algoAccuredRewards: 0,
-          lastUpdateTime: currentTimeStamp,
-          accruedASARewards: 0,
-          userSharePercentage: 0,
-          lstMinted: 0
-        }
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.numStakers.value = this.numStakers.value + 1;
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        actionComplete = true;
+      //adding to current stake
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
       }
+
+
+      staker.stake += payTxn.amount
+
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
+      staker.stakeDuration = 0;
+      staker.stakeStartTime = currentTimeStamp;
+
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
+      this.setStaker(staker.account, staker);
+
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
+      this.totalStaked.value += payTxn.amount;
+
+    } else {
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
+      this.totalStaked.value = this.totalStaked.value + payTxn.amount;
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
+      const newStaker: StakeInfo = {
+        account: this.txn.sender,
+        stake: payTxn.amount,
+        stakeDuration: 0,
+        stakeStartTime: currentTimeStamp,
+        algoAccuredRewards: 0,
+        lastUpdateTime: currentTimeStamp,
+        accruedASARewards: 0,
+        userSharePercentage: 0,
+        lstMinted: 0
+      }
+
+
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
+      this.setNewStaker(newStaker);
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
+      this.numStakers.value = this.numStakers.value + 1;
 
       if (globals.opcodeBudget < 300) {
         increaseOpcodeBudget()
       }
     }
-    assert(actionComplete, 'Stake  failed');
   }
 
   accrueRewards(): void {
     const algoRewards = (this.algoInjectedRewards.value / 100 * (100 - this.commision.value));
+    const commisionPayment = (this.algoInjectedRewards.value / 100 * this.commision.value);
 
     const additionalASARewards = this.injectedASARewards.value;
     if (globals.opcodeBudget < 300) {
@@ -386,6 +410,16 @@ export class InjectedRewardsPoolConsensus extends Contract {
         this.stakers.value[i] = staker;
       }
     }
+    this.payCommision(commisionPayment);
+  }
+
+  private payCommision(paymentAmount: uint64): void {
+    sendPayment({
+      amount: paymentAmount,
+      receiver: this.treasuryAddress.value,
+      sender: this.app.address,
+      fee: 1_000,
+    });
   }
 
   private getStaker(address: Address): StakeInfo {
@@ -417,8 +451,15 @@ export class InjectedRewardsPoolConsensus extends Contract {
       if (this.stakers.value[i].account === stakerAccount) {
         this.stakers.value[i] = staker;
         return;
+      } else if (this.stakers.value[i].account === globals.zeroAddress) {
+        this.stakers.value[i] = staker;
+        return;
       }
     }
+  }
+
+  private setNewStaker(staker: StakeInfo): void {
+    this.stakers.value[this.numStakers.value] = staker;
   }
 
   claimRewards(): void {
@@ -567,7 +608,9 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can go online')
 
     const extraFee = this.getGoOnlineFee()
-    verifyPayTxn(feePayment, { receiver: this.app.address, amount: extraFee })
+    verifyPayTxn(feePayment, {
+      receiver: this.app.address, amount: extraFee
+    })
     sendOnlineKeyRegistration({
       votePK: votePK,
       selectionPK: selectionPK,
@@ -602,42 +645,53 @@ export class InjectedRewardsPoolConsensus extends Contract {
     verifyAssetTransferTxn(axferTxn, {
       assetAmount: quantity,
       assetReceiver: this.app.address,
-      assetSender: this.txn.sender,
+      sender: this.txn.sender,
       xferAsset: AssetID.fromUint64(lstTokenId)
     });
-
-    sendAssetTransfer({
-      xferAsset: AssetID.fromUint64(lstTokenId),
-      assetReceiver: this.app.address,
-      sender: this.app.address,
-      assetAmount: 0,
-    });
+    this.lstBalance.value = this.lstBalance.value + quantity;
   }
 
   mintLST(quantity: uint64): void {
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget()
+    }
     const staker = this.getStaker(this.txn.sender);
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget()
+    }
     assert(staker.account !== globals.zeroAddress, 'Invalid staker');
     assert(staker.stake > 0, 'No staked assets');
-    assert(staker.stake < staker.lstMinted, 'Already minted max LST');
     assert(quantity > 0, 'Invalid quantity');
 
     const lstMintRemaining = staker.stake - staker.lstMinted;
     assert(quantity <= lstMintRemaining, 'Invalid quantity');
-
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget()
+    }
     sendAssetTransfer({
       xferAsset: AssetID.fromUint64(this.lstTokenId.value),
       assetReceiver: this.txn.sender,
       sender: this.app.address,
       assetAmount: quantity,
+      fee: 1_000,
     });
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget()
+    }
     staker.lstMinted = staker.lstMinted + quantity;
+    staker.lastUpdateTime = globals.latestTimestamp;
+    this.lstBalance.value = this.lstBalance.value - quantity;
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget()
+    }
     this.setStaker(staker.account, staker);
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget()
+    }
   }
 
 
   burnLST(axferTxn: AssetTransferTxn, quantity: uint64): void {
-
-
     verifyAssetTransferTxn(axferTxn, {
       assetAmount: quantity,
       assetReceiver: this.app.address,
@@ -666,8 +720,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
         fee: 1_000,
       });
     }
-
-
+    this.lstBalance.value = this.lstBalance.value + lstAmount;
   }
 
 

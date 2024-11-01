@@ -12,6 +12,10 @@
         {
           "name": "oracleAdminAddress",
           "type": "address"
+        },
+        {
+          "name": "treasuryAddress",
+          "type": "address"
         }
       ],
       "returns": {
@@ -40,6 +44,10 @@
         {
           "name": "commision",
           "type": "uint64"
+        },
+        {
+          "name": "payTxn",
+          "type": "pay"
         }
       ],
       "returns": {
@@ -75,6 +83,18 @@
       "args": [
         {
           "name": "oracleAdminAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateTreasuryAddress",
+      "args": [
+        {
+          "name": "treasuryAddress",
           "type": "address"
         }
       ],
