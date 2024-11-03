@@ -21,7 +21,7 @@ const ONE_DAY = 86400n;
 const BYTE_LENGTH_REWARD_ASSET = 8;
 const BYTE_LENGTH_STAKER = 96;
 const COMMISION = 8n;
-const numStakers = 3;
+const numStakers = 250;
 let algoPayment: AlgoAmount = algokit.algos(2);
 let treasuryAccount: TransactionSignerAccount;
 let stakingAccounts: StakingAccount[] = [];
@@ -303,7 +303,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     }
     const { amount: balanceAfterStake } = await algorand.account.getInformation(appAddress);
     console.log('staking balanceAfterStake:', balanceAfterStake);
-  });
+  }, 600000);
 
   test('mint lst tokens', async () => {
     const { algorand } = fixture;
@@ -353,7 +353,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     };
     const { amount: balanceAfterMintLST } = await algorand.account.getInformation(appAddress);
     console.log('mintLST balanceAfterMintLST:', balanceAfterMintLST);
-  });
+  }, 600000);
 
   test('inject rewards ASA ', async () => {
     const { algorand } = fixture;
@@ -427,7 +427,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
       expect(stakerAfter.algoAccuredRewards).toBe(totalConsensusRewards / BigInt(numStakers));
       index += BYTE_LENGTH_STAKER;
     }
-  });
+  }, 600000);
 
 
   test('unstake all', async () => {
@@ -483,9 +483,9 @@ describe('Injected Reward Pool - 50x stakers test', () => {
       const { amount: algoBalanceAfterUnstake } = await algorand.account.getInformation(staker.account!.addr);
       const { balance: asaRewardBalanceAfterUnstake } = (await algorand.account.getAssetInformation(staker.account!.addr, rewardAssetOneId));
       expect(algoBalanceAfterUnstake).toBe(algoBalanceBeforeUnstake + Number(stake) - (fees.microAlgos + 1_000));
-      //expect(asaRewardBalanceAfterUnstake).toBe(asaRewardBalanceBeforeUnstake + ASARewardPending);
+      expect(asaRewardBalanceAfterUnstake).toBe(asaRewardBalanceBeforeUnstake + ASARewardPending);
     }
-  });
+  }, 600000);
 
   test.skip('deleteApplication', async () => {
     await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });

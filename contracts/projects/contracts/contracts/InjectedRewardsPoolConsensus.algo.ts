@@ -527,6 +527,9 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   unstake(axferTxn: AssetTransferTxn, percentageQuantity: uint64): void {
     for (let i = 0; i < this.numStakers.value; i += 1) {
+      if (globals.opcodeBudget < 300) {
+        increaseOpcodeBudget()
+      }
       const staker = clone(this.stakers.value[i]);
       if (staker.account === this.txn.sender) {
         assert(staker.stake > 0, 'No stake to unstake');
@@ -536,6 +539,9 @@ export class InjectedRewardsPoolConsensus extends Contract {
         assert(unstakeQuantity > 0, 'Invalid quantity');
         this.lastUnstake.value = unstakeQuantity;
 
+        if (globals.opcodeBudget < 300) {
+          increaseOpcodeBudget()
+        }
         verifyAssetTransferTxn(axferTxn, {
           assetAmount: burnQuantity,
           assetReceiver: this.app.address,
@@ -579,25 +585,39 @@ export class InjectedRewardsPoolConsensus extends Contract {
             userSharePercentage: 0,
             lstMinted: 0
           }
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
           this.setStaker(staker.account, removedStaker);
           //copy last staker to the removed staker position
           const lastStaker = this.getStaker(this.stakers.value[this.numStakers.value - 1].account);
           const lastStakerIndex = this.getStakerIndex(this.stakers.value[this.numStakers.value - 1].account);
-          
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
           this.setStakerAtIndex(lastStaker, i);
           //remove old record of last staker
           this.setStakerAtIndex(removedStaker, lastStakerIndex);
-
+          this.numStakers.value = this.numStakers.value - 1;
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
         } else {
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
           staker.stake = staker.stake - unstakeQuantity;
           staker.lstMinted = staker.lstMinted - burnQuantity;
           staker.accruedASARewards = 0;
           staker.lastUpdateTime = globals.latestTimestamp;
           this.setStaker(staker.account, staker);
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
         }
         break;
       }
-      // this.numStakers.value = this.numStakers.value - 1;
+       
     }
   }
 

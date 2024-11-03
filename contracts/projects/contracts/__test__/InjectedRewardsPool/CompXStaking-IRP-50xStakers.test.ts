@@ -254,7 +254,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
         .execute({ populateAppCallResources: true, suppressLog: true })
 
     }
-  });
+  }, 60000);
 
   test('inject rewards algo', async () => {
     const { algorand } = fixture;
@@ -292,7 +292,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
 
   test('accreRewards', async () => {
     await accreRewards();
-  });
+  }, 60000);
 
   test('claim rewards', async () => {
     const { algorand } = fixture;
@@ -344,7 +344,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
       index += BYTE_LENGTH_STAKER;
 
     }
-  });
+  }, 60000);
 
   test('unstake all', async () => {
     for (var staker of stakingAccounts) {
@@ -368,7 +368,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
         .unstake({ quantity: 0 }, { sender: staker.account, sendParams: { fee: fees } })
         .execute({ populateAppCallResources: true, suppressLog: true })
     }
-  });
+  }, 60000);
 
   test('deleteApplication', async () => {
     await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });
