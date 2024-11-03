@@ -64,21 +64,23 @@ describe('Injected Reward Pool injection test - no staking', () => {
     await appClient.create.createApplication({
       adminAddress: admin.addr,
       oracleAdminAddress: admin.addr,
+      treasuryAddress: admin.addr,
     });
     const { appAddress } = await appClient.appClient.getAppReference();
 
-   /*  await fixture.algorand.send.payment({
+    const payTxn = await fixture.algorand.transactions.payment({
       sender: admin.addr,
       receiver: appAddress,
-      amount: algokit.algos(20),
-    }); */
+      amount: algokit.algos(2),
+    });
 
     await appClient.initApplication({
       stakedAsset: 0,
       rewardAssetId: rewardAssetOneId,
       minStakePeriodForRewards: ONE_DAY,
       lstTokenId: lstAssetId,
-      commision: 8n
+      commision: 8n,
+      payTxn,
     }, { sendParams: { fee: algokit.algos(0.2) } });
   });
 

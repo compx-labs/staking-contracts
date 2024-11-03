@@ -21,8 +21,8 @@ const ONE_DAY = 86400n;
 const BYTE_LENGTH_REWARD_ASSET = 8;
 const BYTE_LENGTH_STAKER = 96;
 const COMMISION = 8n;
-const numStakers = 2;
-let algoPayment = 2n * 10n ** 6n;
+const numStakers = 3;
+let algoPayment: AlgoAmount = algokit.algos(2);
 let treasuryAccount: TransactionSignerAccount;
 let stakingAccounts: StakingAccount[] = [];
 const rewardTokens: bigint[] = [];
@@ -94,7 +94,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     const payTxn = await fixture.algorand.transactions.payment({
       sender: admin.addr,
       receiver: appAddress,
-      amount: algokit.algos(0.2),
+      amount: algokit.algos(2),
     });
 
     await appClient.initApplication({
@@ -383,13 +383,13 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     const payTxn = await algorand.send.payment({
       sender: admin.addr,
       receiver: appAddress,
-      amount: algokit.algos(2),
+      amount: algoPayment,
     });
     const { amount: balanceAfterPAy } = await algorand.account.getInformation(appAddress);
     console.log('balanceAfterPAy:', balanceAfterPAy);
 
-    const commisionAmount = (BigInt(Number(algokit.algos(2))) / 100n * COMMISION);
-    const rewardAmount = (BigInt(Number(algokit.algos(2))) - commisionAmount);
+    const commisionAmount = (BigInt(Number(algoPayment)) / 100n * COMMISION);
+    const rewardAmount = (BigInt(Number(algoPayment)) - commisionAmount);
 
     const globalStateX = await appClient.getGlobalState();
 
@@ -434,12 +434,22 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     const { algorand } = fixture;
     const { appAddress } = await appClient.appClient.getAppReference();
 
-    for (var staker of stakingAccounts) {
+    const totalStakedBefore = (await appClient.getGlobalState()).totalStaked!.asBigInt();
+    console.log('totalStakedBefore:', totalStakedBefore);
+
+    for (let i = 0; i < numStakers; i++) {
+      const staker = stakingAccounts[i];
+      const stakerBox = await appClient.appClient.getBoxValue('stakers');
+      const stakerAccount = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
+      const ASARewardPending = stakerAccount.accruedASARewards;
+      const stake = stakerAccount.stake;
+      const { amount: algoBalanceBeforeUnstake } = await algorand.account.getInformation(staker.account!.addr);
+      const { balance: asaRewardBalanceBeforeUnstake } = (await algorand.account.getAssetInformation(staker.account!.addr, rewardAssetOneId));
+
+      console.log('unstake params, address:', staker.account, 'stake:', stake, 'ASARewardPending:', ASARewardPending, 'algoBalanceBeforeUnstake:', algoBalanceBeforeUnstake, 'asaRewardBalanceBeforeUnstake:', asaRewardBalanceBeforeUnstake);
       let fees = AlgoAmount.MicroAlgos(240_000);
       const { balance: lstBalance } = (await algorand.account.getAssetInformation(staker.account!.addr, lstAssetId));
-      const stakerBox = await appClient.appClient.getBoxValue('stakers');
-      const account = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
-      consoleLogger.info('account information:', account);
+
       const axferTxn = await algorand.transactions.assetTransfer({
         sender: staker.account!.addr,
         receiver: appAddress,
@@ -464,7 +474,16 @@ describe('Injected Reward Pool - 50x stakers test', () => {
         .gas({}, { note: '2' })
         .gas({}, { note: '3' })
         .unstake({ axferTxn, percentageQuantity: 100n }, { sender: staker.account, sendParams: { fee: fees } })
-        .execute({ populateAppCallResources: true, suppressLog: true })
+        .execute({ populateAppCallResources: true, suppressLog: false })
+
+      const globalStateAfter = await appClient.getGlobalState();
+      console.log('last unstake:', globalStateAfter.lastUnstake!.asBigInt());
+      const { balance: lstBalanceAfter } = (await algorand.account.getAssetInformation(staker.account!.addr, lstAssetId));
+      expect(lstBalanceAfter).toBe(0n);
+      const { amount: algoBalanceAfterUnstake } = await algorand.account.getInformation(staker.account!.addr);
+      const { balance: asaRewardBalanceAfterUnstake } = (await algorand.account.getAssetInformation(staker.account!.addr, rewardAssetOneId));
+      expect(algoBalanceAfterUnstake).toBe(algoBalanceBeforeUnstake + Number(stake) - (fees.microAlgos + 1_000));
+      //expect(asaRewardBalanceAfterUnstake).toBe(asaRewardBalanceBeforeUnstake + ASARewardPending);
     }
   });
 
