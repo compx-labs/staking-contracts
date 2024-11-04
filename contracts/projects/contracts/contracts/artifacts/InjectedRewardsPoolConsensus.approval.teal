@@ -4296,7 +4296,7 @@ burnLST:
 	// verifyAssetTransferTxn(axferTxn, {
 	//       assetAmount: quantity,
 	//       assetReceiver: this.app.address,
-	//       assetSender: this.txn.sender,
+	//       sender: this.txn.sender,
 	//       xferAsset: AssetID.fromUint64(this.lstTokenId.value)
 	//     })
 	// verify assetAmount
@@ -4317,13 +4317,13 @@ burnLST:
 	// transaction verification failed: {"txn":"axferTxn","field":"assetReceiver","expected":"this.app.address"}
 	assert
 
-	// verify assetSender
+	// verify sender
 	frame_dig -1 // axferTxn: AssetTransferTxn
-	gtxns AssetSender
+	gtxns Sender
 	txn Sender
 	==
 
-	// transaction verification failed: {"txn":"axferTxn","field":"assetSender","expected":"this.txn.sender"}
+	// transaction verification failed: {"txn":"axferTxn","field":"sender","expected":"this.txn.sender"}
 	assert
 
 	// verify xferAsset
@@ -4380,8 +4380,28 @@ burnLST:
 	// Invalid quantity
 	assert
 
-	// *if60_condition
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:749
+	// assert(this.lstPrice.value > 0, 'Invalid price')
+	byte 0x6c73745072696365 // "lstPrice"
+	app_global_get
+	int 0
+	>
+
+	// Invalid price
+	assert
+
 	// contracts/InjectedRewardsPoolConsensus.algo.ts:750
+	// assert(this.stakeTokenPrice.value > 0, 'Invalid price')
+	byte 0x7374616b65546f6b656e5072696365 // "stakeTokenPrice"
+	app_global_get
+	int 0
+	>
+
+	// Invalid price
+	assert
+
+	// *if60_condition
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:752
 	// this.stakedAssetId.value === 0
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
@@ -4390,7 +4410,7 @@ burnLST:
 	bz *if60_else
 
 	// *if60_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:751
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:753
 	// sendPayment({
 	//         amount: stakeTokenDue,
 	//         receiver: this.txn.sender,
@@ -4401,22 +4421,22 @@ burnLST:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:752
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:754
 	// amount: stakeTokenDue
 	frame_dig 1 // stakeTokenDue: uint64
 	itxn_field Amount
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:753
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:755
 	// receiver: this.txn.sender
 	txn Sender
 	itxn_field Receiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:754
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:756
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:755
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:757
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -4426,7 +4446,7 @@ burnLST:
 	b *if60_end
 
 *if60_else:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:758
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:760
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
 	//         assetReceiver: this.txn.sender,
@@ -4438,28 +4458,28 @@ burnLST:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:759
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:761
 	// xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:760
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:762
 	// assetReceiver: this.txn.sender
 	txn Sender
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:761
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:763
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:762
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:764
 	// assetAmount: stakeTokenDue
 	frame_dig 1 // stakeTokenDue: uint64
 	itxn_field AssetAmount
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:763
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:765
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -4468,7 +4488,7 @@ burnLST:
 	itxn_submit
 
 *if60_end:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:766
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:768
 	// this.lstBalance.value = this.lstBalance.value + lstAmount
 	byte 0x6c737442616c616e6365 // "lstBalance"
 	dup

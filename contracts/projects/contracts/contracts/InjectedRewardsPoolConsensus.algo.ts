@@ -738,7 +738,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     verifyAssetTransferTxn(axferTxn, {
       assetAmount: quantity,
       assetReceiver: this.app.address,
-      assetSender: this.txn.sender,
+      sender: this.txn.sender,
       xferAsset: AssetID.fromUint64(this.lstTokenId.value)
     });
 
@@ -746,6 +746,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
     const stakeTokenDue = wideRatio([lstAmount, this.lstPrice.value], [this.stakeTokenPrice.value]);
     assert(stakeTokenDue > 0, 'Invalid quantity');
     assert(stakeTokenDue <= this.totalStaked.value, 'Invalid quantity');
+    assert(this.lstPrice.value > 0, 'Invalid price');
+    assert(this.stakeTokenPrice.value > 0, 'Invalid price');
 
     if (this.stakedAssetId.value === 0) {
       sendPayment({
