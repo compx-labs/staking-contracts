@@ -631,7 +631,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     /*  if (!this.app.address.incentiveEligible) {
        return globals.payoutsGoOnlineFee
      } */
-    return 2000;
+    return 2_000_000;
   }
 
   goOnline(
