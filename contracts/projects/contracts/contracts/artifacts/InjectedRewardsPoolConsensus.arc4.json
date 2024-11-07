@@ -1,0 +1,414 @@
+{
+  "name": "InjectedRewardsPoolConsensus",
+  "desc": "",
+  "methods": [
+    {
+      "name": "createApplication",
+      "args": [
+        {
+          "name": "adminAddress",
+          "type": "address"
+        },
+        {
+          "name": "oracleAdminAddress",
+          "type": "address"
+        },
+        {
+          "name": "treasuryAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "initApplication",
+      "args": [
+        {
+          "name": "stakedAsset",
+          "type": "uint64"
+        },
+        {
+          "name": "rewardAssetId",
+          "type": "uint64"
+        },
+        {
+          "name": "minStakePeriodForRewards",
+          "type": "uint64"
+        },
+        {
+          "name": "lstTokenId",
+          "type": "uint64"
+        },
+        {
+          "name": "commision",
+          "type": "uint64"
+        },
+        {
+          "name": "payTxn",
+          "type": "pay"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateMinStakePeriod",
+      "args": [
+        {
+          "name": "minStakePeriodForRewards",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateAdminAddress",
+      "args": [
+        {
+          "name": "adminAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateOracleAdminAddress",
+      "args": [
+        {
+          "name": "oracleAdminAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateTreasuryAddress",
+      "args": [
+        {
+          "name": "treasuryAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateCommision",
+      "args": [
+        {
+          "name": "commision",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "setPrices",
+      "args": [
+        {
+          "name": "stakeTokenPrice",
+          "type": "uint64"
+        },
+        {
+          "name": "lstPrice",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "getMBRForPoolCreation",
+      "args": [],
+      "returns": {
+        "type": "(uint64)"
+      }
+    },
+    {
+      "name": "initStorage",
+      "args": [
+        {
+          "name": "mbrPayment",
+          "type": "pay"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "injectRewards",
+      "args": [
+        {
+          "name": "rewardTxn",
+          "type": "axfer"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
+        },
+        {
+          "name": "rewardAssetId",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "injectAlgoRewards",
+      "args": [
+        {
+          "name": "payTxn",
+          "type": "pay"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "pickupAlgoRewards",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "deleteApplication",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "stake",
+      "args": [
+        {
+          "name": "payTxn",
+          "type": "pay"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "optInToToken",
+      "args": [
+        {
+          "name": "payTxn",
+          "type": "pay"
+        },
+        {
+          "name": "tokenId",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "accrueRewards",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "payCommision",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "claimRewards",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "unstake",
+      "args": [
+        {
+          "name": "axferTxn",
+          "type": "axfer"
+        },
+        {
+          "name": "percentageQuantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "setFreeze",
+      "args": [
+        {
+          "name": "enabled",
+          "type": "bool"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "goOnline",
+      "args": [
+        {
+          "name": "feePayment",
+          "type": "pay"
+        },
+        {
+          "name": "votePK",
+          "type": "byte[]"
+        },
+        {
+          "name": "selectionPK",
+          "type": "byte[]"
+        },
+        {
+          "name": "stateProofPK",
+          "type": "byte[]"
+        },
+        {
+          "name": "voteFirst",
+          "type": "uint64"
+        },
+        {
+          "name": "voteLast",
+          "type": "uint64"
+        },
+        {
+          "name": "voteKeyDilution",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "goOffline",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "linkToNFD",
+      "args": [
+        {
+          "name": "nfdAppId",
+          "type": "uint64"
+        },
+        {
+          "name": "nfdName",
+          "type": "string"
+        },
+        {
+          "name": "nfdRegistryAppId",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "addLST",
+      "args": [
+        {
+          "name": "axferTxn",
+          "type": "axfer"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "removeLST",
+      "args": [
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "mintLST",
+      "args": [
+        {
+          "name": "quantity",
+          "type": "uint64"
+        },
+        {
+          "name": "payTxn",
+          "type": "pay"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "burnLST",
+      "args": [
+        {
+          "name": "axferTxn",
+          "type": "axfer"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "gas",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    }
+  ]
+}

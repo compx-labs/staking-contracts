@@ -1,0 +1,75 @@
+import { TransactionSignerAccount } from "@algorandfoundation/algokit-utils/types/account";
+import { AlgorandFixture } from "@algorandfoundation/algokit-utils/types/testing";
+import * as algokit from '@algorandfoundation/algokit-utils';
+import algosdk from "algosdk";
+
+export interface StakingAccount {
+  account?: TransactionSignerAccount;
+  stake: bigint;
+}
+
+export type StakeInfo = {
+  account: string
+  stake: bigint
+  stakeDuration: bigint
+  stakeStartTime: bigint
+  algoAccuredRewards: bigint
+  lastUpdateTime: bigint
+  accruedASARewards: bigint
+  userSharePercentage: bigint
+  lstMinted: bigint
+}
+
+
+export function byteArrayToUint128(byteArray: Uint8Array): bigint {
+  let result = BigInt(0);
+
+  // Iterate over the byte array, treating it as big-endian
+  for (let i = 0; i < byteArray.length; i++) {
+    result = (result << BigInt(8)) + BigInt(byteArray[i]);
+  }
+
+  return result;
+}
+
+export function getByteArrayValuesAsBigInts(byteArray: Uint8Array, byteLength: number): bigint[] {
+  const values: bigint[] = [];
+  for (let i = 0; i < byteArray.length; i += byteLength) {
+    values.push(byteArrayToUint128(byteArray.slice(i, i + byteLength)));
+  }
+  return values;
+}
+
+export function getStakingAccount(byteArray: Uint8Array, byteLength: number): StakeInfo {
+  let index = 0;
+  const account = algosdk.encodeAddress(byteArray.slice(index, 32));
+  index += 32;
+  const stake = byteArrayToUint128(byteArray.slice(index, index + byteLength));
+  index += byteLength;
+  const stakeDuration = byteArrayToUint128(byteArray.slice(index, index + byteLength));
+  index += byteLength;
+  const stakeStartTime = byteArrayToUint128(byteArray.slice(index, index + byteLength));
+  index += byteLength;
+  const algoAccuredRewards = byteArrayToUint128(byteArray.slice(index, index + byteLength));
+  index += byteLength;
+  const lastUpdateTime = byteArrayToUint128(byteArray.slice(index, index + byteLength));
+  index += byteLength;
+  const accruedASARewards = byteArrayToUint128(byteArray.slice(index, index + byteLength));
+  index += byteLength;
+  const userSharePercentage = byteArrayToUint128(byteArray.slice(index, index + byteLength));
+  index += byteLength;
+  const lstMinted = byteArrayToUint128(byteArray.slice(index, index + byteLength));
+  index += byteLength;
+  const staker: StakeInfo = {
+    account,
+    stake,
+    stakeDuration,
+    stakeStartTime,
+    algoAccuredRewards,
+    lastUpdateTime,
+    accruedASARewards,
+    userSharePercentage,
+    lstMinted
+  };
+  return staker;
+}

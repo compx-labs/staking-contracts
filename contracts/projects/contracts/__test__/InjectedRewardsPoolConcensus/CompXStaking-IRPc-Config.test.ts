@@ -1,22 +1,17 @@
 import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
 import * as algokit from '@algorandfoundation/algokit-utils';
-
-import { InjectedRewardsPoolClient } from '../../contracts/clients/InjectedRewardsPoolClient';
-import algosdk, { TransactionSigner } from 'algosdk';
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
 import { byteArrayToUint128, getByteArrayValuesAsBigInts } from '../utils';
+import { InjectedRewardsPoolConsensusClient } from '../../contracts/clients/InjectedRewardsPoolConsensusClient';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
 
-let appClient: InjectedRewardsPoolClient;
+let appClient: InjectedRewardsPoolConsensusClient;
 let admin: TransactionSignerAccount;
-let stakedAssetId: bigint;
+let lstAssetId: bigint;
 let rewardAssetOneId: bigint;
-let rewardAssetTwoId: bigint;
-let rewardAssetThreeId: bigint;
-let injectionTimestamp: bigint = 0n;
 const ONE_DAY = 86400n;
 const BYTE_LENGTH_REWARD_ASSET = 8;
 
@@ -25,7 +20,7 @@ async function getMBRFromAppClient() {
   return result.returns![0]
 }
 
-describe('Injected Reward Pool injection test - no staking', () => {
+describe('Injected Reward Pool setup/admin functions - no staking, specfially set up for algo staking in consensus', () => {
   beforeEach(fixture.beforeEach);
 
   beforeAll(async () => {
@@ -34,7 +29,7 @@ describe('Injected Reward Pool injection test - no staking', () => {
     const { algorand } = fixture;
     admin = testAccount;
 
-    appClient = new InjectedRewardsPoolClient(
+    appClient = new InjectedRewardsPoolConsensusClient(
       {
         sender: testAccount,
         resolveBy: 'id',
@@ -51,13 +46,13 @@ describe('Injected Reward Pool injection test - no staking', () => {
       algorand.client.algod,
     )
 
-    const stakeAssetCreate = algorand.send.assetCreate({
+    const lstAssetCreate = algorand.send.assetCreate({
       sender: admin.addr,
       total: 999_999_999_000n,
       decimals: 6,
-      assetName: 'Stake Token',
+      assetName: 'cALGO',
     });
-    stakedAssetId = BigInt((await stakeAssetCreate).confirmation.assetIndex!);
+    lstAssetId = BigInt((await lstAssetCreate).confirmation.assetIndex!);
 
     const rewardAssetOneCreate = algorand.send.assetCreate({
       sender: admin.addr,
@@ -69,27 +64,34 @@ describe('Injected Reward Pool injection test - no staking', () => {
 
     await appClient.create.createApplication({
       adminAddress: admin.addr,
+      oracleAdminAddress: admin.addr,
+      treasuryAddress: admin.addr,
     });
     const { appAddress } = await appClient.appClient.getAppReference();
 
-    await fixture.algorand.send.payment({
+    const payTxn = await fixture.algorand.transactions.payment({
       sender: admin.addr,
       receiver: appAddress,
       amount: algokit.algos(20),
     });
 
     await appClient.initApplication({
-      stakedAsset: stakedAssetId,
+      stakedAsset: 0,
       rewardAssetId: rewardAssetOneId,
       minStakePeriodForRewards: ONE_DAY,
+      lstTokenId: lstAssetId,
+      commision: 8n,
+      payTxn
     }, { sendParams: { fee: algokit.algos(0.2) } });
   });
 
   test('confirm global state on initialisation', async () => {
     const globalState = await appClient.getGlobalState();
-    expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
+    expect(globalState.stakedAssetId!.asBigInt()).toBe(0n);
     expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
     expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(ONE_DAY);
+    expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetOneId);
+    expect(globalState.totalConsensusRewards!.asBigInt()).toBe(0n);
   });
 
   test('init storage', async () => {
@@ -106,6 +108,8 @@ describe('Injected Reward Pool injection test - no staking', () => {
     const response = await appClient.compose()
       .gas({}, { note: '1' })
       .gas({}, { note: '2' })
+      .gas({}, { note: '3' })
+      .gas({}, { note: '4' })
       .initStorage({
         mbrPayment: {
           transaction: payTxn,
@@ -123,41 +127,64 @@ describe('Injected Reward Pool injection test - no staking', () => {
     expect(boxNames.length).toBe(1);
   });
 
-  test('inject rewards algo', async () => {
-    const { algorand } = fixture;
-    const { appAddress } = await appClient.appClient.getAppReference();
-
-    const payTxn = await algorand.transactions.payment({
-      sender: admin.addr,
-      receiver: appAddress,
-      amount: algokit.algos(10),
-    });
-    await appClient.injectAlgoRewards({ payTxn: payTxn, quantity: algokit.algos(10).microAlgos });
+  test('update min staking period', async () => {
+    await appClient.updateMinStakePeriod({ minStakePeriodForRewards: 2n * ONE_DAY });
     const globalStateAfter = await appClient.getGlobalState();
-    expect(globalStateAfter.lastRewardInjectionTime!.asBigInt()).toBeGreaterThan(0n);
-    injectionTimestamp = globalStateAfter.lastRewardInjectionTime!.asBigInt();
-    expect(globalStateAfter.algoInjectedRewards!.asBigInt()).toBe(BigInt(algokit.algos(10).microAlgos));
+    expect(globalStateAfter.minStakePeriodForRewards!.asBigInt()).toBe(2n * ONE_DAY);
+  });
+  test('update commision', async () => {
+    const globalStateBefore = await appClient.getGlobalState();
+    expect(globalStateBefore.commision!.asBigInt()).toBe(8n);
+    await appClient.updateCommision({ commision: 10n });
+    const globalStateAfter = await appClient.getGlobalState();
+    expect(globalStateAfter.commision!.asBigInt()).toBe(10n);
   });
 
-  test('inject rewards ASA 1', async () => {
-    const { algorand } = fixture;
-    const { appAddress } = await appClient.appClient.getAppReference();
-
-    const axferTxn = await algorand.transactions.assetTransfer({
-      sender: admin.addr,
-      receiver: appAddress,
-      assetId: rewardAssetOneId,
-      amount: 10n * 10n ** 6n,
-    });
-
-    await appClient.injectRewards({ rewardTxn: axferTxn, quantity: 10n * 10n ** 6n, rewardAssetId: rewardAssetOneId },
-      { assets: [Number(rewardAssetOneId)], sendParams: { populateAppCallResources: true } });
-
-
-    const rewardsInjected = await appClient.getGlobalState().then((globalState) => globalState.injectedASARewards!.asBigInt());
-    expect(rewardsInjected).toBe(10n * 10n ** 6n);    
+  test('update commision non-admin', async () => {
+    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+    const globalStateBefore = await appClient.getGlobalState();
+    expect(globalStateBefore.commision!.asBigInt()).toBe(10n);
+    await expect(
+      appClient.updateCommision({ commision: 5n }, { sender: nonAdminAccount }),
+    ).rejects.toThrowError();
+    const globalStateAfter = await appClient.getGlobalState();
+    expect(globalStateAfter.commision!.asBigInt()).toBe(10n);
   });
-  
+
+  test('update min staking period by non-admin', async () => {
+    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+    await expect(
+      appClient.updateMinStakePeriod(
+        { minStakePeriodForRewards: 2n * ONE_DAY },
+        { sender: nonAdminAccount },
+      ),
+    ).rejects.toThrowError()
+  });
+
+
+  test('freeze rewards', async () => {
+    await appClient.setFreeze({ enabled: true });
+    const globalStateAfter = await appClient.getGlobalState();
+    const freezeState = globalStateAfter.freeze!.asByteArray();
+    const freezreValue = byteArrayToUint128(freezeState);
+    expect(freezreValue).toBe(128n);
+  });
+
+  test('un-freeze rewards', async () => {
+    await appClient.setFreeze({ enabled: false });
+    const globalStateAfter = await appClient.getGlobalState();
+    const freezeState = globalStateAfter.freeze!.asByteArray();
+    const freezreValue = byteArrayToUint128(freezeState);
+    expect(freezreValue).toBe(0n);
+  });
+
+  test('freeze rewards by non-admin', async () => {
+    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+    await expect(
+      appClient.setFreeze({ enabled: true }, { sender: nonAdminAccount }),
+    ).rejects.toThrowError()
+  });
+
   test('deleteApplication', async () => {
     await appClient.delete.deleteApplication({}, { sendParams: { fee: algokit.algos(0.2) } });
   });
