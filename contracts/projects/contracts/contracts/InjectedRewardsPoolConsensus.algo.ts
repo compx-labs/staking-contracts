@@ -4,8 +4,6 @@ const PRECISION = 1_000_000_000_000_000;
 export type StakeInfo = {
   account: Address
   stake: uint64
-  stakeDuration: uint64
-  stakeStartTime: uint64
   algoAccuredRewards: uint64
   lastUpdateTime: uint64
   accruedASARewards: uint64
@@ -116,6 +114,13 @@ export class InjectedRewardsPoolConsensus extends Contract {
     if (this.stakedAssetId.value !== 0) {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(stakedAsset),
+        assetReceiver: this.app.address,
+        assetAmount: 0,
+      })
+    }
+    if (this.rewardAssetId.value !== 0) {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(rewardAssetId),
         assetReceiver: this.app.address,
         assetAmount: 0,
       })
@@ -299,11 +304,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
         }
-        staker.stakeDuration = 0;
-        staker.stakeStartTime = currentTimeStamp;
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
+
         this.stakers.value[i] = staker
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
@@ -322,8 +323,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
         this.stakers.value[i] = {
           account: this.txn.sender,
           stake: payTxn.amount,
-          stakeDuration: 0,
-          stakeStartTime: currentTimeStamp,
           algoAccuredRewards: 0,
           lastUpdateTime: currentTimeStamp,
           accruedASARewards: 0,
@@ -347,6 +346,20 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(actionComplete, 'Stake  failed');
   }
 
+  optInToToken(payTxn: PayTxn, tokenId: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can opt in to token');
+
+    verifyPayTxn(payTxn, {
+      receiver: this.app.address,
+      amount: 110000,
+    });
+
+    sendAssetTransfer({
+      xferAsset: AssetID.fromUint64(tokenId),
+      assetReceiver: this.app.address,
+      assetAmount: 0,
+    })
+  }
 
 
   accrueRewards(): void {
@@ -356,19 +369,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
-    let totalViableStake = 0;
-    for (let i = 0; i < this.numStakers.value; i += 1) {
-      if (this.stakers.value[i].stake > 0) {
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.stakers.value[i].stakeDuration = globals.latestTimestamp - this.stakers.value[i].stakeStartTime;
-
-        if (this.stakers.value[i].stakeDuration >= this.minStakePeriodForRewards.value) {
-          totalViableStake += this.stakers.value[i].stake;
-        }
-      }
-    }
+    const totalViableStake = this.totalStaked.value;
 
     for (let i = 0; i < this.numStakers.value; i += 1) {
       if (globals.opcodeBudget < 300) {
@@ -379,24 +380,23 @@ export class InjectedRewardsPoolConsensus extends Contract {
       if (stake > 0) {
         const staker = clone(this.stakers.value[i])
 
-        if (staker.stakeDuration > this.minStakePeriodForRewards.value) {
 
-          let stakerShare = wideRatio([stake, PRECISION], [totalViableStake]);
-          staker.userSharePercentage = stakerShare;
+        let stakerShare = wideRatio([stake, PRECISION], [totalViableStake]);
+        staker.userSharePercentage = stakerShare;
 
-          if (algoRewards > 0) {
-            let algoRewardRate = wideRatio([algoRewards, stakerShare], [PRECISION]);
-            if (algoRewardRate === 0) {
-              algoRewardRate = 1;
-            }
-            staker.algoAccuredRewards = staker.algoAccuredRewards + algoRewardRate;
-            this.algoInjectedRewards.value = this.algoInjectedRewards.value - algoRewardRate;
-
-            if (this.stakedAssetId.value === 0) {
-              staker.stake = staker.stake + algoRewardRate;
-              this.totalStaked.value = this.totalStaked.value + algoRewardRate;
-            }
+        if (algoRewards > 0) {
+          let algoRewardRate = wideRatio([algoRewards, stakerShare], [PRECISION]);
+          if (algoRewardRate === 0) {
+            algoRewardRate = 1;
           }
+          staker.algoAccuredRewards = staker.algoAccuredRewards + algoRewardRate;
+          this.algoInjectedRewards.value = this.algoInjectedRewards.value - algoRewardRate;
+
+          if (this.stakedAssetId.value === 0) {
+            staker.stake = staker.stake + algoRewardRate;
+            this.totalStaked.value = this.totalStaked.value + algoRewardRate;
+          }
+
 
           if (globals.opcodeBudget < 300) {
             increaseOpcodeBudget()
@@ -449,8 +449,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
     return {
       account: globals.zeroAddress,
       stake: 0,
-      stakeDuration: 0,
-      stakeStartTime: 0,
       lastUpdateTime: 0,
       algoAccuredRewards: 0,
       accruedASARewards: 0,
@@ -492,7 +490,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
-    const staker= this.getStaker(this.txn.sender);
+    const staker = this.getStaker(this.txn.sender);
 
 
     if (staker.algoAccuredRewards > 0) {
@@ -548,6 +546,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
           sender: this.txn.sender,
           xferAsset: AssetID.fromUint64(this.lstTokenId.value)
         });
+        this.lstBalance.value = this.lstBalance.value - burnQuantity;
         if (staker.accruedASARewards > 0) {
           sendAssetTransfer({
             xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
@@ -577,8 +576,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
           const removedStaker: StakeInfo = {
             account: globals.zeroAddress,
             stake: 0,
-            stakeDuration: 0,
-            stakeStartTime: 0,
             lastUpdateTime: 0,
             algoAccuredRewards: 0,
             accruedASARewards: 0,
@@ -617,7 +614,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
         }
         break;
       }
-       
+
     }
   }
 
@@ -687,6 +684,21 @@ export class InjectedRewardsPoolConsensus extends Contract {
       xferAsset: AssetID.fromUint64(lstTokenId)
     });
     this.lstBalance.value = this.lstBalance.value + quantity;
+  }
+  removeLST(quantity: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can remove LST')
+    assert(this.lstBalance.value >= quantity, 'Invalid quantity');
+    let amountToRemove = quantity;
+    if (amountToRemove === 0) {
+      amountToRemove = this.lstBalance.value;
+    }
+    sendAssetTransfer({
+      assetAmount: amountToRemove,
+      assetReceiver: this.adminAddress.value,
+      sender: this.app.address,
+      xferAsset: AssetID.fromUint64(this.lstTokenId.value),
+    });
+    this.lstBalance.value = this.lstBalance.value - amountToRemove;
   }
 
   mintLST(quantity: uint64, payTxn: PayTxn): void {

@@ -216,6 +216,22 @@
       }
     },
     {
+      "name": "optInToToken",
+      "args": [
+        {
+          "name": "payTxn",
+          "type": "pay"
+        },
+        {
+          "name": "tokenId",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "accrueRewards",
       "args": [],
       "returns": {
@@ -334,6 +350,18 @@
           "name": "axferTxn",
           "type": "axfer"
         },
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "removeLST",
+      "args": [
         {
           "name": "quantity",
           "type": "uint64"
