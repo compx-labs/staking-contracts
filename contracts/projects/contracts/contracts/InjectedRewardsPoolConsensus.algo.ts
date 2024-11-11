@@ -279,71 +279,73 @@ export class InjectedRewardsPoolConsensus extends Contract {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
-    verifyPayTxn(payTxn, {
-      sender: this.txn.sender,
-      amount: quantity,
-      receiver: this.app.address,
-    });
-    let actionComplete: boolean = false;
-    if (globals.opcodeBudget < 300) {
-      increaseOpcodeBudget()
-    }
-    for (let i = 0; i < this.stakers.value.length; i += 1) {
-      if (actionComplete) break;
-
-      if (this.stakers.value[i].account === this.txn.sender) {
-
-        //adding to current stake
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-
-        const staker = clone(this.stakers.value[i])
-        staker.stake += payTxn.amount
-
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-
-        this.stakers.value[i] = staker
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.totalStaked.value = this.totalStaked.value + payTxn.amount;
-        actionComplete = true;
-
-      } else if (this.stakers.value[i].account === globals.zeroAddress) {
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.totalStaked.value = this.totalStaked.value + payTxn.amount;
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.stakers.value[i] = {
-          account: this.txn.sender,
-          stake: payTxn.amount,
-          algoAccuredRewards: 0,
-          lastUpdateTime: currentTimeStamp,
-          accruedASARewards: 0,
-          userSharePercentage: 0,
-          lstMinted: 0
-        }
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.numStakers.value = this.numStakers.value + 1;
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        actionComplete = true;
-      }
-
+    if (this.txn.accounts) {
+      verifyPayTxn(payTxn, {
+        sender: this.txn.accounts[0],
+        amount: quantity,
+        receiver: this.app.address,
+      });
+      let actionComplete: boolean = false;
       if (globals.opcodeBudget < 300) {
         increaseOpcodeBudget()
       }
+      for (let i = 0; i < this.stakers.value.length; i += 1) {
+        if (actionComplete) break;
+
+        if (this.stakers.value[i].account === this.txn.accounts[0]) {
+
+          //adding to current stake
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
+
+          const staker = clone(this.stakers.value[i])
+          staker.stake += payTxn.amount
+
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
+
+          this.stakers.value[i] = staker
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
+          this.totalStaked.value = this.totalStaked.value + payTxn.amount;
+          actionComplete = true;
+
+        } else if (this.stakers.value[i].account === globals.zeroAddress) {
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
+          this.totalStaked.value = this.totalStaked.value + payTxn.amount;
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
+          this.stakers.value[i] = {
+            account: this.txn.accounts[0],
+            stake: payTxn.amount,
+            algoAccuredRewards: 0,
+            lastUpdateTime: currentTimeStamp,
+            accruedASARewards: 0,
+            userSharePercentage: 0,
+            lstMinted: 0
+          }
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
+          this.numStakers.value = this.numStakers.value + 1;
+          if (globals.opcodeBudget < 300) {
+            increaseOpcodeBudget()
+          }
+          actionComplete = true;
+        }
+
+        if (globals.opcodeBudget < 300) {
+          increaseOpcodeBudget()
+        }
+      }
+      assert(actionComplete, 'Stake  failed');
     }
-    assert(actionComplete, 'Stake  failed');
   }
 
   optInToToken(payTxn: PayTxn, tokenId: uint64): void {
@@ -434,7 +436,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
       fee: 1_000,
     });
   }
-
 
 
   private getStaker(address: Address): StakeInfo {
