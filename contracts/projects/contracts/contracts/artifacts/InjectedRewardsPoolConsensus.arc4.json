@@ -34,10 +34,6 @@
           "type": "uint64"
         },
         {
-          "name": "minStakePeriodForRewards",
-          "type": "uint64"
-        },
-        {
           "name": "lstTokenId",
           "type": "uint64"
         },
@@ -48,18 +44,6 @@
         {
           "name": "payTxn",
           "type": "pay"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "updateMinStakePeriod",
-      "args": [
-        {
-          "name": "minStakePeriodForRewards",
-          "type": "uint64"
         }
       ],
       "returns": {
@@ -115,84 +99,6 @@
       }
     },
     {
-      "name": "setPrices",
-      "args": [
-        {
-          "name": "stakeTokenPrice",
-          "type": "uint64"
-        },
-        {
-          "name": "lstPrice",
-          "type": "uint64"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "getMBRForPoolCreation",
-      "args": [],
-      "returns": {
-        "type": "(uint64)"
-      }
-    },
-    {
-      "name": "initStorage",
-      "args": [
-        {
-          "name": "mbrPayment",
-          "type": "pay"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "injectRewards",
-      "args": [
-        {
-          "name": "rewardTxn",
-          "type": "axfer"
-        },
-        {
-          "name": "quantity",
-          "type": "uint64"
-        },
-        {
-          "name": "rewardAssetId",
-          "type": "uint64"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "injectAlgoRewards",
-      "args": [
-        {
-          "name": "payTxn",
-          "type": "pay"
-        },
-        {
-          "name": "quantity",
-          "type": "uint64"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "pickupAlgoRewards",
-      "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
       "name": "deleteApplication",
       "args": [],
       "returns": {
@@ -232,38 +138,8 @@
       }
     },
     {
-      "name": "accrueRewards",
-      "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
       "name": "payCommision",
       "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "claimRewards",
-      "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "unstake",
-      "args": [
-        {
-          "name": "axferTxn",
-          "type": "axfer"
-        },
-        {
-          "name": "percentageQuantity",
-          "type": "uint64"
-        }
-      ],
       "returns": {
         "type": "void"
       }
@@ -372,17 +248,8 @@
       }
     },
     {
-      "name": "mintLST",
-      "args": [
-        {
-          "name": "quantity",
-          "type": "uint64"
-        },
-        {
-          "name": "payTxn",
-          "type": "pay"
-        }
-      ],
+      "name": "pickupAlgoRewards",
+      "args": [],
       "returns": {
         "type": "void"
       }
@@ -397,6 +264,10 @@
         {
           "name": "quantity",
           "type": "uint64"
+        },
+        {
+          "name": "userAddress",
+          "type": "address"
         }
       ],
       "returns": {

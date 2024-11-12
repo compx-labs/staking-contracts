@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@algorandfoundation/algokit-utils": "^6.0.2",
-    "algosdk": "^2.7.0"
+    "algosdk": "^2.7.0",
+    "axios": "^1.7.7"
   },
   "devDependencies": {
     "@algorandfoundation/algokit-client-generator": "^2.3.1",
