@@ -139,7 +139,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
     payTxn: PayTxn,
     quantity: uint64,
   ): void {
-    const currentTimeStamp = globals.latestTimestamp;
     assert(quantity > 0, 'Invalid quantity');
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
@@ -170,16 +169,20 @@ export class InjectedRewardsPoolConsensus extends Contract {
     })
   }
 
-  payCommision(): void {
+  payCommision(payTxn: PayTxn): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can pay commision');
-    const commisionableAmount = this.app.address.balance - this.minimumBalance.value - this.totalStaked.value;
-    const commisionAmount = wideRatio([commisionableAmount, this.commisionPercentage.value], [100]);
-    sendPayment({
-      amount: commisionAmount,
-      receiver: this.treasuryAddress.value,
-      sender: this.app.address,
-      fee: 1_000,
+    verifyPayTxn(payTxn, {
+      receiver: this.app.address,
+      amount: 1000,
     });
+    if (this.commisionAmount.value > 0) {
+      sendPayment({
+        amount: this.commisionAmount.value,
+        receiver: this.treasuryAddress.value,
+        sender: this.app.address,
+        fee: 1_000,
+      });
+    }
   }
 
   setFreeze(enabled: boolean): void {
@@ -310,12 +313,16 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
 
 
-  burnLST(axferTxn: AssetTransferTxn, quantity: uint64, userAddress: Address): void {
+  burnLST(axferTxn: AssetTransferTxn, payTxn: PayTxn, quantity: uint64, userAddress: Address): void {
     verifyAssetTransferTxn(axferTxn, {
       assetAmount: quantity,
       assetReceiver: this.app.address,
       sender: userAddress,
       xferAsset: AssetID.fromUint64(this.lstTokenId.value)
+    });
+    verifyPayTxn(payTxn, {
+      receiver: this.app.address,
+      amount: 1_000,
     });
 
     assert(this.circulatingLST.value >= quantity, 'Invalid quantity');

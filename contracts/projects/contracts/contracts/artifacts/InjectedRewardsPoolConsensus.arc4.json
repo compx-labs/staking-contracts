@@ -139,7 +139,12 @@
     },
     {
       "name": "payCommision",
-      "args": [],
+      "args": [
+        {
+          "name": "payTxn",
+          "type": "pay"
+        }
+      ],
       "returns": {
         "type": "void"
       }
@@ -260,6 +265,10 @@
         {
           "name": "axferTxn",
           "type": "axfer"
+        },
+        {
+          "name": "payTxn",
+          "type": "pay"
         },
         {
           "name": "quantity",
