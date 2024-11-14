@@ -13,12 +13,6 @@ let admin: TransactionSignerAccount;
 let lstAssetId: bigint;
 let rewardAssetOneId: bigint;
 const ONE_DAY = 86400n;
-const BYTE_LENGTH_REWARD_ASSET = 8;
-
-async function getMBRFromAppClient() {
-  const result = await appClient.compose().getMbrForPoolCreation({}, {}).simulate({ allowUnnamedResources: true })
-  return result.returns![0]
-}
 
 describe('Injected Reward Pool setup/admin functions - no staking, specfially set up for algo staking in consensus', () => {
   beforeEach(fixture.beforeEach);
@@ -88,77 +82,26 @@ describe('Injected Reward Pool setup/admin functions - no staking, specfially se
   test('confirm global state on initialisation', async () => {
     const globalState = await appClient.getGlobalState();
     expect(globalState.stakedAssetId!.asBigInt()).toBe(0n);
-    expect(globalState.lastRewardInjectionTime!.asBigInt()).toBe(0n);
-    expect(globalState.minStakePeriodForRewards!.asBigInt()).toBe(ONE_DAY);
-    expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetOneId);
-    expect(globalState.totalConsensusRewards!.asBigInt()).toBe(0n);
   });
 
-  test('init storage', async () => {
-    const { algorand } = fixture;
-    const { appAddress } = await appClient.appClient.getAppReference();
 
-    const [mbrPayment] = await getMBRFromAppClient();
-    const payTxn = await algorand.transactions.payment({
-      sender: admin.addr,
-      receiver: appAddress,
-      amount: algokit.microAlgos(Number(mbrPayment)),
-    });
-
-    const response = await appClient.compose()
-      .gas({}, { note: '1' })
-      .gas({}, { note: '2' })
-      .gas({}, { note: '3' })
-      .gas({}, { note: '4' })
-      .initStorage({
-        mbrPayment: {
-          transaction: payTxn,
-          signer: { signer: admin.signer, addr: admin.addr } as TransactionSignerAccount
-        },
-      },
-        {
-          sendParams: {
-            fee: algokit.algos(0.2),
-          },
-        },)
-      .execute({ populateAppCallResources: true })
-
-    const boxNames = await appClient.appClient.getBoxNames();
-    expect(boxNames.length).toBe(1);
-  });
-
-  test('update min staking period', async () => {
-    await appClient.updateMinStakePeriod({ minStakePeriodForRewards: 2n * ONE_DAY });
-    const globalStateAfter = await appClient.getGlobalState();
-    expect(globalStateAfter.minStakePeriodForRewards!.asBigInt()).toBe(2n * ONE_DAY);
-  });
   test('update commision', async () => {
     const globalStateBefore = await appClient.getGlobalState();
-    expect(globalStateBefore.commision!.asBigInt()).toBe(8n);
+    expect(globalStateBefore.commisionPercentage!.asBigInt()).toBe(8n);
     await appClient.updateCommision({ commision: 10n });
     const globalStateAfter = await appClient.getGlobalState();
-    expect(globalStateAfter.commision!.asBigInt()).toBe(10n);
+    expect(globalStateAfter.commisionPercentage!.asBigInt()).toBe(10n);
   });
 
   test('update commision non-admin', async () => {
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
     const globalStateBefore = await appClient.getGlobalState();
-    expect(globalStateBefore.commision!.asBigInt()).toBe(10n);
+    expect(globalStateBefore.commisionPercentage!.asBigInt()).toBe(10n);
     await expect(
       appClient.updateCommision({ commision: 5n }, { sender: nonAdminAccount }),
     ).rejects.toThrowError();
     const globalStateAfter = await appClient.getGlobalState();
-    expect(globalStateAfter.commision!.asBigInt()).toBe(10n);
-  });
-
-  test('update min staking period by non-admin', async () => {
-    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await expect(
-      appClient.updateMinStakePeriod(
-        { minStakePeriodForRewards: 2n * ONE_DAY },
-        { sender: nonAdminAccount },
-      ),
-    ).rejects.toThrowError()
+    expect(globalStateAfter.commisionPercentage!.asBigInt()).toBe(10n);
   });
 
 
