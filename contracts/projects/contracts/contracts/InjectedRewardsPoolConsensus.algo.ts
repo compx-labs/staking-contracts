@@ -37,10 +37,13 @@ export class InjectedRewardsPoolConsensus extends Contract {
   //Current commision to be paid out
   commisionAmount = GlobalStateKey<uint64>();
 
+  //Running total of consensus rewards available for payout. Is increased as rewards come in and decreased as rewards go out
   totalConsensusRewards = GlobalStateKey<uint64>();
-
+  //Max stake value of 70mm  - 1 as per node params - can be updated.
   maxStake = GlobalStateKey<uint64>();
 
+  //
+  //Create the application with minimum information
   createApplication(
     adminAddress: Address,
     treasuryAddress: Address
@@ -49,6 +52,15 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.treasuryAddress.value = treasuryAddress;
   }
 
+  //
+  /*
+    Initalises the application with the following parameters:
+    stakedAsset: uint64 - the asset ID of the asset that will be staked into the contract
+    rewardAssetId: uint64 - the asset ID of the asset that will be used to pay out rewards
+    lstTokenId: uint64 - the asset ID of the asset that will be used to mint LST tokens
+    commision: uint64 - the percentage of rewards that will be paid to the platform
+    payTxn: PayTxn - the pay transaction that will be used to fund the contract
+  */
   initApplication(
     stakedAsset: uint64,
     rewardAssetId: uint64,
@@ -116,30 +128,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update minimum balance');
     this.minimumBalance.value = minimumBalance;
   }
-  deleteApplication(): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
-  }
-
-  stake(
-    payTxn: PayTxn,
-    quantity: uint64,
-  ): void {
-    assert(quantity > 0, 'Invalid quantity');
-    assert(this.totalStaked.value + quantity <= this.maxStake.value, 'Max stake reached');
-    if (globals.opcodeBudget < 300) {
-      increaseOpcodeBudget()
-    }
-    verifyPayTxn(payTxn, {
-      sender: this.txn.sender,
-      amount: quantity + 1000,
-      receiver: this.app.address,
-    });
-    this.mintLST(quantity, payTxn, this.txn.sender);
-
-    this.totalStaked.value = this.totalStaked.value + quantity;
-
-  }
-
   optInToToken(payTxn: PayTxn, tokenId: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can opt in to token');
 
@@ -154,7 +142,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
       assetAmount: 0,
     })
   }
-
   payCommision(payTxn: PayTxn): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can pay commision');
     verifyPayTxn(payTxn, {
@@ -170,7 +157,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
       });
       this.commisionAmount.value = 0;
     }
-
   }
   private getGoOnlineFee(): uint64 {
     // this will be needed to determine if our pool is currently NOT eligible and we thus need to pay the fee.
@@ -251,6 +237,19 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.lstBalance.value = this.lstBalance.value - amountToRemove;
   }
 
+  pickupAlgoRewards(): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can pickup rewards');
+
+    //total amount of newly paid in consensus rewards
+    let amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.totalStaked.value - this.commisionAmount.value;
+    //less commision
+    if (amount > MINIMUM_ALGO_REWARD) {
+      const newCommisionPayment = this.commisionAmount.value + (amount / 100 * this.commisionPercentage.value);
+      amount = amount - newCommisionPayment;
+      this.commisionAmount.value = this.commisionAmount.value + newCommisionPayment;
+      this.totalConsensusRewards.value += amount;
+    }
+  }
   private mintLST(quantity: uint64, payTxn: PayTxn, userAddress: Address): void {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
@@ -278,21 +277,34 @@ export class InjectedRewardsPoolConsensus extends Contract {
       increaseOpcodeBudget()
     }
   }
-
-  pickupAlgoRewards(): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can pickup rewards');
-
-    //total amount of newly paid in consensus rewards
-    let amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.totalStaked.value - this.commisionAmount.value;
-    //less commision
-    if (amount > MINIMUM_ALGO_REWARD) {
-      const newCommisionPayment = this.commisionAmount.value + (amount / 100 * this.commisionPercentage.value);
-      amount = amount - newCommisionPayment;
-      this.commisionAmount.value = this.commisionAmount.value + newCommisionPayment;
-      this.totalConsensusRewards.value += amount;
-    }
+  deleteApplication(): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
   }
 
+  //
+  // User functions
+  //
+  //Staking for users - requires a payment transaction of the amount to stake + 1000 microAlgo for fees for sending out the LST tokens
+  stake(
+    payTxn: PayTxn,
+    quantity: uint64,
+  ): void {
+    assert(quantity > 0, 'Invalid quantity');
+    assert(this.totalStaked.value + quantity <= this.maxStake.value, 'Max stake reached');
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget()
+    }
+    verifyPayTxn(payTxn, {
+      sender: this.txn.sender,
+      amount: quantity + 1000,
+      receiver: this.app.address,
+    });
+    this.mintLST(quantity, payTxn, this.txn.sender);
+
+    this.totalStaked.value = this.totalStaked.value + quantity;
+
+  }
+  
   burnLST(axferTxn: AssetTransferTxn, payTxn: PayTxn, quantity: uint64, userAddress: Address): void {
     verifyAssetTransferTxn(axferTxn, {
       assetAmount: quantity,
