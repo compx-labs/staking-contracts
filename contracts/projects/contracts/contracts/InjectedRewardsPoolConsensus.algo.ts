@@ -285,6 +285,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
   // User functions
   //
   //Staking for users - requires a payment transaction of the amount to stake + 1000 microAlgo for fees for sending out the LST tokens
+  //Uses private mintLST function to mint the LST tokens and send them to the user. This ensures that LSTs cannot be minted via any other method than staking
   stake(
     payTxn: PayTxn,
     quantity: uint64,
@@ -304,7 +305,10 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.totalStaked.value = this.totalStaked.value + quantity;
 
   }
-  
+
+  //
+  // Unstaking for users - requires a payment transaction of 1000 microAlgo for fees for sending out the staked tokens
+  //Requires the user sends the correct quantity of LST tokens to the contract
   burnLST(axferTxn: AssetTransferTxn, payTxn: PayTxn, quantity: uint64, userAddress: Address): void {
     verifyAssetTransferTxn(axferTxn, {
       assetAmount: quantity,
