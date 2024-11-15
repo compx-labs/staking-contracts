@@ -95,6 +95,42 @@
       }
     },
     {
+      "name": "updateCommisionAmount",
+      "args": [
+        {
+          "name": "commisionAmount",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateConsenusRewards",
+      "args": [
+        {
+          "name": "totalConsensusRewards",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateMinimumBalance",
+      "args": [
+        {
+          "name": "minimumBalance",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "deleteApplication",
       "args": [],
       "returns": {
