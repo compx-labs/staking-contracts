@@ -7,26 +7,34 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   //Global State
 
+  //Staking asset, will normally be ALGO (0), but contract can handle other assets
   stakedAssetId = GlobalStateKey<uint64>();
 
-  totalStaked = GlobalStateKey<uint64>();
-
-  adminAddress = GlobalStateKey<Address>();
-
-  minimumBalance = GlobalStateKey<uint64>();
-
-  freeze = GlobalStateKey<boolean>();
-
+  //LST token ID which is sent to stakers
   lstTokenId = GlobalStateKey<uint64>();
 
+  //Running total of total staked asset staked into the contract by users
+  totalStaked = GlobalStateKey<uint64>();
+
+  //admin address for carrying out admin functions
+  adminAddress = GlobalStateKey<Address>();
+
+  //Minimum contract balance for MBR
+  minimumBalance = GlobalStateKey<uint64>();
+
+  //Percentage of rewards to platform - can be updated
   commisionPercentage = GlobalStateKey<uint64>();
 
+  //Running balance total of LST tokens
   lstBalance = GlobalStateKey<uint64>();
 
+  //Running balance total of LST tokens paid out to stakers on stake
   circulatingLST = GlobalStateKey<uint64>();
 
+  //Treasury address for commision payments
   treasuryAddress = GlobalStateKey<Address>();
 
+  //Current commision to be paid out
   commisionAmount = GlobalStateKey<uint64>();
 
   totalConsensusRewards = GlobalStateKey<uint64>();
@@ -51,7 +59,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
     this.stakedAssetId.value = stakedAsset;
     this.totalStaked.value = 0;
-    this.freeze.value = false;
     this.lstTokenId.value = lstTokenId;
     this.lstBalance.value = 0;
     this.circulatingLST.value = 0;
@@ -68,13 +75,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
         assetAmount: 0,
       })
     }
-    if (rewardAssetId !== 0) {
-      sendAssetTransfer({
-        xferAsset: AssetID.fromUint64(rewardAssetId),
-        assetReceiver: this.app.address,
-        assetAmount: 0,
-      })
-    }
     if (this.lstTokenId.value !== 0) {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(this.lstTokenId.value),
@@ -85,6 +85,9 @@ export class InjectedRewardsPoolConsensus extends Contract {
     }
 
   }
+  //
+  // Admin functions
+  //
   updateAdminAddress(adminAddress: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address');
     this.adminAddress.value = adminAddress;
@@ -101,7 +104,18 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commision');
     this.commisionPercentage.value = commision;
   }
-
+  updateCommisionAmount(commisionAmount: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commision amount');
+    this.commisionAmount.value = commisionAmount;
+  }
+  updateConsenusRewards(totalConsensusRewards: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update rewards');
+    this.totalConsensusRewards.value = totalConsensusRewards;
+  }
+  updateMinimumBalance(minimumBalance: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update minimum balance');
+    this.minimumBalance.value = minimumBalance;
+  }
   deleteApplication(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
   }
@@ -154,7 +168,9 @@ export class InjectedRewardsPoolConsensus extends Contract {
         sender: this.app.address,
         fee: 1_000,
       });
+      this.commisionAmount.value = 0;
     }
+
   }
   private getGoOnlineFee(): uint64 {
     // this will be needed to determine if our pool is currently NOT eligible and we thus need to pay the fee.
@@ -276,8 +292,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
       this.totalConsensusRewards.value += amount;
     }
   }
-
-
 
   burnLST(axferTxn: AssetTransferTxn, payTxn: PayTxn, quantity: uint64, userAddress: Address): void {
     verifyAssetTransferTxn(axferTxn, {
