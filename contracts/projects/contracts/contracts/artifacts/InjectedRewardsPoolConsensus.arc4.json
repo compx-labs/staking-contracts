@@ -131,29 +131,6 @@
       }
     },
     {
-      "name": "deleteApplication",
-      "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "stake",
-      "args": [
-        {
-          "name": "payTxn",
-          "type": "pay"
-        },
-        {
-          "name": "quantity",
-          "type": "uint64"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
       "name": "optInToToken",
       "args": [
         {
@@ -275,6 +252,29 @@
     {
       "name": "pickupAlgoRewards",
       "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "deleteApplication",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "stake",
+      "args": [
+        {
+          "name": "payTxn",
+          "type": "pay"
+        },
+        {
+          "name": "quantity",
+          "type": "uint64"
+        }
+      ],
       "returns": {
         "type": "void"
       }
