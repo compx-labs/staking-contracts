@@ -22,26 +22,16 @@ switch *call_NoOp *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEM
 	// The requested action is not implemented in this contract. Are you using the correct OnComplete? Did you set your app ID?
 	err
 
-// createApplication(address,address,address)void
+// createApplication(address,address)void
 *abi_route_createApplication:
 	// treasuryAddress: address
-	txna ApplicationArgs 3
-	dup
-	len
-	int 32
-	==
-
-	// argument 0 (treasuryAddress) for createApplication must be a address
-	assert
-
-	// oracleAdminAddress: address
 	txna ApplicationArgs 2
 	dup
 	len
 	int 32
 	==
 
-	// argument 1 (oracleAdminAddress) for createApplication must be a address
+	// argument 0 (treasuryAddress) for createApplication must be a address
 	assert
 
 	// adminAddress: address
@@ -51,34 +41,28 @@ switch *call_NoOp *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEM
 	int 32
 	==
 
-	// argument 2 (adminAddress) for createApplication must be a address
+	// argument 1 (adminAddress) for createApplication must be a address
 	assert
 
-	// execute createApplication(address,address,address)void
+	// execute createApplication(address,address)void
 	callsub createApplication
 	int 1
 	return
 
-// createApplication(adminAddress: Address, oracleAdminAddress: Address, treasuryAddress: Address): void
+// createApplication(adminAddress: Address, treasuryAddress: Address): void
 createApplication:
-	proto 3 0
+	proto 2 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:58
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:40
 	// this.adminAddress.value = adminAddress
 	byte 0x61646d696e41646472657373 // "adminAddress"
 	frame_dig -1 // adminAddress: Address
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:59
-	// this.oracleAdminAddress.value = oracleAdminAddress
-	byte 0x6f7261636c6541646d696e41646472657373 // "oracleAdminAddress"
-	frame_dig -2 // oracleAdminAddress: Address
-	app_global_put
-
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:60
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:41
 	// this.treasuryAddress.value = treasuryAddress
 	byte 0x747265617375727941646472657373 // "treasuryAddress"
-	frame_dig -3 // treasuryAddress: Address
+	frame_dig -2 // treasuryAddress: Address
 	app_global_put
 	retsub
 
@@ -121,7 +105,7 @@ createApplication:
 initApplication:
 	proto 5 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:70
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:51
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -131,19 +115,19 @@ initApplication:
 	// Only admin can init application
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:71
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:52
 	// this.stakedAssetId.value = stakedAsset
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	frame_dig -1 // stakedAsset: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:72
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:53
 	// this.totalStaked.value = 0
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:73
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:54
 	// this.freeze.value = false
 	byte 0x667265657a65 // "freeze"
 	int 0
@@ -153,69 +137,57 @@ initApplication:
 	setbit
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:74
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:55
 	// this.lstTokenId.value = lstTokenId
 	byte 0x6c7374546f6b656e4964 // "lstTokenId"
 	frame_dig -3 // lstTokenId: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:75
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:56
 	// this.lstBalance.value = 0
 	byte 0x6c737442616c616e6365 // "lstBalance"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:76
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:57
 	// this.circulatingLST.value = 0
 	byte 0x63697263756c6174696e674c5354 // "circulatingLST"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:77
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:58
 	// this.minimumBalance.value = payTxn.amount
 	byte 0x6d696e696d756d42616c616e6365 // "minimumBalance"
 	frame_dig -5 // payTxn: PayTxn
 	gtxns Amount
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:78
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:59
 	// this.commisionPercentage.value = commision
 	byte 0x636f6d6d6973696f6e50657263656e74616765 // "commisionPercentage"
 	frame_dig -4 // commision: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:79
-	// this.nodeAlgo.value = 0
-	byte 0x6e6f6465416c676f // "nodeAlgo"
-	int 0
-	app_global_put
-
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:80
-	// this.lstRatio.value = 0
-	byte 0x6c7374526174696f // "lstRatio"
-	int 0
-	app_global_put
-
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:81
-	// this.stakeAmountDue.value = 0
-	byte 0x7374616b65416d6f756e74447565 // "stakeAmountDue"
-	int 0
-	app_global_put
-
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:82
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:60
 	// this.totalConsensusRewards.value = 0
 	byte 0x746f74616c436f6e73656e73757352657761726473 // "totalConsensusRewards"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:83
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:61
 	// this.commisionAmount.value = 0
 	byte 0x636f6d6d6973696f6e416d6f756e74 // "commisionAmount"
 	int 0
 	app_global_put
 
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:62
+	// this.maxStake.value = 69999999000000
+	byte 0x6d61785374616b65 // "maxStake"
+	int 69999999000000
+	app_global_put
+
 	// *if0_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:85
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:64
 	// this.stakedAssetId.value !== 0
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
@@ -224,7 +196,7 @@ initApplication:
 	bz *if0_end
 
 	// *if0_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:86
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:65
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(stakedAsset),
 	//         assetReceiver: this.app.address,
@@ -234,17 +206,17 @@ initApplication:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:87
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:66
 	// xferAsset: AssetID.fromUint64(stakedAsset)
 	frame_dig -1 // stakedAsset: uint64
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:88
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:67
 	// assetReceiver: this.app.address
 	global CurrentApplicationAddress
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:89
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:68
 	// assetAmount: 0
 	int 0
 	itxn_field AssetAmount
@@ -258,7 +230,7 @@ initApplication:
 
 *if0_end:
 	// *if1_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:92
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:71
 	// rewardAssetId !== 0
 	frame_dig -2 // rewardAssetId: uint64
 	int 0
@@ -266,7 +238,7 @@ initApplication:
 	bz *if1_end
 
 	// *if1_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:93
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:72
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(rewardAssetId),
 	//         assetReceiver: this.app.address,
@@ -276,17 +248,17 @@ initApplication:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:94
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:73
 	// xferAsset: AssetID.fromUint64(rewardAssetId)
 	frame_dig -2 // rewardAssetId: uint64
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:95
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:74
 	// assetReceiver: this.app.address
 	global CurrentApplicationAddress
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:96
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:75
 	// assetAmount: 0
 	int 0
 	itxn_field AssetAmount
@@ -300,7 +272,7 @@ initApplication:
 
 *if1_end:
 	// *if2_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:99
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:78
 	// this.lstTokenId.value !== 0
 	byte 0x6c7374546f6b656e4964 // "lstTokenId"
 	app_global_get
@@ -309,7 +281,7 @@ initApplication:
 	bz *if2_end
 
 	// *if2_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:100
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:79
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(this.lstTokenId.value),
 	//         assetReceiver: this.app.address,
@@ -319,18 +291,18 @@ initApplication:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:101
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:80
 	// xferAsset: AssetID.fromUint64(this.lstTokenId.value)
 	byte 0x6c7374546f6b656e4964 // "lstTokenId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:102
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:81
 	// assetReceiver: this.app.address
 	global CurrentApplicationAddress
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:103
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:82
 	// assetAmount: 0
 	int 0
 	itxn_field AssetAmount
@@ -366,7 +338,7 @@ initApplication:
 updateAdminAddress:
 	proto 1 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:110
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:89
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -376,48 +348,42 @@ updateAdminAddress:
 	// Only admin can update admin address
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:111
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:90
 	// this.adminAddress.value = adminAddress
 	byte 0x61646d696e41646472657373 // "adminAddress"
 	frame_dig -1 // adminAddress: Address
 	app_global_put
 	retsub
 
-// updateOracleAdminAddress(address)void
-*abi_route_updateOracleAdminAddress:
-	// oracleAdminAddress: address
+// updateMaxStake(uint64)void
+*abi_route_updateMaxStake:
+	// maxStake: uint64
 	txna ApplicationArgs 1
-	dup
-	len
-	int 32
-	==
+	btoi
 
-	// argument 0 (oracleAdminAddress) for updateOracleAdminAddress must be a address
-	assert
-
-	// execute updateOracleAdminAddress(address)void
-	callsub updateOracleAdminAddress
+	// execute updateMaxStake(uint64)void
+	callsub updateMaxStake
 	int 1
 	return
 
-// updateOracleAdminAddress(oracleAdminAddress: Address): void
-updateOracleAdminAddress:
+// updateMaxStake(maxStake: uint64): void
+updateMaxStake:
 	proto 1 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:114
-	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can update oracle admin address')
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:93
+	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can update max stake')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
 	app_global_get
 	==
 
-	// Only admin can update oracle admin address
+	// Only admin can update max stake
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:115
-	// this.oracleAdminAddress.value = oracleAdminAddress
-	byte 0x6f7261636c6541646d696e41646472657373 // "oracleAdminAddress"
-	frame_dig -1 // oracleAdminAddress: Address
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:94
+	// this.maxStake.value = maxStake
+	byte 0x6d61785374616b65 // "maxStake"
+	frame_dig -1 // maxStake: uint64
 	app_global_put
 	retsub
 
@@ -442,7 +408,7 @@ updateOracleAdminAddress:
 updateTreasuryAddress:
 	proto 1 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:118
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:97
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can update treasury address')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -452,7 +418,7 @@ updateTreasuryAddress:
 	// Only admin can update treasury address
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:119
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:98
 	// this.treasuryAddress.value = treasuryAddress
 	byte 0x747265617375727941646472657373 // "treasuryAddress"
 	frame_dig -1 // treasuryAddress: Address
@@ -474,7 +440,7 @@ updateTreasuryAddress:
 updateCommision:
 	proto 1 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:122
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:101
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commision')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -484,7 +450,7 @@ updateCommision:
 	// Only admin can update commision
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:123
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:102
 	// this.commisionPercentage.value = commision
 	byte 0x636f6d6d6973696f6e50657263656e74616765 // "commisionPercentage"
 	frame_dig -1 // commision: uint64
@@ -502,7 +468,7 @@ updateCommision:
 deleteApplication:
 	proto 0 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:127
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:106
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -540,7 +506,7 @@ deleteApplication:
 stake:
 	proto 2 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:142
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:113
 	// assert(quantity > 0, 'Invalid quantity')
 	frame_dig -2 // quantity: uint64
 	int 0
@@ -549,8 +515,21 @@ stake:
 	// Invalid quantity
 	assert
 
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:114
+	// assert(this.totalStaked.value + quantity <= this.maxStake.value, 'Max stake reached')
+	byte 0x746f74616c5374616b6564 // "totalStaked"
+	app_global_get
+	frame_dig -2 // quantity: uint64
+	+
+	byte 0x6d61785374616b65 // "maxStake"
+	app_global_get
+	<=
+
+	// Max stake reached
+	assert
+
 	// *if3_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:143
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:115
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -558,7 +537,7 @@ stake:
 	bz *if3_end
 
 	// *if3_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:144
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:116
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -574,7 +553,7 @@ stake:
 	itxn_submit
 
 *if3_end:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:146
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:118
 	// verifyPayTxn(payTxn, {
 	//       sender: this.txn.sender,
 	//       amount: quantity + 1000,
@@ -609,14 +588,14 @@ stake:
 	// transaction verification failed: {"txn":"payTxn","field":"receiver","expected":"this.app.address"}
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:151
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:123
 	// this.mintLST(quantity, payTxn, this.txn.sender)
 	txn Sender
 	frame_dig -1 // payTxn: PayTxn
 	frame_dig -2 // quantity: uint64
 	callsub mintLST
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:153
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:125
 	// this.totalStaked.value = this.totalStaked.value + quantity
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	dup
@@ -653,7 +632,7 @@ stake:
 optInToToken:
 	proto 2 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:158
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:130
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can opt in to token')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -663,7 +642,7 @@ optInToToken:
 	// Only admin can opt in to token
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:160
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:132
 	// verifyPayTxn(payTxn, {
 	//       receiver: this.app.address,
 	//       amount: 110000,
@@ -686,7 +665,7 @@ optInToToken:
 	// transaction verification failed: {"txn":"payTxn","field":"amount","expected":"110000"}
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:165
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:137
 	// sendAssetTransfer({
 	//       xferAsset: AssetID.fromUint64(tokenId),
 	//       assetReceiver: this.app.address,
@@ -696,17 +675,17 @@ optInToToken:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:166
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:138
 	// xferAsset: AssetID.fromUint64(tokenId)
 	frame_dig -2 // tokenId: uint64
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:167
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:139
 	// assetReceiver: this.app.address
 	global CurrentApplicationAddress
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:168
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:140
 	// assetAmount: 0
 	int 0
 	itxn_field AssetAmount
@@ -742,7 +721,7 @@ optInToToken:
 payCommision:
 	proto 1 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:173
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:145
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can pay commision')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -752,7 +731,7 @@ payCommision:
 	// Only admin can pay commision
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:174
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:146
 	// verifyPayTxn(payTxn, {
 	//       receiver: this.app.address,
 	//       amount: 1000,
@@ -776,7 +755,7 @@ payCommision:
 	assert
 
 	// *if4_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:178
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:150
 	// this.commisionAmount.value > 0
 	byte 0x636f6d6d6973696f6e416d6f756e74 // "commisionAmount"
 	app_global_get
@@ -785,7 +764,7 @@ payCommision:
 	bz *if4_end
 
 	// *if4_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:179
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:151
 	// sendPayment({
 	//         amount: this.commisionAmount.value,
 	//         receiver: this.treasuryAddress.value,
@@ -796,24 +775,24 @@ payCommision:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:180
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:152
 	// amount: this.commisionAmount.value
 	byte 0x636f6d6d6973696f6e416d6f756e74 // "commisionAmount"
 	app_global_get
 	itxn_field Amount
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:181
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:153
 	// receiver: this.treasuryAddress.value
 	byte 0x747265617375727941646472657373 // "treasuryAddress"
 	app_global_get
 	itxn_field Receiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:182
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:154
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:183
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:155
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -824,55 +803,11 @@ payCommision:
 *if4_end:
 	retsub
 
-// setFreeze(bool)void
-*abi_route_setFreeze:
-	// enabled: bool
-	txna ApplicationArgs 1
-	dup
-	len
-	int 1
-	==
-
-	// argument 0 (enabled) for setFreeze must be a bool
-	assert
-	int 0
-	getbit
-
-	// execute setFreeze(bool)void
-	callsub setFreeze
-	int 1
-	return
-
-// setFreeze(enabled: boolean): void
-setFreeze:
-	proto 1 0
-
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:189
-	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can freeze payouts')
-	txn Sender
-	byte 0x61646d696e41646472657373 // "adminAddress"
-	app_global_get
-	==
-
-	// Only admin can freeze payouts
-	assert
-
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:190
-	// this.freeze.value = enabled
-	byte 0x667265657a65 // "freeze"
-	frame_dig -1 // enabled: boolean
-	byte 0x00
-	int 0
-	uncover 2
-	setbit
-	app_global_put
-	retsub
-
 // getGoOnlineFee(): uint64
 getGoOnlineFee:
 	proto 0 1
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:198
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:164
 	// return 2_000_000;
 	int 2_000_000
 	retsub
@@ -927,7 +862,7 @@ goOnline:
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:210
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:176
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can go online')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -937,12 +872,12 @@ goOnline:
 	// Only admin can go online
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:212
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:178
 	// extraFee = this.getGoOnlineFee()
 	callsub getGoOnlineFee
 	frame_bury 0 // extraFee: uint64
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:213
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:179
 	// verifyPayTxn(feePayment, {
 	//       receiver: this.app.address, amount: extraFee
 	//     })
@@ -964,7 +899,7 @@ goOnline:
 	// transaction verification failed: {"txn":"feePayment","field":"amount","expected":"extraFee"}
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:216
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:182
 	// sendOnlineKeyRegistration({
 	//       votePK: votePK,
 	//       selectionPK: selectionPK,
@@ -978,37 +913,37 @@ goOnline:
 	int keyreg
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:217
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:183
 	// votePK: votePK
 	frame_dig -2 // votePK: bytes
 	itxn_field VotePK
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:218
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:184
 	// selectionPK: selectionPK
 	frame_dig -3 // selectionPK: bytes
 	itxn_field SelectionPK
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:219
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:185
 	// stateProofPK: stateProofPK
 	frame_dig -4 // stateProofPK: bytes
 	itxn_field StateProofPK
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:220
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:186
 	// voteFirst: voteFirst
 	frame_dig -5 // voteFirst: uint64
 	itxn_field VoteFirst
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:221
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:187
 	// voteLast: voteLast
 	frame_dig -6 // voteLast: uint64
 	itxn_field VoteLast
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:222
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:188
 	// voteKeyDilution: voteKeyDilution
 	frame_dig -7 // voteKeyDilution: uint64
 	itxn_field VoteKeyDilution
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:223
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:189
 	// fee: extraFee
 	frame_dig 0 // extraFee: uint64
 	itxn_field Fee
@@ -1028,7 +963,7 @@ goOnline:
 goOffline:
 	proto 0 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:229
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:195
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can go offline')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -1038,7 +973,7 @@ goOffline:
 	// Only admin can go offline
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:230
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:196
 	// sendOfflineKeyRegistration({})
 	itxn_begin
 	int keyreg
@@ -1075,7 +1010,7 @@ goOffline:
 linkToNFD:
 	proto 3 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:234
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:200
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can link to NFD')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -1085,7 +1020,7 @@ linkToNFD:
 	// Only admin can link to NFD
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:236
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:202
 	// sendAppCall({
 	//       applicationID: AppID.fromUint64(nfdRegistryAppId),
 	//       applicationArgs: ['verify_nfd_addr', nfdName, itob(nfdAppId), rawBytes(this.app.address)],
@@ -1095,12 +1030,12 @@ linkToNFD:
 	int appl
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:237
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:203
 	// applicationID: AppID.fromUint64(nfdRegistryAppId)
 	frame_dig -3 // nfdRegistryAppId: uint64
 	itxn_field ApplicationID
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:238
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:204
 	// applicationArgs: ['verify_nfd_addr', nfdName, itob(nfdAppId), rawBytes(this.app.address)]
 	byte 0x7665726966795f6e66645f61646472 // "verify_nfd_addr"
 	itxn_field ApplicationArgs
@@ -1112,7 +1047,7 @@ linkToNFD:
 	global CurrentApplicationAddress
 	itxn_field ApplicationArgs
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:239
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:205
 	// applications: [AppID.fromUint64(nfdAppId)]
 	frame_dig -1 // nfdAppId: uint64
 	itxn_field Applications
@@ -1155,7 +1090,7 @@ addLST:
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:244
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:210
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can send LST')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -1165,13 +1100,13 @@ addLST:
 	// Only admin can send LST
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:245
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:211
 	// lstTokenId = this.lstTokenId.value
 	byte 0x6c7374546f6b656e4964 // "lstTokenId"
 	app_global_get
 	frame_bury 0 // lstTokenId: uint64
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:247
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:213
 	// verifyAssetTransferTxn(axferTxn, {
 	//       assetAmount: quantity,
 	//       assetReceiver: this.app.address,
@@ -1214,7 +1149,7 @@ addLST:
 	// transaction verification failed: {"txn":"axferTxn","field":"xferAsset","expected":"AssetID.fromUint64(lstTokenId)"}
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:253
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:219
 	// this.lstBalance.value = this.lstBalance.value + quantity
 	byte 0x6c737442616c616e6365 // "lstBalance"
 	dup
@@ -1242,7 +1177,7 @@ removeLST:
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:257
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:223
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can remove LST')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -1252,7 +1187,7 @@ removeLST:
 	// Only admin can remove LST
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:258
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:224
 	// assert(this.lstBalance.value >= quantity, 'Invalid quantity')
 	byte 0x6c737442616c616e6365 // "lstBalance"
 	app_global_get
@@ -1262,13 +1197,13 @@ removeLST:
 	// Invalid quantity
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:259
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:225
 	// amountToRemove = quantity
 	frame_dig -1 // quantity: uint64
 	frame_bury 0 // amountToRemove: uint64
 
 	// *if5_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:260
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:226
 	// amountToRemove === 0
 	frame_dig 0 // amountToRemove: uint64
 	int 0
@@ -1276,14 +1211,14 @@ removeLST:
 	bz *if5_end
 
 	// *if5_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:261
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:227
 	// amountToRemove = this.lstBalance.value
 	byte 0x6c737442616c616e6365 // "lstBalance"
 	app_global_get
 	frame_bury 0 // amountToRemove: uint64
 
 *if5_end:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:263
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:229
 	// sendAssetTransfer({
 	//       assetAmount: amountToRemove,
 	//       assetReceiver: this.adminAddress.value,
@@ -1294,23 +1229,23 @@ removeLST:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:264
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:230
 	// assetAmount: amountToRemove
 	frame_dig 0 // amountToRemove: uint64
 	itxn_field AssetAmount
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:265
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:231
 	// assetReceiver: this.adminAddress.value
 	byte 0x61646d696e41646472657373 // "adminAddress"
 	app_global_get
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:266
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:232
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:267
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:233
 	// xferAsset: AssetID.fromUint64(this.lstTokenId.value)
 	byte 0x6c7374546f6b656e4964 // "lstTokenId"
 	app_global_get
@@ -1323,7 +1258,7 @@ removeLST:
 	// Submit inner transaction
 	itxn_submit
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:269
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:235
 	// this.lstBalance.value = this.lstBalance.value - amountToRemove
 	byte 0x6c737442616c616e6365 // "lstBalance"
 	dup
@@ -1338,7 +1273,7 @@ mintLST:
 	proto 3 0
 
 	// *if6_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:273
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:239
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1346,7 +1281,7 @@ mintLST:
 	bz *if6_end
 
 	// *if6_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:274
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:240
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1362,7 +1297,7 @@ mintLST:
 	itxn_submit
 
 *if6_end:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:277
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:243
 	// verifyPayTxn(payTxn, {
 	//       receiver: this.app.address,
 	//       amount: minPayment + quantity,
@@ -1387,7 +1322,7 @@ mintLST:
 	// transaction verification failed: {"txn":"payTxn","field":"amount","expected":"minPayment + quantity"}
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:282
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:248
 	// sendAssetTransfer({
 	//       xferAsset: AssetID.fromUint64(this.lstTokenId.value),
 	//       assetReceiver: userAddress,
@@ -1399,28 +1334,28 @@ mintLST:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:283
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:249
 	// xferAsset: AssetID.fromUint64(this.lstTokenId.value)
 	byte 0x6c7374546f6b656e4964 // "lstTokenId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:284
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:250
 	// assetReceiver: userAddress
 	frame_dig -3 // userAddress: Address
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:285
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:251
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:286
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:252
 	// assetAmount: quantity
 	frame_dig -1 // quantity: uint64
 	itxn_field AssetAmount
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:287
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:253
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -1429,7 +1364,7 @@ mintLST:
 	itxn_submit
 
 	// *if7_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:289
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:255
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1437,7 +1372,7 @@ mintLST:
 	bz *if7_end
 
 	// *if7_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:290
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:256
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1453,7 +1388,7 @@ mintLST:
 	itxn_submit
 
 *if7_end:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:293
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:259
 	// this.lstBalance.value = this.lstBalance.value - quantity
 	byte 0x6c737442616c616e6365 // "lstBalance"
 	dup
@@ -1462,7 +1397,7 @@ mintLST:
 	-
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:294
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:260
 	// this.circulatingLST.value = this.circulatingLST.value + quantity
 	byte 0x63697263756c6174696e674c5354 // "circulatingLST"
 	dup
@@ -1472,7 +1407,7 @@ mintLST:
 	app_global_put
 
 	// *if8_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:295
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:261
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1480,7 +1415,7 @@ mintLST:
 	bz *if8_end
 
 	// *if8_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:296
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:262
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1513,7 +1448,7 @@ pickupAlgoRewards:
 	byte 0x
 	dup
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:301
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:267
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can pickup rewards')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -1523,7 +1458,7 @@ pickupAlgoRewards:
 	// Only admin can pickup rewards
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:304
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:270
 	// amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.totalStaked.value - this.commisionAmount.value
 	global CurrentApplicationAddress
 	acct_params_get AcctBalance
@@ -1543,7 +1478,7 @@ pickupAlgoRewards:
 	frame_bury 0 // amount: uint64
 
 	// *if9_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:306
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:272
 	// amount > MINIMUM_ALGO_REWARD
 	frame_dig 0 // amount: uint64
 	int 1000000
@@ -1551,7 +1486,7 @@ pickupAlgoRewards:
 	bz *if9_end
 
 	// *if9_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:307
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:273
 	// newCommisionPayment = this.commisionAmount.value + (amount / 100 * this.commisionPercentage.value)
 	byte 0x636f6d6d6973696f6e416d6f756e74 // "commisionAmount"
 	app_global_get
@@ -1564,14 +1499,14 @@ pickupAlgoRewards:
 	+
 	frame_bury 1 // newCommisionPayment: uint64
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:308
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:274
 	// amount = amount - newCommisionPayment
 	frame_dig 0 // amount: uint64
 	frame_dig 1 // newCommisionPayment: uint64
 	-
 	frame_bury 0 // amount: uint64
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:309
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:275
 	// this.commisionAmount.value = this.commisionAmount.value + newCommisionPayment
 	byte 0x636f6d6d6973696f6e416d6f756e74 // "commisionAmount"
 	dup
@@ -1580,7 +1515,7 @@ pickupAlgoRewards:
 	+
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:310
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:276
 	// this.totalConsensusRewards.value += amount
 	byte 0x746f74616c436f6e73656e73757352657761726473 // "totalConsensusRewards"
 	app_global_get
@@ -1646,7 +1581,7 @@ burnLST:
 	byte 0x
 	dupn 2
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:317
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:283
 	// verifyAssetTransferTxn(axferTxn, {
 	//       assetAmount: quantity,
 	//       assetReceiver: this.app.address,
@@ -1690,7 +1625,7 @@ burnLST:
 	// transaction verification failed: {"txn":"axferTxn","field":"xferAsset","expected":"AssetID.fromUint64(this.lstTokenId.value)"}
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:323
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:289
 	// verifyPayTxn(payTxn, {
 	//       receiver: this.app.address,
 	//       amount: 1_000,
@@ -1713,7 +1648,7 @@ burnLST:
 	// transaction verification failed: {"txn":"payTxn","field":"amount","expected":"1_000"}
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:328
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:294
 	// assert(this.circulatingLST.value >= quantity, 'Invalid quantity')
 	byte 0x63697263756c6174696e674c5354 // "circulatingLST"
 	app_global_get
@@ -1723,7 +1658,7 @@ burnLST:
 	// Invalid quantity
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:330
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:296
 	// nodeAlgo = this.totalStaked.value + this.totalConsensusRewards.value
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	app_global_get
@@ -1732,7 +1667,7 @@ burnLST:
 	+
 	frame_bury 0 // nodeAlgo: uint64
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:331
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:297
 	// lstRatio = wideRatio([nodeAlgo, 10000], [this.circulatingLST.value])
 	frame_dig 0 // nodeAlgo: uint64
 	int 10000
@@ -1750,7 +1685,7 @@ burnLST:
 	assert
 	frame_bury 1 // lstRatio: uint64
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:332
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:298
 	// stakeTokenDue = wideRatio([lstRatio, quantity], [10000])
 	frame_dig 1 // lstRatio: uint64
 	frame_dig -3 // quantity: uint64
@@ -1767,29 +1702,10 @@ burnLST:
 	assert
 	frame_bury 2 // stakeTokenDue: uint64
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:334
-	// this.nodeAlgo.value = nodeAlgo
-	byte 0x6e6f6465416c676f // "nodeAlgo"
-	frame_dig 0 // nodeAlgo: uint64
-	app_global_put
-
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:335
-	// this.lstRatio.value = lstRatio
-	byte 0x6c7374526174696f // "lstRatio"
-	frame_dig 1 // lstRatio: uint64
-	app_global_put
-
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:336
-	// this.stakeAmountDue.value = stakeTokenDue
-	byte 0x7374616b65416d6f756e74447565 // "stakeAmountDue"
-	frame_dig 2 // stakeTokenDue: uint64
-	app_global_put
-
 	// *if10_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:338
-	// this.stakeAmountDue.value < this.app.address.balance
-	byte 0x7374616b65416d6f756e74447565 // "stakeAmountDue"
-	app_global_get
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:300
+	// stakeTokenDue < this.app.address.balance
+	frame_dig 2 // stakeTokenDue: uint64
 	global CurrentApplicationAddress
 	acct_params_get AcctBalance
 	pop
@@ -1798,7 +1714,7 @@ burnLST:
 
 	// *if10_consequent
 	// *if11_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:340
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:302
 	// this.stakedAssetId.value === 0
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
@@ -1807,7 +1723,7 @@ burnLST:
 	bz *if11_else
 
 	// *if11_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:341
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:303
 	// sendPayment({
 	//           amount: stakeTokenDue,
 	//           receiver: userAddress,
@@ -1818,22 +1734,22 @@ burnLST:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:342
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:304
 	// amount: stakeTokenDue
 	frame_dig 2 // stakeTokenDue: uint64
 	itxn_field Amount
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:343
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:305
 	// receiver: userAddress
 	frame_dig -4 // userAddress: Address
 	itxn_field Receiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:344
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:306
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:345
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:307
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -1843,7 +1759,7 @@ burnLST:
 	b *if11_end
 
 *if11_else:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:348
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:310
 	// sendAssetTransfer({
 	//           xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
 	//           assetReceiver: userAddress,
@@ -1855,28 +1771,28 @@ burnLST:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:349
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:311
 	// xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:350
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:312
 	// assetReceiver: userAddress
 	frame_dig -4 // userAddress: Address
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:351
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:313
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:352
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:314
 	// assetAmount: stakeTokenDue
 	frame_dig 2 // stakeTokenDue: uint64
 	itxn_field AssetAmount
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:353
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:315
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -1887,7 +1803,7 @@ burnLST:
 *if11_end:
 
 *if10_end:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:357
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:319
 	// this.lstBalance.value = this.lstBalance.value + quantity
 	byte 0x6c737442616c616e6365 // "lstBalance"
 	dup
@@ -1896,7 +1812,7 @@ burnLST:
 	+
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:358
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:320
 	// this.circulatingLST.value = this.circulatingLST.value - quantity
 	byte 0x63697263756c6174696e674c5354 // "circulatingLST"
 	dup
@@ -1905,7 +1821,7 @@ burnLST:
 	-
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:359
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:321
 	// this.totalStaked.value = this.totalStaked.value - quantity
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	dup
@@ -1914,7 +1830,7 @@ burnLST:
 	-
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:360
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:322
 	// this.totalConsensusRewards.value = this.totalConsensusRewards.value - (stakeTokenDue - quantity)
 	byte 0x746f74616c436f6e73656e73757352657761726473 // "totalConsensusRewards"
 	dup
@@ -1939,7 +1855,7 @@ gas:
 	retsub
 
 *create_NoOp:
-	method "createApplication(address,address,address)void"
+	method "createApplication(address,address)void"
 	txna ApplicationArgs 0
 	match *abi_route_createApplication
 
@@ -1949,13 +1865,12 @@ gas:
 *call_NoOp:
 	method "initApplication(uint64,uint64,uint64,uint64,pay)void"
 	method "updateAdminAddress(address)void"
-	method "updateOracleAdminAddress(address)void"
+	method "updateMaxStake(uint64)void"
 	method "updateTreasuryAddress(address)void"
 	method "updateCommision(uint64)void"
 	method "stake(pay,uint64)void"
 	method "optInToToken(pay,uint64)void"
 	method "payCommision(pay)void"
-	method "setFreeze(bool)void"
 	method "goOnline(pay,byte[],byte[],byte[],uint64,uint64,uint64)void"
 	method "goOffline()void"
 	method "linkToNFD(uint64,string,uint64)void"
@@ -1965,7 +1880,7 @@ gas:
 	method "burnLST(axfer,pay,uint64,address)void"
 	method "gas()void"
 	txna ApplicationArgs 0
-	match *abi_route_initApplication *abi_route_updateAdminAddress *abi_route_updateOracleAdminAddress *abi_route_updateTreasuryAddress *abi_route_updateCommision *abi_route_stake *abi_route_optInToToken *abi_route_payCommision *abi_route_setFreeze *abi_route_goOnline *abi_route_goOffline *abi_route_linkToNFD *abi_route_addLST *abi_route_removeLST *abi_route_pickupAlgoRewards *abi_route_burnLST *abi_route_gas
+	match *abi_route_initApplication *abi_route_updateAdminAddress *abi_route_updateMaxStake *abi_route_updateTreasuryAddress *abi_route_updateCommision *abi_route_stake *abi_route_optInToToken *abi_route_payCommision *abi_route_goOnline *abi_route_goOffline *abi_route_linkToNFD *abi_route_addLST *abi_route_removeLST *abi_route_pickupAlgoRewards *abi_route_burnLST *abi_route_gas
 
 	// this contract does not implement the given ABI method for call NoOp
 	err

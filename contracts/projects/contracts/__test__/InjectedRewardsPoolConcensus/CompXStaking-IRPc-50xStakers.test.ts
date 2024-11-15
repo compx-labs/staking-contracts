@@ -66,17 +66,9 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     rewardTokens.push(rewardAssetOneId);
 
     treasuryAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(0), suppressLog: true });
-    /* await algokit.ensureFunded(
-      {
-        accountToFund: treasuryAccount,
-        fundingSource: await algokit.getDispenserAccount(algorand.client.algod, algorand.client.kmd!),
-        minSpendingBalance: algokit.algos(1),
-      },
-      algorand.client.algod,
-    ) */
+
     await appClient.create.createApplication({
       adminAddress: admin.addr,
-      oracleAdminAddress: admin.addr,
       treasuryAddress: treasuryAccount.addr,
     });
     const { appAddress } = await appClient.appClient.getAppReference();
@@ -429,19 +421,12 @@ describe('Injected Reward Pool - 50x stakers test', () => {
       const globalStateAfter = await appClient.getGlobalState();
 
       consoleLogger.info(`burn params,
-           nodeAlgo:${globalStateAfter.nodeAlgo!.asBigInt()},
-         lstRatio:${globalStateAfter.lstRatio!.asBigInt()},
-         stakeAmountdue:${globalStateAfter.stakeAmountDue!.asBigInt()}
          totalStake:${globalStateAfter.totalStaked!.asBigInt()}
          consensusRewards:${globalStateAfter.totalConsensusRewards!.asBigInt()}
          minimumBalance:${globalStateAfter.minimumBalance!.asBigInt()}`)
 
       const expectedAmountDue = expectedRewardsPerStaker + staker.stake;
 
-      const actualStakeTokenDue = globalStateAfter.stakeAmountDue!.asBigInt();
-      expect(actualStakeTokenDue).toBe(expectedAmountDue);
-      consoleLogger.info(`expectedAmountdue: ${expectedAmountDue.toString()}, actualStakeTokenDue:${actualStakeTokenDue.toString()}`)
-      expect(actualStakeTokenDue).toBe(expectedAmountDue);
       const { amount: balanceAfterUnstake } = await algorand.account.getInformation(staker.account!.addr);
       console.log('unstake balanceAfterUnstake:', balanceAfterUnstake);
       expect(balanceAfterUnstake).toBeGreaterThan(balanceBeforeUnstake);

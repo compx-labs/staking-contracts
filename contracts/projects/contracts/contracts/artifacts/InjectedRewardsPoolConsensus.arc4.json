@@ -10,10 +10,6 @@
           "type": "address"
         },
         {
-          "name": "oracleAdminAddress",
-          "type": "address"
-        },
-        {
           "name": "treasuryAddress",
           "type": "address"
         }
@@ -63,11 +59,11 @@
       }
     },
     {
-      "name": "updateOracleAdminAddress",
+      "name": "updateMaxStake",
       "args": [
         {
-          "name": "oracleAdminAddress",
-          "type": "address"
+          "name": "maxStake",
+          "type": "uint64"
         }
       ],
       "returns": {
@@ -143,18 +139,6 @@
         {
           "name": "payTxn",
           "type": "pay"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "setFreeze",
-      "args": [
-        {
-          "name": "enabled",
-          "type": "bool"
         }
       ],
       "returns": {

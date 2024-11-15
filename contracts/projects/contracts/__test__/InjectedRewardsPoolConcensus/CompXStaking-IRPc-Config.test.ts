@@ -58,7 +58,6 @@ describe('Injected Reward Pool setup/admin functions - no staking, specfially se
 
     await appClient.create.createApplication({
       adminAddress: admin.addr,
-      oracleAdminAddress: admin.addr,
       treasuryAddress: admin.addr,
     });
     const { appAddress } = await appClient.appClient.getAppReference();
@@ -72,7 +71,6 @@ describe('Injected Reward Pool setup/admin functions - no staking, specfially se
     await appClient.initApplication({
       stakedAsset: 0,
       rewardAssetId: rewardAssetOneId,
-      minStakePeriodForRewards: ONE_DAY,
       lstTokenId: lstAssetId,
       commision: 8n,
       payTxn
@@ -102,30 +100,6 @@ describe('Injected Reward Pool setup/admin functions - no staking, specfially se
     ).rejects.toThrowError();
     const globalStateAfter = await appClient.getGlobalState();
     expect(globalStateAfter.commisionPercentage!.asBigInt()).toBe(10n);
-  });
-
-
-  test('freeze rewards', async () => {
-    await appClient.setFreeze({ enabled: true });
-    const globalStateAfter = await appClient.getGlobalState();
-    const freezeState = globalStateAfter.freeze!.asByteArray();
-    const freezreValue = byteArrayToUint128(freezeState);
-    expect(freezreValue).toBe(128n);
-  });
-
-  test('un-freeze rewards', async () => {
-    await appClient.setFreeze({ enabled: false });
-    const globalStateAfter = await appClient.getGlobalState();
-    const freezeState = globalStateAfter.freeze!.asByteArray();
-    const freezreValue = byteArrayToUint128(freezeState);
-    expect(freezreValue).toBe(0n);
-  });
-
-  test('freeze rewards by non-admin', async () => {
-    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await expect(
-      appClient.setFreeze({ enabled: true }, { sender: nonAdminAccount }),
-    ).rejects.toThrowError()
   });
 
   test('deleteApplication', async () => {

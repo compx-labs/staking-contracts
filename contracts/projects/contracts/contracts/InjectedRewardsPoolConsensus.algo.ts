@@ -1,17 +1,6 @@
 import { getAppBoxValue, getBoxReference } from '@algorandfoundation/algokit-utils';
 import { Contract } from '@algorandfoundation/tealscript';
-const PRECISION = 1_000_000_000_000_000;
-
-export type mbrReturn = {
-  mbrPayment: uint64;
-}
-
-
-const MAX_STAKERS_PER_POOL = 250;
-const ASSET_HOLDING_FEE = 100000 // creation/holding fee for asset
-const ALGORAND_ACCOUNT_MIN_BALANCE = 100000
 const MINIMUM_ALGO_REWARD = 1000000
-
 
 export class InjectedRewardsPoolConsensus extends Contract {
   programVersion = 10;
@@ -32,8 +21,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   commisionPercentage = GlobalStateKey<uint64>();
 
-  oracleAdminAddress = GlobalStateKey<Address>();
-
   lstBalance = GlobalStateKey<uint64>();
 
   circulatingLST = GlobalStateKey<uint64>();
@@ -44,19 +31,13 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   totalConsensusRewards = GlobalStateKey<uint64>();
 
-  nodeAlgo = GlobalStateKey<uint64>();
-
-  lstRatio = GlobalStateKey<uint64>();
-
-  stakeAmountDue = GlobalStateKey<uint64>();
+  maxStake = GlobalStateKey<uint64>();
 
   createApplication(
     adminAddress: Address,
-    oracleAdminAddress: Address,
     treasuryAddress: Address
   ): void {
     this.adminAddress.value = adminAddress;
-    this.oracleAdminAddress.value = oracleAdminAddress;
     this.treasuryAddress.value = treasuryAddress;
   }
 
@@ -76,11 +57,9 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.circulatingLST.value = 0;
     this.minimumBalance.value = payTxn.amount;
     this.commisionPercentage.value = commision;
-    this.nodeAlgo.value = 0;
-    this.lstRatio.value = 0;
-    this.stakeAmountDue.value = 0;
     this.totalConsensusRewards.value = 0;
     this.commisionAmount.value = 0;
+    this.maxStake.value = 69999999000000;
 
     if (this.stakedAssetId.value !== 0) {
       sendAssetTransfer({
@@ -110,10 +89,10 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address');
     this.adminAddress.value = adminAddress;
   }
-  updateOracleAdminAddress(oracleAdminAddress: Address): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update oracle admin address');
-    this.oracleAdminAddress.value = oracleAdminAddress;
-  }
+  updateMaxStake(maxStake: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update max stake');
+    this.maxStake.value = maxStake;
+  };
   updateTreasuryAddress(treasuryAddress: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update treasury address');
     this.treasuryAddress.value = treasuryAddress;
@@ -125,14 +104,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   deleteApplication(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
-    //assert(this.totalStaked.value === 0, 'Staked assets still exist');
-
-    /* sendPayment({
-      amount: (this.adminAddress.value.balance - this.adminAddress.value.minBalance),
-      receiver: this.adminAddress.value,
-      sender: this.app.address,
-      fee: 1_000,
-    }); */
   }
 
   stake(
@@ -140,6 +111,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     quantity: uint64,
   ): void {
     assert(quantity > 0, 'Invalid quantity');
+    assert(this.totalStaked.value + quantity <= this.maxStake.value, 'Max stake reached');
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
@@ -184,12 +156,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
       });
     }
   }
-
-  setFreeze(enabled: boolean): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can freeze payouts');
-    this.freeze.value = enabled;
-  }
-
   private getGoOnlineFee(): uint64 {
     // this will be needed to determine if our pool is currently NOT eligible and we thus need to pay the fee.
     /*  if (!this.app.address.incentiveEligible) {
@@ -331,11 +297,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     const lstRatio = wideRatio([nodeAlgo, 10000], [this.circulatingLST.value]);
     const stakeTokenDue = wideRatio([lstRatio, quantity], [10000]);
 
-    this.nodeAlgo.value = nodeAlgo;
-    this.lstRatio.value = lstRatio;
-    this.stakeAmountDue.value = stakeTokenDue;
-
-    if (this.stakeAmountDue.value < this.app.address.balance) {
+    if (stakeTokenDue < this.app.address.balance) {
 
       if (this.stakedAssetId.value === 0) {
         sendPayment({
