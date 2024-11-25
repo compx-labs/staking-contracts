@@ -69,8 +69,6 @@ describe('Injected Reward Pool setup/admin functions - no staking, specfially se
     });
 
     await appClient.initApplication({
-      stakedAsset: 0,
-      rewardAssetId: rewardAssetOneId,
       lstTokenId: lstAssetId,
       commision: 8n,
       payTxn

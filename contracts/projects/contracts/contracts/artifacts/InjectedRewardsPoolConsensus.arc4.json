@@ -22,14 +22,6 @@
       "name": "initApplication",
       "args": [
         {
-          "name": "stakedAsset",
-          "type": "uint64"
-        },
-        {
-          "name": "rewardAssetId",
-          "type": "uint64"
-        },
-        {
           "name": "lstTokenId",
           "type": "uint64"
         },

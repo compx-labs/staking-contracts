@@ -14,9 +14,8 @@ let appClient: InjectedRewardsPoolConsensusClient;
 let admin: TransactionSignerAccount;
 let lstAssetId: bigint;
 let rewardAssetOneId: bigint;
-let ASAInjectionAmount = 10n * 10n ** 6n;
 const COMMISION = 8n;
-let initialStakers = 100;
+let initialStakers = 10;
 let algoPayment: AlgoAmount = algokit.algos(initialStakers + 1);
 let treasuryAccount: TransactionSignerAccount;
 let stakingAccounts: StakingAccount[] = [];
@@ -80,8 +79,6 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     });
 
     await appClient.initApplication({
-      stakedAsset: 0,
-      rewardAssetId: rewardAssetOneId,
       commision: COMMISION,
       lstTokenId: lstAssetId,
       payTxn

@@ -62,14 +62,11 @@ export class InjectedRewardsPoolConsensus extends Contract {
     payTxn: PayTxn - the pay transaction that will be used to fund the contract
   */
   initApplication(
-    stakedAsset: uint64,
-    rewardAssetId: uint64,
     lstTokenId: uint64,
     commision: uint64,
     payTxn: PayTxn
   ): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
-    this.stakedAssetId.value = stakedAsset;
     this.totalStaked.value = 0;
     this.lstTokenId.value = lstTokenId;
     this.lstBalance.value = 0;
@@ -79,14 +76,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.totalConsensusRewards.value = 0;
     this.commisionAmount.value = 0;
     this.maxStake.value = 69999999000000;
+    this.stakedAssetId.value = 0;
 
-    if (this.stakedAssetId.value !== 0) {
-      sendAssetTransfer({
-        xferAsset: AssetID.fromUint64(stakedAsset),
-        assetReceiver: this.app.address,
-        assetAmount: 0,
-      })
-    }
     if (this.lstTokenId.value !== 0) {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(this.lstTokenId.value),
