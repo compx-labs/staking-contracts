@@ -296,6 +296,54 @@
       }
     },
     {
+      "name": "acceptMigration",
+      "args": [
+        {
+          "name": "algoTransfer",
+          "type": "pay"
+        },
+        {
+          "name": "lstTransfer",
+          "type": "axfer"
+        },
+        {
+          "name": "lstBalance",
+          "type": "uint64"
+        },
+        {
+          "name": "totalStaked",
+          "type": "uint64"
+        },
+        {
+          "name": "circulatingLST",
+          "type": "uint64"
+        },
+        {
+          "name": "totalConsensusRewards",
+          "type": "uint64"
+        },
+        {
+          "name": "commisionAmount",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "migrateContract",
+      "args": [
+        {
+          "name": "mbrTxn",
+          "type": "pay"
+        }
+      ],
+      "returns": {
+        "type": "(uint64,uint64,uint64,uint64,uint64)"
+      }
+    },
+    {
       "name": "gas",
       "args": [],
       "returns": {

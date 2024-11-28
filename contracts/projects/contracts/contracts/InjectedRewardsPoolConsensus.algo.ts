@@ -1,6 +1,14 @@
-import { getAppBoxValue, getBoxReference } from '@algorandfoundation/algokit-utils';
 import { Contract } from '@algorandfoundation/tealscript';
+import { getApplicationAddress, makePaymentTxnWithSuggestedParamsFromObject } from 'algosdk';
 const MINIMUM_ALGO_REWARD = 1000000
+
+export type MigrationParams = {
+  lstBalance: uint64,
+  totalStaked: uint64,
+  circulatingLST: uint64,
+  totalConsensusRewards: uint64,
+  commisionAmount: uint64,
+}
 
 export class InjectedRewardsPoolConsensus extends Contract {
   programVersion = 10;
@@ -270,6 +278,13 @@ export class InjectedRewardsPoolConsensus extends Contract {
   }
   deleteApplication(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
+    sendAssetTransfer({
+      assetCloseTo: this.adminAddress.value,
+      assetReceiver: this.adminAddress.value,
+      sender: this.app.address,
+      xferAsset: AssetID.fromUint64(this.lstTokenId.value),
+      assetAmount: this.lstBalance.value,
+    })
   }
 
   //
@@ -343,6 +358,68 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.totalConsensusRewards.value = this.totalConsensusRewards.value - (stakeTokenDue - quantity);
   }
 
+  //Migration functions
+
+  acceptMigration(
+    algoTransfer: PayTxn,
+    lstTransfer: AssetTransferTxn,
+    lstBalance: uint64,
+    totalStaked: uint64,
+    circulatingLST: uint64,
+    totalConsensusRewards: uint64,
+    commisionAmount: uint64,
+  ): void {
+
+    verifyPayTxn(algoTransfer, {
+      receiver: this.app.address,
+      sender: this.adminAddress.value,
+    });
+    verifyAssetTransferTxn(lstTransfer, {
+      assetReceiver: this.app.address,
+      sender: this.adminAddress.value,
+    });
+    this.lstBalance.value = lstBalance;
+    this.totalStaked.value = totalStaked;
+    this.circulatingLST.value = circulatingLST;
+    this.totalConsensusRewards.value = totalConsensusRewards;
+    this.commisionAmount.value = commisionAmount;
+  }
+
+  //Sends balances to the admin account
+  migrateContract(
+    mbrTxn: PayTxn
+  ): MigrationParams {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can migrate contract');
+    //ensure account is offline
+    this.goOffline();
+
+    verifyPayTxn(mbrTxn, {
+      sender: this.adminAddress.value,
+      amount: 1_000_000
+    });
+
+    sendPayment({
+      amount: this.totalStaked.value + this.totalConsensusRewards.value + this.commisionAmount.value,
+      receiver: this.adminAddress.value,
+      sender: this.app.address,
+      fee: 1_000,
+    });
+    sendAssetTransfer({
+      xferAsset: AssetID.fromUint64(this.lstTokenId.value),
+      assetReceiver: this.adminAddress.value,
+      sender: this.app.address,
+      assetAmount: this.lstBalance.value,
+      fee: 1_000,
+    });
+
+    return {
+      lstBalance: this.lstBalance.value,
+      totalStaked: this.totalStaked.value,
+      circulatingLST: this.circulatingLST.value,
+      totalConsensusRewards: this.totalConsensusRewards.value,
+      commisionAmount: this.commisionAmount.value,
+    }
+  }
 
   gas(): void { }
 }
