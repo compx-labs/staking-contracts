@@ -50,14 +50,18 @@ export class InjectedRewardsPoolConsensus extends Contract {
   //Max stake value of 70mm  - 1 as per node params - can be updated.
   maxStake = GlobalStateKey<uint64>();
 
+  migrationAdmin = GlobalStateKey<Address>();
+
   //
   //Create the application with minimum information
   createApplication(
     adminAddress: Address,
-    treasuryAddress: Address
+    treasuryAddress: Address,
+    migrationAdmin: Address,
   ): void {
     this.adminAddress.value = adminAddress;
     this.treasuryAddress.value = treasuryAddress;
+    this.migrationAdmin.value = migrationAdmin;
   }
 
   //
@@ -102,6 +106,10 @@ export class InjectedRewardsPoolConsensus extends Contract {
   updateAdminAddress(adminAddress: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address');
     this.adminAddress.value = adminAddress;
+  }
+  updateMigrationAdmin(migrationAdmin: Address): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update migration admin address');
+    this.migrationAdmin.value = migrationAdmin;
   }
   updateMaxStake(maxStake: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update max stake');
@@ -249,29 +257,29 @@ export class InjectedRewardsPoolConsensus extends Contract {
       this.totalConsensusRewards.value += amount;
     }
   }
-  private mintLST(quantity: uint64, payTxn: PayTxn, userAddress: Address): void {
+  private mintLST(stake: uint64, mintQuantity: uint64, payTxn: PayTxn, userAddress: Address): void {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
     const minPayment = 1_000;
     verifyPayTxn(payTxn, {
       receiver: this.app.address,
-      amount: minPayment + quantity,
+      amount: minPayment + stake,
     });
 
     sendAssetTransfer({
       xferAsset: AssetID.fromUint64(this.lstTokenId.value),
       assetReceiver: userAddress,
       sender: this.app.address,
-      assetAmount: quantity,
+      assetAmount: mintQuantity,
       fee: 1_000,
     });
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
 
-    this.lstBalance.value = this.lstBalance.value - quantity;
-    this.circulatingLST.value = this.circulatingLST.value + quantity;
+    this.lstBalance.value = this.lstBalance.value - mintQuantity;
+    this.circulatingLST.value = this.circulatingLST.value + mintQuantity;
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
@@ -301,12 +309,24 @@ export class InjectedRewardsPoolConsensus extends Contract {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
+
+
     verifyPayTxn(payTxn, {
       sender: this.txn.sender,
       amount: quantity + 1000,
       receiver: this.app.address,
     });
-    this.mintLST(quantity, payTxn, this.txn.sender);
+
+    let lstRatio = 0;
+    let lstDue = 0;
+    const nodeAlgo = this.totalStaked.value + this.totalConsensusRewards.value;
+    if (nodeAlgo === 0) {
+      lstDue = quantity;
+    } else {
+      lstRatio = wideRatio([this.circulatingLST.value, 10000], [nodeAlgo]);
+      lstDue = wideRatio([lstRatio, quantity], [10000]);
+    }
+    this.mintLST(quantity, lstDue, payTxn, this.txn.sender);
 
     this.totalStaked.value = this.totalStaked.value + quantity;
 
@@ -389,24 +409,24 @@ export class InjectedRewardsPoolConsensus extends Contract {
   migrateContract(
     mbrTxn: PayTxn
   ): MigrationParams {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can migrate contract');
+    assert(this.txn.sender === this.migrationAdmin.value, 'Only admin can migrate contract');
     //ensure account is offline
     this.goOffline();
 
     verifyPayTxn(mbrTxn, {
-      sender: this.adminAddress.value,
+      sender: this.migrationAdmin.value,
       amount: 1_000_000
     });
 
     sendPayment({
       amount: this.totalStaked.value + this.totalConsensusRewards.value + this.commisionAmount.value,
-      receiver: this.adminAddress.value,
+      receiver: this.migrationAdmin.value,
       sender: this.app.address,
       fee: 1_000,
     });
     sendAssetTransfer({
       xferAsset: AssetID.fromUint64(this.lstTokenId.value),
-      assetReceiver: this.adminAddress.value,
+      assetReceiver: this.migrationAdmin.value,
       sender: this.app.address,
       assetAmount: this.lstBalance.value,
       fee: 1_000,

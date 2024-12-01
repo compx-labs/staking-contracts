@@ -12,6 +12,10 @@
         {
           "name": "treasuryAddress",
           "type": "address"
+        },
+        {
+          "name": "migrationAdmin",
+          "type": "address"
         }
       ],
       "returns": {
@@ -43,6 +47,18 @@
       "args": [
         {
           "name": "adminAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateMigrationAdmin",
+      "args": [
+        {
+          "name": "migrationAdmin",
           "type": "address"
         }
       ],

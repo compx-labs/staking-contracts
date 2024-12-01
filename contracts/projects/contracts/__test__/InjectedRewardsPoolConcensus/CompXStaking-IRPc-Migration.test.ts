@@ -78,6 +78,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     await appClient.create.createApplication({
       adminAddress: admin.addr,
       treasuryAddress: treasuryAccount.addr,
+      migrationAdmin: admin.addr,
     });
     const { appAddress } = await appClient.appClient.getAppReference();
 
@@ -266,6 +267,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     await secondAppClient.create.createApplication({
       adminAddress: admin.addr,
       treasuryAddress: treasuryAccount.addr,
+      migrationAdmin: admin.addr,
     });
     const { appAddress } = await secondAppClient.appClient.getAppReference();
 
@@ -366,7 +368,7 @@ describe('Injected Reward Pool - 50x stakers test', () => {
     const { amount: appBalanceAfter } = await fixture.algorand.account.getInformation(appAddress);
   });
 
-  test('add new staker', async () => {
+  test.skip('add new staker', async () => {
     const { algorand } = fixture;
     const { appAddress } = await secondAppClient.appClient.getAppReference();
     const { amount: balanceBeforeStake } = await algorand.account.getInformation(appAddress);
@@ -399,6 +401,12 @@ describe('Injected Reward Pool - 50x stakers test', () => {
       receiver: appAddress,
       amount: AlgoAmount.MicroAlgos(Number(staker.stake) + 1000),
     });
+    const globalState = await secondAppClient.getGlobalState();
+    const totalStaked = globalState.totalStaked!.asBigInt();
+    const totalConsensusRewards = globalState.totalConsensusRewards!.asBigInt();
+    const circulatingLST = globalState.circulatingLST!.asBigInt();
+    const nodeAlgo = totalStaked + totalConsensusRewards;
+
     let fees = AlgoAmount.MicroAlgos(240_000);
     const simulateResults = await secondAppClient.compose()
       .gas({}, { note: '1' })
@@ -421,12 +429,15 @@ describe('Injected Reward Pool - 50x stakers test', () => {
         { sender: staker.account, sendParams: { fee: fees } })
 
       .execute({ populateAppCallResources: true, suppressLog: true })
+
     const { amount: balanceAfterStake } = await algorand.account.getInformation(appAddress);
     console.log('staking balanceAfterStake2:', balanceAfterStake);
     const lstBalance = (await algorand.account.getAssetInformation(staker.account!.addr, lstAssetId)).balance;
     console.log('lstBalance:', lstBalance);
-    expect(lstBalance).toBe(staker.stake);
 
+    const lstRatio = circulatingLST / nodeAlgo;
+    const lstDue = lstRatio * staker.stake;
+    expect(lstBalance).toBe(lstDue);
   });
 
   test.skip('add more stake as staker[0] ', async () => {

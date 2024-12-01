@@ -59,6 +59,7 @@ describe('Injected Reward Pool setup/admin functions - no staking, specfially se
     await appClient.create.createApplication({
       adminAddress: admin.addr,
       treasuryAddress: admin.addr,
+      migrationAdmin: admin.addr,
     });
     const { appAddress } = await appClient.appClient.getAppReference();
 
