@@ -7,7 +7,7 @@ export type MigrationParams = {
   totalStaked: uint64,
   circulatingLST: uint64,
   totalConsensusRewards: uint64,
-  commisionAmount: uint64,
+  commissionAmount: uint64,
 }
 
 export class InjectedRewardsPoolConsensus extends Contract {
@@ -31,7 +31,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
   minimumBalance = GlobalStateKey<uint64>();
 
   //Percentage of rewards to platform - can be updated
-  commisionPercentage = GlobalStateKey<uint64>();
+  commissionPercentage = GlobalStateKey<uint64>();
 
   //Running balance total of LST tokens
   lstBalance = GlobalStateKey<uint64>();
@@ -39,11 +39,11 @@ export class InjectedRewardsPoolConsensus extends Contract {
   //Running balance total of LST tokens paid out to stakers on stake
   circulatingLST = GlobalStateKey<uint64>();
 
-  //Treasury address for commision payments
+  //Treasury address for commission payments
   treasuryAddress = GlobalStateKey<Address>();
 
-  //Current commision to be paid out
-  commisionAmount = GlobalStateKey<uint64>();
+  //Current commission to be paid out
+  commissionAmount = GlobalStateKey<uint64>();
 
   //Running total of consensus rewards available for payout. Is increased as rewards come in and decreased as rewards go out
   totalConsensusRewards = GlobalStateKey<uint64>();
@@ -70,12 +70,12 @@ export class InjectedRewardsPoolConsensus extends Contract {
     stakedAsset: uint64 - the asset ID of the asset that will be staked into the contract
     rewardAssetId: uint64 - the asset ID of the asset that will be used to pay out rewards
     lstTokenId: uint64 - the asset ID of the asset that will be used to mint LST tokens
-    commision: uint64 - the percentage of rewards that will be paid to the platform
+    commission: uint64 - the percentage of rewards that will be paid to the platform
     payTxn: PayTxn - the pay transaction that will be used to fund the contract
   */
   initApplication(
     lstTokenId: uint64,
-    commision: uint64,
+    commission: uint64,
     payTxn: PayTxn
   ): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
@@ -84,9 +84,9 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.lstBalance.value = 0;
     this.circulatingLST.value = 0;
     this.minimumBalance.value = payTxn.amount;
-    this.commisionPercentage.value = commision;
+    this.commissionPercentage.value = commission;
     this.totalConsensusRewards.value = 0;
-    this.commisionAmount.value = 0;
+    this.commissionAmount.value = 0;
     this.maxStake.value = 69999999000000;
     this.stakedAssetId.value = 0;
 
@@ -119,13 +119,13 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update treasury address');
     this.treasuryAddress.value = treasuryAddress;
   }
-  updateCommision(commision: uint64): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commision');
-    this.commisionPercentage.value = commision;
+  updateCommission(commission: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commission');
+    this.commissionPercentage.value = commission;
   }
-  updateCommisionAmount(commisionAmount: uint64): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commision amount');
-    this.commisionAmount.value = commisionAmount;
+  updateCommissionAmount(commissionAmount: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commission amount');
+    this.commissionAmount.value = commissionAmount;
   }
   updateConsenusRewards(totalConsensusRewards: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update rewards');
@@ -149,20 +149,20 @@ export class InjectedRewardsPoolConsensus extends Contract {
       assetAmount: 0,
     })
   }
-  payCommision(payTxn: PayTxn): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can pay commision');
+  payCommission(payTxn: PayTxn): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can pay commission');
     verifyPayTxn(payTxn, {
       receiver: this.app.address,
       amount: 1000,
     });
-    if (this.commisionAmount.value > 0) {
+    if (this.commissionAmount.value > 0) {
       sendPayment({
-        amount: this.commisionAmount.value,
+        amount: this.commissionAmount.value,
         receiver: this.treasuryAddress.value,
         sender: this.app.address,
         fee: 1_000,
       });
-      this.commisionAmount.value = 0;
+      this.commissionAmount.value = 0;
     }
   }
   private getGoOnlineFee(): uint64 {
@@ -248,12 +248,12 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can pickup rewards');
 
     //total amount of newly paid in consensus rewards
-    let amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.totalStaked.value - this.commisionAmount.value;
-    //less commision
+    let amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.totalStaked.value - this.commissionAmount.value;
+    //less commission
     if (amount > MINIMUM_ALGO_REWARD) {
-      const newCommisionPayment = this.commisionAmount.value + (amount / 100 * this.commisionPercentage.value);
-      amount = amount - newCommisionPayment;
-      this.commisionAmount.value = this.commisionAmount.value + newCommisionPayment;
+      const newCommissionPayment = this.commissionAmount.value + (amount / 100 * this.commissionPercentage.value);
+      amount = amount - newCommissionPayment;
+      this.commissionAmount.value = this.commissionAmount.value + newCommissionPayment;
       this.totalConsensusRewards.value += amount;
     }
   }
@@ -387,7 +387,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     totalStaked: uint64,
     circulatingLST: uint64,
     totalConsensusRewards: uint64,
-    commisionAmount: uint64,
+    commissionAmount: uint64,
   ): void {
 
     verifyPayTxn(algoTransfer, {
@@ -402,7 +402,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.totalStaked.value = totalStaked;
     this.circulatingLST.value = circulatingLST;
     this.totalConsensusRewards.value = totalConsensusRewards;
-    this.commisionAmount.value = commisionAmount;
+    this.commissionAmount.value = commissionAmount;
   }
 
   //Sends balances to the admin account
@@ -419,7 +419,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     });
 
     sendPayment({
-      amount: this.totalStaked.value + this.totalConsensusRewards.value + this.commisionAmount.value,
+      amount: this.totalStaked.value + this.totalConsensusRewards.value + this.commissionAmount.value,
       receiver: this.migrationAdmin.value,
       sender: this.app.address,
       fee: 1_000,
@@ -437,7 +437,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
       totalStaked: this.totalStaked.value,
       circulatingLST: this.circulatingLST.value,
       totalConsensusRewards: this.totalConsensusRewards.value,
-      commisionAmount: this.commisionAmount.value,
+      commissionAmount: this.commissionAmount.value,
     }
   }
 
