@@ -11326,10 +11326,10 @@
   "compilerInfo": {
     "compiler": "algod",
     "compilerVersion": {
-      "major": 3,
-      "minor": 26,
-      "patch": 0,
-      "commitHash": "0d10b244"
+      "major": 4,
+      "minor": 0,
+      "patch": 1,
+      "commitHash": "63d271cf"
     }
   }
 }

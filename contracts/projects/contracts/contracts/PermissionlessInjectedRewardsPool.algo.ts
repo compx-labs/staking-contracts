@@ -4,23 +4,19 @@ const PRECISION = 1_000_000_000_000_000;
 export type StakeInfo = {
   account: Address
   stake: uint64
-  stakeDuration: uint64
-  stakeStartTime: uint64
-  algoAccuredRewards: uint64
-  lastUpdateTime: uint64
+  algoAccruedRewards: uint64
   accruedASARewards: uint64
-  userSharePercentage: uint64
 }
 export type mbrReturn = {
   mbrPayment: uint64;
 }
 
-const MAX_STAKERS_PER_POOL = 250;
+const MAX_STAKERS_PER_POOL = 500;
 const ASSET_HOLDING_FEE = 100000 // creation/holding fee for asset
 const ALGORAND_ACCOUNT_MIN_BALANCE = 100000
 
 
-export class InjectedRewardsPool extends Contract {
+export class PermissionlessInjectedRewardsPool extends Contract {
   programVersion = 9;
 
 
@@ -44,6 +40,8 @@ export class InjectedRewardsPool extends Contract {
 
   adminAddress = GlobalStateKey<Address>();
 
+  injectorAddress = GlobalStateKey<Address>();
+
   minimumBalance = GlobalStateKey<uint64>();
 
   numStakers = GlobalStateKey<uint64>();
@@ -52,9 +50,11 @@ export class InjectedRewardsPool extends Contract {
 
 
   createApplication(
-    adminAddress: Address
+    adminAddress: Address,
+    injectorAddress: Address,
   ): void {
     this.adminAddress.value = adminAddress;
+    this.injectorAddress.value = injectorAddress;
   }
 
   initApplication(
@@ -89,6 +89,14 @@ export class InjectedRewardsPool extends Contract {
   updateAdminAddress(adminAddress: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address');
     this.adminAddress.value = adminAddress;
+  }
+  updateInjectedASARewards(injectedASARewards: uint64): void {
+    assert(this.txn.sender === this.injectorAddress.value, 'Only admin can update injected rewards');
+    this.injectedASARewards.value = injectedASARewards;
+  }
+  updateInjectedAlgoRewards(injectedAlgoRewards: uint64): void {
+    assert(this.txn.sender === this.injectorAddress.value, 'Only admin can update injected rewards');
+    this.algoInjectedRewards.value = injectedAlgoRewards;
   }
 
   private costForBoxStorage(totalNumBytes: uint64): uint64 {
@@ -144,10 +152,10 @@ export class InjectedRewardsPool extends Contract {
   * Inject rewards into the pool
   */
   injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64, rewardAssetId: uint64): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
+    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can inject rewards');
 
     verifyAssetTransferTxn(rewardTxn, {
-      sender: this.adminAddress.value,
+      sender: this.injectorAddress.value,
       assetReceiver: this.app.address,
       xferAsset: AssetID.fromUint64(rewardAssetId),
       assetAmount: quantity,
@@ -157,7 +165,7 @@ export class InjectedRewardsPool extends Contract {
   }
 
   injectAlgoRewards(payTxn: PayTxn, quantity: uint64): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards');
+    assert(this.txn.sender === this.injectorAddress.value, 'Only admin can inject rewards');
 
     verifyPayTxn(payTxn, {
       receiver: this.app.address,
@@ -216,8 +224,6 @@ export class InjectedRewardsPool extends Contract {
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
         }
-        staker.stakeDuration = 0;
-        staker.stakeStartTime = currentTimeStamp;
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
         }
@@ -239,12 +245,8 @@ export class InjectedRewardsPool extends Contract {
         this.stakers.value[i] = {
           account: this.txn.sender,
           stake: stakeTxn.assetAmount,
-          stakeDuration: 0,
-          stakeStartTime: currentTimeStamp,
-          algoAccuredRewards: 0,
-          lastUpdateTime: currentTimeStamp,
+          algoAccruedRewards: 0,
           accruedASARewards: 0,
-          userSharePercentage: 0
         }
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget()
@@ -272,19 +274,7 @@ export class InjectedRewardsPool extends Contract {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
     }
-    let totalViableStake = 0;
-    for (let i = 0; i < this.numStakers.value; i += 1) {
-      if (this.stakers.value[i].stake > 0) {
-        if (globals.opcodeBudget < 300) {
-          increaseOpcodeBudget()
-        }
-        this.stakers.value[i].stakeDuration = globals.latestTimestamp - this.stakers.value[i].stakeStartTime;
 
-        if (this.stakers.value[i].stakeDuration >= this.minStakePeriodForRewards.value) {
-          totalViableStake += this.stakers.value[i].stake;
-        }
-      }
-    }
 
     for (let i = 0; i < this.numStakers.value; i += 1) {
       if (globals.opcodeBudget < 300) {
@@ -295,18 +285,14 @@ export class InjectedRewardsPool extends Contract {
       if (stake > 0) {
         const staker = clone(this.stakers.value[i])
 
-        if (staker.stakeDuration > this.minStakePeriodForRewards.value) {
+          let stakerShare = wideRatio([stake, PRECISION], [this.totalStaked.value]);
 
-
-          let stakerShare = wideRatio([stake, PRECISION], [totalViableStake]);
-          staker.userSharePercentage = stakerShare;
-
-          if (algoRewards > 0) {
+          if (algoRewards > this.numStakers.value) {
             let algoRewardRate = wideRatio([algoRewards, stakerShare], [PRECISION]);
             if (algoRewardRate === 0) {
               algoRewardRate = 1;
             }
-            staker.algoAccuredRewards = staker.algoAccuredRewards + algoRewardRate;
+            staker.algoAccruedRewards = staker.algoAccruedRewards + algoRewardRate;
             this.algoInjectedRewards.value = this.algoInjectedRewards.value - algoRewardRate;
 
             if (this.stakedAssetId.value === 0) {
@@ -319,7 +305,7 @@ export class InjectedRewardsPool extends Contract {
             increaseOpcodeBudget()
           }
 
-          if (additionalASARewards > 0) {
+          if (additionalASARewards > this.numStakers.value) {
             let rewardRate = wideRatio([additionalASARewards, stakerShare], [PRECISION]);
             if (rewardRate === 0) {
               rewardRate = 1;
@@ -335,8 +321,7 @@ export class InjectedRewardsPool extends Contract {
               staker.accruedASARewards = staker.accruedASARewards + rewardRate;
             }
           }
-        }
-        staker.lastUpdateTime = globals.latestTimestamp;
+        
         this.stakers.value[i] = staker;
       }
     }
@@ -354,12 +339,8 @@ export class InjectedRewardsPool extends Contract {
     return {
       account: globals.zeroAddress,
       stake: 0,
-      stakeDuration: 0,
-      stakeStartTime: 0,
-      lastUpdateTime: 0,
-      algoAccuredRewards: 0,
+      algoAccruedRewards: 0,
       accruedASARewards: 0,
-      userSharePercentage: 0
     }
   }
 
@@ -370,14 +351,14 @@ export class InjectedRewardsPool extends Contract {
     const staker = this.getStaker(this.txn.sender);
 
 
-    if (staker.algoAccuredRewards > 0) {
+    if (staker.algoAccruedRewards > 0) {
       sendPayment({
-        amount: staker.algoAccuredRewards,
+        amount: staker.algoAccruedRewards,
         receiver: this.txn.sender,
         sender: this.app.address,
         fee: 1_000,
       });
-      staker.algoAccuredRewards = 0;
+      staker.algoAccruedRewards = 0;
     }
 
 
@@ -392,8 +373,6 @@ export class InjectedRewardsPool extends Contract {
       staker.accruedASARewards = 0;
     }
 
-
-    staker.lastUpdateTime = globals.latestTimestamp;
     this.setStaker(staker.account, staker);
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget()
@@ -429,14 +408,14 @@ export class InjectedRewardsPool extends Contract {
         }
 
         //check for algo rewards
-        if (staker.algoAccuredRewards > 0) {
+        if (staker.algoAccruedRewards > 0) {
           sendPayment({
-            amount: staker.algoAccuredRewards,
+            amount: staker.algoAccruedRewards,
             receiver: this.txn.sender,
             sender: this.app.address,
             fee: 1_000,
           });
-          staker.algoAccuredRewards = 0;
+          staker.algoAccruedRewards = 0;
         }
         //check other rewards
 
@@ -462,12 +441,8 @@ export class InjectedRewardsPool extends Contract {
           const removedStaker: StakeInfo = {
             account: globals.zeroAddress,
             stake: 0,
-            stakeDuration: 0,
-            stakeStartTime: 0,
-            lastUpdateTime: 0,
-            algoAccuredRewards: 0,
+            algoAccruedRewards: 0,
             accruedASARewards: 0,
-            userSharePercentage: 0
           }
           this.setStaker(staker.account, removedStaker);
           //copy last staker to the removed staker position
@@ -485,7 +460,6 @@ export class InjectedRewardsPool extends Contract {
           staker.stake = staker.stake - quantity;
           staker.accruedASARewards = 0;
         }
-        staker.lastUpdateTime = globals.latestTimestamp;
         this.setStaker(staker.account, staker);
       }
     }
