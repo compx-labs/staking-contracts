@@ -22,8 +22,18 @@ switch *call_NoOp *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEM
 	// The requested action is not implemented in this contract. Are you using the correct OnComplete? Did you set your app ID?
 	err
 
-// createApplication(address)void
+// createApplication(address,address)void
 *abi_route_createApplication:
+	// injectorAddress: address
+	txna ApplicationArgs 2
+	dup
+	len
+	int 32
+	==
+
+	// argument 0 (injectorAddress) for createApplication must be a address
+	assert
+
 	// adminAddress: address
 	txna ApplicationArgs 1
 	dup
@@ -31,22 +41,28 @@ switch *call_NoOp *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEMENTED *NOT_IMPLEM
 	int 32
 	==
 
-	// argument 0 (adminAddress) for createApplication must be a address
+	// argument 1 (adminAddress) for createApplication must be a address
 	assert
 
-	// execute createApplication(address)void
+	// execute createApplication(address,address)void
 	callsub createApplication
 	int 1
 	return
 
-// createApplication(adminAddress: Address): void
+// createApplication(adminAddress: Address, injectorAddress: Address): void
 createApplication:
-	proto 1 0
+	proto 2 0
 
-	// contracts/InjectedRewardsPool.algo.ts:57
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:60
 	// this.adminAddress.value = adminAddress
 	byte 0x61646d696e41646472657373 // "adminAddress"
 	frame_dig -1 // adminAddress: Address
+	app_global_put
+
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:61
+	// this.injectorAddress.value = injectorAddress
+	byte 0x696e6a6563746f7241646472657373 // "injectorAddress"
+	frame_dig -2 // injectorAddress: Address
 	app_global_put
 	retsub
 
@@ -73,7 +89,7 @@ createApplication:
 initApplication:
 	proto 3 0
 
-	// contracts/InjectedRewardsPool.algo.ts:65
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:69
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -83,37 +99,37 @@ initApplication:
 	// Only admin can init application
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:67
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:71
 	// this.stakedAssetId.value = stakedAsset
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	frame_dig -1 // stakedAsset: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:68
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:72
 	// this.rewardAssetId.value = rewardAssetId
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	frame_dig -2 // rewardAssetId: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:69
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:73
 	// this.totalStaked.value = 0
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:70
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:74
 	// this.minStakePeriodForRewards.value = minStakePeriodForRewards
 	byte 0x6d696e5374616b65506572696f64466f7252657761726473 // "minStakePeriodForRewards"
 	frame_dig -3 // minStakePeriodForRewards: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:71
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:75
 	// this.lastRewardInjectionTime.value = 0
 	byte 0x6c617374526577617264496e6a656374696f6e54696d65 // "lastRewardInjectionTime"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:72
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:76
 	// this.freeze.value = false
 	byte 0x667265657a65 // "freeze"
 	int 0
@@ -123,25 +139,25 @@ initApplication:
 	setbit
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:73
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:77
 	// this.injectedASARewards.value = 0
 	byte 0x696e6a656374656441534152657761726473 // "injectedASARewards"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:74
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:78
 	// this.numStakers.value = 0
 	byte 0x6e756d5374616b657273 // "numStakers"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:75
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:79
 	// this.algoInjectedRewards.value = 0
 	byte 0x616c676f496e6a656374656452657761726473 // "algoInjectedRewards"
 	int 0
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:77
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:81
 	// sendAssetTransfer({
 	//       xferAsset: AssetID.fromUint64(stakedAsset),
 	//       assetReceiver: this.app.address,
@@ -151,17 +167,17 @@ initApplication:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:78
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:82
 	// xferAsset: AssetID.fromUint64(stakedAsset)
 	frame_dig -1 // stakedAsset: uint64
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPool.algo.ts:79
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:83
 	// assetReceiver: this.app.address
 	global CurrentApplicationAddress
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPool.algo.ts:80
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:84
 	// assetAmount: 0
 	int 0
 	itxn_field AssetAmount
@@ -189,7 +205,7 @@ initApplication:
 updateMinStakePeriod:
 	proto 1 0
 
-	// contracts/InjectedRewardsPool.algo.ts:86
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:90
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can update min stake period')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -199,7 +215,7 @@ updateMinStakePeriod:
 	// Only admin can update min stake period
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:87
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:91
 	// this.minStakePeriodForRewards.value = minStakePeriodForRewards
 	byte 0x6d696e5374616b65506572696f64466f7252657761726473 // "minStakePeriodForRewards"
 	frame_dig -1 // minStakePeriodForRewards: uint64
@@ -227,7 +243,7 @@ updateMinStakePeriod:
 updateAdminAddress:
 	proto 1 0
 
-	// contracts/InjectedRewardsPool.algo.ts:90
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:94
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -237,10 +253,74 @@ updateAdminAddress:
 	// Only admin can update admin address
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:91
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:95
 	// this.adminAddress.value = adminAddress
 	byte 0x61646d696e41646472657373 // "adminAddress"
 	frame_dig -1 // adminAddress: Address
+	app_global_put
+	retsub
+
+// updateInjectedASARewards(uint64)void
+*abi_route_updateInjectedASARewards:
+	// injectedASARewards: uint64
+	txna ApplicationArgs 1
+	btoi
+
+	// execute updateInjectedASARewards(uint64)void
+	callsub updateInjectedASARewards
+	int 1
+	return
+
+// updateInjectedASARewards(injectedASARewards: uint64): void
+updateInjectedASARewards:
+	proto 1 0
+
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:98
+	// assert(this.txn.sender === this.injectorAddress.value, 'Only admin can update injected rewards')
+	txn Sender
+	byte 0x696e6a6563746f7241646472657373 // "injectorAddress"
+	app_global_get
+	==
+
+	// Only admin can update injected rewards
+	assert
+
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:99
+	// this.injectedASARewards.value = injectedASARewards
+	byte 0x696e6a656374656441534152657761726473 // "injectedASARewards"
+	frame_dig -1 // injectedASARewards: uint64
+	app_global_put
+	retsub
+
+// updateInjectedAlgoRewards(uint64)void
+*abi_route_updateInjectedAlgoRewards:
+	// injectedAlgoRewards: uint64
+	txna ApplicationArgs 1
+	btoi
+
+	// execute updateInjectedAlgoRewards(uint64)void
+	callsub updateInjectedAlgoRewards
+	int 1
+	return
+
+// updateInjectedAlgoRewards(injectedAlgoRewards: uint64): void
+updateInjectedAlgoRewards:
+	proto 1 0
+
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:102
+	// assert(this.txn.sender === this.injectorAddress.value, 'Only admin can update injected rewards')
+	txn Sender
+	byte 0x696e6a6563746f7241646472657373 // "injectorAddress"
+	app_global_get
+	==
+
+	// Only admin can update injected rewards
+	assert
+
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:103
+	// this.algoInjectedRewards.value = injectedAlgoRewards
+	byte 0x616c676f496e6a656374656452657761726473 // "algoInjectedRewards"
+	frame_dig -1 // injectedAlgoRewards: uint64
 	app_global_put
 	retsub
 
@@ -248,7 +328,7 @@ updateAdminAddress:
 costForBoxStorage:
 	proto 1 1
 
-	// contracts/InjectedRewardsPool.algo.ts:98
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:110
 	// return SCBOX_PERBOX + totalNumBytes * SCBOX_PERBYTE
 	int 2500
 	frame_dig -1 // totalNumBytes: uint64
@@ -277,13 +357,13 @@ getMBRForPoolCreation:
 	byte 0x
 	dup
 
-	// contracts/InjectedRewardsPool.algo.ts:102
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:114
 	// nonAlgoRewardMBR = 0
 	int 0
 	frame_bury 0 // nonAlgoRewardMBR: uint64
 
 	// *if0_condition
-	// contracts/InjectedRewardsPool.algo.ts:103
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:115
 	// this.rewardAssetId.value !== 0
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
@@ -292,7 +372,7 @@ getMBRForPoolCreation:
 	bz *if0_end
 
 	// *if0_consequent
-	// contracts/InjectedRewardsPool.algo.ts:104
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:116
 	// nonAlgoRewardMBR += ASSET_HOLDING_FEE
 	frame_dig 0 // nonAlgoRewardMBR: uint64
 	int 100000
@@ -300,7 +380,7 @@ getMBRForPoolCreation:
 	frame_bury 0 // nonAlgoRewardMBR: uint64
 
 *if0_end:
-	// contracts/InjectedRewardsPool.algo.ts:106
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:118
 	// mbr = ALGORAND_ACCOUNT_MIN_BALANCE +
 	//       nonAlgoRewardMBR +
 	//       this.costForBoxStorage(7 + len<StakeInfo>() * MAX_STAKERS_PER_POOL) +
@@ -316,7 +396,7 @@ getMBRForPoolCreation:
 	+
 	frame_bury 1 // mbr: uint64
 
-	// contracts/InjectedRewardsPool.algo.ts:111
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:123
 	// return {
 	//       mbrPayment: mbr
 	//     }
@@ -357,7 +437,7 @@ initStorage:
 	byte 0x
 	dup
 
-	// contracts/InjectedRewardsPool.algo.ts:117
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:129
 	// assert(!this.stakers.exists, 'staking pool already initialized')
 	byte 0x7374616b657273 // "stakers"
 	box_len
@@ -368,7 +448,7 @@ initStorage:
 	// staking pool already initialized
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:118
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:130
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can init storage')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -378,13 +458,13 @@ initStorage:
 	// Only admin can init storage
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:120
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:132
 	// nonAlgoRewardMBR = 0
 	int 0
 	frame_bury 0 // nonAlgoRewardMBR: uint64
 
 	// *if1_condition
-	// contracts/InjectedRewardsPool.algo.ts:121
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:133
 	// this.rewardAssetId.value !== 0
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
@@ -393,7 +473,7 @@ initStorage:
 	bz *if1_end
 
 	// *if1_consequent
-	// contracts/InjectedRewardsPool.algo.ts:122
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:134
 	// nonAlgoRewardMBR += ASSET_HOLDING_FEE
 	frame_dig 0 // nonAlgoRewardMBR: uint64
 	int 100000
@@ -401,7 +481,7 @@ initStorage:
 	frame_bury 0 // nonAlgoRewardMBR: uint64
 
 *if1_end:
-	// contracts/InjectedRewardsPool.algo.ts:124
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:136
 	// poolMBR = ALGORAND_ACCOUNT_MIN_BALANCE +
 	//       nonAlgoRewardMBR +
 	//       this.costForBoxStorage(7 + len<StakeInfo>() * MAX_STAKERS_PER_POOL) +
@@ -417,7 +497,7 @@ initStorage:
 	+
 	frame_bury 1 // poolMBR: uint64
 
-	// contracts/InjectedRewardsPool.algo.ts:130
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:142
 	// verifyPayTxn(mbrPayment, { receiver: this.app.address, amount: poolMBR })
 	// verify receiver
 	frame_dig -1 // mbrPayment: PayTxn
@@ -437,21 +517,21 @@ initStorage:
 	// transaction verification failed: {"txn":"mbrPayment","field":"amount","expected":"poolMBR"}
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:131
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:143
 	// this.stakers.create()
 	byte 0x7374616b657273 // "stakers"
 	int 22000
 	box_create
 	pop
 
-	// contracts/InjectedRewardsPool.algo.ts:132
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:144
 	// this.minimumBalance.value = poolMBR
 	byte 0x6d696e696d756d42616c616e6365 // "minimumBalance"
 	frame_dig 1 // poolMBR: uint64
 	app_global_put
 
 	// *if2_condition
-	// contracts/InjectedRewardsPool.algo.ts:134
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:146
 	// nonAlgoRewardMBR > 0
 	frame_dig 0 // nonAlgoRewardMBR: uint64
 	int 0
@@ -459,7 +539,7 @@ initStorage:
 	bz *if2_end
 
 	// *if2_consequent
-	// contracts/InjectedRewardsPool.algo.ts:136
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:148
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
 	//         assetReceiver: this.app.address,
@@ -469,18 +549,18 @@ initStorage:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:137
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:149
 	// xferAsset: AssetID.fromUint64(this.rewardAssetId.value)
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPool.algo.ts:138
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:150
 	// assetReceiver: this.app.address
 	global CurrentApplicationAddress
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPool.algo.ts:139
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:151
 	// assetAmount: 0
 	int 0
 	itxn_field AssetAmount
@@ -526,19 +606,19 @@ initStorage:
 injectRewards:
 	proto 3 0
 
-	// contracts/InjectedRewardsPool.algo.ts:147
-	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards')
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:159
+	// assert(this.txn.sender === this.injectorAddress.value, 'Only injector can inject rewards')
 	txn Sender
-	byte 0x61646d696e41646472657373 // "adminAddress"
+	byte 0x696e6a6563746f7241646472657373 // "injectorAddress"
 	app_global_get
 	==
 
-	// Only admin can inject rewards
+	// Only injector can inject rewards
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:149
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:161
 	// verifyAssetTransferTxn(rewardTxn, {
-	//       sender: this.adminAddress.value,
+	//       sender: this.injectorAddress.value,
 	//       assetReceiver: this.app.address,
 	//       xferAsset: AssetID.fromUint64(rewardAssetId),
 	//       assetAmount: quantity,
@@ -546,11 +626,11 @@ injectRewards:
 	// verify sender
 	frame_dig -1 // rewardTxn: AssetTransferTxn
 	gtxns Sender
-	byte 0x61646d696e41646472657373 // "adminAddress"
+	byte 0x696e6a6563746f7241646472657373 // "injectorAddress"
 	app_global_get
 	==
 
-	// transaction verification failed: {"txn":"rewardTxn","field":"sender","expected":"this.adminAddress.value"}
+	// transaction verification failed: {"txn":"rewardTxn","field":"sender","expected":"this.injectorAddress.value"}
 	assert
 
 	// verify assetReceiver
@@ -580,7 +660,7 @@ injectRewards:
 	// transaction verification failed: {"txn":"rewardTxn","field":"assetAmount","expected":"quantity"}
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:155
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:167
 	// this.injectedASARewards.value += quantity
 	byte 0x696e6a656374656441534152657761726473 // "injectedASARewards"
 	app_global_get
@@ -590,7 +670,7 @@ injectRewards:
 	swap
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:156
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:168
 	// this.lastRewardInjectionTime.value = globals.latestTimestamp
 	byte 0x6c617374526577617264496e6a656374696f6e54696d65 // "lastRewardInjectionTime"
 	global LatestTimestamp
@@ -624,17 +704,17 @@ injectRewards:
 injectAlgoRewards:
 	proto 2 0
 
-	// contracts/InjectedRewardsPool.algo.ts:160
-	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can inject rewards')
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:172
+	// assert(this.txn.sender === this.injectorAddress.value, 'Only admin can inject rewards')
 	txn Sender
-	byte 0x61646d696e41646472657373 // "adminAddress"
+	byte 0x696e6a6563746f7241646472657373 // "injectorAddress"
 	app_global_get
 	==
 
 	// Only admin can inject rewards
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:162
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:174
 	// verifyPayTxn(payTxn, {
 	//       receiver: this.app.address,
 	//       amount: quantity,
@@ -657,7 +737,7 @@ injectAlgoRewards:
 	// transaction verification failed: {"txn":"payTxn","field":"amount","expected":"quantity"}
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:167
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:179
 	// this.algoInjectedRewards.value += quantity
 	byte 0x616c676f496e6a656374656452657761726473 // "algoInjectedRewards"
 	app_global_get
@@ -667,7 +747,7 @@ injectAlgoRewards:
 	swap
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:168
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:180
 	// this.lastRewardInjectionTime.value = globals.latestTimestamp
 	byte 0x6c617374526577617264496e6a656374696f6e54696d65 // "lastRewardInjectionTime"
 	global LatestTimestamp
@@ -685,7 +765,7 @@ injectAlgoRewards:
 deleteApplication:
 	proto 0 0
 
-	// contracts/InjectedRewardsPool.algo.ts:173
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:185
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -727,12 +807,12 @@ stake:
 	byte 0x
 	dupn 3
 
-	// contracts/InjectedRewardsPool.algo.ts:188
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:200
 	// currentTimeStamp = globals.latestTimestamp
 	global LatestTimestamp
 	frame_bury 0 // currentTimeStamp: uint64
 
-	// contracts/InjectedRewardsPool.algo.ts:189
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:201
 	// assert(quantity > 0, 'Invalid quantity')
 	frame_dig -2 // quantity: uint64
 	int 0
@@ -742,7 +822,7 @@ stake:
 	assert
 
 	// *if3_condition
-	// contracts/InjectedRewardsPool.algo.ts:190
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:202
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -750,7 +830,7 @@ stake:
 	bz *if3_end
 
 	// *if3_consequent
-	// contracts/InjectedRewardsPool.algo.ts:191
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:203
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -766,7 +846,7 @@ stake:
 	itxn_submit
 
 *if3_end:
-	// contracts/InjectedRewardsPool.algo.ts:193
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:205
 	// verifyAssetTransferTxn(stakeTxn, {
 	//       sender: this.txn.sender,
 	//       assetReceiver: this.app.address,
@@ -810,13 +890,13 @@ stake:
 	// transaction verification failed: {"txn":"stakeTxn","field":"assetAmount","expected":"quantity"}
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:199
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:211
 	// actionComplete: boolean = false
 	int 0
 	frame_bury 1 // actionComplete: boolean
 
 	// *if4_condition
-	// contracts/InjectedRewardsPool.algo.ts:200
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:212
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -824,7 +904,7 @@ stake:
 	bz *if4_end
 
 	// *if4_consequent
-	// contracts/InjectedRewardsPool.algo.ts:201
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:213
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -840,13 +920,13 @@ stake:
 	itxn_submit
 
 *if4_end:
-	// contracts/InjectedRewardsPool.algo.ts:203
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:215
 	// for (let i = 0; i < this.stakers.value.length; i += 1)
 	int 0
 	frame_bury 2 // i: uint64
 
 *for_0:
-	// contracts/InjectedRewardsPool.algo.ts:203
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:215
 	// i < this.stakers.value.length
 	frame_dig 2 // i: uint64
 	int 250
@@ -854,7 +934,7 @@ stake:
 	bz *for_0_end
 
 	// *if5_condition
-	// contracts/InjectedRewardsPool.algo.ts:204
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:216
 	// actionComplete
 	frame_dig 1 // actionComplete: boolean
 	bz *if5_end
@@ -864,7 +944,7 @@ stake:
 
 *if5_end:
 	// *if6_condition
-	// contracts/InjectedRewardsPool.algo.ts:206
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:218
 	// this.stakers.value[i].account === this.txn.sender
 	frame_dig 2 // i: uint64
 	int 88
@@ -881,7 +961,7 @@ stake:
 
 	// *if6_consequent
 	// *if7_condition
-	// contracts/InjectedRewardsPool.algo.ts:209
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:221
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -889,7 +969,7 @@ stake:
 	bz *if7_end
 
 	// *if7_consequent
-	// contracts/InjectedRewardsPool.algo.ts:210
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:222
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -905,7 +985,7 @@ stake:
 	itxn_submit
 
 *if7_end:
-	// contracts/InjectedRewardsPool.algo.ts:213
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:225
 	// staker = clone(this.stakers.value[i])
 	frame_dig 2 // i: uint64
 	int 88
@@ -916,7 +996,7 @@ stake:
 	box_extract
 	frame_bury 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:214
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:226
 	// staker.stake += stakeTxn.assetAmount
 	frame_dig 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 32 // headOffset
@@ -931,7 +1011,7 @@ stake:
 	frame_bury 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 	// *if8_condition
-	// contracts/InjectedRewardsPool.algo.ts:216
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:228
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -939,7 +1019,7 @@ stake:
 	bz *if8_end
 
 	// *if8_consequent
-	// contracts/InjectedRewardsPool.algo.ts:217
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:229
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -955,14 +1035,14 @@ stake:
 	itxn_submit
 
 *if8_end:
-	// contracts/InjectedRewardsPool.algo.ts:219
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:231
 	// staker.stakeDuration = 0
 	frame_dig 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	byte 0x0000000000000000
 	replace2 40
 	frame_bury 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:220
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:232
 	// staker.stakeStartTime = currentTimeStamp
 	frame_dig 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 48 // headOffset
@@ -972,7 +1052,7 @@ stake:
 	frame_bury 3 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 	// *if9_condition
-	// contracts/InjectedRewardsPool.algo.ts:221
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:233
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -980,7 +1060,7 @@ stake:
 	bz *if9_end
 
 	// *if9_consequent
-	// contracts/InjectedRewardsPool.algo.ts:222
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:234
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -996,7 +1076,7 @@ stake:
 	itxn_submit
 
 *if9_end:
-	// contracts/InjectedRewardsPool.algo.ts:224
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:236
 	// this.stakers.value[i] = staker
 	frame_dig 2 // i: uint64
 	int 88
@@ -1007,7 +1087,7 @@ stake:
 	box_replace
 
 	// *if10_condition
-	// contracts/InjectedRewardsPool.algo.ts:225
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:237
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1015,7 +1095,7 @@ stake:
 	bz *if10_end
 
 	// *if10_consequent
-	// contracts/InjectedRewardsPool.algo.ts:226
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:238
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1031,7 +1111,7 @@ stake:
 	itxn_submit
 
 *if10_end:
-	// contracts/InjectedRewardsPool.algo.ts:228
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:240
 	// this.totalStaked.value += stakeTxn.assetAmount
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	app_global_get
@@ -1042,14 +1122,14 @@ stake:
 	swap
 	app_global_put
 
-	// contracts/InjectedRewardsPool.algo.ts:229
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:241
 	// actionComplete = true
 	int 1
 	frame_bury 1 // actionComplete: boolean
 	b *if6_end
 
 *if6_elseif1_condition:
-	// contracts/InjectedRewardsPool.algo.ts:231
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:243
 	// this.stakers.value[i].account === globals.zeroAddress
 	frame_dig 2 // i: uint64
 	int 88
@@ -1066,7 +1146,7 @@ stake:
 
 	// *if6_elseif1_consequent
 	// *if11_condition
-	// contracts/InjectedRewardsPool.algo.ts:232
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:244
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1074,7 +1154,7 @@ stake:
 	bz *if11_end
 
 	// *if11_consequent
-	// contracts/InjectedRewardsPool.algo.ts:233
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:245
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1090,7 +1170,7 @@ stake:
 	itxn_submit
 
 *if11_end:
-	// contracts/InjectedRewardsPool.algo.ts:235
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:247
 	// this.totalStaked.value = this.totalStaked.value + stakeTxn.assetAmount
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	dup
@@ -1101,7 +1181,7 @@ stake:
 	app_global_put
 
 	// *if12_condition
-	// contracts/InjectedRewardsPool.algo.ts:236
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:248
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1109,7 +1189,7 @@ stake:
 	bz *if12_end
 
 	// *if12_consequent
-	// contracts/InjectedRewardsPool.algo.ts:237
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:249
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1125,7 +1205,7 @@ stake:
 	itxn_submit
 
 *if12_end:
-	// contracts/InjectedRewardsPool.algo.ts:239
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:251
 	// this.stakers.value[i] = {
 	//           account: this.txn.sender,
 	//           stake: stakeTxn.assetAmount,
@@ -1163,7 +1243,7 @@ stake:
 	box_replace
 
 	// *if13_condition
-	// contracts/InjectedRewardsPool.algo.ts:249
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:261
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1171,7 +1251,7 @@ stake:
 	bz *if13_end
 
 	// *if13_consequent
-	// contracts/InjectedRewardsPool.algo.ts:250
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:262
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1187,7 +1267,7 @@ stake:
 	itxn_submit
 
 *if13_end:
-	// contracts/InjectedRewardsPool.algo.ts:252
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:264
 	// this.numStakers.value = this.numStakers.value + 1
 	byte 0x6e756d5374616b657273 // "numStakers"
 	dup
@@ -1197,7 +1277,7 @@ stake:
 	app_global_put
 
 	// *if14_condition
-	// contracts/InjectedRewardsPool.algo.ts:253
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:265
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1205,7 +1285,7 @@ stake:
 	bz *if14_end
 
 	// *if14_consequent
-	// contracts/InjectedRewardsPool.algo.ts:254
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:266
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1221,14 +1301,14 @@ stake:
 	itxn_submit
 
 *if14_end:
-	// contracts/InjectedRewardsPool.algo.ts:256
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:268
 	// actionComplete = true
 	int 1
 	frame_bury 1 // actionComplete: boolean
 
 *if6_end:
 	// *if15_condition
-	// contracts/InjectedRewardsPool.algo.ts:259
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:271
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1236,7 +1316,7 @@ stake:
 	bz *if15_end
 
 	// *if15_consequent
-	// contracts/InjectedRewardsPool.algo.ts:260
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:272
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1254,7 +1334,7 @@ stake:
 *if15_end:
 
 *for_0_continue:
-	// contracts/InjectedRewardsPool.algo.ts:203
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:215
 	// i += 1
 	frame_dig 2 // i: uint64
 	int 1
@@ -1263,7 +1343,7 @@ stake:
 	b *for_0
 
 *for_0_end:
-	// contracts/InjectedRewardsPool.algo.ts:263
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:275
 	// assert(actionComplete, 'Stake  failed')
 	frame_dig 1 // actionComplete: boolean
 
@@ -1286,20 +1366,20 @@ accrueRewards:
 	byte 0x
 	dupn 9
 
-	// contracts/InjectedRewardsPool.algo.ts:269
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:281
 	// algoRewards = this.algoInjectedRewards.value
 	byte 0x616c676f496e6a656374656452657761726473 // "algoInjectedRewards"
 	app_global_get
 	frame_bury 0 // algoRewards: uint64
 
-	// contracts/InjectedRewardsPool.algo.ts:271
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:283
 	// additionalASARewards = this.injectedASARewards.value
 	byte 0x696e6a656374656441534152657761726473 // "injectedASARewards"
 	app_global_get
 	frame_bury 1 // additionalASARewards: uint64
 
 	// *if16_condition
-	// contracts/InjectedRewardsPool.algo.ts:272
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:284
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1307,7 +1387,7 @@ accrueRewards:
 	bz *if16_end
 
 	// *if16_consequent
-	// contracts/InjectedRewardsPool.algo.ts:273
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:285
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1323,18 +1403,18 @@ accrueRewards:
 	itxn_submit
 
 *if16_end:
-	// contracts/InjectedRewardsPool.algo.ts:275
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:287
 	// totalViableStake = 0
 	int 0
 	frame_bury 2 // totalViableStake: uint64
 
-	// contracts/InjectedRewardsPool.algo.ts:276
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:288
 	// for (let i = 0; i < this.numStakers.value; i += 1)
 	int 0
 	frame_bury 3 // i: uint64
 
 *for_1:
-	// contracts/InjectedRewardsPool.algo.ts:276
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:288
 	// i < this.numStakers.value
 	frame_dig 3 // i: uint64
 	byte 0x6e756d5374616b657273 // "numStakers"
@@ -1343,7 +1423,7 @@ accrueRewards:
 	bz *for_1_end
 
 	// *if17_condition
-	// contracts/InjectedRewardsPool.algo.ts:277
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:289
 	// this.stakers.value[i].stake > 0
 	frame_dig 3 // i: uint64
 	int 88
@@ -1361,7 +1441,7 @@ accrueRewards:
 
 	// *if17_consequent
 	// *if18_condition
-	// contracts/InjectedRewardsPool.algo.ts:278
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:290
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1369,7 +1449,7 @@ accrueRewards:
 	bz *if18_end
 
 	// *if18_consequent
-	// contracts/InjectedRewardsPool.algo.ts:279
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:291
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1385,7 +1465,7 @@ accrueRewards:
 	itxn_submit
 
 *if18_end:
-	// contracts/InjectedRewardsPool.algo.ts:281
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:293
 	// this.stakers.value[i].stakeDuration = globals.latestTimestamp - this.stakers.value[i].stakeStartTime
 	frame_dig 3 // i: uint64
 	int 88
@@ -1410,7 +1490,7 @@ accrueRewards:
 	box_replace
 
 	// *if19_condition
-	// contracts/InjectedRewardsPool.algo.ts:283
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:295
 	// this.stakers.value[i].stakeDuration >= this.minStakePeriodForRewards.value
 	frame_dig 3 // i: uint64
 	int 88
@@ -1428,7 +1508,7 @@ accrueRewards:
 	bz *if19_end
 
 	// *if19_consequent
-	// contracts/InjectedRewardsPool.algo.ts:284
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:296
 	// totalViableStake += this.stakers.value[i].stake
 	frame_dig 2 // totalViableStake: uint64
 	frame_dig 3 // i: uint64
@@ -1449,7 +1529,7 @@ accrueRewards:
 *if17_end:
 
 *for_1_continue:
-	// contracts/InjectedRewardsPool.algo.ts:276
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:288
 	// i += 1
 	frame_dig 3 // i: uint64
 	int 1
@@ -1458,13 +1538,13 @@ accrueRewards:
 	b *for_1
 
 *for_1_end:
-	// contracts/InjectedRewardsPool.algo.ts:289
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:301
 	// for (let i = 0; i < this.numStakers.value; i += 1)
 	int 0
 	frame_bury 4 // i: uint64
 
 *for_2:
-	// contracts/InjectedRewardsPool.algo.ts:289
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:301
 	// i < this.numStakers.value
 	frame_dig 4 // i: uint64
 	byte 0x6e756d5374616b657273 // "numStakers"
@@ -1473,7 +1553,7 @@ accrueRewards:
 	bz *for_2_end
 
 	// *if20_condition
-	// contracts/InjectedRewardsPool.algo.ts:290
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:302
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1481,7 +1561,7 @@ accrueRewards:
 	bz *if20_end
 
 	// *if20_consequent
-	// contracts/InjectedRewardsPool.algo.ts:291
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:303
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1497,7 +1577,7 @@ accrueRewards:
 	itxn_submit
 
 *if20_end:
-	// contracts/InjectedRewardsPool.algo.ts:293
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:305
 	// stake = this.stakers.value[i].stake
 	frame_dig 4 // i: uint64
 	int 88
@@ -1512,7 +1592,7 @@ accrueRewards:
 	frame_bury 5 // stake: uint64
 
 	// *if21_condition
-	// contracts/InjectedRewardsPool.algo.ts:295
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:307
 	// stake > 0
 	frame_dig 5 // stake: uint64
 	int 0
@@ -1520,7 +1600,7 @@ accrueRewards:
 	bz *if21_end
 
 	// *if21_consequent
-	// contracts/InjectedRewardsPool.algo.ts:296
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:308
 	// staker = clone(this.stakers.value[i])
 	frame_dig 4 // i: uint64
 	int 88
@@ -1532,7 +1612,7 @@ accrueRewards:
 	frame_bury 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 	// *if22_condition
-	// contracts/InjectedRewardsPool.algo.ts:298
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:310
 	// staker.stakeDuration > this.minStakePeriodForRewards.value
 	frame_dig 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 40 8
@@ -1543,7 +1623,7 @@ accrueRewards:
 	bz *if22_end
 
 	// *if22_consequent
-	// contracts/InjectedRewardsPool.algo.ts:302
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:313
 	// stakerShare = wideRatio([stake, PRECISION], [totalViableStake])
 	frame_dig 5 // stake: uint64
 	int 1000000000000000
@@ -1560,7 +1640,7 @@ accrueRewards:
 	assert
 	frame_bury 7 // stakerShare: uint64
 
-	// contracts/InjectedRewardsPool.algo.ts:303
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:314
 	// staker.userSharePercentage = stakerShare
 	frame_dig 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 80 // headOffset
@@ -1570,15 +1650,16 @@ accrueRewards:
 	frame_bury 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 	// *if23_condition
-	// contracts/InjectedRewardsPool.algo.ts:305
-	// algoRewards > 0
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:316
+	// algoRewards > this.numStakers.value
 	frame_dig 0 // algoRewards: uint64
-	int 0
+	byte 0x6e756d5374616b657273 // "numStakers"
+	app_global_get
 	>
 	bz *if23_end
 
 	// *if23_consequent
-	// contracts/InjectedRewardsPool.algo.ts:306
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:317
 	// algoRewardRate = wideRatio([algoRewards, stakerShare], [PRECISION])
 	frame_dig 0 // algoRewards: uint64
 	frame_dig 7 // stakerShare: uint64
@@ -1596,7 +1677,7 @@ accrueRewards:
 	frame_bury 8 // algoRewardRate: uint64
 
 	// *if24_condition
-	// contracts/InjectedRewardsPool.algo.ts:307
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:318
 	// algoRewardRate === 0
 	frame_dig 8 // algoRewardRate: uint64
 	int 0
@@ -1604,13 +1685,13 @@ accrueRewards:
 	bz *if24_end
 
 	// *if24_consequent
-	// contracts/InjectedRewardsPool.algo.ts:308
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:319
 	// algoRewardRate = 1
 	int 1
 	frame_bury 8 // algoRewardRate: uint64
 
 *if24_end:
-	// contracts/InjectedRewardsPool.algo.ts:310
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:321
 	// staker.algoAccuredRewards = staker.algoAccuredRewards + algoRewardRate
 	frame_dig 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 56 // headOffset
@@ -1623,7 +1704,7 @@ accrueRewards:
 	replace3
 	frame_bury 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:311
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:322
 	// this.algoInjectedRewards.value = this.algoInjectedRewards.value - algoRewardRate
 	byte 0x616c676f496e6a656374656452657761726473 // "algoInjectedRewards"
 	dup
@@ -1633,7 +1714,7 @@ accrueRewards:
 	app_global_put
 
 	// *if25_condition
-	// contracts/InjectedRewardsPool.algo.ts:313
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:324
 	// this.stakedAssetId.value === 0
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
@@ -1642,7 +1723,7 @@ accrueRewards:
 	bz *if25_end
 
 	// *if25_consequent
-	// contracts/InjectedRewardsPool.algo.ts:314
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:325
 	// staker.stake = staker.stake + algoRewardRate
 	frame_dig 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 32 // headOffset
@@ -1655,7 +1736,7 @@ accrueRewards:
 	replace3
 	frame_bury 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:315
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:326
 	// this.totalStaked.value = this.totalStaked.value + algoRewardRate
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	dup
@@ -1668,7 +1749,7 @@ accrueRewards:
 
 *if23_end:
 	// *if26_condition
-	// contracts/InjectedRewardsPool.algo.ts:319
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:330
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1676,7 +1757,7 @@ accrueRewards:
 	bz *if26_end
 
 	// *if26_consequent
-	// contracts/InjectedRewardsPool.algo.ts:320
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:331
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1693,15 +1774,16 @@ accrueRewards:
 
 *if26_end:
 	// *if27_condition
-	// contracts/InjectedRewardsPool.algo.ts:323
-	// additionalASARewards > 0
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:334
+	// additionalASARewards > this.numStakers.value
 	frame_dig 1 // additionalASARewards: uint64
-	int 0
+	byte 0x6e756d5374616b657273 // "numStakers"
+	app_global_get
 	>
 	bz *if27_end
 
 	// *if27_consequent
-	// contracts/InjectedRewardsPool.algo.ts:324
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:335
 	// rewardRate = wideRatio([additionalASARewards, stakerShare], [PRECISION])
 	frame_dig 1 // additionalASARewards: uint64
 	frame_dig 7 // stakerShare: uint64
@@ -1719,7 +1801,7 @@ accrueRewards:
 	frame_bury 9 // rewardRate: uint64
 
 	// *if28_condition
-	// contracts/InjectedRewardsPool.algo.ts:325
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:336
 	// rewardRate === 0
 	frame_dig 9 // rewardRate: uint64
 	int 0
@@ -1727,13 +1809,13 @@ accrueRewards:
 	bz *if28_end
 
 	// *if28_consequent
-	// contracts/InjectedRewardsPool.algo.ts:326
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:337
 	// rewardRate = 1
 	int 1
 	frame_bury 9 // rewardRate: uint64
 
 *if28_end:
-	// contracts/InjectedRewardsPool.algo.ts:330
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:341
 	// this.injectedASARewards.value = this.injectedASARewards.value - rewardRate
 	byte 0x696e6a656374656441534152657761726473 // "injectedASARewards"
 	dup
@@ -1743,7 +1825,7 @@ accrueRewards:
 	app_global_put
 
 	// *if29_condition
-	// contracts/InjectedRewardsPool.algo.ts:331
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:342
 	// this.rewardAssetId.value === this.stakedAssetId.value
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
@@ -1753,7 +1835,7 @@ accrueRewards:
 	bz *if29_else
 
 	// *if29_consequent
-	// contracts/InjectedRewardsPool.algo.ts:333
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:344
 	// staker.stake = staker.stake + rewardRate
 	frame_dig 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 32 // headOffset
@@ -1766,7 +1848,7 @@ accrueRewards:
 	replace3
 	frame_bury 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:334
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:345
 	// this.totalStaked.value = this.totalStaked.value + rewardRate
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	dup
@@ -1777,7 +1859,7 @@ accrueRewards:
 	b *if29_end
 
 *if29_else:
-	// contracts/InjectedRewardsPool.algo.ts:336
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:347
 	// staker.accruedASARewards = staker.accruedASARewards + rewardRate
 	frame_dig 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 72 // headOffset
@@ -1795,7 +1877,7 @@ accrueRewards:
 *if27_end:
 
 *if22_end:
-	// contracts/InjectedRewardsPool.algo.ts:340
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:351
 	// staker.lastUpdateTime = globals.latestTimestamp
 	frame_dig 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 64 // headOffset
@@ -1804,7 +1886,7 @@ accrueRewards:
 	replace3
 	frame_bury 6 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:341
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:352
 	// this.stakers.value[i] = staker
 	frame_dig 4 // i: uint64
 	int 88
@@ -1817,7 +1899,7 @@ accrueRewards:
 *if21_end:
 
 *for_2_continue:
-	// contracts/InjectedRewardsPool.algo.ts:289
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:301
 	// i += 1
 	frame_dig 4 // i: uint64
 	int 1
@@ -1835,13 +1917,13 @@ getStaker:
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
 
-	// contracts/InjectedRewardsPool.algo.ts:347
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:358
 	// for (let i = 0; i < this.numStakers.value; i += 1)
 	int 0
 	frame_bury 0 // i: uint64
 
 *for_3:
-	// contracts/InjectedRewardsPool.algo.ts:347
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:358
 	// i < this.numStakers.value
 	frame_dig 0 // i: uint64
 	byte 0x6e756d5374616b657273 // "numStakers"
@@ -1850,7 +1932,7 @@ getStaker:
 	bz *for_3_end
 
 	// *if30_condition
-	// contracts/InjectedRewardsPool.algo.ts:348
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:359
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1858,7 +1940,7 @@ getStaker:
 	bz *if30_end
 
 	// *if30_consequent
-	// contracts/InjectedRewardsPool.algo.ts:349
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:360
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1875,7 +1957,7 @@ getStaker:
 
 *if30_end:
 	// *if31_condition
-	// contracts/InjectedRewardsPool.algo.ts:351
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:362
 	// this.stakers.value[i].account === address
 	frame_dig 0 // i: uint64
 	int 88
@@ -1891,7 +1973,7 @@ getStaker:
 	bz *if31_end
 
 	// *if31_consequent
-	// contracts/InjectedRewardsPool.algo.ts:352
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:363
 	// return clone(this.stakers.value[i]);
 	frame_dig 0 // i: uint64
 	int 88
@@ -1905,7 +1987,7 @@ getStaker:
 *if31_end:
 
 *for_3_continue:
-	// contracts/InjectedRewardsPool.algo.ts:347
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:358
 	// i += 1
 	frame_dig 0 // i: uint64
 	int 1
@@ -1914,7 +1996,7 @@ getStaker:
 	b *for_3
 
 *for_3_end:
-	// contracts/InjectedRewardsPool.algo.ts:355
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:366
 	// return {
 	//       account: globals.zeroAddress,
 	//       stake: 0,
@@ -1961,7 +2043,7 @@ claimRewards:
 	byte 0x
 
 	// *if32_condition
-	// contracts/InjectedRewardsPool.algo.ts:368
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:379
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -1969,7 +2051,7 @@ claimRewards:
 	bz *if32_end
 
 	// *if32_consequent
-	// contracts/InjectedRewardsPool.algo.ts:369
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:380
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -1985,14 +2067,14 @@ claimRewards:
 	itxn_submit
 
 *if32_end:
-	// contracts/InjectedRewardsPool.algo.ts:371
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:382
 	// staker = this.getStaker(this.txn.sender)
 	txn Sender
 	callsub getStaker
 	frame_bury 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 	// *if33_condition
-	// contracts/InjectedRewardsPool.algo.ts:374
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:385
 	// staker.algoAccuredRewards > 0
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 56 8
@@ -2002,7 +2084,7 @@ claimRewards:
 	bz *if33_end
 
 	// *if33_consequent
-	// contracts/InjectedRewardsPool.algo.ts:375
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:386
 	// sendPayment({
 	//         amount: staker.algoAccuredRewards,
 	//         receiver: this.txn.sender,
@@ -2013,24 +2095,24 @@ claimRewards:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:376
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:387
 	// amount: staker.algoAccuredRewards
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 56 8
 	btoi
 	itxn_field Amount
 
-	// contracts/InjectedRewardsPool.algo.ts:377
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:388
 	// receiver: this.txn.sender
 	txn Sender
 	itxn_field Receiver
 
-	// contracts/InjectedRewardsPool.algo.ts:378
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:389
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPool.algo.ts:379
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:390
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -2038,7 +2120,7 @@ claimRewards:
 	// Submit inner transaction
 	itxn_submit
 
-	// contracts/InjectedRewardsPool.algo.ts:381
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:392
 	// staker.algoAccuredRewards = 0
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	byte 0x0000000000000000
@@ -2047,7 +2129,7 @@ claimRewards:
 
 *if33_end:
 	// *if34_condition
-	// contracts/InjectedRewardsPool.algo.ts:385
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:396
 	// staker.accruedASARewards > 0
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 72 8
@@ -2057,7 +2139,7 @@ claimRewards:
 	bz *if34_end
 
 	// *if34_consequent
-	// contracts/InjectedRewardsPool.algo.ts:386
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:397
 	// sendAssetTransfer({
 	//         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
 	//         assetReceiver: this.txn.sender,
@@ -2069,30 +2151,30 @@ claimRewards:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:387
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:398
 	// xferAsset: AssetID.fromUint64(this.rewardAssetId.value)
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPool.algo.ts:388
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:399
 	// assetReceiver: this.txn.sender
 	txn Sender
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPool.algo.ts:389
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:400
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPool.algo.ts:390
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:401
 	// assetAmount: staker.accruedASARewards
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 72 8
 	btoi
 	itxn_field AssetAmount
 
-	// contracts/InjectedRewardsPool.algo.ts:391
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:402
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -2100,7 +2182,7 @@ claimRewards:
 	// Submit inner transaction
 	itxn_submit
 
-	// contracts/InjectedRewardsPool.algo.ts:393
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:404
 	// staker.accruedASARewards = 0
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	byte 0x0000000000000000
@@ -2108,7 +2190,7 @@ claimRewards:
 	frame_bury 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 *if34_end:
-	// contracts/InjectedRewardsPool.algo.ts:397
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:408
 	// staker.lastUpdateTime = globals.latestTimestamp
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 64 // headOffset
@@ -2117,7 +2199,7 @@ claimRewards:
 	replace3
 	frame_bury 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:398
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:409
 	// this.setStaker(staker.account, staker)
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	frame_dig 0 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
@@ -2125,7 +2207,7 @@ claimRewards:
 	callsub setStaker
 
 	// *if35_condition
-	// contracts/InjectedRewardsPool.algo.ts:399
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:410
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -2133,7 +2215,7 @@ claimRewards:
 	bz *if35_end
 
 	// *if35_consequent
-	// contracts/InjectedRewardsPool.algo.ts:400
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:411
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -2170,13 +2252,13 @@ unstake:
 	byte 0x
 	dupn 4
 
-	// contracts/InjectedRewardsPool.algo.ts:405
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:416
 	// for (let i = 0; i < this.numStakers.value; i += 1)
 	int 0
 	frame_bury 0 // i: uint64
 
 *for_4:
-	// contracts/InjectedRewardsPool.algo.ts:405
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:416
 	// i < this.numStakers.value
 	frame_dig 0 // i: uint64
 	byte 0x6e756d5374616b657273 // "numStakers"
@@ -2185,7 +2267,7 @@ unstake:
 	bz *for_4_end
 
 	// *if36_condition
-	// contracts/InjectedRewardsPool.algo.ts:406
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:417
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -2193,7 +2275,7 @@ unstake:
 	bz *if36_end
 
 	// *if36_consequent
-	// contracts/InjectedRewardsPool.algo.ts:407
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:418
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -2209,7 +2291,7 @@ unstake:
 	itxn_submit
 
 *if36_end:
-	// contracts/InjectedRewardsPool.algo.ts:409
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:420
 	// staker = clone(this.stakers.value[i])
 	frame_dig 0 // i: uint64
 	int 88
@@ -2221,7 +2303,7 @@ unstake:
 	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 	// *if37_condition
-	// contracts/InjectedRewardsPool.algo.ts:410
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:421
 	// staker.account === this.txn.sender
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 0 32
@@ -2231,7 +2313,7 @@ unstake:
 
 	// *if37_consequent
 	// *if38_condition
-	// contracts/InjectedRewardsPool.algo.ts:412
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:423
 	// staker.stake > 0
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 32 8
@@ -2242,7 +2324,7 @@ unstake:
 
 	// *if38_consequent
 	// *if39_condition
-	// contracts/InjectedRewardsPool.algo.ts:413
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:424
 	// this.stakedAssetId.value === 0
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
@@ -2251,7 +2333,7 @@ unstake:
 	bz *if39_else
 
 	// *if39_consequent
-	// contracts/InjectedRewardsPool.algo.ts:414
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:425
 	// sendPayment({
 	//               amount: quantity === 0 ? staker.stake : quantity,
 	//               receiver: this.txn.sender,
@@ -2262,7 +2344,7 @@ unstake:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:415
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:426
 	// amount: quantity === 0 ? staker.stake : quantity
 	frame_dig -1 // quantity: uint64
 	int 0
@@ -2279,17 +2361,17 @@ unstake:
 *ternary0_end:
 	itxn_field Amount
 
-	// contracts/InjectedRewardsPool.algo.ts:416
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:427
 	// receiver: this.txn.sender
 	txn Sender
 	itxn_field Receiver
 
-	// contracts/InjectedRewardsPool.algo.ts:417
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:428
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPool.algo.ts:418
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:429
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -2299,7 +2381,7 @@ unstake:
 	b *if39_end
 
 *if39_else:
-	// contracts/InjectedRewardsPool.algo.ts:422
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:433
 	// sendAssetTransfer({
 	//               xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
 	//               assetReceiver: this.txn.sender,
@@ -2311,23 +2393,23 @@ unstake:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:423
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:434
 	// xferAsset: AssetID.fromUint64(this.stakedAssetId.value)
 	byte 0x7374616b656441737365744964 // "stakedAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPool.algo.ts:424
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:435
 	// assetReceiver: this.txn.sender
 	txn Sender
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPool.algo.ts:425
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:436
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPool.algo.ts:426
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:437
 	// assetAmount: quantity === 0 ? staker.stake : quantity
 	frame_dig -1 // quantity: uint64
 	int 0
@@ -2344,7 +2426,7 @@ unstake:
 *ternary1_end:
 	itxn_field AssetAmount
 
-	// contracts/InjectedRewardsPool.algo.ts:427
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:438
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -2356,7 +2438,7 @@ unstake:
 
 *if38_end:
 	// *if40_condition
-	// contracts/InjectedRewardsPool.algo.ts:433
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:444
 	// staker.algoAccuredRewards > 0
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 56 8
@@ -2366,7 +2448,7 @@ unstake:
 	bz *if40_end
 
 	// *if40_consequent
-	// contracts/InjectedRewardsPool.algo.ts:434
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:445
 	// sendPayment({
 	//             amount: staker.algoAccuredRewards,
 	//             receiver: this.txn.sender,
@@ -2377,24 +2459,24 @@ unstake:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:435
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:446
 	// amount: staker.algoAccuredRewards
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 56 8
 	btoi
 	itxn_field Amount
 
-	// contracts/InjectedRewardsPool.algo.ts:436
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:447
 	// receiver: this.txn.sender
 	txn Sender
 	itxn_field Receiver
 
-	// contracts/InjectedRewardsPool.algo.ts:437
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:448
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPool.algo.ts:438
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:449
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -2402,7 +2484,7 @@ unstake:
 	// Submit inner transaction
 	itxn_submit
 
-	// contracts/InjectedRewardsPool.algo.ts:440
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:451
 	// staker.algoAccuredRewards = 0
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	byte 0x0000000000000000
@@ -2411,7 +2493,7 @@ unstake:
 
 *if40_end:
 	// *if41_condition
-	// contracts/InjectedRewardsPool.algo.ts:444
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:455
 	// staker.accruedASARewards > 0
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 72 8
@@ -2421,7 +2503,7 @@ unstake:
 	bz *if41_end
 
 	// *if41_consequent
-	// contracts/InjectedRewardsPool.algo.ts:445
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:456
 	// sendAssetTransfer({
 	//             xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
 	//             assetReceiver: this.txn.sender,
@@ -2433,30 +2515,30 @@ unstake:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPool.algo.ts:446
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:457
 	// xferAsset: AssetID.fromUint64(this.rewardAssetId.value)
 	byte 0x72657761726441737365744964 // "rewardAssetId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPool.algo.ts:447
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:458
 	// assetReceiver: this.txn.sender
 	txn Sender
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPool.algo.ts:448
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:459
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPool.algo.ts:449
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:460
 	// assetAmount: staker.accruedASARewards
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 72 8
 	btoi
 	itxn_field AssetAmount
 
-	// contracts/InjectedRewardsPool.algo.ts:450
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:461
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -2464,7 +2546,7 @@ unstake:
 	// Submit inner transaction
 	itxn_submit
 
-	// contracts/InjectedRewardsPool.algo.ts:452
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:463
 	// staker.accruedASARewards = 0
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	byte 0x0000000000000000
@@ -2472,7 +2554,7 @@ unstake:
 	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 *if41_end:
-	// contracts/InjectedRewardsPool.algo.ts:456
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:467
 	// this.totalStaked.value = this.totalStaked.value - (quantity === 0 ? staker.stake : quantity)
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	dup
@@ -2494,7 +2576,7 @@ unstake:
 	app_global_put
 
 	// *if42_condition
-	// contracts/InjectedRewardsPool.algo.ts:458
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:469
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -2502,7 +2584,7 @@ unstake:
 	bz *if42_end
 
 	// *if42_consequent
-	// contracts/InjectedRewardsPool.algo.ts:459
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:470
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -2519,7 +2601,7 @@ unstake:
 
 *if42_end:
 	// *if43_condition
-	// contracts/InjectedRewardsPool.algo.ts:462
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:473
 	// quantity === 0
 	frame_dig -1 // quantity: uint64
 	int 0
@@ -2527,7 +2609,7 @@ unstake:
 	bz *if43_else
 
 	// *if43_consequent
-	// contracts/InjectedRewardsPool.algo.ts:463
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:474
 	// removedStaker: StakeInfo = {
 	//             account: globals.zeroAddress,
 	//             stake: 0,
@@ -2555,14 +2637,14 @@ unstake:
 	concat
 	frame_bury 2 // removedStaker: StakeInfo
 
-	// contracts/InjectedRewardsPool.algo.ts:473
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:484
 	// this.setStaker(staker.account, removedStaker)
 	frame_dig 2 // removedStaker: StakeInfo
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	extract 0 32
 	callsub setStaker
 
-	// contracts/InjectedRewardsPool.algo.ts:475
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:486
 	// lastStaker = this.getStaker(this.stakers.value[this.numStakers.value - 1].account)
 	byte 0x6e756d5374616b657273 // "numStakers"
 	app_global_get
@@ -2579,7 +2661,7 @@ unstake:
 	callsub getStaker
 	frame_bury 3 // lastStaker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:476
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:487
 	// lastStakerIndex = this.getStakerIndex(this.stakers.value[this.numStakers.value - 1].account)
 	byte 0x6e756d5374616b657273 // "numStakers"
 	app_global_get
@@ -2597,7 +2679,7 @@ unstake:
 	frame_bury 4 // lastStakerIndex: uint64
 
 	// *if44_condition
-	// contracts/InjectedRewardsPool.algo.ts:477
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:488
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -2605,7 +2687,7 @@ unstake:
 	bz *if44_end
 
 	// *if44_consequent
-	// contracts/InjectedRewardsPool.algo.ts:478
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:489
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -2621,19 +2703,19 @@ unstake:
 	itxn_submit
 
 *if44_end:
-	// contracts/InjectedRewardsPool.algo.ts:480
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:491
 	// this.setStakerAtIndex(lastStaker, i)
 	frame_dig 0 // i: uint64
 	frame_dig 3 // lastStaker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	callsub setStakerAtIndex
 
-	// contracts/InjectedRewardsPool.algo.ts:482
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:493
 	// this.setStakerAtIndex(removedStaker, lastStakerIndex)
 	frame_dig 4 // lastStakerIndex: uint64
 	frame_dig 2 // removedStaker: StakeInfo
 	callsub setStakerAtIndex
 
-	// contracts/InjectedRewardsPool.algo.ts:483
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:494
 	// this.numStakers.value = this.numStakers.value - 1
 	byte 0x6e756d5374616b657273 // "numStakers"
 	dup
@@ -2644,7 +2726,7 @@ unstake:
 	b *if43_end
 
 *if43_else:
-	// contracts/InjectedRewardsPool.algo.ts:486
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:497
 	// staker.stake = staker.stake - quantity
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 32 // headOffset
@@ -2657,7 +2739,7 @@ unstake:
 	replace3
 	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:487
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:498
 	// staker.accruedASARewards = 0
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	byte 0x0000000000000000
@@ -2665,7 +2747,7 @@ unstake:
 	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
 *if43_end:
-	// contracts/InjectedRewardsPool.algo.ts:489
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:500
 	// staker.lastUpdateTime = globals.latestTimestamp
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	int 64 // headOffset
@@ -2674,7 +2756,7 @@ unstake:
 	replace3
 	frame_bury 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 
-	// contracts/InjectedRewardsPool.algo.ts:490
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:501
 	// this.setStaker(staker.account, staker)
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
 	frame_dig 1 // staker: (address,uint64,uint64,uint64,uint64,uint64,uint64,uint64)
@@ -2684,7 +2766,7 @@ unstake:
 *if37_end:
 
 *for_4_continue:
-	// contracts/InjectedRewardsPool.algo.ts:405
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:416
 	// i += 1
 	frame_dig 0 // i: uint64
 	int 1
@@ -2702,13 +2784,13 @@ getStakerIndex:
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
 
-	// contracts/InjectedRewardsPool.algo.ts:496
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:507
 	// for (let i = 0; i < this.numStakers.value; i += 1)
 	int 0
 	frame_bury 0 // i: uint64
 
 *for_5:
-	// contracts/InjectedRewardsPool.algo.ts:496
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:507
 	// i < this.numStakers.value
 	frame_dig 0 // i: uint64
 	byte 0x6e756d5374616b657273 // "numStakers"
@@ -2717,7 +2799,7 @@ getStakerIndex:
 	bz *for_5_end
 
 	// *if45_condition
-	// contracts/InjectedRewardsPool.algo.ts:497
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:508
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -2725,7 +2807,7 @@ getStakerIndex:
 	bz *if45_end
 
 	// *if45_consequent
-	// contracts/InjectedRewardsPool.algo.ts:498
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:509
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -2742,7 +2824,7 @@ getStakerIndex:
 
 *if45_end:
 	// *if46_condition
-	// contracts/InjectedRewardsPool.algo.ts:500
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:511
 	// this.stakers.value[i].account === address
 	frame_dig 0 // i: uint64
 	int 88
@@ -2758,7 +2840,7 @@ getStakerIndex:
 	bz *if46_end
 
 	// *if46_consequent
-	// contracts/InjectedRewardsPool.algo.ts:501
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:512
 	// return i;
 	frame_dig 0 // i: uint64
 	b *getStakerIndex*return
@@ -2766,7 +2848,7 @@ getStakerIndex:
 *if46_end:
 
 *for_5_continue:
-	// contracts/InjectedRewardsPool.algo.ts:496
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:507
 	// i += 1
 	frame_dig 0 // i: uint64
 	int 1
@@ -2775,7 +2857,7 @@ getStakerIndex:
 	b *for_5
 
 *for_5_end:
-	// contracts/InjectedRewardsPool.algo.ts:504
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:515
 	// return 0;
 	int 0
 
@@ -2791,13 +2873,13 @@ setStaker:
 	// Push empty bytes after the frame pointer to reserve space for local variables
 	byte 0x
 
-	// contracts/InjectedRewardsPool.algo.ts:508
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:519
 	// for (let i = 0; i < this.numStakers.value; i += 1)
 	int 0
 	frame_bury 0 // i: uint64
 
 *for_6:
-	// contracts/InjectedRewardsPool.algo.ts:508
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:519
 	// i < this.numStakers.value
 	frame_dig 0 // i: uint64
 	byte 0x6e756d5374616b657273 // "numStakers"
@@ -2806,7 +2888,7 @@ setStaker:
 	bz *for_6_end
 
 	// *if47_condition
-	// contracts/InjectedRewardsPool.algo.ts:509
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:520
 	// globals.opcodeBudget < 300
 	global OpcodeBudget
 	int 300
@@ -2814,7 +2896,7 @@ setStaker:
 	bz *if47_end
 
 	// *if47_consequent
-	// contracts/InjectedRewardsPool.algo.ts:510
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:521
 	// increaseOpcodeBudget()
 	itxn_begin
 	int appl
@@ -2831,7 +2913,7 @@ setStaker:
 
 *if47_end:
 	// *if48_condition
-	// contracts/InjectedRewardsPool.algo.ts:512
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:523
 	// this.stakers.value[i].account === stakerAccount
 	frame_dig 0 // i: uint64
 	int 88
@@ -2847,7 +2929,7 @@ setStaker:
 	bz *if48_elseif1_condition
 
 	// *if48_consequent
-	// contracts/InjectedRewardsPool.algo.ts:513
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:524
 	// this.stakers.value[i] = staker
 	frame_dig 0 // i: uint64
 	int 88
@@ -2857,13 +2939,13 @@ setStaker:
 	cover 2
 	box_replace
 
-	// contracts/InjectedRewardsPool.algo.ts:514
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:525
 	// return;
 	retsub
 	b *if48_end
 
 *if48_elseif1_condition:
-	// contracts/InjectedRewardsPool.algo.ts:515
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:526
 	// this.stakers.value[i].account === globals.zeroAddress
 	frame_dig 0 // i: uint64
 	int 88
@@ -2879,7 +2961,7 @@ setStaker:
 	bz *if48_end
 
 	// *if48_elseif1_consequent
-	// contracts/InjectedRewardsPool.algo.ts:516
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:527
 	// this.stakers.value[i] = staker
 	frame_dig 0 // i: uint64
 	int 88
@@ -2889,14 +2971,14 @@ setStaker:
 	cover 2
 	box_replace
 
-	// contracts/InjectedRewardsPool.algo.ts:517
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:528
 	// return;
 	retsub
 
 *if48_end:
 
 *for_6_continue:
-	// contracts/InjectedRewardsPool.algo.ts:508
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:519
 	// i += 1
 	frame_dig 0 // i: uint64
 	int 1
@@ -2911,7 +2993,7 @@ setStaker:
 setStakerAtIndex:
 	proto 2 0
 
-	// contracts/InjectedRewardsPool.algo.ts:522
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:533
 	// this.stakers.value[index] = staker
 	frame_dig -2 // index: uint64
 	int 88
@@ -2945,7 +3027,7 @@ setStakerAtIndex:
 setFreeze:
 	proto 1 0
 
-	// contracts/InjectedRewardsPool.algo.ts:526
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:537
 	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can freeze payouts')
 	txn Sender
 	byte 0x61646d696e41646472657373 // "adminAddress"
@@ -2955,7 +3037,7 @@ setFreeze:
 	// Only admin can freeze payouts
 	assert
 
-	// contracts/InjectedRewardsPool.algo.ts:527
+	// contracts/PermissionlessInjectedRewardsPool.algo.ts:538
 	// this.freeze.value = enabled
 	byte 0x667265657a65 // "freeze"
 	frame_dig -1 // enabled: boolean
@@ -2979,7 +3061,7 @@ gas:
 	retsub
 
 *create_NoOp:
-	method "createApplication(address)void"
+	method "createApplication(address,address)void"
 	txna ApplicationArgs 0
 	match *abi_route_createApplication
 
@@ -2990,6 +3072,8 @@ gas:
 	method "initApplication(uint64,uint64,uint64)void"
 	method "updateMinStakePeriod(uint64)void"
 	method "updateAdminAddress(address)void"
+	method "updateInjectedASARewards(uint64)void"
+	method "updateInjectedAlgoRewards(uint64)void"
 	method "getMBRForPoolCreation()(uint64)"
 	method "initStorage(pay)void"
 	method "injectRewards(axfer,uint64,uint64)void"
@@ -3001,7 +3085,7 @@ gas:
 	method "setFreeze(bool)void"
 	method "gas()void"
 	txna ApplicationArgs 0
-	match *abi_route_initApplication *abi_route_updateMinStakePeriod *abi_route_updateAdminAddress *abi_route_getMBRForPoolCreation *abi_route_initStorage *abi_route_injectRewards *abi_route_injectAlgoRewards *abi_route_stake *abi_route_accrueRewards *abi_route_claimRewards *abi_route_unstake *abi_route_setFreeze *abi_route_gas
+	match *abi_route_initApplication *abi_route_updateMinStakePeriod *abi_route_updateAdminAddress *abi_route_updateInjectedASARewards *abi_route_updateInjectedAlgoRewards *abi_route_getMBRForPoolCreation *abi_route_initStorage *abi_route_injectRewards *abi_route_injectAlgoRewards *abi_route_stake *abi_route_accrueRewards *abi_route_claimRewards *abi_route_unstake *abi_route_setFreeze *abi_route_gas
 
 	// this contract does not implement the given ABI method for call NoOp
 	err
