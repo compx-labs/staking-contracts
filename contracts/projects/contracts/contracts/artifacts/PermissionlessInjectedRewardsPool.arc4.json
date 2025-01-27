@@ -30,19 +30,11 @@
           "type": "uint64"
         },
         {
-          "name": "minStakePeriodForRewards",
+          "name": "xUSDFee",
           "type": "uint64"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "updateMinStakePeriod",
-      "args": [
+        },
         {
-          "name": "minStakePeriodForRewards",
+          "name": "xUSDAssetID",
           "type": "uint64"
         }
       ],
@@ -63,6 +55,33 @@
       }
     },
     {
+      "name": "setPoolActive",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "setRewardParams",
+      "args": [
+        {
+          "name": "totalRewards",
+          "type": "uint64"
+        },
+        {
+          "name": "rewardFrequency",
+          "type": "uint64"
+        },
+        {
+          "name": "rewardPerInjection",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "updateInjectedASARewards",
       "args": [
         {
@@ -75,13 +94,68 @@
       }
     },
     {
-      "name": "updateInjectedAlgoRewards",
+      "name": "updateInjectedxUSDRewards",
       "args": [
         {
-          "name": "injectedAlgoRewards",
+          "name": "injectedxUSDRewards",
           "type": "uint64"
         }
       ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateTreasuryAddress",
+      "args": [
+        {
+          "name": "treasuryAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updatexUSDFee",
+      "args": [
+        {
+          "name": "xUSDFee",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateInjectorAddress",
+      "args": [
+        {
+          "name": "injectorAddress",
+          "type": "address"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updateNumStakers",
+      "args": [
+        {
+          "name": "numStakers",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "setFeeWaived",
+      "args": [],
       "returns": {
         "type": "void"
       }
@@ -118,22 +192,6 @@
         },
         {
           "name": "rewardAssetId",
-          "type": "uint64"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "injectAlgoRewards",
-      "args": [
-        {
-          "name": "payTxn",
-          "type": "pay"
-        },
-        {
-          "name": "quantity",
           "type": "uint64"
         }
       ],
