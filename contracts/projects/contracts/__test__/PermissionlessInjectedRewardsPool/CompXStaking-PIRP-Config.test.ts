@@ -119,6 +119,7 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
     const globalState = await appClient.getGlobalState();
     expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
     expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetOneId);
+    expect(globalState.contractVersion!.asBigInt()).toBe(1000n);
   });
 
   test('init storage', async () => {

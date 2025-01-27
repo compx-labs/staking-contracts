@@ -15,6 +15,7 @@ export type mbrReturn = {
 const MAX_STAKERS_PER_POOL = 500;
 const ASSET_HOLDING_FEE = 100000 // creation/holding fee for asset
 const ALGORAND_ACCOUNT_MIN_BALANCE = 100000
+const VERSION = 1000;
 
 
 export class PermissionlessInjectedRewardsPool extends Contract {
@@ -62,6 +63,8 @@ export class PermissionlessInjectedRewardsPool extends Contract {
 
   lastInjectionTime = GlobalStateKey<uint64>();
 
+  contractVersion = GlobalStateKey<uint64>();
+
   createApplication(
     adminAddress: Address,
     injectorAddress: Address,
@@ -70,6 +73,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     this.adminAddress.value = adminAddress;
     this.injectorAddress.value = injectorAddress;
     this.treasuryAddress.value = treasuryAddress;
+    this.contractVersion.value = VERSION;
   }
 
   initApplication(
