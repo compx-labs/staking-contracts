@@ -11,8 +11,8 @@ export interface StakingAccount {
 export type StakeInfo = {
   account: string
   stake: bigint
-  algoAccuredRewards: bigint
   accruedASARewards: bigint
+  accruedxUSDRewards: bigint
 }
 
 
@@ -41,15 +41,17 @@ export function getStakingAccount(byteArray: Uint8Array, byteLength: number): St
   index += 32;
   const stake = byteArrayToUint128(byteArray.slice(index, index + byteLength));
   index += byteLength;
-  const algoAccuredRewards = byteArrayToUint128(byteArray.slice(index, index + byteLength));
-  index += byteLength;
+
   const accruedASARewards = byteArrayToUint128(byteArray.slice(index, index + byteLength));
+  index += byteLength;
+  const accruedxUSDRewards = byteArrayToUint128(byteArray.slice(index, index + byteLength));
   index += byteLength;
   const staker: StakeInfo = {
     account,
     stake,
-    algoAccuredRewards,
     accruedASARewards,
+    accruedxUSDRewards
   };
   return staker;
 }
+

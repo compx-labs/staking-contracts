@@ -13,6 +13,7 @@ algokit.Config.configure({ populateAppCallResources: true });
 let appClient: PermissionlessInjectedRewardsPoolClient;
 let admin: TransactionSignerAccount;
 let injector: TransactionSignerAccount;
+let treasury: TransactionSignerAccount;
 let stakedAssetId: bigint;
 let rewardAssetOneId: bigint;
 let xUSDAssetId: bigint;
@@ -59,6 +60,15 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
       },
       algorand.client.algod,
     )
+    treasury = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
+    await algokit.ensureFunded(
+      {
+        accountToFund: treasury,
+        fundingSource: await algokit.getDispenserAccount(algorand.client.algod, algorand.client.kmd!),
+        minSpendingBalance: algokit.algos(100),
+      },
+      algorand.client.algod,
+    )
 
     const stakeAssetCreate = algorand.send.assetCreate({
       sender: admin.addr,
@@ -87,6 +97,7 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
     await appClient.create.createApplication({
       adminAddress: admin.addr,
       injectorAddress: injector.addr,
+      treasuryAddress: admin.addr,
     });
     const { appAddress } = await appClient.appClient.getAppReference();
 

@@ -12,6 +12,10 @@
         {
           "name": "injectorAddress",
           "type": "address"
+        },
+        {
+          "name": "treasuryAddress",
+          "type": "address"
         }
       ],
       "returns": {
@@ -192,6 +196,22 @@
         },
         {
           "name": "rewardAssetId",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "injectxUSD",
+      "args": [
+        {
+          "name": "xUSDTxn",
+          "type": "axfer"
+        },
+        {
+          "name": "quantity",
           "type": "uint64"
         }
       ],
