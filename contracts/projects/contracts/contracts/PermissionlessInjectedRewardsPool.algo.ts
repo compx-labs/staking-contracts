@@ -98,7 +98,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     this.totalRewards.value = 0;
     this.rewardFrequency.value = 0;
     this.rewardPerInjection.value = 0;
-    this.lastInjectionTime.value = 0;
+    this.lastInjectionTime.value = globals.latestTimestamp;
 
     sendAssetTransfer({
       xferAsset: AssetID.fromUint64(stakedAsset),

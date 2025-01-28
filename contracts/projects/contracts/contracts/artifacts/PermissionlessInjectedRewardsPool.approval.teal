@@ -222,9 +222,9 @@ initApplication:
 	app_global_put
 
 	// contracts/PermissionlessInjectedRewardsPool.algo.ts:101
-	// this.lastInjectionTime.value = 0
+	// this.lastInjectionTime.value = globals.latestTimestamp
 	byte 0x6c617374496e6a656374696f6e54696d65 // "lastInjectionTime"
-	int 0
+	global LatestTimestamp
 	app_global_put
 
 	// contracts/PermissionlessInjectedRewardsPool.algo.ts:103
