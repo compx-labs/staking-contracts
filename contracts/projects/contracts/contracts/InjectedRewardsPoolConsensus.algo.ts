@@ -1,64 +1,61 @@
 import { Contract } from '@algorandfoundation/tealscript';
-import { getApplicationAddress, makePaymentTxnWithSuggestedParamsFromObject } from 'algosdk';
-const MINIMUM_ALGO_REWARD = 1000000
+
+const MINIMUM_ALGO_REWARD = 1000000;
 
 export type MigrationParams = {
-  lstBalance: uint64,
-  totalStaked: uint64,
-  circulatingLST: uint64,
-  totalConsensusRewards: uint64,
-  commisionAmount: uint64,
-}
+  lstBalance: uint64;
+  totalStaked: uint64;
+  circulatingLST: uint64;
+  totalConsensusRewards: uint64;
+  commisionAmount: uint64;
+};
 
 export class InjectedRewardsPoolConsensus extends Contract {
   programVersion = 10;
 
-  //Global State
+  // Global State
 
-  //Staking asset, will normally be ALGO (0), but contract can handle other assets
+  // Staking asset, will normally be ALGO (0), but contract can handle other assets
   stakedAssetId = GlobalStateKey<uint64>();
 
-  //LST token ID which is sent to stakers
+  // LST token ID which is sent to stakers
   lstTokenId = GlobalStateKey<uint64>();
 
-  //Running total of total staked asset staked into the contract by users
+  // Running total of total staked asset staked into the contract by users
   totalStaked = GlobalStateKey<uint64>();
 
-  //admin address for carrying out admin functions
+  // admin address for carrying out admin functions
   adminAddress = GlobalStateKey<Address>();
 
-  //Minimum contract balance for MBR
+  // Minimum contract balance for MBR
   minimumBalance = GlobalStateKey<uint64>();
 
-  //Percentage of rewards to platform - can be updated
+  // Percentage of rewards to platform - can be updated
   commisionPercentage = GlobalStateKey<uint64>();
 
-  //Running balance total of LST tokens
+  // Running balance total of LST tokens
   lstBalance = GlobalStateKey<uint64>();
 
-  //Running balance total of LST tokens paid out to stakers on stake
+  // Running balance total of LST tokens paid out to stakers on stake
   circulatingLST = GlobalStateKey<uint64>();
 
-  //Treasury address for commision payments
+  // Treasury address for commision payments
   treasuryAddress = GlobalStateKey<Address>();
 
-  //Current commision to be paid out
+  // Current commision to be paid out
   commisionAmount = GlobalStateKey<uint64>();
 
-  //Running total of consensus rewards available for payout. Is increased as rewards come in and decreased as rewards go out
+  // Running total of consensus rewards available for payout. Is increased as rewards come in and decreased as rewards go out
   totalConsensusRewards = GlobalStateKey<uint64>();
-  //Max stake value of 70mm  - 1 as per node params - can be updated.
+
+  // Max stake value of 70mm  - 1 as per node params - can be updated.
   maxStake = GlobalStateKey<uint64>();
 
   migrationAdmin = GlobalStateKey<Address>();
 
   //
-  //Create the application with minimum information
-  createApplication(
-    adminAddress: Address,
-    treasuryAddress: Address,
-    migrationAdmin: Address,
-  ): void {
+  // Create the application with minimum information
+  createApplication(adminAddress: Address, treasuryAddress: Address, migrationAdmin: Address): void {
     this.adminAddress.value = adminAddress;
     this.treasuryAddress.value = treasuryAddress;
     this.migrationAdmin.value = migrationAdmin;
@@ -73,11 +70,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     commision: uint64 - the percentage of rewards that will be paid to the platform
     payTxn: PayTxn - the pay transaction that will be used to fund the contract
   */
-  initApplication(
-    lstTokenId: uint64,
-    commision: uint64,
-    payTxn: PayTxn
-  ): void {
+  initApplication(lstTokenId: uint64, commision: uint64, payTxn: PayTxn): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
     this.totalStaked.value = 0;
     this.lstTokenId.value = lstTokenId;
@@ -95,11 +88,10 @@ export class InjectedRewardsPoolConsensus extends Contract {
         xferAsset: AssetID.fromUint64(this.lstTokenId.value),
         assetReceiver: this.app.address,
         assetAmount: 0,
-      })
-
+      });
     }
-
   }
+
   //
   // Admin functions
   //
@@ -107,34 +99,42 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update admin address');
     this.adminAddress.value = adminAddress;
   }
+
   updateMigrationAdmin(migrationAdmin: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update migration admin address');
     this.migrationAdmin.value = migrationAdmin;
   }
+
   updateMaxStake(maxStake: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update max stake');
     this.maxStake.value = maxStake;
-  };
+  }
+
   updateTreasuryAddress(treasuryAddress: Address): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update treasury address');
     this.treasuryAddress.value = treasuryAddress;
   }
+
   updateCommision(commision: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commision');
     this.commisionPercentage.value = commision;
   }
+
   updateCommisionAmount(commisionAmount: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update commision amount');
     this.commisionAmount.value = commisionAmount;
   }
+
   updateConsenusRewards(totalConsensusRewards: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update rewards');
     this.totalConsensusRewards.value = totalConsensusRewards;
   }
+
   updateMinimumBalance(minimumBalance: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can update minimum balance');
     this.minimumBalance.value = minimumBalance;
   }
+
   optInToToken(payTxn: PayTxn, tokenId: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can opt in to token');
 
@@ -147,8 +147,9 @@ export class InjectedRewardsPoolConsensus extends Contract {
       xferAsset: AssetID.fromUint64(tokenId),
       assetReceiver: this.app.address,
       assetAmount: 0,
-    })
+    });
   }
+
   payCommision(payTxn: PayTxn): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can pay commision');
     verifyPayTxn(payTxn, {
@@ -165,6 +166,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
       this.commisionAmount.value = 0;
     }
   }
+
   private getGoOnlineFee(): uint64 {
     // this will be needed to determine if our pool is currently NOT eligible and we thus need to pay the fee.
     /*  if (!this.app.address.incentiveEligible) {
@@ -180,14 +182,15 @@ export class InjectedRewardsPoolConsensus extends Contract {
     stateProofPK: bytes,
     voteFirst: uint64,
     voteLast: uint64,
-    voteKeyDilution: uint64,
+    voteKeyDilution: uint64
   ): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can go online')
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can go online');
 
-    const extraFee = this.getGoOnlineFee()
+    const extraFee = this.getGoOnlineFee();
     verifyPayTxn(feePayment, {
-      receiver: this.app.address, amount: extraFee
-    })
+      receiver: this.app.address,
+      amount: extraFee,
+    });
     sendOnlineKeyRegistration({
       votePK: votePK,
       selectionPK: selectionPK,
@@ -196,40 +199,39 @@ export class InjectedRewardsPoolConsensus extends Contract {
       voteLast: voteLast,
       voteKeyDilution: voteKeyDilution,
       fee: extraFee,
-    })
+    });
   }
 
-
   goOffline(): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can go offline')
-    sendOfflineKeyRegistration({})
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can go offline');
+    sendOfflineKeyRegistration({});
   }
 
   linkToNFD(nfdAppId: uint64, nfdName: string, nfdRegistryAppId: uint64): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can link to NFD')
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can link to NFD');
 
     sendAppCall({
       applicationID: AppID.fromUint64(nfdRegistryAppId),
       applicationArgs: ['verify_nfd_addr', nfdName, itob(nfdAppId), rawBytes(this.app.address)],
       applications: [AppID.fromUint64(nfdAppId)],
-    })
+    });
   }
 
   addLST(axferTxn: AssetTransferTxn, quantity: uint64): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can send LST')
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can send LST');
     const lstTokenId = this.lstTokenId.value;
 
     verifyAssetTransferTxn(axferTxn, {
       assetAmount: quantity,
       assetReceiver: this.app.address,
       sender: this.txn.sender,
-      xferAsset: AssetID.fromUint64(lstTokenId)
+      xferAsset: AssetID.fromUint64(lstTokenId),
     });
     this.lstBalance.value = this.lstBalance.value + quantity;
-
   }
+
   removeLST(quantity: uint64): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can remove LST')
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can remove LST');
     assert(this.lstBalance.value >= quantity, 'Invalid quantity');
     let amountToRemove = quantity;
     if (amountToRemove === 0) {
@@ -247,19 +249,26 @@ export class InjectedRewardsPoolConsensus extends Contract {
   pickupAlgoRewards(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can pickup rewards');
 
-    //total amount of newly paid in consensus rewards
-    let amount = this.app.address.balance - this.minimumBalance.value - this.totalConsensusRewards.value - this.totalStaked.value - this.commisionAmount.value;
-    //less commision
+    // total amount of newly paid in consensus rewards
+    // 768588258801  - 1000000 - 852914606 - 767655723332 - 68620862 = 10000001
+    let amount =
+      this.app.address.balance -
+      this.minimumBalance.value -
+      this.totalConsensusRewards.value -
+      this.totalStaked.value -
+      this.commisionAmount.value;
+    // less commision
     if (amount > MINIMUM_ALGO_REWARD) {
-      const newCommisionPayment = this.commisionAmount.value + (amount / 100 * this.commisionPercentage.value);
+      const newCommisionPayment = this.commisionAmount.value + (amount / 100) * this.commisionPercentage.value;
       amount = amount - newCommisionPayment;
       this.commisionAmount.value = this.commisionAmount.value + newCommisionPayment;
       this.totalConsensusRewards.value += amount;
     }
   }
+
   private mintLST(stake: uint64, mintQuantity: uint64, payTxn: PayTxn, userAddress: Address): void {
     if (globals.opcodeBudget < 300) {
-      increaseOpcodeBudget()
+      increaseOpcodeBudget();
     }
     const minPayment = 1_000;
     verifyPayTxn(payTxn, {
@@ -275,15 +284,16 @@ export class InjectedRewardsPoolConsensus extends Contract {
       fee: 1_000,
     });
     if (globals.opcodeBudget < 300) {
-      increaseOpcodeBudget()
+      increaseOpcodeBudget();
     }
 
     this.lstBalance.value = this.lstBalance.value - mintQuantity;
     this.circulatingLST.value = this.circulatingLST.value + mintQuantity;
     if (globals.opcodeBudget < 300) {
-      increaseOpcodeBudget()
+      increaseOpcodeBudget();
     }
   }
+
   deleteApplication(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
     sendAssetTransfer({
@@ -292,24 +302,20 @@ export class InjectedRewardsPoolConsensus extends Contract {
       sender: this.app.address,
       xferAsset: AssetID.fromUint64(this.lstTokenId.value),
       assetAmount: this.lstBalance.value,
-    })
+    });
   }
 
   //
   // User functions
   //
-  //Staking for users - requires a payment transaction of the amount to stake + 1000 microAlgo for fees for sending out the LST tokens
-  //Uses private mintLST function to mint the LST tokens and send them to the user. This ensures that LSTs cannot be minted via any other method than staking
-  stake(
-    payTxn: PayTxn,
-    quantity: uint64,
-  ): void {
+  // Staking for users - requires a payment transaction of the amount to stake + 1000 microAlgo for fees for sending out the LST tokens
+  // Uses private mintLST function to mint the LST tokens and send them to the user. This ensures that LSTs cannot be minted via any other method than staking
+  stake(payTxn: PayTxn, quantity: uint64): void {
     assert(quantity > 0, 'Invalid quantity');
     assert(this.totalStaked.value + quantity <= this.maxStake.value, 'Max stake reached');
     if (globals.opcodeBudget < 300) {
-      increaseOpcodeBudget()
+      increaseOpcodeBudget();
     }
-
 
     verifyPayTxn(payTxn, {
       sender: this.txn.sender,
@@ -329,18 +335,17 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.mintLST(quantity, lstDue, payTxn, this.txn.sender);
 
     this.totalStaked.value = this.totalStaked.value + quantity;
-
   }
 
   //
   // Unstaking for users - requires a payment transaction of 1000 microAlgo for fees for sending out the staked tokens
-  //Requires the user sends the correct quantity of LST tokens to the contract
+  // Requires the user sends the correct quantity of LST tokens to the contract
   burnLST(axferTxn: AssetTransferTxn, payTxn: PayTxn, quantity: uint64, userAddress: Address): void {
     verifyAssetTransferTxn(axferTxn, {
       assetAmount: quantity,
       assetReceiver: this.app.address,
       sender: userAddress,
-      xferAsset: AssetID.fromUint64(this.lstTokenId.value)
+      xferAsset: AssetID.fromUint64(this.lstTokenId.value),
     });
     verifyPayTxn(payTxn, {
       receiver: this.app.address,
@@ -354,7 +359,6 @@ export class InjectedRewardsPoolConsensus extends Contract {
     const stakeTokenDue = wideRatio([lstRatio, quantity], [10000]);
 
     if (stakeTokenDue < this.app.address.balance) {
-
       if (this.stakedAssetId.value === 0) {
         sendPayment({
           amount: stakeTokenDue,
@@ -378,7 +382,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.totalConsensusRewards.value = this.totalConsensusRewards.value - (stakeTokenDue - quantity);
   }
 
-  //Migration functions
+  // Migration functions
 
   acceptMigration(
     algoTransfer: PayTxn,
@@ -387,9 +391,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
     totalStaked: uint64,
     circulatingLST: uint64,
     totalConsensusRewards: uint64,
-    commisionAmount: uint64,
+    commisionAmount: uint64
   ): void {
-
     verifyPayTxn(algoTransfer, {
       receiver: this.app.address,
       sender: this.adminAddress.value,
@@ -405,17 +408,15 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.commisionAmount.value = commisionAmount;
   }
 
-  //Sends balances to the admin account
-  migrateContract(
-    mbrTxn: PayTxn
-  ): MigrationParams {
+  // Sends balances to the admin account
+  migrateContract(mbrTxn: PayTxn): MigrationParams {
     assert(this.txn.sender === this.migrationAdmin.value, 'Only admin can migrate contract');
-    //ensure account is offline
+    // ensure account is offline
     this.goOffline();
 
     verifyPayTxn(mbrTxn, {
       sender: this.migrationAdmin.value,
-      amount: 1_000_000
+      amount: 1_000_000,
     });
 
     sendPayment({
@@ -438,11 +439,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
       circulatingLST: this.circulatingLST.value,
       totalConsensusRewards: this.totalConsensusRewards.value,
       commisionAmount: this.commisionAmount.value,
-    }
+    };
   }
 
-  gas(): void { }
+  gas(): void {}
 }
-
-
-
