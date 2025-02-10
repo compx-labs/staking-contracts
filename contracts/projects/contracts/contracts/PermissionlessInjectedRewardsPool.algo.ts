@@ -279,7 +279,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
   }
 
   deleteApplication(): void {
-    assert(this.txn.sender === this.injectorAddress.value, 'Only admin can delete application');
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
     assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
     this.stakers.delete();

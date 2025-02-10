@@ -1295,9 +1295,9 @@ deleteApplication:
 	byte 0x
 
 	// contracts/PermissionlessInjectedRewardsPool.algo.ts:282
-	// assert(this.txn.sender === this.injectorAddress.value, 'Only admin can delete application')
+	// assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application')
 	txn Sender
-	byte 0x696e6a6563746f7241646472657373 // "injectorAddress"
+	byte 0x61646d696e41646472657373 // "adminAddress"
 	app_global_get
 	==
 
