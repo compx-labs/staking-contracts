@@ -79,6 +79,10 @@
         {
           "name": "rewardPerInjection",
           "type": "uint64"
+        },
+        {
+          "name": "injectionType",
+          "type": "uint64"
         }
       ],
       "returns": {
