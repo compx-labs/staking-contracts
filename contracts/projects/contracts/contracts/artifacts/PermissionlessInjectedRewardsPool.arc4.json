@@ -162,6 +162,30 @@
       }
     },
     {
+      "name": "updateFreeze",
+      "args": [
+        {
+          "name": "freeze",
+          "type": "bool"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "updatePoolEnding",
+      "args": [
+        {
+          "name": "poolEnding",
+          "type": "bool"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "setFeeWaived",
       "args": [],
       "returns": {

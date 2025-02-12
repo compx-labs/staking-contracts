@@ -55,6 +55,8 @@ export class PermissionlessInjectedRewardsPool extends Contract {
 
   poolActive = GlobalStateKey<boolean>();
 
+  poolEnding = GlobalStateKey<boolean>();
+
   rewardFrequency = GlobalStateKey<uint64>();
 
   rewardPerInjection = GlobalStateKey<uint64>();
@@ -90,6 +92,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     this.xUSDFee.value = xUSDFee;
     this.feeWaived.value = false;
     this.poolActive.value = false;
+    this.poolEnding.value = false;
     this.xUSDAssetId.value = xUSDAssetID;
     this.totalRewards.value = 0;
     this.rewardFrequency.value = 0;
@@ -193,6 +196,19 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     this.numStakers.value = numStakers;
   }
 
+  updateFreeze(freeze: boolean): void {
+    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can update freeze');
+    this.freeze.value = freeze;
+  }
+
+  updatePoolEnding(poolEnding: boolean): void {
+    assert(
+      this.txn.sender === this.injectorAddress.value || this.txn.sender === this.adminAddress.value,
+      'Only admins can update pool ending'
+    );
+    this.poolEnding.value = poolEnding;
+  }
+
   setFeeWaived(): void {
     assert(this.txn.sender === this.injectorAddress.value, 'Only injector can update fee waived');
     this.feeWaived.value = true;
@@ -261,7 +277,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
       sender: this.injectorAddress.value,
       assetReceiver: this.app.address,
       xferAsset: AssetID.fromUint64(rewardAssetId),
-      assetAmount: this.rewardPerInjection.value,
+      assetAmount: this.rewardPerInjection.value > 0 ? this.rewardPerInjection.value : quantity,
     });
     this.injectedASARewards.value += quantity;
     this.lastInjectionTime.value = globals.latestTimestamp;
@@ -295,6 +311,9 @@ export class PermissionlessInjectedRewardsPool extends Contract {
 
   stake(stakeTxn: AssetTransferTxn, quantity: uint64): void {
     assert(quantity > 0, 'Invalid quantity');
+    assert(this.poolActive.value, 'Pool not active');
+    assert(!this.poolEnding.value, 'Pool ending');
+
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget();
     }
@@ -365,7 +384,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
   }
 
   accrueRewards(): void {
-    if (!this.freeze.value) {
+    if (!this.freeze.value && !this.poolEnding.value && this.poolActive.value) {
       const additionalASARewards = this.injectedASARewards.value;
       const xUSDRewards = this.injectedxUSDRewards.value;
 

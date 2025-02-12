@@ -1,7 +1,5 @@
-import { TransactionSignerAccount } from "@algorandfoundation/algokit-utils/types/account";
-import { AlgorandFixture } from "@algorandfoundation/algokit-utils/types/testing";
-import * as algokit from '@algorandfoundation/algokit-utils';
-import algosdk from "algosdk";
+import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
+import algosdk from 'algosdk';
 
 export interface StakingAccount {
   account?: TransactionSignerAccount;
@@ -9,18 +7,19 @@ export interface StakingAccount {
 }
 
 export type StakeInfo = {
-  account: string
-  stake: bigint
-  accruedASARewards: bigint
-  accruedxUSDRewards: bigint
-}
-
+  account: string;
+  stake: bigint;
+  accruedASARewards: bigint;
+  accruedxUSDRewards: bigint;
+};
 
 export function byteArrayToUint128(byteArray: Uint8Array): bigint {
   let result = BigInt(0);
 
   // Iterate over the byte array, treating it as big-endian
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < byteArray.length; i++) {
+    // eslint-disable-next-line no-bitwise
     result = (result << BigInt(8)) + BigInt(byteArray[i]);
   }
 
@@ -50,8 +49,7 @@ export function getStakingAccount(byteArray: Uint8Array, byteLength: number): St
     account,
     stake,
     accruedASARewards,
-    accruedxUSDRewards
+    accruedxUSDRewards,
   };
   return staker;
 }
-
