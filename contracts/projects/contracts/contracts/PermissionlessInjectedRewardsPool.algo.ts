@@ -202,15 +202,12 @@ export class PermissionlessInjectedRewardsPool extends Contract {
   }
 
   updatePoolEnding(poolEnding: boolean): void {
-    assert(
-      this.txn.sender === this.injectorAddress.value || this.txn.sender === this.adminAddress.value,
-      'Only admins can update pool ending'
-    );
+    assert(this.txn.sender === this.adminAddress.value, 'Only admins can update pool ending');
     this.poolEnding.value = poolEnding;
   }
 
   setFeeWaived(): void {
-    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can update fee waived');
+    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can update fee waive');
     this.feeWaived.value = true;
     this.xUSDFee.value = 0;
   }
