@@ -163,8 +163,6 @@ describe('Permissionless Injected Reward Pool - 50x stakers test', () => {
 
     const boxNames = await appClient.appClient.getBoxNames();
     expect(boxNames.length).toBe(1);
-    console.log('mbrPayment:', mbrPayment);
-    console.log('mbrPayment in algo:', mbrPayment / 10n ** 6n);
   });
 
   test('init injector account', async () => {
@@ -280,9 +278,6 @@ describe('Permissionless Injected Reward Pool - 50x stakers test', () => {
   });
 
   async function accrueRewards() {
-    const { algorand } = fixture;
-    const { appAddress } = await appClient.appClient.getAppReference();
-
     let accrueRewardsFees = AlgoAmount.MicroAlgos(240_000);
     const accrueSimulateResult = await appClient
       .compose()
@@ -295,7 +290,7 @@ describe('Permissionless Injected Reward Pool - 50x stakers test', () => {
       2000 +
         1000 * Math.floor(((accrueSimulateResult.simulateResponse.txnGroups[0].appBudgetAdded as number) + 699) / 700)
     );
-    const response = await appClient
+    await appClient
       .compose()
       .gas({}, { note: '1' })
       .gas({}, { note: '2' })
@@ -303,11 +298,6 @@ describe('Permissionless Injected Reward Pool - 50x stakers test', () => {
       .accrueRewards({}, { sendParams: { fee: accrueRewardsFees } })
       .execute({ populateAppCallResources: true });
 
-    const stakerBox = await appClient.appClient.getBoxValue('stakers');
-    const staker1 = getStakingAccount(stakerBox.slice(0, BYTE_LENGTH_STAKER), 8);
-    const staker2 = getStakingAccount(stakerBox.slice(BYTE_LENGTH_STAKER, BYTE_LENGTH_STAKER * 2), 8);
-    console.log('staker1', staker1);
-    console.log('staker2', staker2);
     const globalStateAfter = await appClient.getGlobalState();
     expect(globalStateAfter.injectedASARewards!.asBigInt()).toBe(0n);
     expect(globalStateAfter.injectedxUSDRewards!.asBigInt()).toBe(0n);
@@ -404,7 +394,6 @@ describe('Permissionless Injected Reward Pool - 50x stakers test', () => {
     for (const staker of stakingAccounts) {
       const stakerBoxBefore = await appClient.appClient.getBoxValue('stakers');
       const stakerBefore = getStakingAccount(stakerBoxBefore.slice(index, BYTE_LENGTH_STAKER * (index + 1)), 8);
-      console.log('stakerBefore', stakerBefore);
       expect(stakerBefore.accruedASARewards).toBe(ASAInjectionAmount / BigInt(numStakers));
       expect(stakerBefore.accruedxUSDRewards).toBe(xUSDInjectionAmount / BigInt(numStakers));
 
@@ -455,17 +444,6 @@ describe('Permissionless Injected Reward Pool - 50x stakers test', () => {
   }, 60000);
 
   test('unstake all', async () => {
-    // check contract address balances
-    const { algorand } = fixture;
-    const { appAddress } = await appClient.appClient.getAppReference();
-    const stakedAssetBalance = (await algorand.account.getAssetInformation(appAddress, stakedAssetId)).balance;
-    const rewardAssetBalance = (await algorand.account.getAssetInformation(appAddress, rewardAssetOneId)).balance;
-    const xUSDBalance = (await algorand.account.getAssetInformation(appAddress, xUSDAssetId)).balance;
-
-    console.log('stakedAssetBalance', stakedAssetBalance);
-    console.log('rewardAssetBalance', rewardAssetBalance);
-    console.log('xUSDBalance', xUSDBalance);
-
     // eslint-disable-next-line no-restricted-syntax
     for (const staker of stakingAccounts) {
       let fees = AlgoAmount.MicroAlgos(240_000);
