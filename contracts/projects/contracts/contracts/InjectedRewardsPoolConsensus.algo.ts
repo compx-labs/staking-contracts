@@ -10,6 +10,8 @@ export type MigrationParams = {
   commisionAmount: uint64;
 };
 
+export const CONTRACT_VERSION = 1100;
+
 export class InjectedRewardsPoolConsensus extends Contract {
   programVersion = 10;
 
@@ -53,6 +55,10 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   migrationAdmin = GlobalStateKey<Address>();
 
+  paidCommision = GlobalStateKey<uint64>();
+
+  contractVersion = GlobalStateKey<uint64>();
+
   //
   // Create the application with minimum information
   createApplication(adminAddress: Address, treasuryAddress: Address, migrationAdmin: Address): void {
@@ -82,6 +88,8 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.commisionAmount.value = 0;
     this.maxStake.value = 69999999000000;
     this.stakedAssetId.value = 0;
+    this.paidCommision.value = 0;
+    this.contractVersion.value = CONTRACT_VERSION;
 
     if (this.lstTokenId.value !== 0) {
       sendAssetTransfer({
@@ -163,6 +171,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
         sender: this.app.address,
         fee: 1_000,
       });
+      this.paidCommision.value = this.paidCommision.value + this.commisionAmount.value;
       this.commisionAmount.value = 0;
     }
   }
@@ -250,16 +259,16 @@ export class InjectedRewardsPoolConsensus extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can pickup rewards');
 
     // total amount of newly paid in consensus rewards
-    // 768588258801  - 1000000 - 852914606 - 767655723332 - 68620862 = 10000001
     let amount =
       this.app.address.balance -
       this.minimumBalance.value -
       this.totalConsensusRewards.value -
       this.totalStaked.value -
-      this.commisionAmount.value;
+      this.commisionAmount.value +
+      this.paidCommision.value;
     // less commision
     if (amount > MINIMUM_ALGO_REWARD) {
-      const newCommisionPayment = this.commisionAmount.value + (amount / 100) * this.commisionPercentage.value;
+      const newCommisionPayment = (amount / 100) * this.commisionPercentage.value;
       amount = amount - newCommisionPayment;
       this.commisionAmount.value = this.commisionAmount.value + newCommisionPayment;
       this.totalConsensusRewards.value += amount;
@@ -395,11 +404,11 @@ export class InjectedRewardsPoolConsensus extends Contract {
   ): void {
     verifyPayTxn(algoTransfer, {
       receiver: this.app.address,
-      sender: this.adminAddress.value,
+      sender: this.migrationAdmin.value,
     });
     verifyAssetTransferTxn(lstTransfer, {
       assetReceiver: this.app.address,
-      sender: this.adminAddress.value,
+      sender: this.migrationAdmin.value,
     });
     this.lstBalance.value = lstBalance;
     this.totalStaked.value = totalStaked;
