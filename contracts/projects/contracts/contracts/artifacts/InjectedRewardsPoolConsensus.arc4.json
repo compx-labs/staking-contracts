@@ -139,6 +139,18 @@
       }
     },
     {
+      "name": "updatePaidCommision",
+      "args": [
+        {
+          "name": "paidCommision",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "optInToToken",
       "args": [
         {

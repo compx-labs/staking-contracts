@@ -143,6 +143,11 @@ export class InjectedRewardsPoolConsensus extends Contract {
     this.minimumBalance.value = minimumBalance;
   }
 
+  updatePaidCommision(paidCommision: uint64): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can update paid commision');
+    this.paidCommision.value = paidCommision;
+  }
+
   optInToToken(payTxn: PayTxn, tokenId: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can opt in to token');
 
@@ -264,14 +269,13 @@ export class InjectedRewardsPoolConsensus extends Contract {
       this.minimumBalance.value -
       this.totalConsensusRewards.value -
       this.totalStaked.value -
-      this.commisionAmount.value +
-      this.paidCommision.value;
+      this.commisionAmount.value;
     // less commision
     if (amount > MINIMUM_ALGO_REWARD) {
       const newCommisionPayment = (amount / 100) * this.commisionPercentage.value;
-      amount = amount - newCommisionPayment;
       this.commisionAmount.value = this.commisionAmount.value + newCommisionPayment;
-      this.totalConsensusRewards.value += amount;
+      amount = amount - newCommisionPayment;
+      this.totalConsensusRewards.value = this.totalConsensusRewards.value + amount;
     }
   }
 
@@ -385,10 +389,23 @@ export class InjectedRewardsPoolConsensus extends Contract {
         });
       }
     }
+
     this.lstBalance.value = this.lstBalance.value + quantity;
-    this.circulatingLST.value = this.circulatingLST.value - quantity;
-    this.totalStaked.value = this.totalStaked.value - quantity;
-    this.totalConsensusRewards.value = this.totalConsensusRewards.value - (stakeTokenDue - quantity);
+    if (this.circulatingLST.value < quantity) {
+      this.circulatingLST.value = 0;
+    } else {
+      this.circulatingLST.value = this.circulatingLST.value - quantity;
+    }
+    if (this.totalStaked.value < quantity) {
+      this.totalStaked.value = 0;
+    } else {
+      this.totalStaked.value = this.totalStaked.value - quantity;
+    }
+    if (this.totalConsensusRewards.value < stakeTokenDue - quantity) {
+      this.totalConsensusRewards.value = 0;
+    } else {
+      this.totalConsensusRewards.value = this.totalConsensusRewards.value - (stakeTokenDue - quantity);
+    }
   }
 
   // Migration functions
