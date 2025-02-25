@@ -278,13 +278,12 @@ export class PermissionlessInjectedRewardsPool extends Contract {
       xferAsset: AssetID.fromUint64(rewardAssetId),
       assetAmount: this.rewardPerInjection.value > 0 ? this.rewardPerInjection.value : quantity,
     });
-    this.injectedASARewards.value += quantity;
+    this.injectedASARewards.value = this.injectedASARewards.value + quantity;
     this.lastInjectionTime.value = globals.latestTimestamp;
   }
 
   pickupRewards(): void {
     assert(this.txn.sender === this.injectorAddress.value, 'Only injector can pickup rewards');
-    assert(this.freeze.value, 'Rewards not frozen');
 
     const appAssetBalance = this.app.address.assetBalance(this.rewardAssetId.value);
     let stakeTokenAmount = 0;
@@ -307,7 +306,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
       xferAsset: AssetID.fromUint64(this.xUSDAssetId.value),
       assetAmount: quantity,
     });
-    this.injectedxUSDRewards.value += quantity;
+    this.injectedxUSDRewards.value = this.injectedxUSDRewards.value + quantity;
   }
 
   deleteApplication(): void {
