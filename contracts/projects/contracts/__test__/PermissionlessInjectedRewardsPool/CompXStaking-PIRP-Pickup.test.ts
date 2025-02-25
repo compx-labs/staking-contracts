@@ -504,6 +504,56 @@ describe('Permissionless Injected Reward Pool - 50x stakers test', () => {
     expect(paidRewards).toBe(0n);
   }, 60000);
 
+  test('send rewards ASA ', async () => {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+
+    const appRewardBalanceBefore = await algorand.account.getAssetInformation(appAddress, rewardAssetOneId);
+
+    await algorand.send.assetTransfer({
+      sender: injector.addr,
+      receiver: appAddress,
+      assetId: rewardAssetOneId,
+      amount: ASAInjectionAmount,
+    });
+    const appRewardBalanceAfter = await algorand.account.getAssetInformation(appAddress, rewardAssetOneId);
+    expect(appRewardBalanceAfter.balance).toBe(appRewardBalanceBefore.balance + ASAInjectionAmount);
+  });
+
+  test('Pickup ASA Rewards', async () => {
+    const globalBefore = await appClient.getGlobalState();
+    const injectedRewardsBefore = globalBefore.injectedASARewards!.asBigInt();
+
+    await appClient.pickupRewards({}, { sender: injector, sendParams: { fee: algokit.algos(0.01) } });
+    const globalAfter = await appClient.getGlobalState();
+    const injectedRewardsAfter = globalAfter.injectedASARewards!.asBigInt();
+    expect(injectedRewardsAfter).toBe(injectedRewardsBefore + ASAInjectionAmount);
+  });
+
+  test('inject rewards ASA ', async () => {
+    const { algorand } = fixture;
+    const { appAddress } = await appClient.appClient.getAppReference();
+
+    const globalBefore = await appClient.getGlobalState();
+    const injectedRewardsBefore = globalBefore.injectedASARewards!.asBigInt();
+
+    const axferTxn = await algorand.transactions.assetTransfer({
+      sender: injector.addr,
+      receiver: appAddress,
+      assetId: rewardAssetOneId,
+      amount: ASAInjectionAmount,
+    });
+
+    await appClient.injectRewards(
+      { rewardTxn: axferTxn, quantity: ASAInjectionAmount, rewardAssetId: rewardAssetOneId },
+      { sender: injector, assets: [Number(rewardAssetOneId)], sendParams: { populateAppCallResources: true } }
+    );
+
+    const globalStateAfter = await appClient.getGlobalState();
+    const injectedRewardsAfter = globalStateAfter.injectedASARewards!.asBigInt();
+    expect(injectedRewardsAfter).toBe(injectedRewardsBefore + ASAInjectionAmount);
+  });
+
   test('unstake all', async () => {
     // eslint-disable-next-line no-restricted-syntax
     for (const staker of stakingAccounts) {
