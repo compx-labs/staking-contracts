@@ -101,6 +101,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     this.rewardPerInjection.value = 0;
     this.injectionType.value = 0;
     this.lastInjectionTime.value = globals.latestTimestamp;
+    this.paidASARewards.value = 0;
 
     sendAssetTransfer({
       xferAsset: AssetID.fromUint64(stakedAsset),
@@ -171,6 +172,11 @@ export class PermissionlessInjectedRewardsPool extends Contract {
   updateInjectedASARewards(injectedASARewards: uint64): void {
     assert(this.txn.sender === this.injectorAddress.value, 'Only injector can update injected rewards');
     this.injectedASARewards.value = injectedASARewards;
+  }
+
+  updatePaidASARewards(paidASARewards: uint64): void {
+    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can update paid rewards');
+    this.paidASARewards.value = paidASARewards;
   }
 
   updateInjectedxUSDRewards(injectedxUSDRewards: uint64): void {
