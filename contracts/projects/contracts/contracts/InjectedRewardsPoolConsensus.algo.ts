@@ -13,7 +13,7 @@ export type MigrationParams = {
 export const CONTRACT_VERSION = 1100;
 
 export class InjectedRewardsPoolConsensus extends Contract {
-  programVersion = 10;
+  programVersion = 11;
 
   // Global State
 
@@ -183,10 +183,7 @@ export class InjectedRewardsPoolConsensus extends Contract {
 
   private getGoOnlineFee(): uint64 {
     // this will be needed to determine if our pool is currently NOT eligible and we thus need to pay the fee.
-    /*  if (!this.app.address.incentiveEligible) {
-       return globals.payoutsGoOnlineFee
-     } */
-    return 2_000_000;
+    return globals.payoutsGoOnlineFee;
   }
 
   goOnline(

@@ -263,13 +263,13 @@ describe('Permissionless Injected Reward Pool - 50x stakers test', () => {
     await appClient.setFeeWaived({ waiveFee: true }, { sender: injector, sendParams: { fee: algokit.algos(0.01) } });
 
     await appClient.setRewardParams(
-      { rewardFrequency: 86400n, rewardPerInjection: 10_000_000, totalRewards: 100_000_000, injectionType: 0 },
+      { rewardFrequency: 86400n, rewardPerInjection: 0, totalRewards: 0, injectionType: 1 },
       { sender: admin, sendParams: { fee: algokit.algos(0.01) } }
     );
     const globalState = await appClient.getGlobalState();
     expect(globalState.rewardFrequency!.asBigInt()).toBe(86400n);
-    expect(globalState.rewardPerInjection!.asBigInt()).toBe(10_000_000n);
-    expect(globalState.totalRewards!.asBigInt()).toBe(100_000_000n);
+    expect(globalState.rewardPerInjection!.asBigInt()).toBe(0n);
+    expect(globalState.totalRewards!.asBigInt()).toBe(0n);
     await appClient.setPoolActive({}, { sender: admin, sendParams: { fee: algokit.algos(0.01) } });
     const globalStateAfter = await appClient.getGlobalState();
     const activeState = globalStateAfter.poolActive!.asByteArray();
