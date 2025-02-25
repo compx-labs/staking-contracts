@@ -232,6 +232,13 @@
       }
     },
     {
+      "name": "pickupRewards",
+      "args": [],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "injectxUSD",
       "args": [
         {

@@ -16,10 +16,10 @@ export type mbrReturn = {
 const MAX_STAKERS_PER_POOL = 500;
 const ASSET_HOLDING_FEE = 100000; // creation/holding fee for asset
 const ALGORAND_ACCOUNT_MIN_BALANCE = 100000;
-const VERSION = 1000;
+const VERSION = 1100;
 
 export class PermissionlessInjectedRewardsPool extends Contract {
-  programVersion = 10;
+  programVersion = 11;
 
   // Global State
 
@@ -34,6 +34,8 @@ export class PermissionlessInjectedRewardsPool extends Contract {
   totalStaked = GlobalStateKey<uint64>();
 
   injectedASARewards = GlobalStateKey<uint64>();
+
+  paidASARewards = GlobalStateKey<uint64>();
 
   injectedxUSDRewards = GlobalStateKey<uint64>();
 
@@ -280,6 +282,23 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     this.lastInjectionTime.value = globals.latestTimestamp;
   }
 
+  pickupRewards(): void {
+    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can pickup rewards');
+    assert(this.freeze.value, 'Rewards not frozen');
+
+    const appAssetBalance = this.app.address.assetBalance(this.rewardAssetId.value);
+    let stakeTokenAmount = 0;
+    if (this.rewardAssetId.value === this.stakedAssetId.value) {
+      stakeTokenAmount = this.totalStaked.value;
+    }
+
+    const amount = appAssetBalance - this.paidASARewards.value - stakeTokenAmount - this.injectedASARewards.value;
+
+    if (amount > this.numStakers.value) {
+      this.injectedASARewards.value = this.injectedASARewards.value + amount;
+    }
+  }
+
   injectxUSD(xUSDTxn: AssetTransferTxn, quantity: uint64): void {
     assert(this.txn.sender === this.injectorAddress.value, 'Only injector can inject xUSD');
     verifyAssetTransferTxn(xUSDTxn, {
@@ -411,6 +430,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
             }
 
             this.injectedASARewards.value = this.injectedASARewards.value - rewardRate;
+            this.paidASARewards.value = this.paidASARewards.value + rewardRate;
             if (this.rewardAssetId.value === this.stakedAssetId.value) {
               // Compound rewards
 
@@ -444,14 +464,14 @@ export class PermissionlessInjectedRewardsPool extends Contract {
       }
       // send back remainder rewards back to injector to zero out
 
-      if (this.injectedASARewards.value > 0) {
+      /* if (this.injectedASARewards.value > 0) {
         sendAssetTransfer({
           xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
           assetReceiver: this.injectorAddress.value,
           sender: this.app.address,
           assetAmount: this.injectedASARewards.value,
         });
-      }
+      } */
       if (this.injectedxUSDRewards.value > 0) {
         sendAssetTransfer({
           xferAsset: AssetID.fromUint64(this.xUSDAssetId.value),
@@ -460,7 +480,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
           assetAmount: this.injectedxUSDRewards.value,
         });
       }
-      this.injectedASARewards.value = 0;
+      // this.injectedASARewards.value = 0;
       this.injectedxUSDRewards.value = 0;
     }
   }
