@@ -102,6 +102,18 @@
       }
     },
     {
+      "name": "updatePaidASARewards",
+      "args": [
+        {
+          "name": "paidASARewards",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "updateInjectedxUSDRewards",
       "args": [
         {
@@ -227,6 +239,13 @@
           "type": "uint64"
         }
       ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "pickupRewards",
+      "args": [],
       "returns": {
         "type": "void"
       }
