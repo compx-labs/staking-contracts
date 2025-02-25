@@ -520,6 +520,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         sender: this.app.address,
         assetAmount: staker.accruedASARewards,
       });
+      this.paidASARewards.value = this.paidASARewards.value - staker.accruedASARewards;
       staker.accruedASARewards = 0;
     }
     if (staker.accruedxUSDRewards > 0) {
