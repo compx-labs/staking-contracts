@@ -320,7 +320,16 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
     this.stakers.delete();
-    const paymentAmount = this.app.address.balance - this.app.address.minBalance - 2_000;
+    const rewardBalance = this.app.address.assetBalance(this.rewardAssetId.value);
+    if (rewardBalance > 0) {
+      sendAssetTransfer({
+        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+        assetReceiver: this.adminAddress.value,
+        assetAmount: rewardBalance,
+        assetCloseTo: this.adminAddress.value,
+      });
+    }
+    const paymentAmount = this.app.address.balance - this.app.address.minBalance;
 
     sendPayment({
       amount: paymentAmount,
