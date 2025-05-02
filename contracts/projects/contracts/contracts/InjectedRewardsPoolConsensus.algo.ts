@@ -10,7 +10,7 @@ export type MigrationParams = {
   commisionAmount: uint64;
 };
 
-export const CONTRACT_VERSION = 1100;
+export const CONTRACT_VERSION = 1101;
 
 export class InjectedRewardsPoolConsensus extends Contract {
   programVersion = 11;
@@ -388,15 +388,17 @@ export class InjectedRewardsPoolConsensus extends Contract {
     }
 
     this.lstBalance.value = this.lstBalance.value + quantity;
+
     if (this.circulatingLST.value < quantity) {
       this.circulatingLST.value = 0;
     } else {
       this.circulatingLST.value = this.circulatingLST.value - quantity;
     }
-    if (this.totalStaked.value < quantity) {
+    // V 1.1.0.1 error if totalStaked < quantity
+    if (this.totalStaked.value < stakeTokenDue) {
       this.totalStaked.value = 0;
     } else {
-      this.totalStaked.value = this.totalStaked.value - quantity;
+      this.totalStaked.value = this.totalStaked.value - stakeTokenDue;
     }
     if (this.totalConsensusRewards.value < stakeTokenDue - quantity) {
       this.totalConsensusRewards.value = 0;

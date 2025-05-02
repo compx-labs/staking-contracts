@@ -16,7 +16,7 @@ export type mbrReturn = {
 const MAX_STAKERS_PER_POOL = 500;
 const ASSET_HOLDING_FEE = 100000; // creation/holding fee for asset
 const ALGORAND_ACCOUNT_MIN_BALANCE = 100000;
-const VERSION = 1100;
+const VERSION = 1101;
 
 export class PermissionlessInjectedRewardsPool extends Contract {
   programVersion = 11;
@@ -437,7 +437,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
             increaseOpcodeBudget();
           }
 
-          if (additionalASARewards > 0) {
+          if (additionalASARewards > this.numStakers.value) {
             let rewardRate = wideRatio([additionalASARewards, stakerShare], [PRECISION]);
             if (rewardRate === 0) {
               rewardRate = 1;

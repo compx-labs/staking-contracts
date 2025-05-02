@@ -193,7 +193,7 @@ initApplication:
 	// contracts/InjectedRewardsPoolConsensus.algo.ts:92
 	// this.contractVersion.value = CONTRACT_VERSION
 	byte 0x636f6e747261637456657273696f6e // "contractVersion"
-	int 1100
+	int 1101
 	app_global_put
 
 	// *if0_condition
@@ -2046,7 +2046,7 @@ burnLST:
 	app_global_put
 
 	// *if11_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:391
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:392
 	// this.circulatingLST.value < quantity
 	byte 0x63697263756c6174696e674c5354 // "circulatingLST"
 	app_global_get
@@ -2055,7 +2055,7 @@ burnLST:
 	bz *if11_else
 
 	// *if11_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:392
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:393
 	// this.circulatingLST.value = 0
 	byte 0x63697263756c6174696e674c5354 // "circulatingLST"
 	int 0
@@ -2063,7 +2063,7 @@ burnLST:
 	b *if11_end
 
 *if11_else:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:394
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:395
 	// this.circulatingLST.value = this.circulatingLST.value - quantity
 	byte 0x63697263756c6174696e674c5354 // "circulatingLST"
 	dup
@@ -2074,16 +2074,16 @@ burnLST:
 
 *if11_end:
 	// *if12_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:396
-	// this.totalStaked.value < quantity
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:398
+	// this.totalStaked.value < stakeTokenDue
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	app_global_get
-	frame_dig -3 // quantity: uint64
+	frame_dig 2 // stakeTokenDue: uint64
 	<
 	bz *if12_else
 
 	// *if12_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:397
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:399
 	// this.totalStaked.value = 0
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	int 0
@@ -2091,18 +2091,18 @@ burnLST:
 	b *if12_end
 
 *if12_else:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:399
-	// this.totalStaked.value = this.totalStaked.value - quantity
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:401
+	// this.totalStaked.value = this.totalStaked.value - stakeTokenDue
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	dup
 	app_global_get
-	frame_dig -3 // quantity: uint64
+	frame_dig 2 // stakeTokenDue: uint64
 	-
 	app_global_put
 
 *if12_end:
 	// *if13_condition
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:401
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:403
 	// this.totalConsensusRewards.value < stakeTokenDue - quantity
 	byte 0x746f74616c436f6e73656e73757352657761726473 // "totalConsensusRewards"
 	app_global_get
@@ -2113,7 +2113,7 @@ burnLST:
 	bz *if13_else
 
 	// *if13_consequent
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:402
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:404
 	// this.totalConsensusRewards.value = 0
 	byte 0x746f74616c436f6e73656e73757352657761726473 // "totalConsensusRewards"
 	int 0
@@ -2121,7 +2121,7 @@ burnLST:
 	b *if13_end
 
 *if13_else:
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:404
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:406
 	// this.totalConsensusRewards.value = this.totalConsensusRewards.value - (stakeTokenDue - quantity)
 	byte 0x746f74616c436f6e73656e73757352657761726473 // "totalConsensusRewards"
 	dup
@@ -2190,7 +2190,7 @@ burnLST:
 acceptMigration:
 	proto 7 0
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:419
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:421
 	// verifyPayTxn(algoTransfer, {
 	//       receiver: this.app.address,
 	//       sender: this.migrationAdmin.value,
@@ -2214,7 +2214,7 @@ acceptMigration:
 	// transaction verification failed: {"txn":"algoTransfer","field":"sender","expected":"this.migrationAdmin.value"}
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:423
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:425
 	// verifyAssetTransferTxn(lstTransfer, {
 	//       assetReceiver: this.app.address,
 	//       sender: this.migrationAdmin.value,
@@ -2238,31 +2238,31 @@ acceptMigration:
 	// transaction verification failed: {"txn":"lstTransfer","field":"sender","expected":"this.migrationAdmin.value"}
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:427
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:429
 	// this.lstBalance.value = lstBalance
 	byte 0x6c737442616c616e6365 // "lstBalance"
 	frame_dig -3 // lstBalance: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:428
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:430
 	// this.totalStaked.value = totalStaked
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	frame_dig -4 // totalStaked: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:429
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:431
 	// this.circulatingLST.value = circulatingLST
 	byte 0x63697263756c6174696e674c5354 // "circulatingLST"
 	frame_dig -5 // circulatingLST: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:430
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:432
 	// this.totalConsensusRewards.value = totalConsensusRewards
 	byte 0x746f74616c436f6e73656e73757352657761726473 // "totalConsensusRewards"
 	frame_dig -6 // totalConsensusRewards: uint64
 	app_global_put
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:431
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:433
 	// this.commisionAmount.value = commisionAmount
 	byte 0x636f6d6d6973696f6e416d6f756e74 // "commisionAmount"
 	frame_dig -7 // commisionAmount: uint64
@@ -2297,7 +2297,7 @@ acceptMigration:
 migrateContract:
 	proto 1 1
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:436
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:438
 	// assert(this.txn.sender === this.migrationAdmin.value, 'Only admin can migrate contract')
 	txn Sender
 	byte 0x6d6967726174696f6e41646d696e // "migrationAdmin"
@@ -2307,11 +2307,11 @@ migrateContract:
 	// Only admin can migrate contract
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:438
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:440
 	// this.goOffline()
 	callsub goOffline
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:440
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:442
 	// verifyPayTxn(mbrTxn, {
 	//       sender: this.migrationAdmin.value,
 	//       amount: 1_000_000,
@@ -2335,7 +2335,7 @@ migrateContract:
 	// transaction verification failed: {"txn":"mbrTxn","field":"amount","expected":"1_000_000"}
 	assert
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:445
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:447
 	// sendPayment({
 	//       amount: this.totalStaked.value + this.totalConsensusRewards.value + this.commisionAmount.value,
 	//       receiver: this.migrationAdmin.value,
@@ -2346,7 +2346,7 @@ migrateContract:
 	int pay
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:446
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:448
 	// amount: this.totalStaked.value + this.totalConsensusRewards.value + this.commisionAmount.value
 	byte 0x746f74616c5374616b6564 // "totalStaked"
 	app_global_get
@@ -2358,18 +2358,18 @@ migrateContract:
 	+
 	itxn_field Amount
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:447
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:449
 	// receiver: this.migrationAdmin.value
 	byte 0x6d6967726174696f6e41646d696e // "migrationAdmin"
 	app_global_get
 	itxn_field Receiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:448
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:450
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:449
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:451
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -2377,7 +2377,7 @@ migrateContract:
 	// Submit inner transaction
 	itxn_submit
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:451
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:453
 	// sendAssetTransfer({
 	//       xferAsset: AssetID.fromUint64(this.lstTokenId.value),
 	//       assetReceiver: this.migrationAdmin.value,
@@ -2389,30 +2389,30 @@ migrateContract:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:452
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:454
 	// xferAsset: AssetID.fromUint64(this.lstTokenId.value)
 	byte 0x6c7374546f6b656e4964 // "lstTokenId"
 	app_global_get
 	itxn_field XferAsset
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:453
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:455
 	// assetReceiver: this.migrationAdmin.value
 	byte 0x6d6967726174696f6e41646d696e // "migrationAdmin"
 	app_global_get
 	itxn_field AssetReceiver
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:454
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:456
 	// sender: this.app.address
 	global CurrentApplicationAddress
 	itxn_field Sender
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:455
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:457
 	// assetAmount: this.lstBalance.value
 	byte 0x6c737442616c616e6365 // "lstBalance"
 	app_global_get
 	itxn_field AssetAmount
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:456
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:458
 	// fee: 1_000
 	int 1_000
 	itxn_field Fee
@@ -2420,7 +2420,7 @@ migrateContract:
 	// Submit inner transaction
 	itxn_submit
 
-	// contracts/InjectedRewardsPoolConsensus.algo.ts:459
+	// contracts/InjectedRewardsPoolConsensus.algo.ts:461
 	// return {
 	//       lstBalance: this.lstBalance.value,
 	//       totalStaked: this.totalStaked.value,

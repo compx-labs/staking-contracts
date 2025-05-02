@@ -84,7 +84,7 @@ createApplication:
 	// contracts/PermissionlessInjectedRewardsPool.algo.ts:81
 	// this.contractVersion.value = VERSION
 	byte 0x636f6e747261637456657273696f6e // "contractVersion"
-	int 1100
+	int 1101
 	app_global_put
 	retsub
 
@@ -2425,9 +2425,10 @@ accrueRewards:
 *if26_end:
 	// *if27_condition
 	// contracts/PermissionlessInjectedRewardsPool.algo.ts:440
-	// additionalASARewards > 0
+	// additionalASARewards > this.numStakers.value
 	frame_dig 0 // additionalASARewards: uint64
-	int 0
+	byte 0x6e756d5374616b657273 // "numStakers"
+	app_global_get
 	>
 	bz *if27_end
 
