@@ -1,3 +1,6 @@
+/* eslint-disable no-var */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable vars-on-top */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable camelcase */
@@ -10,10 +13,14 @@ import { AlgoAmount } from '@algorandfoundation/algokit-utils/types/amount';
 import { consoleLogger } from '@algorandfoundation/algokit-utils/types/logging';
 import { PermissionlessInjectedRewardsPoolClient } from '../../contracts/clients/PermissionlessInjectedRewardsPoolClient';
 import { deploy } from './deploy';
+import { getStakingAccount } from './utils';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
+const BYTE_LENGTH_STAKER = 56;
 
+const PLATFORM_FEE_BPS = 200n; // 2% platform fee
+const REWARD_ASA_REWARD_AMOUNT = 10_000_000n; // 10 ASA
 let pIRPClient: PermissionlessInjectedRewardsPoolClient;
 let admin: Account;
 let injector: Account;
@@ -21,8 +28,8 @@ let treasury: Account;
 let stakedAssetId: bigint;
 let rewardAssetOneId: bigint;
 let xUSDAssetId: bigint;
-const NUM_STAKERS = 2;
-const NUM_REWARD_SENDERS = 2;
+const NUM_STAKERS = 2n;
+const NUM_REWARD_SENDERS = 2n;
 const STAKE_AMOUNT = 100_000_000n; // 100
 const REWARD_AMOUNT = 1_000_000n; // 1 XUSD
 // eslint-disable-next-line camelcase
@@ -90,8 +97,21 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
       amount: algokit.algos(20),
     });
 
+    await fixture.algorand.send.assetOptIn({
+      sender: treasury.addr,
+      assetId: stakedAssetId,
+    });
+    await fixture.algorand.send.assetOptIn({
+      sender: treasury.addr,
+      assetId: rewardAssetOneId,
+    });
+    await fixture.algorand.send.assetOptIn({
+      sender: treasury.addr,
+      assetId: xUSDAssetId,
+    });
+
     await pIRPClient.send.initApplication({
-      args: [stakedAssetId, rewardAssetOneId, xUSDAssetId, 200n],
+      args: [stakedAssetId, rewardAssetOneId, xUSDAssetId, PLATFORM_FEE_BPS],
       sender: admin.addr,
       assetReferences: [stakedAssetId, rewardAssetOneId, xUSDAssetId],
       extraFee: algokit.algos(0.2),
@@ -157,6 +177,10 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
         sender: stakerAccount.addr,
         assetId: xUSDAssetId,
       });
+      await fixture.algorand.send.assetOptIn({
+        sender: stakerAccount.addr,
+        assetId: rewardAssetOneId,
+      });
       fixture.algorand.account.setSignerFromAccount(admin);
       await fixture.algorand.send.assetTransfer({
         sender: admin.addr,
@@ -190,7 +214,489 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
     }
   });
 
-  test('deleteApplication', async () => {
+  test('stake', async () => {
+    let index = 0;
+    for (var staker of stakers) {
+      fixture.algorand.account.setSignerFromAccount(staker.account);
+
+      // Pre-checks
+      const { balance: stakeTokenBalanceBefore } = await fixture.algorand.asset.getAccountInformation(
+        staker.account.addr,
+        stakedAssetId
+      );
+      const { balance: algoBalanceBefore } = await fixture.algorand.account.getInformation(staker.account.addr);
+
+      const axferTxn = await fixture.algorand.createTransaction.assetTransfer({
+        sender: staker.account.addr,
+        receiver: pIRPClient.appAddress,
+        assetId: stakedAssetId,
+        amount: staker.stakeAmount,
+      });
+
+      // Simulate call to get fees
+      const initialFees = 250_000n;
+      pIRPClient.algorand.setSignerFromAccount(staker.account);
+      const feeResult = await pIRPClient
+        .newGroup()
+        .gas({ note: '1', args: [] })
+        .gas({ note: '2', args: [] })
+        .gas({ note: '3', args: [] })
+        .stake({
+          args: [axferTxn, staker.stakeAmount],
+          sender: staker.account.addr,
+          assetReferences: [stakedAssetId],
+          extraFee: algokit.microAlgos(initialFees),
+        })
+        .simulate({ allowUnnamedResources: true });
+      consoleLogger.info('Fees for stake', feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number);
+
+      const dynamicFee = feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number;
+      expect(dynamicFee).toBeGreaterThan(0n);
+      expect(dynamicFee).toBeLessThan(initialFees);
+      consoleLogger.info('Dynamic fee for stake', dynamicFee);
+      axferTxn.group = undefined;
+
+      await pIRPClient
+        .newGroup()
+        .gas({ note: '1', args: [] })
+        .gas({ note: '2', args: [] })
+        .gas({ note: '3', args: [] })
+        .stake({
+          args: [axferTxn, staker.stakeAmount],
+          sender: staker.account.addr,
+          assetReferences: [stakedAssetId],
+          extraFee: algokit.microAlgos(dynamicFee),
+        })
+        .send({ populateAppCallResources: true });
+
+      // Check states to confirm staking.
+      // check user balances against pre-check
+      const { balance: stakeTokenBalanceAfter } = await fixture.algorand.asset.getAccountInformation(
+        staker.account.addr,
+        stakedAssetId
+      );
+      const { balance: algoBalanceAfter } = await fixture.algorand.account.getInformation(staker.account.addr);
+      expect(stakeTokenBalanceAfter).toBe(stakeTokenBalanceBefore - staker.stakeAmount);
+      expect(algoBalanceAfter.microAlgos).toBe(algoBalanceBefore.microAlgos - BigInt(dynamicFee) - 2000n);
+
+      // Check box information to confirm staking.
+      const stakerBox = await pIRPClient.appClient.getBoxValue('stakers');
+      const stakerBoxInfo = getStakingAccount(stakerBox.slice(index, BYTE_LENGTH_STAKER * (index + 1)), 8);
+      consoleLogger.info('Staker Box Info', stakerBoxInfo);
+      expect(stakerBoxInfo.account).toBe(algosdk.encodeAddress(staker.account.addr.publicKey));
+      expect(stakerBoxInfo.stake).toBe(staker.stakeAmount);
+      expect(stakerBoxInfo.accruedASARewards).toBe(0n);
+      expect(stakerBoxInfo.accruedxUSDRewards).toBe(0n);
+      index += BYTE_LENGTH_STAKER;
+    }
+  });
+
+  test('Send Rewards x1', async () => {
+    const rewardSender = rewardSenders[0];
+    fixture.algorand.account.setSignerFromAccount(rewardSender.account);
+    // Pre-checks
+    const { balance: xUSDTokenBalanceBefore } = await fixture.algorand.asset.getAccountInformation(
+      rewardSender.account.addr,
+      xUSDAssetId
+    );
+    const { balance: algoBalanceBefore } = await fixture.algorand.account.getInformation(rewardSender.account.addr);
+
+    const axferTxn = await fixture.algorand.createTransaction.assetTransfer({
+      sender: rewardSender.account.addr,
+      receiver: pIRPClient.appAddress,
+      assetId: xUSDAssetId,
+      amount: rewardSender.rewardAmount,
+    });
+
+    // Simulate call to get fees
+    const initialFees = 250_000n;
+    pIRPClient.algorand.setSignerFromAccount(rewardSender.account);
+    const feeResult = await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .injectxUsd({
+        args: [axferTxn, rewardSender.rewardAmount],
+        sender: rewardSender.account.addr,
+        assetReferences: [xUSDAssetId],
+        extraFee: algokit.microAlgos(initialFees),
+      })
+      .simulate({ allowUnnamedResources: true });
+    consoleLogger.info('Fees for xUSD injection', feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number);
+    const dynamicFee = feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number;
+    expect(dynamicFee).toBeGreaterThan(0n);
+    expect(dynamicFee).toBeLessThan(initialFees);
+    consoleLogger.info('Dynamic fee for xUSD injection', dynamicFee);
+    axferTxn.group = undefined;
+    await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .injectxUsd({
+        args: [axferTxn, rewardSender.rewardAmount],
+        sender: rewardSender.account.addr,
+        assetReferences: [xUSDAssetId],
+        extraFee: algokit.microAlgos(dynamicFee),
+      })
+      .send({ populateAppCallResources: true });
+    // Check states to confirm rewards sent.
+    // check user balances against pre-check
+    const { balance: xUSDTokenBalanceAfter } = await fixture.algorand.asset.getAccountInformation(
+      rewardSender.account.addr,
+      xUSDAssetId
+    );
+    const { balance: algoBalanceAfter } = await fixture.algorand.account.getInformation(rewardSender.account.addr);
+    expect(xUSDTokenBalanceAfter).toBe(xUSDTokenBalanceBefore - rewardSender.rewardAmount);
+    expect(algoBalanceAfter.microAlgos).toBe(algoBalanceBefore.microAlgos - BigInt(dynamicFee) - 2000n);
+
+    let index = 0;
+    for (var staker of stakers) {
+      const stakerBox = await pIRPClient.appClient.getBoxValue('stakers');
+      const stakerBoxInfo = getStakingAccount(stakerBox.slice(index, BYTE_LENGTH_STAKER * (index + 1)), 8);
+      consoleLogger.info('Staker Box Info', stakerBoxInfo);
+      expect(stakerBoxInfo.account).toBe(algosdk.encodeAddress(staker.account.addr.publicKey));
+      expect(stakerBoxInfo.stake).toBe(STAKE_AMOUNT);
+      expect(stakerBoxInfo.accruedASARewards).toBe(0n);
+      expect(stakerBoxInfo.accruedxUSDRewards).toBe(REWARD_AMOUNT / NUM_STAKERS);
+      index += BYTE_LENGTH_STAKER;
+    }
+  });
+
+  test('Send Rewards x2', async () => {
+    const rewardSender = rewardSenders[1];
+    fixture.algorand.account.setSignerFromAccount(rewardSender.account);
+    // Pre-checks
+    const { balance: xUSDTokenBalanceBefore } = await fixture.algorand.asset.getAccountInformation(
+      rewardSender.account.addr,
+      xUSDAssetId
+    );
+    const { balance: algoBalanceBefore } = await fixture.algorand.account.getInformation(rewardSender.account.addr);
+
+    const axferTxn = await fixture.algorand.createTransaction.assetTransfer({
+      sender: rewardSender.account.addr,
+      receiver: pIRPClient.appAddress,
+      assetId: xUSDAssetId,
+      amount: rewardSender.rewardAmount,
+    });
+
+    // Simulate call to get fees
+    const initialFees = 250_000n;
+    pIRPClient.algorand.setSignerFromAccount(rewardSender.account);
+    const feeResult = await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .injectxUsd({
+        args: [axferTxn, rewardSender.rewardAmount],
+        sender: rewardSender.account.addr,
+        assetReferences: [xUSDAssetId],
+        extraFee: algokit.microAlgos(initialFees),
+      })
+      .simulate({ allowUnnamedResources: true });
+    consoleLogger.info('Fees for xUSD injection', feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number);
+    const dynamicFee = feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number;
+    expect(dynamicFee).toBeGreaterThan(0n);
+    expect(dynamicFee).toBeLessThan(initialFees);
+    consoleLogger.info('Dynamic fee for xUSD injection', dynamicFee);
+    axferTxn.group = undefined;
+    await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .injectxUsd({
+        args: [axferTxn, rewardSender.rewardAmount],
+        sender: rewardSender.account.addr,
+        assetReferences: [xUSDAssetId],
+        extraFee: algokit.microAlgos(dynamicFee),
+      })
+      .send({ populateAppCallResources: true });
+    // Check states to confirm rewards sent.
+    // check user balances against pre-check
+    const { balance: xUSDTokenBalanceAfter } = await fixture.algorand.asset.getAccountInformation(
+      rewardSender.account.addr,
+      xUSDAssetId
+    );
+    const { balance: algoBalanceAfter } = await fixture.algorand.account.getInformation(rewardSender.account.addr);
+    expect(xUSDTokenBalanceAfter).toBe(xUSDTokenBalanceBefore - rewardSender.rewardAmount);
+    expect(algoBalanceAfter.microAlgos).toBe(algoBalanceBefore.microAlgos - BigInt(dynamicFee) - 2000n);
+
+    // Check box data to confirm rewards sent.
+    let index = 0;
+    for (var staker of stakers) {
+      const stakerBox = await pIRPClient.appClient.getBoxValue('stakers');
+      const stakerBoxInfo = getStakingAccount(stakerBox.slice(index, BYTE_LENGTH_STAKER * (index + 1)), 8);
+      consoleLogger.info('Staker Box Info', stakerBoxInfo);
+      expect(stakerBoxInfo.account).toBe(algosdk.encodeAddress(staker.account.addr.publicKey));
+      expect(stakerBoxInfo.stake).toBe(STAKE_AMOUNT);
+      expect(stakerBoxInfo.accruedASARewards).toBe(0n);
+      expect(stakerBoxInfo.accruedxUSDRewards).toBe((REWARD_AMOUNT / NUM_STAKERS) * 2n);
+      index += BYTE_LENGTH_STAKER;
+    }
+  });
+
+  test('Send ASA rewards from admin', async () => {
+    const rewardSender = admin;
+    fixture.algorand.account.setSignerFromAccount(rewardSender);
+    // Pre-checks
+    const { balance: ASATokenBalanceBefore } = await fixture.algorand.asset.getAccountInformation(
+      rewardSender.addr,
+      rewardAssetOneId
+    );
+    const { balance: algoBalanceBefore } = await fixture.algorand.account.getInformation(rewardSender.addr);
+
+    const axferTxn = await fixture.algorand.createTransaction.assetTransfer({
+      sender: rewardSender.addr,
+      receiver: pIRPClient.appAddress,
+      assetId: rewardAssetOneId,
+      amount: REWARD_ASA_REWARD_AMOUNT,
+    });
+
+    // Simulate call to get fees
+    const initialFees = 250_000n;
+    pIRPClient.algorand.setSignerFromAccount(rewardSender);
+    const feeResult = await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .injectRewards({
+        args: [axferTxn, REWARD_ASA_REWARD_AMOUNT, rewardAssetOneId],
+        sender: rewardSender.addr,
+        assetReferences: [rewardAssetOneId],
+        extraFee: algokit.microAlgos(initialFees),
+      })
+      .simulate({ allowUnnamedResources: true });
+    consoleLogger.info('Fees for ASA injection', feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number);
+    const dynamicFee = feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number;
+    expect(dynamicFee).toBeGreaterThan(0n);
+    expect(dynamicFee).toBeLessThan(initialFees);
+    consoleLogger.info('Dynamic fee for ASA injection', dynamicFee);
+    axferTxn.group = undefined;
+    await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .injectRewards({
+        args: [axferTxn, REWARD_ASA_REWARD_AMOUNT, rewardAssetOneId],
+        sender: rewardSender.addr,
+        assetReferences: [rewardAssetOneId],
+        extraFee: algokit.microAlgos(dynamicFee),
+      })
+      .send({ populateAppCallResources: true });
+    // Check states to confirm rewards sent.
+    // check user balances against pre-check
+    const { balance: ASATokenBalanceAfter } = await fixture.algorand.asset.getAccountInformation(
+      rewardSender.addr,
+      rewardAssetOneId
+    );
+    const { balance: algoBalanceAfter } = await fixture.algorand.account.getInformation(rewardSender.addr);
+    expect(ASATokenBalanceAfter).toBe(ASATokenBalanceBefore - REWARD_ASA_REWARD_AMOUNT);
+    expect(algoBalanceAfter.microAlgos).toBe(algoBalanceBefore.microAlgos - BigInt(dynamicFee) - 5000n);
+
+    const platformFee = (REWARD_ASA_REWARD_AMOUNT * PLATFORM_FEE_BPS) / 10000n; // 2% platform fee
+    const actualTotalReward = REWARD_ASA_REWARD_AMOUNT - platformFee;
+
+    // confirm treasury platform fee received
+
+    // Check box data to confirm rewards sent.
+    let index = 0;
+    for (var staker of stakers) {
+      const stakerBox = await pIRPClient.appClient.getBoxValue('stakers');
+      const stakerBoxInfo = getStakingAccount(stakerBox.slice(index, BYTE_LENGTH_STAKER * (index + 1)), 8);
+      consoleLogger.info('Staker Box Info', stakerBoxInfo);
+      expect(stakerBoxInfo.account).toBe(algosdk.encodeAddress(staker.account.addr.publicKey));
+      expect(stakerBoxInfo.stake).toBe(STAKE_AMOUNT);
+      expect(stakerBoxInfo.accruedASARewards).toBe(actualTotalReward / NUM_STAKERS);
+      index += BYTE_LENGTH_STAKER;
+    }
+  });
+
+  test("Send rewards direect to application from Admin's account", async () => {
+    const rewardSender = admin;
+    fixture.algorand.account.setSignerFromAccount(rewardSender);
+
+    // Pre-checks
+    const { balance: ASATokenBalanceBefore } = await fixture.algorand.asset.getAccountInformation(
+      rewardSender.addr,
+      rewardAssetOneId
+    );
+    const { balance: algoBalanceBefore } = await fixture.algorand.account.getInformation(rewardSender.addr);
+
+    await fixture.algorand.send.assetTransfer({
+      sender: rewardSender.addr,
+      receiver: pIRPClient.appAddress,
+      assetId: rewardAssetOneId,
+      amount: REWARD_ASA_REWARD_AMOUNT,
+    });
+
+    const { balance: ASATokenBalanceAfter } = await fixture.algorand.asset.getAccountInformation(
+      rewardSender.addr,
+      rewardAssetOneId
+    );
+    const { balance: algoBalanceAfter } = await fixture.algorand.account.getInformation(rewardSender.addr);
+    expect(ASATokenBalanceAfter).toBe(ASATokenBalanceBefore - REWARD_ASA_REWARD_AMOUNT);
+    expect(algoBalanceAfter.microAlgos).toBe(algoBalanceBefore.microAlgos - 1000n);
+  });
+
+  test('Staker 1 claim rewards', async () => {
+    // This will cause the balances to accrue to users from the previously sent ASA rewards
+    const staker = stakers[0];
+    fixture.algorand.account.setSignerFromAccount(staker.account);
+
+    // Pre-checks
+    const { balance: ASATokenBalanceBefore } = await fixture.algorand.asset.getAccountInformation(
+      staker.account.addr,
+      rewardAssetOneId
+    );
+    const { balance: algoBalanceBefore } = await fixture.algorand.account.getInformation(staker.account.addr);
+    const initialFees = 250_000n;
+    const feeResult = await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .gas({ note: '4', args: [] })
+      .claimRewards({
+        args: [],
+        sender: staker.account.addr,
+        assetReferences: [rewardAssetOneId],
+        extraFee: algokit.microAlgos(initialFees),
+      })
+      .simulate({ allowUnnamedResources: true });
+    consoleLogger.info(
+      'Fees for Claim rewards (+ pickup and accrue)',
+      feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number
+    );
+    const dynamicFee = feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number;
+    expect(dynamicFee).toBeGreaterThan(0n);
+    expect(dynamicFee).toBeLessThan(initialFees);
+    consoleLogger.info('Dynamic fee for ASA injection', dynamicFee);
+    await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .gas({ note: '4', args: [] })
+      .claimRewards({
+        args: [],
+        sender: staker.account.addr,
+        assetReferences: [rewardAssetOneId],
+        extraFee: algokit.microAlgos(dynamicFee),
+      })
+      .send({ populateAppCallResources: true });
+
+    const { balance: ASATokenBalanceAfter } = await fixture.algorand.asset.getAccountInformation(
+      staker.account.addr,
+      rewardAssetOneId
+    );
+    const platformFee = (REWARD_ASA_REWARD_AMOUNT * PLATFORM_FEE_BPS) / 10000n; // 2% platform fee
+    const actualTotalReward = REWARD_ASA_REWARD_AMOUNT - platformFee;
+    const { balance: algoBalanceAfter } = await fixture.algorand.account.getInformation(staker.account.addr);
+    expect(ASATokenBalanceAfter).toBe(ASATokenBalanceBefore + (actualTotalReward / NUM_STAKERS) * 2n);
+    expect(algoBalanceAfter.microAlgos).toBe(algoBalanceBefore.microAlgos - BigInt(dynamicFee) - 1000n);
+
+    // Check box data to confirm rewards claimed by staker 1 and not staker 2 but accrual has occured.
+    let index = 0;
+    for (var s of stakers) {
+      const stakerBox = await pIRPClient.appClient.getBoxValue('stakers');
+      const stakerBoxInfo = getStakingAccount(stakerBox.slice(index, BYTE_LENGTH_STAKER * (index + 1)), 8);
+      consoleLogger.info('Staker Box Info', stakerBoxInfo);
+      expect(stakerBoxInfo.account).toBe(algosdk.encodeAddress(s.account.addr.publicKey));
+      if (index === 0) {
+        // staker 1
+        expect(stakerBoxInfo.accruedASARewards).toBe(0n);
+      } else {
+        expect(stakerBoxInfo.accruedASARewards).toBe((actualTotalReward / NUM_STAKERS) * 2n);
+      }
+      index += BYTE_LENGTH_STAKER;
+    }
+  });
+
+  test('staker 2 unstake', async () => {
+    const staker = stakers[1];
+    fixture.algorand.account.setSignerFromAccount(staker.account);
+
+    // Pre-checks
+    const { balance: stakeTokenBalanceBefore } = await fixture.algorand.asset.getAccountInformation(
+      staker.account.addr,
+      stakedAssetId
+    );
+    const { balance: algoBalanceBefore } = await fixture.algorand.account.getInformation(staker.account.addr);
+    const { balance: xUSDTokenBalanceBefore } = await fixture.algorand.asset.getAccountInformation(
+      staker.account.addr,
+      xUSDAssetId
+    );
+    const { balance: RewardTokenBalanceBefore } = await fixture.algorand.asset.getAccountInformation(
+      staker.account.addr,
+      rewardAssetOneId
+    );
+
+    const unstakeQuanity = 0n; // unstake all
+
+    // simulate call to get fees
+    const initialFees = 250_000n;
+    pIRPClient.algorand.setSignerFromAccount(staker.account);
+    const feeResult = await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .unstake({
+        args: [unstakeQuanity],
+        sender: staker.account.addr,
+        assetReferences: [stakedAssetId, xUSDAssetId, rewardAssetOneId],
+        extraFee: algokit.microAlgos(initialFees),
+      })
+      .simulate({ allowUnnamedResources: true });
+    consoleLogger.info('Fees for unstake', feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number);
+    const dynamicFee = feeResult.simulateResponse.txnGroups[0].appBudgetAdded as number;
+    expect(dynamicFee).toBeGreaterThan(0n);
+    expect(dynamicFee).toBeLessThan(initialFees);
+    consoleLogger.info('Dynamic fee for unstake', dynamicFee);
+    await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .unstake({
+        args: [unstakeQuanity],
+        sender: staker.account.addr,
+        assetReferences: [stakedAssetId, xUSDAssetId, rewardAssetOneId],
+        extraFee: algokit.microAlgos(dynamicFee),
+      })
+      .send({ populateAppCallResources: true });
+
+    // platform fee is not charged on unstake but need to confirm what it should be against their rewards
+    const platformFee = (REWARD_ASA_REWARD_AMOUNT * PLATFORM_FEE_BPS) / 10000n; // 2% platform fee
+    const actualTotalReward = REWARD_ASA_REWARD_AMOUNT - platformFee;
+
+    // Check states to confirm unstaking.
+    // check user balances against pre-check
+    const { balance: stakeTokenBalanceAfter } = await fixture.algorand.asset.getAccountInformation(
+      staker.account.addr,
+      stakedAssetId
+    );
+    const { balance: algoBalanceAfter } = await fixture.algorand.account.getInformation(staker.account.addr);
+    const { balance: xUSDTokenBalanceAfter } = await fixture.algorand.asset.getAccountInformation(
+      staker.account.addr,
+      xUSDAssetId
+    );
+    const { balance: RewardTokenBalanceAfter } = await fixture.algorand.asset.getAccountInformation(
+      staker.account.addr,
+      rewardAssetOneId
+    );
+    expect(stakeTokenBalanceAfter).toBe(stakeTokenBalanceBefore + STAKE_AMOUNT);
+    expect(algoBalanceAfter.microAlgos).toBe(algoBalanceBefore.microAlgos - BigInt(dynamicFee) - 1000n);
+    expect(xUSDTokenBalanceAfter).toBe(xUSDTokenBalanceBefore + (REWARD_AMOUNT / NUM_STAKERS) * 2n);
+    expect(RewardTokenBalanceAfter).toBe(RewardTokenBalanceBefore + (actualTotalReward / NUM_STAKERS) * 2n);
+  });
+
+  test.skip('deleteApplication', async () => {
     await pIRPClient
       .newGroup()
       .gas({ note: '1', args: [] })

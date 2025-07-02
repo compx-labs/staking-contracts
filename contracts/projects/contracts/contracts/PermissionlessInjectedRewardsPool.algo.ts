@@ -61,6 +61,8 @@ export class PermissionlessInjectedRewardsPool extends Contract {
 
   platformFeeBps = GlobalStateKey<uint64>();
 
+  paidPlatformFees = GlobalStateKey<uint64>();
+
   createApplication(adminAddress: Address, treasuryAddress: Address, injectorAddress: Address): void {
     this.adminAddress.value = adminAddress;
     this.treasuryAddress.value = treasuryAddress;
@@ -92,6 +94,11 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     });
     sendAssetTransfer({
       xferAsset: AssetID.fromUint64(this.xUSDAssetId.value),
+      assetReceiver: this.app.address,
+      assetAmount: 0,
+    });
+    sendAssetTransfer({
+      xferAsset: AssetID.fromUint64(rewardAssetId),
       assetReceiver: this.app.address,
       assetAmount: 0,
     });
@@ -212,17 +219,32 @@ export class PermissionlessInjectedRewardsPool extends Contract {
    * Inject rewards into the pool
    */
 
+  // eslint-disable-next-line no-unused-vars
   injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64, rewardAssetId: uint64): void {
     verifyAssetTransferTxn(rewardTxn, {
-      sender: this.injectorAddress.value,
       assetReceiver: this.app.address,
-      xferAsset: AssetID.fromUint64(rewardAssetId),
+      xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
       assetAmount: quantity,
     });
-    this.injectedASARewards.value = this.injectedASARewards.value + quantity;
+
+    // Take percentage from injected rewards based on platform fee bps
+    const platformFee = wideRatio([quantity, this.platformFeeBps.value], [10000]);
+
+    this.injectedASARewards.value = this.injectedASARewards.value + quantity - platformFee;
     this.lastInjectionTime.value = globals.latestTimestamp;
-    this.pickupRewards();
+    this.sendPlatformFees(platformFee);
     this.accrueRewards();
+  }
+
+  private sendPlatformFees(platformFee: uint64): void {
+    sendAssetTransfer({
+      assetAmount: platformFee,
+      assetReceiver: this.treasuryAddress.value,
+      xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
+      sender: this.app.address,
+      fee: 0,
+    });
+    this.paidPlatformFees.value = this.paidPlatformFees.value + platformFee;
   }
 
   private pickupRewards(): void {
@@ -232,16 +254,20 @@ export class PermissionlessInjectedRewardsPool extends Contract {
       stakeTokenAmount = this.totalStaked.value;
     }
 
-    const amount = appAssetBalance - this.paidASARewards.value - stakeTokenAmount - this.injectedASARewards.value;
+    if (appAssetBalance > this.paidASARewards.value + this.injectedASARewards.value + stakeTokenAmount) {
+      const amount = appAssetBalance - this.paidASARewards.value - stakeTokenAmount - this.injectedASARewards.value;
 
-    if (amount > this.numStakers.value) {
-      this.injectedASARewards.value = this.injectedASARewards.value + amount;
+      const platformFee = wideRatio([amount, this.platformFeeBps.value], [10000]);
+
+      if (amount > this.numStakers.value) {
+        this.injectedASARewards.value = this.injectedASARewards.value + amount - platformFee;
+        this.sendPlatformFees(platformFee);
+      }
     }
   }
 
   injectxUSD(xUSDTxn: AssetTransferTxn, quantity: uint64): void {
     verifyAssetTransferTxn(xUSDTxn, {
-      sender: this.injectorAddress.value,
       assetReceiver: this.app.address,
       xferAsset: AssetID.fromUint64(this.xUSDAssetId.value),
       assetAmount: quantity,
@@ -286,6 +312,12 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     assert(quantity > 0, 'Invalid quantity');
     assert(this.poolActive.value, 'Pool not active');
     assert(!this.poolEnding.value, 'Pool ending');
+
+    this.pickupRewards();
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget();
+    }
+    this.accrueRewards();
 
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget();
@@ -353,12 +385,6 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         increaseOpcodeBudget();
       }
     }
-
-    this.pickupRewards();
-    if (globals.opcodeBudget < 300) {
-      increaseOpcodeBudget();
-    }
-    this.accrueRewards();
   }
 
   accrueRewards(): void {
@@ -465,6 +491,11 @@ export class PermissionlessInjectedRewardsPool extends Contract {
   }
 
   claimRewards(): void {
+    this.pickupRewards();
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget();
+    }
+    this.accrueRewards();
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget();
     }
@@ -494,15 +525,14 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget();
     }
+  }
 
+  unstake(quantity: uint64): void {
     this.pickupRewards();
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget();
     }
     this.accrueRewards();
-  }
-
-  unstake(quantity: uint64): void {
     for (let i = 0; i < this.numStakers.value; i += 1) {
       if (globals.opcodeBudget < 300) {
         increaseOpcodeBudget();
@@ -575,12 +605,6 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         this.setStaker(staker.account, staker);
       }
     }
-
-    this.pickupRewards();
-    if (globals.opcodeBudget < 300) {
-      increaseOpcodeBudget();
-    }
-    this.accrueRewards();
   }
 
   private getStakerIndex(address: Address): uint64 {
