@@ -16,7 +16,7 @@ export type mbrReturn = {
 const MAX_STAKERS_PER_POOL = 500;
 const ASSET_HOLDING_FEE = 100000; // creation/holding fee for asset
 const ALGORAND_ACCOUNT_MIN_BALANCE = 100000;
-const VERSION = 1101;
+const VERSION = 2000;
 
 export class PermissionlessInjectedRewardsPool extends Contract {
   programVersion = 11;
@@ -41,13 +41,9 @@ export class PermissionlessInjectedRewardsPool extends Contract {
 
   adminAddress = GlobalStateKey<Address>();
 
-  injectorAddress = GlobalStateKey<Address>();
-
   treasuryAddress = GlobalStateKey<Address>();
 
-  xUSDFee = GlobalStateKey<uint64>();
-
-  feeWaived = GlobalStateKey<boolean>();
+  injectorAddress = GlobalStateKey<Address>();
 
   minimumBalance = GlobalStateKey<uint64>();
 
@@ -59,29 +55,20 @@ export class PermissionlessInjectedRewardsPool extends Contract {
 
   poolEnding = GlobalStateKey<boolean>();
 
-  rewardFrequency = GlobalStateKey<uint64>();
-
-  rewardPerInjection = GlobalStateKey<uint64>();
-
-  totalRewards = GlobalStateKey<uint64>();
-
   lastInjectionTime = GlobalStateKey<uint64>();
 
   contractVersion = GlobalStateKey<uint64>();
 
-  // This param detemines is injection is standard or drip fed. 0 = standard, 1 = drip fed
-  // If drip fed, the total rewards and rewards per injection will be set at 0
-  // Reward frequency will still be used.
-  injectionType = GlobalStateKey<uint64>();
+  platformFeeBps = GlobalStateKey<uint64>();
 
-  createApplication(adminAddress: Address, injectorAddress: Address, treasuryAddress: Address): void {
+  createApplication(adminAddress: Address, treasuryAddress: Address, injectorAddress: Address): void {
     this.adminAddress.value = adminAddress;
-    this.injectorAddress.value = injectorAddress;
     this.treasuryAddress.value = treasuryAddress;
+    this.injectorAddress.value = injectorAddress;
     this.contractVersion.value = VERSION;
   }
 
-  initApplication(stakedAsset: uint64, rewardAssetId: uint64, xUSDFee: uint64, xUSDAssetID: uint64): void {
+  initApplication(stakedAsset: uint64, rewardAssetId: uint64, xUSDAssetID: uint64, platformFeeBps: uint64): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can init application');
 
     this.stakedAssetId.value = stakedAsset;
@@ -91,17 +78,12 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     this.injectedASARewards.value = 0;
     this.injectedxUSDRewards.value = 0;
     this.numStakers.value = 0;
-    this.xUSDFee.value = xUSDFee;
-    this.feeWaived.value = false;
     this.poolActive.value = false;
     this.poolEnding.value = false;
     this.xUSDAssetId.value = xUSDAssetID;
-    this.totalRewards.value = 0;
-    this.rewardFrequency.value = 0;
-    this.rewardPerInjection.value = 0;
-    this.injectionType.value = 0;
     this.lastInjectionTime.value = globals.latestTimestamp;
     this.paidASARewards.value = 0;
+    this.platformFeeBps.value = platformFeeBps;
 
     sendAssetTransfer({
       xferAsset: AssetID.fromUint64(stakedAsset),
@@ -123,48 +105,14 @@ export class PermissionlessInjectedRewardsPool extends Contract {
 
   setPoolActive(): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can set pool active');
-    if (!this.feeWaived.value) {
-      assert(this.app.address.assetBalance(this.xUSDAssetId.value) >= this.xUSDFee.value, 'Insufficient balance');
-    }
-
-    // Check reward params, if injectionType === 0, then there must be full rewards, and injection settings set. Plus the reward admin should have the rewards in it's account
-    if (this.injectionType.value === 0) {
-      assert(this.totalRewards.value > 0, 'Total rewards not set');
-      assert(this.rewardPerInjection.value > 0, 'Reward per injection not set');
-      assert(
-        this.injectorAddress.value.assetBalance(this.rewardAssetId.value) >= this.totalRewards.value,
-        'Insufficient rewards'
-      );
-    }
-
-    assert(this.rewardFrequency.value > 0, 'Reward frequency not set');
 
     this.poolActive.value = true;
-    sendAssetTransfer({
-      xferAsset: AssetID.fromUint64(this.xUSDAssetId.value),
-      assetReceiver: this.treasuryAddress.value,
-      assetAmount: this.xUSDFee.value,
-      sender: this.app.address,
-    });
   }
 
-  setRewardParams(
-    totalRewards: uint64,
-    rewardFrequency: uint64,
-    rewardPerInjection: uint64,
-    injectionType: uint64
-  ): void {
-    assert(this.txn.sender === this.adminAddress.value, 'Only admin can set reward params');
-    this.injectionType.value = injectionType;
-    if (injectionType === 0) {
-      this.totalRewards.value = totalRewards;
-      this.rewardFrequency.value = rewardFrequency;
-      this.rewardPerInjection.value = rewardPerInjection;
-    } else {
-      this.totalRewards.value = 0;
-      this.rewardFrequency.value = rewardFrequency;
-      this.rewardPerInjection.value = 0;
-    }
+  setPoolEnding(): void {
+    assert(this.txn.sender === this.adminAddress.value, 'Only admin can set pool ending');
+    this.poolEnding.value = true;
+    this.poolActive.value = false;
   }
 
   // Platform admin function  - Injector == CompX
@@ -189,11 +137,6 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     this.treasuryAddress.value = treasuryAddress;
   }
 
-  updatexUSDFee(xUSDFee: uint64): void {
-    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can update xUSD fee');
-    this.xUSDFee.value = xUSDFee;
-  }
-
   updateInjectorAddress(injectorAddress: Address): void {
     assert(this.txn.sender === this.injectorAddress.value, 'Only injector can update injector address');
     this.injectorAddress.value = injectorAddress;
@@ -212,12 +155,6 @@ export class PermissionlessInjectedRewardsPool extends Contract {
   updatePoolEnding(poolEnding: boolean): void {
     assert(this.txn.sender === this.adminAddress.value, 'Only admins can update pool ending');
     this.poolEnding.value = poolEnding;
-  }
-
-  setFeeWaived(): void {
-    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can update fee waive');
-    this.feeWaived.value = true;
-    this.xUSDFee.value = 0;
   }
 
   private costForBoxStorage(totalNumBytes: uint64): uint64 {
@@ -276,21 +213,19 @@ export class PermissionlessInjectedRewardsPool extends Contract {
    */
 
   injectRewards(rewardTxn: AssetTransferTxn, quantity: uint64, rewardAssetId: uint64): void {
-    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can inject rewards');
-
     verifyAssetTransferTxn(rewardTxn, {
       sender: this.injectorAddress.value,
       assetReceiver: this.app.address,
       xferAsset: AssetID.fromUint64(rewardAssetId),
-      assetAmount: this.rewardPerInjection.value > 0 ? this.rewardPerInjection.value : quantity,
+      assetAmount: quantity,
     });
     this.injectedASARewards.value = this.injectedASARewards.value + quantity;
     this.lastInjectionTime.value = globals.latestTimestamp;
+    this.pickupRewards();
+    this.accrueRewards();
   }
 
-  pickupRewards(): void {
-    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can pickup rewards');
-
+  private pickupRewards(): void {
     const appAssetBalance = this.app.address.assetBalance(this.rewardAssetId.value);
     let stakeTokenAmount = 0;
     if (this.rewardAssetId.value === this.stakedAssetId.value) {
@@ -305,7 +240,6 @@ export class PermissionlessInjectedRewardsPool extends Contract {
   }
 
   injectxUSD(xUSDTxn: AssetTransferTxn, quantity: uint64): void {
-    assert(this.txn.sender === this.injectorAddress.value, 'Only injector can inject xUSD');
     verifyAssetTransferTxn(xUSDTxn, {
       sender: this.injectorAddress.value,
       assetReceiver: this.app.address,
@@ -313,6 +247,15 @@ export class PermissionlessInjectedRewardsPool extends Contract {
       assetAmount: quantity,
     });
     this.injectedxUSDRewards.value = this.injectedxUSDRewards.value + quantity;
+    this.lastInjectionTime.value = globals.latestTimestamp;
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget();
+    }
+    this.pickupRewards();
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget();
+    }
+    this.accrueRewards();
   }
 
   deleteApplication(): void {
@@ -329,7 +272,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         assetCloseTo: this.adminAddress.value,
       });
     }
-    const paymentAmount = this.app.address.balance - this.app.address.minBalance;
+    const paymentAmount = this.app.address.balance - this.app.address.minBalance - 2000;
 
     sendPayment({
       amount: paymentAmount,
@@ -410,7 +353,12 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         increaseOpcodeBudget();
       }
     }
-    assert(actionComplete, 'Stake  failed');
+
+    this.pickupRewards();
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget();
+    }
+    this.accrueRewards();
   }
 
   accrueRewards(): void {
@@ -546,6 +494,12 @@ export class PermissionlessInjectedRewardsPool extends Contract {
     if (globals.opcodeBudget < 300) {
       increaseOpcodeBudget();
     }
+
+    this.pickupRewards();
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget();
+    }
+    this.accrueRewards();
   }
 
   unstake(quantity: uint64): void {
@@ -621,6 +575,12 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         this.setStaker(staker.account, staker);
       }
     }
+
+    this.pickupRewards();
+    if (globals.opcodeBudget < 300) {
+      increaseOpcodeBudget();
+    }
+    this.accrueRewards();
   }
 
   private getStakerIndex(address: Address): uint64 {

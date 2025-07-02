@@ -10,11 +10,11 @@
           "type": "address"
         },
         {
-          "name": "injectorAddress",
+          "name": "treasuryAddress",
           "type": "address"
         },
         {
-          "name": "treasuryAddress",
+          "name": "injectorAddress",
           "type": "address"
         }
       ],
@@ -34,11 +34,11 @@
           "type": "uint64"
         },
         {
-          "name": "xUSDFee",
+          "name": "xUSDAssetID",
           "type": "uint64"
         },
         {
-          "name": "xUSDAssetID",
+          "name": "platformFeeBps",
           "type": "uint64"
         }
       ],
@@ -66,25 +66,8 @@
       }
     },
     {
-      "name": "setRewardParams",
-      "args": [
-        {
-          "name": "totalRewards",
-          "type": "uint64"
-        },
-        {
-          "name": "rewardFrequency",
-          "type": "uint64"
-        },
-        {
-          "name": "rewardPerInjection",
-          "type": "uint64"
-        },
-        {
-          "name": "injectionType",
-          "type": "uint64"
-        }
-      ],
+      "name": "setPoolEnding",
+      "args": [],
       "returns": {
         "type": "void"
       }
@@ -131,18 +114,6 @@
         {
           "name": "treasuryAddress",
           "type": "address"
-        }
-      ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "updatexUSDFee",
-      "args": [
-        {
-          "name": "xUSDFee",
-          "type": "uint64"
         }
       ],
       "returns": {
@@ -198,13 +169,6 @@
       }
     },
     {
-      "name": "setFeeWaived",
-      "args": [],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
       "name": "getMBRForPoolCreation",
       "args": [],
       "returns": {
@@ -239,13 +203,6 @@
           "type": "uint64"
         }
       ],
-      "returns": {
-        "type": "void"
-      }
-    },
-    {
-      "name": "pickupRewards",
-      "args": [],
       "returns": {
         "type": "void"
       }

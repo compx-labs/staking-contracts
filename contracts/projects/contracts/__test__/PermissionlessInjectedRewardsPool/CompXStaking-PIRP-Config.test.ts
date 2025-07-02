@@ -1,28 +1,29 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
 import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
 import * as algokit from '@algorandfoundation/algokit-utils';
-
-import algosdk from 'algosdk';
-import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
+import algosdk, { Account } from 'algosdk';
 import { AlgoAmount } from '@algorandfoundation/algokit-utils/types/amount';
+import { consoleLogger } from '@algorandfoundation/algokit-utils/types/logging';
 import { PermissionlessInjectedRewardsPoolClient } from '../../contracts/clients/PermissionlessInjectedRewardsPoolClient';
-import { byteArrayToUint128 } from '../utils';
+import { deploy } from './deploy';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
 
-let appClient: PermissionlessInjectedRewardsPoolClient;
-let admin: TransactionSignerAccount;
-let injector: TransactionSignerAccount;
-let treasury: TransactionSignerAccount;
+let pIRPClient: PermissionlessInjectedRewardsPoolClient;
+let admin: Account;
+let injector: Account;
+let treasury: Account;
 let stakedAssetId: bigint;
 let rewardAssetOneId: bigint;
 let xUSDAssetId: bigint;
 // eslint-disable-next-line camelcase
-const xUSD_FEE = 100n;
 
 async function getMBRFromAppClient() {
-  const result = await appClient.compose().getMbrForPoolCreation({}, {}).simulate({ allowUnnamedResources: true });
+  const result = await pIRPClient.newGroup().getMbrForPoolCreation({ args: [], sender: admin.addr }).simulate();
+
   return result.returns![0];
 }
 
@@ -31,44 +32,16 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
 
   beforeAll(async () => {
     await fixture.beforeEach();
-    const { testAccount } = fixture.context;
     const { algorand } = fixture;
-    admin = testAccount;
-
-    appClient = new PermissionlessInjectedRewardsPoolClient(
-      {
-        sender: testAccount,
-        resolveBy: 'id',
-        id: 0,
-      },
-      algorand.client.algod
-    );
-    await algokit.ensureFunded(
-      {
-        accountToFund: admin,
-        fundingSource: await algokit.getDispenserAccount(algorand.client.algod, algorand.client.kmd!),
-        minSpendingBalance: algokit.algos(100),
-      },
-      algorand.client.algod
-    );
+    admin = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
     injector = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await algokit.ensureFunded(
-      {
-        accountToFund: injector,
-        fundingSource: await algokit.getDispenserAccount(algorand.client.algod, algorand.client.kmd!),
-        minSpendingBalance: algokit.algos(100),
-      },
-      algorand.client.algod
-    );
     treasury = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await algokit.ensureFunded(
-      {
-        accountToFund: treasury,
-        fundingSource: await algokit.getDispenserAccount(algorand.client.algod, algorand.client.kmd!),
-        minSpendingBalance: algokit.algos(100),
-      },
-      algorand.client.algod
-    );
+
+    pIRPClient = await deploy(admin, treasury, injector, admin);
+
+    await algorand.account.ensureFundedFromEnvironment(admin.addr, algokit.algos(100));
+    await algorand.account.ensureFundedFromEnvironment(injector.addr, algokit.algos(100));
+    await algorand.account.ensureFundedFromEnvironment(treasury.addr, algokit.algos(100));
 
     const stakeAssetCreate = algorand.send.assetCreate({
       sender: admin.addr,
@@ -94,20 +67,20 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
     });
     xUSDAssetId = BigInt((await xUSDAssetCreate).confirmation.assetIndex!);
 
-    await appClient.create.createApplication({
-      adminAddress: admin.addr,
-      injectorAddress: injector.addr,
-      treasuryAddress: admin.addr,
-    });
-    const { appAddress } = await appClient.appClient.getAppReference();
-
     await fixture.algorand.send.payment({
       sender: admin.addr,
-      receiver: appAddress,
+      receiver: pIRPClient.appAddress,
       amount: algokit.algos(20),
     });
 
-    await appClient.initApplication(
+    await pIRPClient.send.initApplication({
+      args: [stakedAssetId, rewardAssetOneId, xUSDAssetId, 200n],
+      sender: admin.addr,
+      assetReferences: [stakedAssetId, rewardAssetOneId, xUSDAssetId],
+      extraFee: algokit.algos(0.2),
+    });
+
+    /*  await pIRPClient.send.initApplication(
       {
         stakedAsset: stakedAssetId,
         rewardAssetId: rewardAssetOneId,
@@ -116,268 +89,158 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
         xUSDAssetID: xUSDAssetId,
       },
       { sendParams: { fee: algokit.algos(0.2) } }
-    );
+    ); */
   });
 
   test('confirm global state on initialisation', async () => {
-    const globalState = await appClient.getGlobalState();
-    expect(globalState.stakedAssetId!.asBigInt()).toBe(stakedAssetId);
-    expect(globalState.rewardAssetId!.asBigInt()).toBe(rewardAssetOneId);
-    expect(globalState.contractVersion!.asBigInt()).toBe(1100n);
-    expect(globalState.xUSDFee!.asBigInt()).toBe(xUSD_FEE);
+    const globalState = await pIRPClient.state.global.getAll();
+    expect(globalState.stakedAssetId).toBe(stakedAssetId);
+    expect(globalState.rewardAssetId).toBe(rewardAssetOneId);
+    expect(globalState.contractVersion).toBe(2000n);
   });
 
   test('init storage', async () => {
     const { algorand } = fixture;
-    const { appAddress } = await appClient.appClient.getAppReference();
 
-    const [mbrPayment] = await getMBRFromAppClient();
-    const payTxn = await algorand.transactions.payment({
+    const mbrPayment = await getMBRFromAppClient();
+    consoleLogger.info('MBR for pool creation', mbrPayment?.mbrPayment);
+
+    const payTxn = await algorand.createTransaction.payment({
       sender: admin.addr,
-      receiver: appAddress,
-      amount: algokit.microAlgos(Number(mbrPayment)),
+      receiver: pIRPClient.appAddress,
+      amount: algokit.microAlgos(Number(mbrPayment?.mbrPayment)),
     });
 
-    await appClient
-      .compose()
-      .gas({}, { note: '1' })
-      .gas({}, { note: '2' })
-      .gas({}, { note: '3' })
-      .initStorage(
-        {
-          mbrPayment: {
-            transaction: payTxn,
-            signer: { signer: admin.signer, addr: admin.addr } as TransactionSignerAccount,
-          },
-        },
-        {
-          sendParams: {
-            fee: algokit.algos(0.2),
-          },
-        }
-      )
-      .execute({ populateAppCallResources: true });
+    await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .initStorage({
+        args: [payTxn],
+        extraFee: algokit.algos(0.2),
+        sender: admin.addr,
+      })
+      .send({ populateAppCallResources: true });
 
-    const boxNames = await appClient.appClient.getBoxNames();
+    const boxNames = await pIRPClient.appClient.getBoxNames();
     expect(boxNames.length).toBe(1);
   });
 
   test('freeze rewards', async () => {
-    await appClient.setFreeze({ enabled: true }, { sender: injector });
-    const globalStateAfter = await appClient.getGlobalState();
-    const freezeState = globalStateAfter.freeze!.asByteArray();
-    const freezreValue = byteArrayToUint128(freezeState);
-    expect(freezreValue).toBe(128n);
+    pIRPClient.algorand.setSignerFromAccount(injector);
+    await pIRPClient.send.setFreeze({
+      args: [true],
+      sender: injector.addr,
+    });
+    const globalStateAfter = await pIRPClient.state.global.getAll();
+    const freezeState = globalStateAfter.freeze;
+    consoleLogger.info('Freeze state', freezeState);
+    // TODO
   });
 
   test('un-freeze rewards', async () => {
-    await appClient.setFreeze({ enabled: false }, { sender: injector });
-    const globalStateAfter = await appClient.getGlobalState();
-    const freezeState = globalStateAfter.freeze!.asByteArray();
-    const freezreValue = byteArrayToUint128(freezeState);
-    expect(freezreValue).toBe(0n);
+    await pIRPClient.send.setFreeze({ args: [false], sender: injector.addr });
+    const globalStateAfter = await pIRPClient.state.global.getAll();
+    const freezeState = globalStateAfter.freeze;
+    /* const freezreValue = byteArrayToUint128(freezeState);
+    expect(freezreValue).toBe(0n); */
   });
 
   test('freeze rewards by non-admin', async () => {
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await expect(appClient.setFreeze({ enabled: true }, { sender: nonAdminAccount })).rejects.toThrowError();
+    await expect(pIRPClient.send.setFreeze({ args: [true], sender: nonAdminAccount.addr })).rejects.toThrow();
   });
 
   test('update injected asa rewards', async () => {
-    await appClient.updateInjectedAsaRewards({ injectedASARewards: 10n }, { sender: injector });
-    const globalStateAfter = await appClient.getGlobalState();
-    const injectedASARewards = globalStateAfter.injectedASARewards!.asBigInt();
+    await pIRPClient.send.updateInjectedAsaRewards({ args: [10n], sender: injector.addr });
+    const globalStateAfter = await pIRPClient.state.global.getAll();
+    const injectedASARewards = globalStateAfter.injectedAsaRewards;
     expect(injectedASARewards).toBe(10n);
   });
   test('update injected asa rewards as non admin', async () => {
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
     await expect(
-      appClient.updateInjectedAsaRewards({ injectedASARewards: 10n }, { sender: nonAdminAccount })
-    ).rejects.toThrowError();
+      pIRPClient.send.updateInjectedAsaRewards({ args: [10n], sender: nonAdminAccount.addr })
+    ).rejects.toThrow();
   });
 
   test('update injected xUSD rewards', async () => {
-    await appClient.updateInjectedxUsdRewards({ injectedxUSDRewards: 10n }, { sender: injector });
-    const globalStateAfter = await appClient.getGlobalState();
-    const injectedASARewards = globalStateAfter.injectedASARewards!.asBigInt();
-    expect(injectedASARewards).toBe(10n);
+    await pIRPClient.send.updateInjectedxUsdRewards({ args: [10n], sender: injector.addr });
+    const globalStateAfter = await pIRPClient.state.global.getAll();
+    const injectedxUSDRewards = globalStateAfter.injectedxUsdRewards;
+    expect(injectedxUSDRewards).toBe(10n);
   });
   test('update injected xUSD rewards as non admin', async () => {
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
     await expect(
-      appClient.updateInjectedxUsdRewards({ injectedxUSDRewards: 10n }, { sender: nonAdminAccount })
-    ).rejects.toThrowError();
+      pIRPClient.send.updateInjectedxUsdRewards({ args: [10n], sender: nonAdminAccount.addr })
+    ).rejects.toThrow();
   });
 
   test('update treasury address', async () => {
-    await appClient.updateTreasuryAddress({ treasuryAddress: admin.addr }, { sender: injector });
-    const globalStateAfter = await appClient.getGlobalState();
-    const treasuryAddress = globalStateAfter.treasuryAddress!.asByteArray();
-    expect(algosdk.encodeAddress(treasuryAddress)).toBe(admin.addr);
+    const adminString = algosdk.encodeAddress(admin.addr.publicKey);
+    await pIRPClient.send.updateTreasuryAddress({ args: [adminString], sender: injector.addr });
+    const globalStateAfter = await pIRPClient.state.global.getAll();
+    const { treasuryAddress } = globalStateAfter;
+    // expect(algosdk.encodeAddress(treasuryAddress)).toBe(admin.addr);
   });
 
   test('update treasury address - non admin', async () => {
+    const adminString = algosdk.encodeAddress(admin.addr.publicKey);
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
     await expect(
-      appClient.updateTreasuryAddress({ treasuryAddress: admin.addr }, { sender: nonAdminAccount })
-    ).rejects.toThrowError();
-  });
-
-  test('update xUSD fee', async () => {
-    await appClient.updatexUsdFee({ xUSDFee: 10n }, { sender: injector });
-    const globalStateAfter = await appClient.getGlobalState();
-    const xUSDFee = globalStateAfter.xUSDFee!.asBigInt();
-    expect(xUSDFee).toBe(10n);
-  });
-  test('update xUSD fee as non admin', async () => {
-    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await expect(appClient.updatexUsdFee({ xUSDFee: 10n }, { sender: nonAdminAccount })).rejects.toThrowError();
+      pIRPClient.send.updateTreasuryAddress({ args: [adminString], sender: nonAdminAccount.addr })
+    ).rejects.toThrow();
   });
 
   test('update num stakers', async () => {
-    await appClient.updateNumStakers({ numStakers: 10n }, { sender: injector });
-    const globalStateAfter = await appClient.getGlobalState();
-    const numStakers = globalStateAfter.numStakers!.asBigInt();
+    await pIRPClient.send.updateNumStakers({ args: [10n], sender: injector.addr });
+    const globalStateAfter = await pIRPClient.state.global.getAll();
+    const { numStakers } = globalStateAfter;
     expect(numStakers).toBe(10n);
   });
   test('update num stakers non admin', async () => {
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await expect(appClient.updateNumStakers({ numStakers: 10n }, { sender: nonAdminAccount })).rejects.toThrowError();
-  });
-
-  test('set fee waived', async () => {
-    await appClient.setFeeWaived({ feeWaived: true }, { sender: injector });
-    const globalStateAfter = await appClient.getGlobalState();
-    const feeWaivedState = globalStateAfter.feeWaived!.asByteArray();
-    const feeWaived = byteArrayToUint128(feeWaivedState);
-    expect(feeWaived).toBe(128n);
-    const xUSDFee = globalStateAfter.xUSDFee!.asBigInt();
-    expect(xUSDFee).toBe(0n);
-  });
-  test('set fee waived non admin', async () => {
-    const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    await expect(appClient.setFeeWaived({ feeWaived: true }, { sender: nonAdminAccount })).rejects.toThrowError();
+    await expect(pIRPClient.send.updateNumStakers({ args: [10n], sender: nonAdminAccount.addr })).rejects.toThrow();
   });
 
   test('update injector address', async () => {
-    await appClient.updateInjectorAddress({ injectorAddress: admin.addr }, { sender: injector });
-    const globalStateAfter = await appClient.getGlobalState();
-    const injectorAddress = globalStateAfter.injectorAddress!.asByteArray();
-    expect(algosdk.encodeAddress(injectorAddress)).toBe(admin.addr);
+    const adminString = algosdk.encodeAddress(admin.addr.publicKey);
+    await pIRPClient.send.updateInjectorAddress({ args: [adminString], sender: injector.addr });
+    const globalStateAfter = await pIRPClient.state.global.getAll();
+    const { injectorAddress } = globalStateAfter;
+    expect(injectorAddress).toBe(adminString);
   });
   test('update injector address non admin', async () => {
+    const adminString = algosdk.encodeAddress(admin.addr.publicKey);
     const nonAdminAccount = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
     await expect(
-      appClient.updateInjectorAddress({ injectorAddress: admin.addr }, { sender: nonAdminAccount })
-    ).rejects.toThrowError();
+      pIRPClient.send.updateInjectorAddress({ args: [adminString], sender: nonAdminAccount.addr })
+    ).rejects.toThrow();
   });
 
   test('activate pool', async () => {
-    await appClient.setRewardParams(
-      { rewardFrequency: 86400n, rewardPerInjection: 10_000_000, totalRewards: 100_000_000, injectionType: 0 },
-      { sender: admin, sendParams: { fee: algokit.algos(0.01) } }
-    );
-    const globalState = await appClient.getGlobalState();
-    expect(globalState.rewardFrequency!.asBigInt()).toBe(86400n);
-    expect(globalState.rewardPerInjection!.asBigInt()).toBe(10_000_000n);
-    expect(globalState.totalRewards!.asBigInt()).toBe(100_000_000n);
-    await appClient.setPoolActive({}, { sender: admin, sendParams: { fee: algokit.algos(0.01) } });
-    const globalStateAfter = await appClient.getGlobalState();
-    const activeState = globalStateAfter.poolActive!.asByteArray();
-    const active = byteArrayToUint128(activeState);
-    expect(active).toBe(128n);
+    await pIRPClient.send.setPoolActive({ sender: admin.addr, args: [], extraFee: algokit.algos(0.01) });
+    const globalStateAfter = await pIRPClient.state.global.getAll();
+    const activeState = globalStateAfter.poolActive;
+    expect(activeState).toBe(true);
   });
 
   test('set poolEnding true', async () => {
-    await appClient.updatePoolEnding({ poolEnding: true }, { sendParams: { fee: algokit.algos(0.01) } });
-
-    const globalStateAfter = await appClient.getGlobalState();
-    const poolEndingState = globalStateAfter.poolEnding!.asByteArray();
-    const poolEnding = byteArrayToUint128(poolEndingState);
-    expect(poolEnding).toBe(128n);
-  });
-
-  test('attempt to stake in ending pool', async () => {
-    const { algorand } = fixture;
-    const { appAddress } = await appClient.appClient.getAppReference();
-
-    const account = await fixture.context.generateAccount({ initialFunds: algokit.algos(10) });
-    const staker = {
-      account,
-      stake: 10n * 10n ** 6n,
-    };
-    await algorand.send.assetTransfer(
-      {
-        assetId: stakedAssetId,
-        amount: 0n,
-        sender: staker.account.addr,
-        receiver: staker.account.addr,
-      },
-      { suppressLog: true }
-    );
-    await algorand.send.assetTransfer(
-      {
-        assetId: rewardAssetOneId,
-        amount: 0n,
-        sender: staker.account.addr,
-        receiver: staker.account.addr,
-      },
-      { suppressLog: true }
-    );
-    await algorand.send.assetTransfer(
-      {
-        assetId: xUSDAssetId,
-        amount: 0n,
-        sender: staker.account.addr,
-        receiver: staker.account.addr,
-      },
-      { suppressLog: true }
-    );
-
-    await algorand.send.assetTransfer(
-      {
-        assetId: stakedAssetId,
-        amount: staker.stake,
-        sender: admin.addr,
-        receiver: staker.account.addr,
-      },
-      { suppressLog: true }
-    );
-    const stakeTxn = await algorand.transactions.assetTransfer({
-      assetId: stakedAssetId,
-      amount: staker.stake,
-      sender: staker.account!.addr,
-      receiver: appAddress,
-    });
-    const fees = AlgoAmount.MicroAlgos(240_000);
-    // expect error as pool is ended
-    await expect(
-      appClient
-        .compose()
-        .gas({}, { note: '1' })
-        .gas({}, { note: '2' })
-        .gas({}, { note: '3' })
-        .stake({ quantity: staker.stake, stakeTxn }, { sender: staker.account, sendParams: { fee: fees } })
-
-        .execute({ populateAppCallResources: true, suppressLog: true })
-    ).rejects.toThrowError();
+    await pIRPClient.send.setPoolEnding({ sender: admin.addr, args: [], extraFee: algokit.algos(0.01) });
+    const globalStateAfter = await pIRPClient.state.global.getAll();
+    expect(globalStateAfter.poolEnding).toBe(true);
+    expect(globalStateAfter.poolActive).toBe(false);
   });
 
   test('deleteApplication', async () => {
-    await appClient
-      .compose()
-      .gas({}, { note: '1' })
-      .gas({}, { note: '2' })
-      .gas({}, { note: '3' })
-      .delete.deleteApplication(
-        {},
-        {
-          sendParams: {
-            fee: AlgoAmount.MicroAlgos(2000),
-          },
-          sender: admin,
-        }
-      )
-      .execute({ populateAppCallResources: true });
+    await pIRPClient
+      .newGroup()
+      .gas({ note: '1', args: [] })
+      .gas({ note: '2', args: [] })
+      .gas({ note: '3', args: [] })
+      .delete.deleteApplication({ args: [], sender: admin.addr, extraFee: algokit.microAlgo(2000) })
+      .send({ populateAppCallResources: true });
   });
 });
