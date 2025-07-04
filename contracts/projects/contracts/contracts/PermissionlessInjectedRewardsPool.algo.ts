@@ -212,6 +212,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
         assetReceiver: this.app.address,
         assetAmount: 0,
+        fee: 0,
       });
     }
   }
@@ -296,6 +297,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         assetReceiver: this.adminAddress.value,
         assetAmount: rewardBalance,
         assetCloseTo: this.adminAddress.value,
+        fee: 0,
       });
     }
     const paymentAmount = this.app.address.balance - this.app.address.minBalance - 2000;
@@ -304,7 +306,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
       amount: paymentAmount,
       receiver: this.adminAddress.value,
       sender: this.app.address,
-      fee: 1_000,
+      fee: 0,
     });
   }
 
@@ -451,21 +453,13 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         increaseOpcodeBudget();
       }
       // send back remainder rewards back to injector to zero out
-
-      /* if (this.injectedASARewards.value > 0) {
-        sendAssetTransfer({
-          xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-          assetReceiver: this.injectorAddress.value,
-          sender: this.app.address,
-          assetAmount: this.injectedASARewards.value,
-        });
-      } */
       if (this.injectedxUSDRewards.value > 0) {
         sendAssetTransfer({
           xferAsset: AssetID.fromUint64(this.xUSDAssetId.value),
           assetReceiver: this.injectorAddress.value,
           sender: this.app.address,
           assetAmount: this.injectedxUSDRewards.value,
+          fee: 0,
         });
       }
       // this.injectedASARewards.value = 0;
@@ -507,6 +501,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         assetReceiver: this.txn.sender,
         sender: this.app.address,
         assetAmount: staker.accruedASARewards,
+        fee: 0,
       });
       this.paidASARewards.value = this.paidASARewards.value - staker.accruedASARewards;
       staker.accruedASARewards = 0;
@@ -517,6 +512,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
         assetReceiver: this.txn.sender,
         sender: this.app.address,
         assetAmount: staker.accruedxUSDRewards,
+        fee: 0,
       });
       staker.accruedxUSDRewards = 0;
     }
@@ -545,6 +541,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
             assetReceiver: this.txn.sender,
             sender: this.app.address,
             assetAmount: quantity === 0 ? staker.stake : quantity,
+            fee: 0,
           });
         }
         // check ASA rewards
@@ -555,6 +552,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
             assetReceiver: this.txn.sender,
             sender: this.app.address,
             assetAmount: staker.accruedASARewards,
+            fee: 0,
           });
           staker.accruedASARewards = 0;
         }
@@ -566,6 +564,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
             assetReceiver: this.txn.sender,
             sender: this.app.address,
             assetAmount: staker.accruedxUSDRewards,
+            fee: 0,
           });
           staker.accruedxUSDRewards = 0;
         }
