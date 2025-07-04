@@ -456,8 +456,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
       if (this.injectedxUSDRewards.value > 0) {
         sendAssetTransfer({
           xferAsset: AssetID.fromUint64(this.xUSDAssetId.value),
-          assetReceiver: this.injectorAddress.value,
-          sender: this.app.address,
+          assetReceiver: this.txn.sender,
           assetAmount: this.injectedxUSDRewards.value,
           fee: 0,
         });

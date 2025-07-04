@@ -18,7 +18,7 @@ import { getStakingAccount } from './utils';
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
 const BYTE_LENGTH_STAKER = 56;
-
+const ROUNDING_ERROR = 2n;
 const PLATFORM_FEE_BPS = 200n; // 2% platform fee
 const REWARD_ASA_REWARD_AMOUNT = 10_000_000n; // 10 ASA
 let pIRPClient: PermissionlessInjectedRewardsPoolClient;
@@ -28,7 +28,7 @@ let treasury: Account;
 let stakedAssetId: bigint;
 let rewardAssetOneId: bigint;
 let xUSDAssetId: bigint;
-const NUM_STAKERS = 10n;
+const NUM_STAKERS = 30n;
 const NUM_REWARD_SENDERS = 2n;
 const STAKE_AMOUNT = 100_000_000n; // 100
 const REWARD_AMOUNT = 1_000_000n; // 1 XUSD
@@ -321,7 +321,9 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
       xUSDAssetId
     );
     const { balance: appAlgoBalanceAfter } = await fixture.algorand.account.getInformation(pIRPClient.appAddress);
-    expect(xUSDTokenBalanceAfter).toBe(xUSDTokenBalanceBefore - rewardSender.rewardAmount);
+    expect(xUSDTokenBalanceAfter).toBe(
+      xUSDTokenBalanceBefore - rewardSender.rewardAmount + (rewardSender.rewardAmount % NUM_STAKERS)
+    );
     expect(appAlgoBalanceAfter.microAlgos).toBe(appAlgoBalanceBefore.microAlgos);
 
     let index = 0;
@@ -376,7 +378,9 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
     );
     const { balance: appAlgoBalanceAfter } = await fixture.algorand.account.getInformation(pIRPClient.appAddress);
     expect(appAlgoBalanceAfter.microAlgos).toBe(appAlgoBalanceBefore.microAlgos);
-    expect(xUSDTokenBalanceAfter).toBe(xUSDTokenBalanceBefore - rewardSender.rewardAmount);
+    expect(xUSDTokenBalanceAfter).toBe(
+      xUSDTokenBalanceBefore - rewardSender.rewardAmount + (rewardSender.rewardAmount % NUM_STAKERS)
+    );
 
     // Check box data to confirm rewards sent.
     let index = 0;
@@ -513,7 +517,12 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
     const actualTotalReward = REWARD_ASA_REWARD_AMOUNT - platformFee;
     const { balance: appAlgoBalanceAfter } = await fixture.algorand.account.getInformation(pIRPClient.appAddress);
     expect(appAlgoBalanceAfter.microAlgos).toBe(appAlgoBalanceBefore.microAlgos);
-    expect(ASATokenBalanceAfter).toBe(ASATokenBalanceBefore + (actualTotalReward / NUM_STAKERS) * 2n);
+    expect(ASATokenBalanceAfter).toBeGreaterThan(
+      ASATokenBalanceBefore + (actualTotalReward / NUM_STAKERS) * 2n - ROUNDING_ERROR
+    );
+    expect(ASATokenBalanceAfter).toBeLessThan(
+      ASATokenBalanceBefore + (actualTotalReward / NUM_STAKERS) * 2n + ROUNDING_ERROR
+    );
 
     // Check box data to confirm rewards claimed by staker 1 and not staker 2 but accrual has occured.
     let index = 0;
@@ -526,7 +535,10 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
         // staker 1
         expect(stakerBoxInfo.accruedASARewards).toBe(0n);
       } else {
-        expect(stakerBoxInfo.accruedASARewards).toBe((actualTotalReward / NUM_STAKERS) * 2n);
+        expect(stakerBoxInfo.accruedASARewards).toBeGreaterThan(
+          (actualTotalReward / NUM_STAKERS) * 2n - ROUNDING_ERROR
+        );
+        expect(stakerBoxInfo.accruedASARewards).toBeLessThan((actualTotalReward / NUM_STAKERS) * 2n + ROUNDING_ERROR);
       }
       index += BYTE_LENGTH_STAKER;
     }
@@ -590,7 +602,12 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
     expect(appAlgoBalanceAfter.microAlgos).toBe(appAlgoBalanceBefore.microAlgos);
     expect(stakeTokenBalanceAfter).toBe(stakeTokenBalanceBefore + STAKE_AMOUNT);
     expect(xUSDTokenBalanceAfter).toBe(xUSDTokenBalanceBefore + (REWARD_AMOUNT / NUM_STAKERS) * 2n);
-    expect(RewardTokenBalanceAfter).toBe(RewardTokenBalanceBefore + (actualTotalReward / NUM_STAKERS) * 2n);
+    expect(RewardTokenBalanceAfter).toBeGreaterThan(
+      RewardTokenBalanceBefore + (actualTotalReward / NUM_STAKERS) * 2n - ROUNDING_ERROR
+    );
+    expect(RewardTokenBalanceAfter).toBeLessThan(
+      RewardTokenBalanceBefore + (actualTotalReward / NUM_STAKERS) * 2n + ROUNDING_ERROR
+    );
   });
 
   test.skip('deleteApplication', async () => {
