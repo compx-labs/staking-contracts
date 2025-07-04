@@ -53,4 +53,3 @@ export function getStakingAccount(byteArray: Uint8Array, byteLength: number): St
   };
   return staker;
 }
-
