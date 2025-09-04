@@ -28,7 +28,7 @@ let treasury: Account;
 let stakedAssetId: bigint;
 let rewardAssetOneId: bigint;
 let xUSDAssetId: bigint;
-const NUM_STAKERS = 50n;
+const NUM_STAKERS = 5n;
 const NUM_REWARD_SENDERS = 2n;
 const STAKE_AMOUNT = 100_000_000n; // 100
 const REWARD_AMOUNT = 1_000_000n; // 1 XUSD

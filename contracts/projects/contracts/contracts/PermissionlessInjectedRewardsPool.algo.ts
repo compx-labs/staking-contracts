@@ -534,6 +534,7 @@ export class PermissionlessInjectedRewardsPool extends Contract {
       }
       const staker = clone(this.stakers.value[i]);
       if (staker.account === this.txn.sender) {
+        assert(staker.stake >= quantity);
         if (staker.stake > 0) {
           sendAssetTransfer({
             xferAsset: AssetID.fromUint64(this.stakedAssetId.value),

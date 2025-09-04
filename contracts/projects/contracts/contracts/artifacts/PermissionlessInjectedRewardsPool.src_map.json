@@ -13193,7 +13193,7 @@
     ]
   },
   {
-    "teal": 3119,
+    "teal": 3118,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:537",
     "pc": [
       3034,
@@ -13201,7 +13201,7 @@
     ]
   },
   {
-    "teal": 3120,
+    "teal": 3119,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:537",
     "pc": [
       3036,
@@ -13210,366 +13210,372 @@
     ]
   },
   {
-    "teal": 3121,
+    "teal": 3120,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:537",
     "pc": [
       3039
     ]
   },
   {
+    "teal": 3121,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:537",
+    "pc": [
+      3040,
+      3041
+    ]
+  },
+  {
     "teal": 3122,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:537",
     "pc": [
-      3040
+      3042
     ]
   },
   {
     "teal": 3123,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:537",
     "pc": [
-      3041
+      3043
     ]
   },
   {
-    "teal": 3124,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:537",
-    "pc": [
-      3042,
-      3043,
-      3044
-    ]
-  },
-  {
-    "teal": 3135,
+    "teal": 3128,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:538",
     "pc": [
+      3044,
       3045
     ]
   },
   {
-    "teal": 3136,
+    "teal": 3129,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:538",
     "pc": [
       3046,
-      3047
+      3047,
+      3048
     ]
   },
   {
-    "teal": 3137,
+    "teal": 3130,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:538",
     "pc": [
-      3048,
       3049
     ]
   },
   {
-    "teal": 3141,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:539",
+    "teal": 3131,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:538",
     "pc": [
-      3050,
+      3050
+    ]
+  },
+  {
+    "teal": 3132,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:538",
+    "pc": [
       3051
     ]
   },
   {
-    "teal": 3142,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:539",
+    "teal": 3133,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:538",
     "pc": [
-      3052
-    ]
-  },
-  {
-    "teal": 3143,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:539",
-    "pc": [
+      3052,
       3053,
       3054
     ]
   },
   {
-    "teal": 3147,
+    "teal": 3144,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:539",
+    "pc": [
+      3055
+    ]
+  },
+  {
+    "teal": 3145,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:539",
+    "pc": [
+      3056,
+      3057
+    ]
+  },
+  {
+    "teal": 3146,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:539",
+    "pc": [
+      3058,
+      3059
+    ]
+  },
+  {
+    "teal": 3150,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:540",
     "pc": [
-      3055,
-      3056
+      3060,
+      3061
     ]
   },
   {
-    "teal": 3148,
+    "teal": 3151,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:540",
     "pc": [
-      3057,
-      3058
-    ]
-  },
-  {
-    "teal": 3152,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:541",
-    "pc": [
-      3059,
-      3060
-    ]
-  },
-  {
-    "teal": 3153,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:541",
-    "pc": [
-      3061,
       3062
     ]
   },
   {
-    "teal": 3157,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:542",
+    "teal": 3152,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:540",
     "pc": [
       3063,
       3064
     ]
   },
   {
-    "teal": 3158,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:542",
+    "teal": 3156,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:541",
     "pc": [
-      3065
-    ]
-  },
-  {
-    "teal": 3159,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:542",
-    "pc": [
+      3065,
       3066
     ]
   },
   {
-    "teal": 3160,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:542",
+    "teal": 3157,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:541",
     "pc": [
       3067,
-      3068,
-      3069
+      3068
     ]
   },
   {
     "teal": 3161,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:542",
     "pc": [
-      3070,
-      3071
+      3069,
+      3070
     ]
   },
   {
     "teal": 3162,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:542",
     "pc": [
-      3072,
+      3071,
+      3072
+    ]
+  },
+  {
+    "teal": 3166,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:543",
+    "pc": [
       3073,
       3074
     ]
   },
   {
-    "teal": 3163,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:542",
+    "teal": 3167,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:543",
     "pc": [
       3075
     ]
   },
   {
-    "teal": 3164,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:542",
+    "teal": 3168,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:543",
     "pc": [
-      3076,
-      3077,
-      3078
+      3076
     ]
   },
   {
-    "teal": 3167,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:542",
+    "teal": 3169,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:543",
     "pc": [
-      3079,
-      3080
+      3077,
+      3078,
+      3079
     ]
   },
   {
     "teal": 3170,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:542",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:543",
     "pc": [
-      3081,
-      3082
+      3080,
+      3081
     ]
   },
   {
-    "teal": 3174,
+    "teal": 3171,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:543",
     "pc": [
-      3083
+      3082,
+      3083,
+      3084
     ]
   },
   {
-    "teal": 3175,
+    "teal": 3172,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:543",
     "pc": [
-      3084,
       3085
     ]
   },
   {
-    "teal": 3178,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:538",
+    "teal": 3173,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:543",
     "pc": [
-      3086
-    ]
-  },
-  {
-    "teal": 3184,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:548",
-    "pc": [
+      3086,
       3087,
       3088
     ]
   },
   {
-    "teal": 3185,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:548",
+    "teal": 3176,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:543",
     "pc": [
       3089,
-      3090,
-      3091
+      3090
     ]
   },
   {
-    "teal": 3186,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:548",
+    "teal": 3179,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:543",
     "pc": [
+      3091,
       3092
     ]
   },
   {
-    "teal": 3187,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:548",
+    "teal": 3183,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:544",
     "pc": [
       3093
     ]
   },
   {
-    "teal": 3188,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:548",
+    "teal": 3184,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:544",
     "pc": [
-      3094
+      3094,
+      3095
     ]
   },
   {
-    "teal": 3189,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:548",
+    "teal": 3187,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:539",
     "pc": [
-      3095,
-      3096,
-      3097
+      3096
     ]
   },
   {
-    "teal": 3200,
+    "teal": 3193,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:549",
     "pc": [
+      3097,
       3098
     ]
   },
   {
-    "teal": 3201,
+    "teal": 3194,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:549",
     "pc": [
       3099,
-      3100
+      3100,
+      3101
     ]
   },
   {
-    "teal": 3202,
+    "teal": 3195,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:549",
     "pc": [
-      3101,
       3102
     ]
   },
   {
-    "teal": 3206,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:550",
+    "teal": 3196,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:549",
     "pc": [
-      3103,
+      3103
+    ]
+  },
+  {
+    "teal": 3197,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:549",
+    "pc": [
       3104
     ]
   },
   {
-    "teal": 3207,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:550",
+    "teal": 3198,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:549",
     "pc": [
-      3105
-    ]
-  },
-  {
-    "teal": 3208,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:550",
-    "pc": [
+      3105,
       3106,
       3107
     ]
   },
   {
-    "teal": 3212,
+    "teal": 3209,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:550",
+    "pc": [
+      3108
+    ]
+  },
+  {
+    "teal": 3210,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:550",
+    "pc": [
+      3109,
+      3110
+    ]
+  },
+  {
+    "teal": 3211,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:550",
+    "pc": [
+      3111,
+      3112
+    ]
+  },
+  {
+    "teal": 3215,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:551",
     "pc": [
-      3108,
-      3109
+      3113,
+      3114
     ]
   },
   {
-    "teal": 3213,
+    "teal": 3216,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:551",
     "pc": [
-      3110,
-      3111
-    ]
-  },
-  {
-    "teal": 3217,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:552",
-    "pc": [
-      3112,
-      3113
-    ]
-  },
-  {
-    "teal": 3218,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:552",
-    "pc": [
-      3114,
       3115
     ]
   },
   {
-    "teal": 3222,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:553",
+    "teal": 3217,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:551",
     "pc": [
       3116,
       3117
     ]
   },
   {
-    "teal": 3223,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:553",
+    "teal": 3221,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:552",
     "pc": [
       3118,
-      3119,
-      3120
+      3119
     ]
   },
   {
-    "teal": 3224,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:553",
+    "teal": 3222,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:552",
     "pc": [
+      3120,
       3121
     ]
   },
   {
-    "teal": 3225,
+    "teal": 3226,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:553",
     "pc": [
       3122,
@@ -13577,210 +13583,210 @@
     ]
   },
   {
-    "teal": 3229,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:554",
+    "teal": 3227,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:553",
     "pc": [
-      3124
+      3124,
+      3125
     ]
   },
   {
-    "teal": 3230,
+    "teal": 3231,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:554",
     "pc": [
-      3125,
-      3126
-    ]
-  },
-  {
-    "teal": 3233,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:549",
-    "pc": [
+      3126,
       3127
     ]
   },
   {
-    "teal": 3237,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:556",
+    "teal": 3232,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:554",
     "pc": [
       3128,
-      3129
+      3129,
+      3130
     ]
   },
   {
-    "teal": 3238,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:556",
+    "teal": 3233,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:554",
     "pc": [
-      3130,
       3131
     ]
   },
   {
-    "teal": 3239,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:556",
+    "teal": 3234,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:554",
     "pc": [
       3132,
       3133
     ]
   },
   {
-    "teal": 3240,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:556",
+    "teal": 3238,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:555",
     "pc": [
-      3134,
-      3135
+      3134
     ]
   },
   {
-    "teal": 3246,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:560",
+    "teal": 3239,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:555",
     "pc": [
-      3136,
+      3135,
+      3136
+    ]
+  },
+  {
+    "teal": 3242,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:550",
+    "pc": [
       3137
     ]
   },
   {
-    "teal": 3247,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:560",
+    "teal": 3246,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:557",
     "pc": [
       3138,
-      3139,
-      3140
+      3139
     ]
   },
   {
-    "teal": 3248,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:560",
+    "teal": 3247,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:557",
     "pc": [
+      3140,
       3141
     ]
   },
   {
-    "teal": 3249,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:560",
+    "teal": 3248,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:557",
     "pc": [
-      3142
-    ]
-  },
-  {
-    "teal": 3250,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:560",
-    "pc": [
+      3142,
       3143
     ]
   },
   {
-    "teal": 3251,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:560",
+    "teal": 3249,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:557",
     "pc": [
       3144,
-      3145,
-      3146
+      3145
     ]
   },
   {
-    "teal": 3262,
+    "teal": 3255,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:561",
     "pc": [
+      3146,
       3147
     ]
   },
   {
-    "teal": 3263,
+    "teal": 3256,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:561",
     "pc": [
       3148,
-      3149
+      3149,
+      3150
     ]
   },
   {
-    "teal": 3264,
+    "teal": 3257,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:561",
     "pc": [
-      3150,
       3151
     ]
   },
   {
-    "teal": 3268,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:562",
+    "teal": 3258,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:561",
     "pc": [
-      3152,
+      3152
+    ]
+  },
+  {
+    "teal": 3259,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:561",
+    "pc": [
       3153
     ]
   },
   {
-    "teal": 3269,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:562",
+    "teal": 3260,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:561",
     "pc": [
-      3154
-    ]
-  },
-  {
-    "teal": 3270,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:562",
-    "pc": [
+      3154,
       3155,
       3156
     ]
   },
   {
-    "teal": 3274,
+    "teal": 3271,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:562",
+    "pc": [
+      3157
+    ]
+  },
+  {
+    "teal": 3272,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:562",
+    "pc": [
+      3158,
+      3159
+    ]
+  },
+  {
+    "teal": 3273,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:562",
+    "pc": [
+      3160,
+      3161
+    ]
+  },
+  {
+    "teal": 3277,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:563",
     "pc": [
-      3157,
-      3158
+      3162,
+      3163
     ]
   },
   {
-    "teal": 3275,
+    "teal": 3278,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:563",
     "pc": [
-      3159,
-      3160
-    ]
-  },
-  {
-    "teal": 3279,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:564",
-    "pc": [
-      3161,
-      3162
-    ]
-  },
-  {
-    "teal": 3280,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:564",
-    "pc": [
-      3163,
       3164
     ]
   },
   {
-    "teal": 3284,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:565",
+    "teal": 3279,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:563",
     "pc": [
       3165,
       3166
     ]
   },
   {
-    "teal": 3285,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:565",
+    "teal": 3283,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:564",
     "pc": [
       3167,
-      3168,
-      3169
+      3168
     ]
   },
   {
-    "teal": 3286,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:565",
+    "teal": 3284,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:564",
     "pc": [
+      3169,
       3170
     ]
   },
   {
-    "teal": 3287,
+    "teal": 3288,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:565",
     "pc": [
       3171,
@@ -13788,391 +13794,385 @@
     ]
   },
   {
-    "teal": 3291,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:566",
+    "teal": 3289,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:565",
     "pc": [
-      3173
+      3173,
+      3174
     ]
   },
   {
-    "teal": 3292,
+    "teal": 3293,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:566",
     "pc": [
-      3174,
-      3175
-    ]
-  },
-  {
-    "teal": 3295,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:561",
-    "pc": [
+      3175,
       3176
     ]
   },
   {
-    "teal": 3299,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:568",
+    "teal": 3294,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:566",
     "pc": [
       3177,
-      3178
+      3178,
+      3179
     ]
   },
   {
-    "teal": 3300,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:568",
+    "teal": 3295,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:566",
     "pc": [
-      3179,
       3180
     ]
   },
   {
-    "teal": 3301,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:568",
+    "teal": 3296,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:566",
     "pc": [
       3181,
       3182
     ]
   },
   {
-    "teal": 3302,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:568",
+    "teal": 3300,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:567",
     "pc": [
-      3183,
-      3184
+      3183
     ]
   },
   {
-    "teal": 3307,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "teal": 3301,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:567",
     "pc": [
-      3185,
+      3184,
+      3185
+    ]
+  },
+  {
+    "teal": 3304,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:562",
+    "pc": [
       3186
     ]
   },
   {
     "teal": 3308,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:569",
     "pc": [
-      3187
-    ]
-  },
-  {
-    "teal": 3309,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
-    "pc": [
+      3187,
       3188
     ]
   },
   {
-    "teal": 3310,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "teal": 3309,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:569",
     "pc": [
       3189,
       3190
     ]
   },
   {
-    "teal": 3311,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "teal": 3310,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:569",
     "pc": [
-      3191
-    ]
-  },
-  {
-    "teal": 3312,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
-    "pc": [
+      3191,
       3192
     ]
   },
   {
-    "teal": 3313,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "teal": 3311,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:569",
     "pc": [
       3193,
-      3194,
-      3195
+      3194
     ]
   },
   {
-    "teal": 3314,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "teal": 3316,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
-      3196,
+      3195,
+      3196
+    ]
+  },
+  {
+    "teal": 3317,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
+    "pc": [
       3197
     ]
   },
   {
-    "teal": 3315,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "teal": 3318,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
-      3198,
+      3198
+    ]
+  },
+  {
+    "teal": 3319,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
+    "pc": [
       3199,
       3200
     ]
   },
   {
-    "teal": 3316,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "teal": 3320,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
       3201
     ]
   },
   {
-    "teal": 3317,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "teal": 3321,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
-      3202,
-      3203,
-      3204
+      3202
     ]
   },
   {
-    "teal": 3320,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "teal": 3322,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
-      3205,
-      3206
+      3203,
+      3204,
+      3205
     ]
   },
   {
     "teal": 3323,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
+      3206,
       3207
     ]
   },
   {
     "teal": 3324,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:572",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
-      3208
-    ]
-  },
-  {
-    "teal": 3329,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:574",
-    "pc": [
+      3208,
       3209,
       3210
     ]
   },
   {
-    "teal": 3330,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:574",
+    "teal": 3325,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
       3211
     ]
   },
   {
-    "teal": 3331,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:574",
+    "teal": 3326,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
-      3212
+      3212,
+      3213,
+      3214
+    ]
+  },
+  {
+    "teal": 3329,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
+    "pc": [
+      3215,
+      3216
     ]
   },
   {
     "teal": 3332,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:574",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
-      3213,
-      3214,
-      3215
+      3217
     ]
   },
   {
-    "teal": 3337,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
+    "teal": 3333,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:573",
     "pc": [
-      3216
+      3218
     ]
   },
   {
     "teal": 3338,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
     "pc": [
-      3217
+      3219,
+      3220
     ]
   },
   {
     "teal": 3339,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
     "pc": [
-      3218,
-      3219
+      3221
     ]
   },
   {
     "teal": 3340,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
     "pc": [
-      3220
+      3222
     ]
   },
   {
     "teal": 3341,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
     "pc": [
-      3221,
-      3222
-    ]
-  },
-  {
-    "teal": 3342,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
-    "pc": [
-      3223
-    ]
-  },
-  {
-    "teal": 3343,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
-    "pc": [
-      3224
-    ]
-  },
-  {
-    "teal": 3344,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
-    "pc": [
-      3225,
-      3226
-    ]
-  },
-  {
-    "teal": 3345,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
-    "pc": [
-      3227,
-      3228
+      3223,
+      3224,
+      3225
     ]
   },
   {
     "teal": 3346,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
     "pc": [
-      3229,
-      3230
+      3226
     ]
   },
   {
     "teal": 3347,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
+    "pc": [
+      3227
+    ]
+  },
+  {
+    "teal": 3348,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
+    "pc": [
+      3228,
+      3229
+    ]
+  },
+  {
+    "teal": 3349,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
+    "pc": [
+      3230
+    ]
+  },
+  {
+    "teal": 3350,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
     "pc": [
       3231,
       3232
     ]
   },
   {
-    "teal": 3348,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:575",
+    "teal": 3351,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
     "pc": [
       3233
     ]
   },
   {
-    "teal": 3354,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:578",
+    "teal": 3352,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
     "pc": [
-      3234,
-      3235
+      3234
     ]
   },
   {
-    "teal": 3355,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:578",
+    "teal": 3353,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
     "pc": [
+      3235,
       3236
     ]
   },
   {
-    "teal": 3356,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:578",
+    "teal": 3354,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
     "pc": [
-      3237
+      3237,
+      3238
     ]
   },
   {
-    "teal": 3357,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:578",
+    "teal": 3355,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
     "pc": [
-      3238,
       3239,
       3240
     ]
   },
   {
-    "teal": 3367,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:580",
+    "teal": 3356,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
     "pc": [
       3241,
       3242
     ]
   },
   {
-    "teal": 3368,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:581",
+    "teal": 3357,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:576",
     "pc": [
-      3243,
-      3244
+      3243
     ]
   },
   {
-    "teal": 3369,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:581",
+    "teal": 3363,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:579",
     "pc": [
+      3244,
       3245
     ]
   },
   {
-    "teal": 3370,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:583",
+    "teal": 3364,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:579",
     "pc": [
-      3246,
+      3246
+    ]
+  },
+  {
+    "teal": 3365,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:579",
+    "pc": [
       3247
     ]
   },
   {
-    "teal": 3371,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:583",
+    "teal": 3366,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:579",
     "pc": [
-      3248
-    ]
-  },
-  {
-    "teal": 3372,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:582",
-    "pc": [
+      3248,
       3249,
       3250
     ]
   },
   {
-    "teal": 3373,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:582",
+    "teal": 3376,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:581",
     "pc": [
-      3251
+      3251,
+      3252
     ]
   },
   {
-    "teal": 3374,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:579",
+    "teal": 3377,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:582",
     "pc": [
-      3252,
-      3253
+      3253,
+      3254
     ]
   },
   {
     "teal": 3378,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:585",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:582",
     "pc": [
-      3254,
       3255
     ]
   },
   {
     "teal": 3379,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:585",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:584",
     "pc": [
       3256,
       3257
@@ -14180,130 +14180,130 @@
   },
   {
     "teal": 3380,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:585",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:584",
     "pc": [
-      3258,
+      3258
+    ]
+  },
+  {
+    "teal": 3381,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:583",
+    "pc": [
       3259,
       3260
     ]
   },
   {
-    "teal": 3381,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:585",
+    "teal": 3382,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:583",
     "pc": [
-      3261,
+      3261
+    ]
+  },
+  {
+    "teal": 3383,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:580",
+    "pc": [
       3262,
       3263
     ]
   },
   {
-    "teal": 3385,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
+    "teal": 3387,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:586",
     "pc": [
-      3264
-    ]
-  },
-  {
-    "teal": 3386,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
-    "pc": [
+      3264,
       3265
     ]
   },
   {
-    "teal": 3387,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
-    "pc": [
-      3266
-    ]
-  },
-  {
     "teal": 3388,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:586",
     "pc": [
+      3266,
       3267
     ]
   },
   {
     "teal": 3389,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:586",
     "pc": [
       3268,
-      3269
-    ]
-  },
-  {
-    "teal": 3390,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
-    "pc": [
+      3269,
       3270
     ]
   },
   {
-    "teal": 3391,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
+    "teal": 3390,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:586",
     "pc": [
-      3271
-    ]
-  },
-  {
-    "teal": 3392,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
-    "pc": [
-      3272
-    ]
-  },
-  {
-    "teal": 3393,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
-    "pc": [
-      3273,
-      3274
+      3271,
+      3272,
+      3273
     ]
   },
   {
     "teal": 3394,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
+    "pc": [
+      3274
+    ]
+  },
+  {
+    "teal": 3395,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
     "pc": [
       3275
     ]
   },
   {
-    "teal": 3395,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
-    "pc": [
-      3276,
-      3277
-    ]
-  },
-  {
     "teal": 3396,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
     "pc": [
-      3278
+      3276
     ]
   },
   {
     "teal": 3397,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
     "pc": [
-      3279,
-      3280,
-      3281
+      3277
     ]
   },
   {
     "teal": 3398,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:589",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
     "pc": [
-      3282,
-      3283
+      3278,
+      3279
+    ]
+  },
+  {
+    "teal": 3399,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
+    "pc": [
+      3280
+    ]
+  },
+  {
+    "teal": 3400,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
+    "pc": [
+      3281
+    ]
+  },
+  {
+    "teal": 3401,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
+    "pc": [
+      3282
     ]
   },
   {
     "teal": 3402,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
     "pc": [
+      3283,
       3284
     ]
   },
@@ -14318,97 +14318,103 @@
     "teal": 3404,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
     "pc": [
-      3286
+      3286,
+      3287
     ]
   },
   {
     "teal": 3405,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
     "pc": [
-      3287
+      3288
     ]
   },
   {
     "teal": 3406,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
     "pc": [
-      3288,
-      3289
+      3289,
+      3290,
+      3291
     ]
   },
   {
     "teal": 3407,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
     "pc": [
-      3290
-    ]
-  },
-  {
-    "teal": 3408,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
-    "pc": [
-      3291
-    ]
-  },
-  {
-    "teal": 3409,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
-    "pc": [
-      3292
-    ]
-  },
-  {
-    "teal": 3410,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
-    "pc": [
-      3293,
-      3294
+      3292,
+      3293
     ]
   },
   {
     "teal": 3411,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
+    "pc": [
+      3294
+    ]
+  },
+  {
+    "teal": 3412,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
     "pc": [
       3295
     ]
   },
   {
-    "teal": 3412,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
-    "pc": [
-      3296,
-      3297
-    ]
-  },
-  {
     "teal": 3413,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
     "pc": [
-      3298
+      3296
     ]
   },
   {
     "teal": 3414,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
     "pc": [
-      3299,
-      3300,
-      3301
+      3297
     ]
   },
   {
     "teal": 3415,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:590",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
     "pc": [
-      3302,
-      3303
+      3298,
+      3299
+    ]
+  },
+  {
+    "teal": 3416,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
+    "pc": [
+      3300
+    ]
+  },
+  {
+    "teal": 3417,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
+    "pc": [
+      3301
+    ]
+  },
+  {
+    "teal": 3418,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
+    "pc": [
+      3302
+    ]
+  },
+  {
+    "teal": 3419,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
+    "pc": [
+      3303,
+      3304
     ]
   },
   {
     "teal": 3420,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
     "pc": [
-      3304,
       3305
     ]
   },
@@ -14416,183 +14422,177 @@
     "teal": 3421,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
     "pc": [
-      3306
+      3306,
+      3307
     ]
   },
   {
     "teal": 3422,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
     "pc": [
-      3307
+      3308
     ]
   },
   {
     "teal": 3423,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
     "pc": [
-      3308,
       3309,
-      3310
+      3310,
+      3311
     ]
   },
   {
-    "teal": 3428,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
+    "teal": 3424,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:591",
     "pc": [
-      3311
+      3312,
+      3313
     ]
   },
   {
     "teal": 3429,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
     "pc": [
-      3312
+      3314,
+      3315
     ]
   },
   {
     "teal": 3430,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
     "pc": [
-      3313,
-      3314
+      3316
     ]
   },
   {
     "teal": 3431,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
     "pc": [
-      3315
+      3317
     ]
   },
   {
     "teal": 3432,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
     "pc": [
-      3316,
-      3317
-    ]
-  },
-  {
-    "teal": 3433,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
-    "pc": [
-      3318
-    ]
-  },
-  {
-    "teal": 3434,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
-    "pc": [
-      3319
-    ]
-  },
-  {
-    "teal": 3435,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
-    "pc": [
-      3320,
-      3321
-    ]
-  },
-  {
-    "teal": 3436,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
-    "pc": [
-      3322,
-      3323
+      3318,
+      3319,
+      3320
     ]
   },
   {
     "teal": 3437,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
     "pc": [
-      3324,
-      3325
+      3321
     ]
   },
   {
     "teal": 3438,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
+    "pc": [
+      3322
+    ]
+  },
+  {
+    "teal": 3439,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
+    "pc": [
+      3323,
+      3324
+    ]
+  },
+  {
+    "teal": 3440,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
+    "pc": [
+      3325
+    ]
+  },
+  {
+    "teal": 3441,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
     "pc": [
       3326,
       3327
     ]
   },
   {
-    "teal": 3439,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:592",
+    "teal": 3442,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
     "pc": [
       3328
     ]
   },
   {
-    "teal": 3444,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:594",
+    "teal": 3443,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
     "pc": [
-      3329,
-      3330
+      3329
+    ]
+  },
+  {
+    "teal": 3444,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
+    "pc": [
+      3330,
+      3331
     ]
   },
   {
     "teal": 3445,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:594",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
     "pc": [
-      3331,
-      3332
+      3332,
+      3333
     ]
   },
   {
     "teal": 3446,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:594",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
     "pc": [
-      3333,
       3334,
       3335
     ]
   },
   {
-    "teal": 3450,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:597",
+    "teal": 3447,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
     "pc": [
       3336,
       3337
     ]
   },
   {
-    "teal": 3451,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:597",
+    "teal": 3448,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:593",
     "pc": [
-      3338,
-      3339
+      3338
     ]
   },
   {
-    "teal": 3452,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:597",
+    "teal": 3453,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:595",
     "pc": [
-      3340,
+      3339,
+      3340
+    ]
+  },
+  {
+    "teal": 3454,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:595",
+    "pc": [
       3341,
       3342
     ]
   },
   {
-    "teal": 3456,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:598",
+    "teal": 3455,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:595",
     "pc": [
-      3343
-    ]
-  },
-  {
-    "teal": 3457,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:598",
-    "pc": [
-      3344
-    ]
-  },
-  {
-    "teal": 3458,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:598",
-    "pc": [
+      3343,
+      3344,
       3345
     ]
   },
@@ -14600,130 +14600,130 @@
     "teal": 3459,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:598",
     "pc": [
-      3346
+      3346,
+      3347
     ]
   },
   {
     "teal": 3460,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:598",
     "pc": [
-      3347
+      3348,
+      3349
     ]
   },
   {
     "teal": 3461,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:598",
     "pc": [
-      3348
-    ]
-  },
-  {
-    "teal": 3462,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:578",
-    "pc": [
-      3349,
       3350,
-      3351
+      3351,
+      3352
     ]
   },
   {
-    "teal": 3467,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:600",
+    "teal": 3465,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:599",
     "pc": [
-      3352,
       3353
     ]
   },
   {
-    "teal": 3468,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:600",
+    "teal": 3466,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:599",
     "pc": [
-      3354,
+      3354
+    ]
+  },
+  {
+    "teal": 3467,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:599",
+    "pc": [
       3355
     ]
   },
   {
-    "teal": 3469,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:600",
+    "teal": 3468,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:599",
     "pc": [
-      3356,
+      3356
+    ]
+  },
+  {
+    "teal": 3469,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:599",
+    "pc": [
       3357
     ]
   },
   {
     "teal": 3470,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:600",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:599",
     "pc": [
-      3358,
-      3359,
-      3360
+      3358
     ]
   },
   {
     "teal": 3471,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:600",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:579",
     "pc": [
+      3359,
+      3360,
       3361
     ]
   },
   {
-    "teal": 3472,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:600",
+    "teal": 3476,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:601",
     "pc": [
       3362,
       3363
     ]
   },
   {
-    "teal": 3473,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:600",
+    "teal": 3477,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:601",
     "pc": [
-      3364
-    ]
-  },
-  {
-    "teal": 3474,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:600",
-    "pc": [
+      3364,
       3365
     ]
   },
   {
-    "teal": 3475,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:600",
+    "teal": 3478,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:601",
     "pc": [
-      3366
+      3366,
+      3367
     ]
   },
   {
-    "teal": 3476,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:600",
+    "teal": 3479,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:601",
     "pc": [
-      3367,
-      3368
+      3368,
+      3369,
+      3370
     ]
   },
   {
     "teal": 3480,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:601",
     "pc": [
-      3369,
-      3370
+      3371
     ]
   },
   {
     "teal": 3481,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:601",
     "pc": [
-      3371,
-      3372
+      3372,
+      3373
     ]
   },
   {
     "teal": 3482,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:601",
     "pc": [
-      3373,
       3374
     ]
   },
@@ -14731,13 +14731,19 @@
     "teal": 3483,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:601",
     "pc": [
-      3375,
+      3375
+    ]
+  },
+  {
+    "teal": 3484,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:601",
+    "pc": [
       3376
     ]
   },
   {
-    "teal": 3488,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:603",
+    "teal": 3485,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:601",
     "pc": [
       3377,
       3378
@@ -14745,7 +14751,7 @@
   },
   {
     "teal": 3489,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:603",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:602",
     "pc": [
       3379,
       3380
@@ -14753,139 +14759,133 @@
   },
   {
     "teal": 3490,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:603",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:602",
     "pc": [
       3381,
-      3382,
-      3383
+      3382
     ]
   },
   {
     "teal": 3491,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:603",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:602",
     "pc": [
-      3384,
+      3383,
+      3384
+    ]
+  },
+  {
+    "teal": 3492,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:602",
+    "pc": [
       3385,
       3386
     ]
   },
   {
-    "teal": 3498,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:531",
+    "teal": 3497,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:604",
     "pc": [
       3387,
       3388
     ]
   },
   {
-    "teal": 3499,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:531",
+    "teal": 3498,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:604",
     "pc": [
-      3389
-    ]
-  },
-  {
-    "teal": 3500,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:531",
-    "pc": [
+      3389,
       3390
     ]
   },
   {
-    "teal": 3501,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:531",
+    "teal": 3499,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:604",
     "pc": [
       3391,
-      3392
+      3392,
+      3393
     ]
   },
   {
-    "teal": 3502,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:531",
+    "teal": 3500,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:604",
     "pc": [
-      3393,
       3394,
-      3395
-    ]
-  },
-  {
-    "teal": 3505,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:525",
-    "pc": [
+      3395,
       3396
     ]
   },
   {
-    "teal": 3509,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:608",
+    "teal": 3507,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:531",
     "pc": [
       3397,
-      3398,
+      3398
+    ]
+  },
+  {
+    "teal": 3508,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:531",
+    "pc": [
       3399
     ]
   },
   {
-    "teal": 3512,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:608",
+    "teal": 3509,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:531",
     "pc": [
       3400
     ]
   },
   {
-    "teal": 3516,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
+    "teal": 3510,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:531",
     "pc": [
-      3401
+      3401,
+      3402
     ]
   },
   {
-    "teal": 3517,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
+    "teal": 3511,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:531",
     "pc": [
-      3402,
-      3403
-    ]
-  },
-  {
-    "teal": 3522,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
-    "pc": [
+      3403,
       3404,
       3405
     ]
   },
   {
-    "teal": 3523,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
+    "teal": 3514,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:525",
     "pc": [
       3406
     ]
   },
   {
-    "teal": 3524,
+    "teal": 3518,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
     "pc": [
-      3407
+      3407,
+      3408,
+      3409
+    ]
+  },
+  {
+    "teal": 3521,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
+    "pc": [
+      3410
     ]
   },
   {
     "teal": 3525,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
     "pc": [
-      3408
-    ]
-  },
-  {
-    "teal": 3526,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
-    "pc": [
-      3409,
-      3410,
       3411
     ]
   },
   {
-    "teal": 3531,
+    "teal": 3526,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
     "pc": [
       3412,
@@ -14893,358 +14893,358 @@
     ]
   },
   {
+    "teal": 3531,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
+    "pc": [
+      3414,
+      3415
+    ]
+  },
+  {
     "teal": 3532,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
     "pc": [
-      3414
+      3416
     ]
   },
   {
     "teal": 3533,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
     "pc": [
-      3415
+      3417
     ]
   },
   {
     "teal": 3534,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
     "pc": [
-      3416,
-      3417,
       3418
     ]
   },
   {
-    "teal": 3539,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
+    "teal": 3535,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
     "pc": [
-      3419
+      3419,
+      3420,
+      3421
     ]
   },
   {
     "teal": 3540,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
     "pc": [
-      3420
+      3422,
+      3423
     ]
   },
   {
     "teal": 3541,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
     "pc": [
-      3421,
-      3422
+      3424
     ]
   },
   {
     "teal": 3542,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
     "pc": [
-      3423
+      3425
     ]
   },
   {
     "teal": 3543,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
     "pc": [
-      3424,
-      3425
-    ]
-  },
-  {
-    "teal": 3544,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
-    "pc": [
-      3426
-    ]
-  },
-  {
-    "teal": 3545,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
-    "pc": [
-      3427
-    ]
-  },
-  {
-    "teal": 3546,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
-    "pc": [
-      3428,
-      3429
-    ]
-  },
-  {
-    "teal": 3547,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
-    "pc": [
-      3430,
-      3431
+      3426,
+      3427,
+      3428
     ]
   },
   {
     "teal": 3548,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
     "pc": [
-      3432,
-      3433
+      3429
     ]
   },
   {
     "teal": 3549,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
+    "pc": [
+      3430
+    ]
+  },
+  {
+    "teal": 3550,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
+    "pc": [
+      3431,
+      3432
+    ]
+  },
+  {
+    "teal": 3551,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
+    "pc": [
+      3433
+    ]
+  },
+  {
+    "teal": 3552,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
     "pc": [
       3434,
       3435
     ]
   },
   {
-    "teal": 3550,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:611",
+    "teal": 3553,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
     "pc": [
       3436
     ]
   },
   {
+    "teal": 3554,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
+    "pc": [
+      3437
+    ]
+  },
+  {
+    "teal": 3555,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
+    "pc": [
+      3438,
+      3439
+    ]
+  },
+  {
     "teal": 3556,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
     "pc": [
-      3437,
-      3438
-    ]
-  },
-  {
-    "teal": 3557,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
-    "pc": [
-      3439,
-      3440
-    ]
-  },
-  {
-    "teal": 3558,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
-    "pc": [
+      3440,
       3441
     ]
   },
   {
-    "teal": 3559,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
+    "teal": 3557,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
     "pc": [
-      3442
-    ]
-  },
-  {
-    "teal": 3560,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
-    "pc": [
+      3442,
       3443
     ]
   },
   {
-    "teal": 3561,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
+    "teal": 3558,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
     "pc": [
       3444,
       3445
     ]
   },
   {
-    "teal": 3562,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
+    "teal": 3559,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:612",
     "pc": [
       3446
     ]
   },
   {
-    "teal": 3563,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
+    "teal": 3565,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
     "pc": [
       3447,
       3448
     ]
   },
   {
-    "teal": 3564,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
+    "teal": 3566,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
     "pc": [
-      3449
+      3449,
+      3450
     ]
   },
   {
-    "teal": 3565,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
+    "teal": 3567,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
     "pc": [
-      3450,
       3451
     ]
   },
   {
-    "teal": 3566,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
+    "teal": 3568,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
     "pc": [
       3452
     ]
   },
   {
-    "teal": 3567,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:613",
+    "teal": 3569,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
     "pc": [
-      3453,
+      3453
+    ]
+  },
+  {
+    "teal": 3570,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
+    "pc": [
       3454,
       3455
+    ]
+  },
+  {
+    "teal": 3571,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
+    "pc": [
+      3456
     ]
   },
   {
     "teal": 3572,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
     "pc": [
-      3456,
-      3457
+      3457,
+      3458
     ]
   },
   {
     "teal": 3573,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
     "pc": [
-      3458,
-      3459,
-      3460
+      3459
     ]
   },
   {
-    "teal": 3580,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
+    "teal": 3574,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
     "pc": [
-      3461,
+      3460,
+      3461
+    ]
+  },
+  {
+    "teal": 3575,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
+    "pc": [
       3462
     ]
   },
   {
-    "teal": 3581,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
+    "teal": 3576,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:614",
     "pc": [
-      3463
+      3463,
+      3464,
+      3465
+    ]
+  },
+  {
+    "teal": 3581,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:615",
+    "pc": [
+      3466,
+      3467
     ]
   },
   {
     "teal": 3582,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:615",
     "pc": [
-      3464
-    ]
-  },
-  {
-    "teal": 3583,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
-    "pc": [
-      3465,
-      3466
-    ]
-  },
-  {
-    "teal": 3584,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
-    "pc": [
-      3467,
       3468,
-      3469
-    ]
-  },
-  {
-    "teal": 3589,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:617",
-    "pc": [
+      3469,
       3470
     ]
   },
   {
-    "teal": 3593,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:608",
+    "teal": 3589,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
     "pc": [
       3471,
       3472
     ]
   },
   {
-    "teal": 3594,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:608",
+    "teal": 3590,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
     "pc": [
       3473
     ]
   },
   {
-    "teal": 3598,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:620",
+    "teal": 3591,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
     "pc": [
-      3474,
+      3474
+    ]
+  },
+  {
+    "teal": 3592,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
+    "pc": [
       3475,
       3476
     ]
   },
   {
-    "teal": 3601,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:620",
+    "teal": 3593,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:610",
     "pc": [
-      3477
+      3477,
+      3478,
+      3479
     ]
   },
   {
-    "teal": 3605,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
+    "teal": 3598,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:618",
     "pc": [
-      3478
-    ]
-  },
-  {
-    "teal": 3606,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
-    "pc": [
-      3479,
       3480
     ]
   },
   {
-    "teal": 3611,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
+    "teal": 3602,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
     "pc": [
       3481,
       3482
     ]
   },
   {
-    "teal": 3612,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
+    "teal": 3603,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:609",
     "pc": [
       3483
     ]
   },
   {
-    "teal": 3613,
+    "teal": 3607,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
     "pc": [
-      3484
+      3484,
+      3485,
+      3486
+    ]
+  },
+  {
+    "teal": 3610,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
+    "pc": [
+      3487
     ]
   },
   {
     "teal": 3614,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
     "pc": [
-      3485
-    ]
-  },
-  {
-    "teal": 3615,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
-    "pc": [
-      3486,
-      3487,
       3488
     ]
   },
   {
-    "teal": 3620,
+    "teal": 3615,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
     "pc": [
       3489,
@@ -15252,222 +15252,228 @@
     ]
   },
   {
+    "teal": 3620,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
+    "pc": [
+      3491,
+      3492
+    ]
+  },
+  {
     "teal": 3621,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
     "pc": [
-      3491
+      3493
     ]
   },
   {
     "teal": 3622,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
     "pc": [
-      3492
+      3494
     ]
   },
   {
     "teal": 3623,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
     "pc": [
-      3493,
-      3494,
       3495
     ]
   },
   {
-    "teal": 3628,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
+    "teal": 3624,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
     "pc": [
-      3496
+      3496,
+      3497,
+      3498
     ]
   },
   {
     "teal": 3629,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
     "pc": [
-      3497
+      3499,
+      3500
     ]
   },
   {
     "teal": 3630,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
     "pc": [
-      3498,
-      3499
+      3501
     ]
   },
   {
     "teal": 3631,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
     "pc": [
-      3500
+      3502
     ]
   },
   {
     "teal": 3632,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
     "pc": [
-      3501,
-      3502
-    ]
-  },
-  {
-    "teal": 3633,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
-    "pc": [
-      3503
-    ]
-  },
-  {
-    "teal": 3634,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
-    "pc": [
-      3504
-    ]
-  },
-  {
-    "teal": 3635,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
-    "pc": [
-      3505,
-      3506
-    ]
-  },
-  {
-    "teal": 3636,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
-    "pc": [
-      3507,
-      3508
+      3503,
+      3504,
+      3505
     ]
   },
   {
     "teal": 3637,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
     "pc": [
-      3509,
-      3510
+      3506
     ]
   },
   {
     "teal": 3638,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
+    "pc": [
+      3507
+    ]
+  },
+  {
+    "teal": 3639,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
+    "pc": [
+      3508,
+      3509
+    ]
+  },
+  {
+    "teal": 3640,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
+    "pc": [
+      3510
+    ]
+  },
+  {
+    "teal": 3641,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
     "pc": [
       3511,
       3512
     ]
   },
   {
-    "teal": 3639,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:623",
+    "teal": 3642,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
     "pc": [
       3513
     ]
   },
   {
+    "teal": 3643,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
+    "pc": [
+      3514
+    ]
+  },
+  {
+    "teal": 3644,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
+    "pc": [
+      3515,
+      3516
+    ]
+  },
+  {
     "teal": 3645,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
     "pc": [
-      3514,
-      3515
-    ]
-  },
-  {
-    "teal": 3646,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
-    "pc": [
-      3516,
-      3517
-    ]
-  },
-  {
-    "teal": 3647,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
-    "pc": [
+      3517,
       3518
     ]
   },
   {
-    "teal": 3648,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
+    "teal": 3646,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
     "pc": [
-      3519
-    ]
-  },
-  {
-    "teal": 3649,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
-    "pc": [
+      3519,
       3520
     ]
   },
   {
-    "teal": 3650,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
+    "teal": 3647,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
     "pc": [
       3521,
       3522
     ]
   },
   {
-    "teal": 3651,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
+    "teal": 3648,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:624",
     "pc": [
       3523
     ]
   },
   {
-    "teal": 3652,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
+    "teal": 3654,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
       3524,
       3525
     ]
   },
   {
-    "teal": 3653,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
+    "teal": 3655,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
-      3526
+      3526,
+      3527
     ]
   },
   {
-    "teal": 3654,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
+    "teal": 3656,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
-      3527,
       3528
     ]
   },
   {
-    "teal": 3655,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
+    "teal": 3657,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
       3529
     ]
   },
   {
-    "teal": 3656,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
+    "teal": 3658,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
-      3530,
+      3530
+    ]
+  },
+  {
+    "teal": 3659,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
+    "pc": [
       3531,
       3532
+    ]
+  },
+  {
+    "teal": 3660,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
+    "pc": [
+      3533
     ]
   },
   {
     "teal": 3661,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
-      3533,
-      3534
+      3534,
+      3535
     ]
   },
   {
     "teal": 3662,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
-      3535,
       3536
     ]
   },
@@ -15475,14 +15481,14 @@
     "teal": 3663,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
-      3537
+      3537,
+      3538
     ]
   },
   {
     "teal": 3664,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
-      3538,
       3539
     ]
   },
@@ -15490,144 +15496,144 @@
     "teal": 3665,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
-      3540
-    ]
-  },
-  {
-    "teal": 3666,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
-    "pc": [
+      3540,
       3541,
       3542
     ]
   },
   {
-    "teal": 3667,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
+    "teal": 3670,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:627",
     "pc": [
-      3543
+      3543,
+      3544
     ]
   },
   {
     "teal": 3671,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:627",
     "pc": [
-      3544
+      3545,
+      3546
     ]
   },
   {
     "teal": 3672,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:625",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:627",
     "pc": [
-      3545,
-      3546,
       3547
     ]
   },
   {
-    "teal": 3677,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3673,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:627",
     "pc": [
       3548,
       3549
     ]
   },
   {
-    "teal": 3678,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3674,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:627",
     "pc": [
-      3550,
-      3551
+      3550
     ]
   },
   {
-    "teal": 3679,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3675,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:627",
     "pc": [
+      3551,
       3552
     ]
   },
   {
-    "teal": 3680,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3676,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:627",
     "pc": [
       3553
     ]
   },
   {
-    "teal": 3681,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3680,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:628",
     "pc": [
       3554
     ]
   },
   {
-    "teal": 3682,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3681,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:626",
     "pc": [
       3555,
-      3556
-    ]
-  },
-  {
-    "teal": 3683,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
-    "pc": [
+      3556,
       3557
     ]
   },
   {
-    "teal": 3684,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3686,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
     "pc": [
       3558,
       3559
     ]
   },
   {
-    "teal": 3685,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3687,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
     "pc": [
-      3560
+      3560,
+      3561
     ]
   },
   {
-    "teal": 3686,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3688,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
     "pc": [
-      3561,
       3562
     ]
   },
   {
-    "teal": 3687,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3689,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
     "pc": [
       3563
     ]
   },
   {
-    "teal": 3688,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:629",
+    "teal": 3690,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
     "pc": [
-      3564,
+      3564
+    ]
+  },
+  {
+    "teal": 3691,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
+    "pc": [
       3565,
       3566
+    ]
+  },
+  {
+    "teal": 3692,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
+    "pc": [
+      3567
     ]
   },
   {
     "teal": 3693,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
     "pc": [
-      3567,
-      3568
+      3568,
+      3569
     ]
   },
   {
     "teal": 3694,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
     "pc": [
-      3569,
       3570
     ]
   },
@@ -15635,14 +15641,14 @@
     "teal": 3695,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
     "pc": [
-      3571
+      3571,
+      3572
     ]
   },
   {
     "teal": 3696,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
     "pc": [
-      3572,
       3573
     ]
   },
@@ -15650,208 +15656,189 @@
     "teal": 3697,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
     "pc": [
-      3574
-    ]
-  },
-  {
-    "teal": 3698,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
-    "pc": [
+      3574,
       3575,
       3576
     ]
   },
   {
-    "teal": 3699,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:630",
+    "teal": 3702,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:631",
     "pc": [
-      3577
+      3577,
+      3578
     ]
   },
   {
     "teal": 3703,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:631",
     "pc": [
-      3578
-    ]
-  },
-  {
-    "teal": 3710,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
-    "pc": [
       3579,
       3580
     ]
   },
   {
-    "teal": 3711,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
+    "teal": 3704,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:631",
     "pc": [
       3581
     ]
   },
   {
-    "teal": 3712,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
+    "teal": 3705,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:631",
     "pc": [
-      3582
+      3582,
+      3583
     ]
   },
   {
-    "teal": 3713,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
+    "teal": 3706,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:631",
     "pc": [
-      3583,
       3584
     ]
   },
   {
-    "teal": 3714,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
+    "teal": 3707,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:631",
     "pc": [
       3585,
-      3586,
+      3586
+    ]
+  },
+  {
+    "teal": 3708,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:631",
+    "pc": [
       3587
     ]
   },
   {
-    "teal": 3717,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:620",
+    "teal": 3712,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:632",
     "pc": [
       3588
     ]
   },
   {
-    "teal": 3721,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:636",
+    "teal": 3719,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
     "pc": [
       3589,
-      3590,
+      3590
+    ]
+  },
+  {
+    "teal": 3720,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
+    "pc": [
       3591
     ]
   },
   {
-    "teal": 3725,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:637",
+    "teal": 3721,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
     "pc": [
-      3592,
-      3593
+      3592
+    ]
+  },
+  {
+    "teal": 3722,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
+    "pc": [
+      3593,
+      3594
+    ]
+  },
+  {
+    "teal": 3723,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:622",
+    "pc": [
+      3595,
+      3596,
+      3597
     ]
   },
   {
     "teal": 3726,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:637",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:621",
     "pc": [
-      3594,
-      3595
-    ]
-  },
-  {
-    "teal": 3727,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:637",
-    "pc": [
-      3596
-    ]
-  },
-  {
-    "teal": 3728,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:637",
-    "pc": [
-      3597,
       3598
-    ]
-  },
-  {
-    "teal": 3729,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:637",
-    "pc": [
-      3599
     ]
   },
   {
     "teal": 3730,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:637",
     "pc": [
+      3599,
       3600,
       3601
     ]
   },
   {
-    "teal": 3731,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:637",
+    "teal": 3734,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:638",
     "pc": [
-      3602
-    ]
-  },
-  {
-    "teal": 3732,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:636",
-    "pc": [
+      3602,
       3603
     ]
   },
   {
-    "teal": 3737,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
+    "teal": 3735,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:638",
     "pc": [
       3604,
-      3605,
+      3605
+    ]
+  },
+  {
+    "teal": 3736,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:638",
+    "pc": [
       3606
     ]
   },
   {
-    "teal": 3738,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
+    "teal": 3737,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:638",
     "pc": [
-      3607
-    ]
-  },
-  {
-    "teal": 3739,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
-    "pc": [
+      3607,
       3608
     ]
   },
   {
-    "teal": 3740,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
+    "teal": 3738,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:638",
     "pc": [
       3609
     ]
   },
   {
-    "teal": 3741,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
+    "teal": 3739,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:638",
     "pc": [
-      3610
-    ]
-  },
-  {
-    "teal": 3744,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
-    "errorMessage": "argument 0 (enabled) for setFreeze must be a bool",
-    "pc": [
+      3610,
       3611
     ]
   },
   {
-    "teal": 3745,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
+    "teal": 3740,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:638",
     "pc": [
       3612
     ]
   },
   {
-    "teal": 3746,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
+    "teal": 3741,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:637",
     "pc": [
       3613
     ]
   },
   {
-    "teal": 3749,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
+    "teal": 3746,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
     "pc": [
       3614,
       3615,
@@ -15859,180 +15846,211 @@
     ]
   },
   {
-    "teal": 3750,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
+    "teal": 3747,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
     "pc": [
       3617
     ]
   },
   {
-    "teal": 3751,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
+    "teal": 3748,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
     "pc": [
       3618
     ]
   },
   {
-    "teal": 3755,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
+    "teal": 3749,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
     "pc": [
-      3619,
-      3620,
+      3619
+    ]
+  },
+  {
+    "teal": 3750,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
+    "pc": [
+      3620
+    ]
+  },
+  {
+    "teal": 3753,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
+    "errorMessage": "argument 0 (enabled) for setFreeze must be a bool",
+    "pc": [
       3621
+    ]
+  },
+  {
+    "teal": 3754,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
+    "pc": [
+      3622
+    ]
+  },
+  {
+    "teal": 3755,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
+    "pc": [
+      3623
+    ]
+  },
+  {
+    "teal": 3758,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
+    "pc": [
+      3624,
+      3625,
+      3626
     ]
   },
   {
     "teal": 3759,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
     "pc": [
-      3622,
-      3623
+      3627
     ]
   },
   {
     "teal": 3760,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
     "pc": [
-      3624,
-      3625
-    ]
-  },
-  {
-    "teal": 3761,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
-    "pc": [
-      3626
-    ]
-  },
-  {
-    "teal": 3762,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
-    "pc": [
-      3627
-    ]
-  },
-  {
-    "teal": 3765,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
-    "errorMessage": "Only injector can freeze payouts",
-    "pc": [
       3628
+    ]
+  },
+  {
+    "teal": 3764,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
+    "pc": [
+      3629,
+      3630,
+      3631
+    ]
+  },
+  {
+    "teal": 3768,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:642",
+    "pc": [
+      3632,
+      3633
     ]
   },
   {
     "teal": 3769,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:642",
     "pc": [
-      3629,
-      3630
+      3634,
+      3635
     ]
   },
   {
     "teal": 3770,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:642",
     "pc": [
-      3631,
-      3632
+      3636
     ]
   },
   {
     "teal": 3771,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:642",
     "pc": [
-      3633,
-      3634
-    ]
-  },
-  {
-    "teal": 3772,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:642",
-    "pc": [
-      3635
-    ]
-  },
-  {
-    "teal": 3773,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:642",
-    "pc": [
-      3636,
       3637
     ]
   },
   {
     "teal": 3774,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:642",
+    "errorMessage": "Only injector can freeze payouts",
     "pc": [
       3638
     ]
   },
   {
-    "teal": 3775,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:642",
+    "teal": 3778,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:643",
     "pc": [
-      3639
-    ]
-  },
-  {
-    "teal": 3776,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:640",
-    "pc": [
+      3639,
       3640
     ]
   },
   {
-    "teal": 3781,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:645",
+    "teal": 3779,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:643",
     "pc": [
       3641,
-      3642,
-      3643
+      3642
     ]
   },
   {
-    "teal": 3782,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:645",
+    "teal": 3780,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:643",
     "pc": [
+      3643,
       3644
     ]
   },
   {
-    "teal": 3783,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:645",
+    "teal": 3781,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:643",
     "pc": [
       3645
     ]
   },
   {
-    "teal": 3787,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:645",
+    "teal": 3782,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:643",
     "pc": [
       3646,
-      3647,
+      3647
+    ]
+  },
+  {
+    "teal": 3783,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:643",
+    "pc": [
       3648
     ]
   },
   {
-    "teal": 3788,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:645",
+    "teal": 3784,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:643",
     "pc": [
       3649
     ]
   },
   {
-    "teal": 3791,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "teal": 3785,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:641",
     "pc": [
-      3650,
+      3650
+    ]
+  },
+  {
+    "teal": 3790,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:646",
+    "pc": [
       3651,
       3652,
-      3653,
-      3654,
-      3655
+      3653
+    ]
+  },
+  {
+    "teal": 3791,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:646",
+    "pc": [
+      3654
     ]
   },
   {
     "teal": 3792,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:646",
+    "pc": [
+      3655
+    ]
+  },
+  {
+    "teal": 3796,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:646",
     "pc": [
       3656,
       3657,
@@ -16040,310 +16058,328 @@
     ]
   },
   {
-    "teal": 3793,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "teal": 3797,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:646",
     "pc": [
-      3659,
-      3660,
-      3661,
-      3662
-    ]
-  },
-  {
-    "teal": 3796,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
-    "errorMessage": "this contract does not implement the given ABI method for create NoOp",
-    "pc": [
-      3663
-    ]
-  },
-  {
-    "teal": 3799,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
-    "pc": [
-      3664,
-      3665,
-      3666,
-      3667,
-      3668,
-      3669
+      3659
     ]
   },
   {
     "teal": 3800,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3670,
-      3671,
-      3672,
-      3673,
-      3674,
-      3675
+      3660,
+      3661,
+      3662,
+      3663,
+      3664,
+      3665
     ]
   },
   {
     "teal": 3801,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3676,
-      3677,
-      3678,
-      3679,
-      3680,
-      3681
+      3666,
+      3667,
+      3668
     ]
   },
   {
     "teal": 3802,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3682,
-      3683,
-      3684,
-      3685,
-      3686,
-      3687
-    ]
-  },
-  {
-    "teal": 3803,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
-    "pc": [
-      3688,
-      3689,
-      3690,
-      3691,
-      3692,
-      3693
-    ]
-  },
-  {
-    "teal": 3804,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
-    "pc": [
-      3694,
-      3695,
-      3696,
-      3697,
-      3698,
-      3699
+      3669,
+      3670,
+      3671,
+      3672
     ]
   },
   {
     "teal": 3805,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "errorMessage": "this contract does not implement the given ABI method for create NoOp",
     "pc": [
-      3700,
-      3701,
-      3702,
-      3703,
-      3704,
-      3705
-    ]
-  },
-  {
-    "teal": 3806,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
-    "pc": [
-      3706,
-      3707,
-      3708,
-      3709,
-      3710,
-      3711
-    ]
-  },
-  {
-    "teal": 3807,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
-    "pc": [
-      3712,
-      3713,
-      3714,
-      3715,
-      3716,
-      3717
+      3673
     ]
   },
   {
     "teal": 3808,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3718,
-      3719,
-      3720,
-      3721,
-      3722,
-      3723
+      3674,
+      3675,
+      3676,
+      3677,
+      3678,
+      3679
     ]
   },
   {
     "teal": 3809,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3724,
-      3725,
-      3726,
-      3727,
-      3728,
-      3729
+      3680,
+      3681,
+      3682,
+      3683,
+      3684,
+      3685
     ]
   },
   {
     "teal": 3810,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3730,
-      3731,
-      3732,
-      3733,
-      3734,
-      3735
+      3686,
+      3687,
+      3688,
+      3689,
+      3690,
+      3691
     ]
   },
   {
     "teal": 3811,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3736,
-      3737,
-      3738,
-      3739,
-      3740,
-      3741
+      3692,
+      3693,
+      3694,
+      3695,
+      3696,
+      3697
     ]
   },
   {
     "teal": 3812,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3742,
-      3743,
-      3744,
-      3745,
-      3746,
-      3747
+      3698,
+      3699,
+      3700,
+      3701,
+      3702,
+      3703
     ]
   },
   {
     "teal": 3813,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3748,
-      3749,
-      3750,
-      3751,
-      3752,
-      3753
+      3704,
+      3705,
+      3706,
+      3707,
+      3708,
+      3709
     ]
   },
   {
     "teal": 3814,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3754,
-      3755,
-      3756,
-      3757,
-      3758,
-      3759
+      3710,
+      3711,
+      3712,
+      3713,
+      3714,
+      3715
     ]
   },
   {
     "teal": 3815,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3760,
-      3761,
-      3762,
-      3763,
-      3764,
-      3765
+      3716,
+      3717,
+      3718,
+      3719,
+      3720,
+      3721
     ]
   },
   {
     "teal": 3816,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3766,
-      3767,
-      3768,
-      3769,
-      3770,
-      3771
+      3722,
+      3723,
+      3724,
+      3725,
+      3726,
+      3727
     ]
   },
   {
     "teal": 3817,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3772,
-      3773,
-      3774,
-      3775,
-      3776,
-      3777
+      3728,
+      3729,
+      3730,
+      3731,
+      3732,
+      3733
     ]
   },
   {
     "teal": 3818,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3778,
-      3779,
-      3780,
-      3781,
-      3782,
-      3783
+      3734,
+      3735,
+      3736,
+      3737,
+      3738,
+      3739
     ]
   },
   {
     "teal": 3819,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3784,
-      3785,
-      3786,
-      3787,
-      3788,
-      3789
+      3740,
+      3741,
+      3742,
+      3743,
+      3744,
+      3745
     ]
   },
   {
     "teal": 3820,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3790,
-      3791,
-      3792,
-      3793,
-      3794,
-      3795
+      3746,
+      3747,
+      3748,
+      3749,
+      3750,
+      3751
     ]
   },
   {
     "teal": 3821,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3796,
-      3797,
-      3798
+      3752,
+      3753,
+      3754,
+      3755,
+      3756,
+      3757
     ]
   },
   {
     "teal": 3822,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "pc": [
-      3799,
+      3758,
+      3759,
+      3760,
+      3761,
+      3762,
+      3763
+    ]
+  },
+  {
+    "teal": 3823,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
+      3764,
+      3765,
+      3766,
+      3767,
+      3768,
+      3769
+    ]
+  },
+  {
+    "teal": 3824,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
+      3770,
+      3771,
+      3772,
+      3773,
+      3774,
+      3775
+    ]
+  },
+  {
+    "teal": 3825,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
+      3776,
+      3777,
+      3778,
+      3779,
+      3780,
+      3781
+    ]
+  },
+  {
+    "teal": 3826,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
+      3782,
+      3783,
+      3784,
+      3785,
+      3786,
+      3787
+    ]
+  },
+  {
+    "teal": 3827,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
+      3788,
+      3789,
+      3790,
+      3791,
+      3792,
+      3793
+    ]
+  },
+  {
+    "teal": 3828,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
+      3794,
+      3795,
+      3796,
+      3797,
+      3798,
+      3799
+    ]
+  },
+  {
+    "teal": 3829,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
       3800,
       3801,
       3802,
       3803,
       3804,
-      3805,
+      3805
+    ]
+  },
+  {
+    "teal": 3830,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
       3806,
       3807,
-      3808,
+      3808
+    ]
+  },
+  {
+    "teal": 3831,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
       3809,
       3810,
       3811,
@@ -16379,54 +16415,64 @@
       3841,
       3842,
       3843,
-      3844
-    ]
-  },
-  {
-    "teal": 3825,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
-    "errorMessage": "this contract does not implement the given ABI method for call NoOp",
-    "pc": [
-      3845
-    ]
-  },
-  {
-    "teal": 3828,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
-    "pc": [
+      3844,
+      3845,
       3846,
       3847,
       3848,
       3849,
       3850,
-      3851
-    ]
-  },
-  {
-    "teal": 3829,
-    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
-    "pc": [
+      3851,
       3852,
       3853,
       3854
     ]
   },
   {
-    "teal": 3830,
+    "teal": 3834,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "errorMessage": "this contract does not implement the given ABI method for call NoOp",
     "pc": [
-      3855,
-      3856,
-      3857,
-      3858
+      3855
     ]
   },
   {
-    "teal": 3833,
+    "teal": 3837,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
+      3856,
+      3857,
+      3858,
+      3859,
+      3860,
+      3861
+    ]
+  },
+  {
+    "teal": 3838,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
+      3862,
+      3863,
+      3864
+    ]
+  },
+  {
+    "teal": 3839,
+    "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
+    "pc": [
+      3865,
+      3866,
+      3867,
+      3868
+    ]
+  },
+  {
+    "teal": 3842,
     "source": "contracts/PermissionlessInjectedRewardsPool.algo.ts:21",
     "errorMessage": "this contract does not implement the given ABI method for call DeleteApplication",
     "pc": [
-      3859
+      3869
     ]
   }
 ]
