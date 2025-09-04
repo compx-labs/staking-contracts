@@ -16,7 +16,7 @@ export type mbrReturn = {
 const MAX_STAKERS_PER_POOL = 500;
 const ASSET_HOLDING_FEE = 100000; // creation/holding fee for asset
 const ALGORAND_ACCOUNT_MIN_BALANCE = 100000;
-const VERSION = 2000;
+const VERSION = 2001;
 
 export class PermissionlessInjectedRewardsPool extends Contract {
   programVersion = 11;
