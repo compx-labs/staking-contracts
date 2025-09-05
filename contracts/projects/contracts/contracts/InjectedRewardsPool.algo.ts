@@ -409,6 +409,7 @@ export class InjectedRewardsPool extends Contract {
       if (staker.account === this.txn.sender) {
 
         if (staker.stake > 0) {
+          assert(staker.stake >= quantity);
           if (this.stakedAssetId.value === 0) {
             sendPayment({
               amount: quantity === 0 ? staker.stake : quantity,
