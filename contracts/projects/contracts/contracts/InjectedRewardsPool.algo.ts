@@ -51,10 +51,6 @@ export class InjectedRewardsPool extends Contract {
     this.adminAddress.value = adminAddress;
     this.contractVersion.value = VERSION;
   }
-
-  /*
-
-  */
   /**
    * Initializes the staking pool application with the specified staked asset and reward asset.
    *
@@ -85,12 +81,14 @@ export class InjectedRewardsPool extends Contract {
       xferAsset: AssetID.fromUint64(stakedAssetId),
       assetReceiver: this.app.address,
       assetAmount: 0,
+      fee: STANDARD_TXN_FEE,
     });
     if (rewardAssetId !== stakedAssetId) {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(rewardAssetId),
         assetReceiver: this.app.address,
         assetAmount: 0,
+        fee: STANDARD_TXN_FEE,
       });
     }
   }
@@ -143,14 +141,7 @@ export class InjectedRewardsPool extends Contract {
     this.stakers.create();
     this.minimumBalance.value = poolMBR;
 
-    if (nonAlgoRewardMBR > 0) {
-      // opt into additional reward token
-      sendAssetTransfer({
-        xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
-        assetReceiver: this.app.address,
-        assetAmount: 0,
-      });
-    }
+
   }
   /*
    * Inject rewards into the pool
@@ -173,12 +164,15 @@ export class InjectedRewardsPool extends Contract {
     assert(this.txn.sender === this.adminAddress.value, 'Only admin can delete application');
     assert(this.totalStaked.value === 0, 'Staked assets still exist');
 
+    this.stakers.delete();
+
     // opt out of tokens
     sendAssetTransfer({
       xferAsset: AssetID.fromUint64(this.stakedAssetId.value),
       assetCloseTo: globals.zeroAddress,
       assetAmount: 0,
       assetReceiver: this.app.address,
+      fee: STANDARD_TXN_FEE,
     });
     // opt out of reward token
     if (this.stakedAssetId.value !== this.rewardAssetId.value) {
@@ -187,15 +181,16 @@ export class InjectedRewardsPool extends Contract {
         assetCloseTo: globals.zeroAddress,
         assetAmount: 0,
         assetReceiver: this.app.address,
+        fee: STANDARD_TXN_FEE,
       });
     }
 
-    sendPayment({
-      amount: this.adminAddress.value.balance - globals.minBalance,
+    /* sendPayment({
+      amount: this.app.address.balance - globals.minBalance - 2000,
       receiver: this.adminAddress.value,
       sender: this.app.address,
       fee: STANDARD_TXN_FEE,
-    });
+    }); */
   }
 
   stake(stakeTxn: AssetTransferTxn, quantity: uint64): void {
