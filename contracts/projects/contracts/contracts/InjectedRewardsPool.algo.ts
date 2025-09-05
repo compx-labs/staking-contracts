@@ -16,7 +16,7 @@ export type mbrReturn = {
 const MAX_STAKERS_PER_POOL = 650;
 const ASSET_HOLDING_FEE = 100000; // creation/holding fee for asset
 const ALGORAND_ACCOUNT_MIN_BALANCE = 100000;
-const VERSION = 2001;
+const VERSION = 3000;
 const INITIAL_PAY_AMOUNT = 400_000;
 const STANDARD_TXN_FEE: uint64 = 1_000;
 

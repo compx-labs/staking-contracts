@@ -54,7 +54,7 @@ createApplication:
 	// contracts/InjectedRewardsPool.algo.ts:52
 	// this.contractVersion.value = VERSION
 	pushbytes 0x636f6e747261637456657273696f6e // "contractVersion"
-	pushint 2001
+	pushint 3000
 	app_global_put
 	retsub
 
