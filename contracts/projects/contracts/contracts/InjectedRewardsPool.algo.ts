@@ -5,16 +5,15 @@ export type StakeInfo = {
   account: Address;
   stake: uint64;
   accruedASARewards: uint64;
-  userSharePercentage: uint64; // not sure if still needed
 };
 
-// storage cost total bytes: 32+8+8+8 = 56
+// storage cost total bytes: 32+8+8 = 48
 
 export type mbrReturn = {
   mbrPayment: uint64;
 };
 
-const MAX_STAKERS_PER_POOL = 500;
+const MAX_STAKERS_PER_POOL = 650;
 const ASSET_HOLDING_FEE = 100000; // creation/holding fee for asset
 const ALGORAND_ACCOUNT_MIN_BALANCE = 100000;
 const VERSION = 2001;
@@ -182,7 +181,7 @@ export class InjectedRewardsPool extends Contract {
       assetReceiver: this.app.address,
     });
     // opt out of reward token
-    if(this.stakedAssetId.value !== this.rewardAssetId.value) {
+    if (this.stakedAssetId.value !== this.rewardAssetId.value) {
       sendAssetTransfer({
         xferAsset: AssetID.fromUint64(this.rewardAssetId.value),
         assetCloseTo: globals.zeroAddress,
@@ -192,7 +191,7 @@ export class InjectedRewardsPool extends Contract {
     }
 
     sendPayment({
-      amount: (this.adminAddress.value.balance - globals.minBalance),
+      amount: this.adminAddress.value.balance - globals.minBalance,
       receiver: this.adminAddress.value,
       sender: this.app.address,
       fee: STANDARD_TXN_FEE,
@@ -246,13 +245,15 @@ export class InjectedRewardsPool extends Contract {
           account: this.txn.sender,
           stake: stakeTxn.assetAmount,
           accruedASARewards: 0,
-          userSharePercentage: 0,
         };
         if (globals.opcodeBudget < 300) {
           increaseOpcodeBudget();
         }
         this.numStakers.value = this.numStakers.value + 1;
         actionComplete = true;
+      } else {
+        // pool is full return assert
+        assert(this.numStakers.value < MAX_STAKERS_PER_POOL, 'Max stakers limit reached');
       }
 
       if (globals.opcodeBudget < 300) {
@@ -275,7 +276,6 @@ export class InjectedRewardsPool extends Contract {
           const staker = clone(this.stakers.value[i]);
 
           let stakerShare = wideRatio([staker.stake, PRECISION], [this.totalStaked.value]);
-          staker.userSharePercentage = stakerShare;
 
           if (globals.opcodeBudget < 300) {
             increaseOpcodeBudget();
@@ -330,7 +330,6 @@ export class InjectedRewardsPool extends Contract {
       account: globals.zeroAddress,
       stake: 0,
       accruedASARewards: 0,
-      userSharePercentage: 0,
     };
   }
 
@@ -403,7 +402,6 @@ export class InjectedRewardsPool extends Contract {
             account: globals.zeroAddress,
             stake: 0,
             accruedASARewards: 0,
-            userSharePercentage: 0,
           };
           this.setStaker(staker.account, removedStaker);
           //copy last staker to the removed staker position
