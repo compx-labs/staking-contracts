@@ -1,7 +1,5 @@
-import { TransactionSignerAccount } from "@algorandfoundation/algokit-utils/types/account";
-import { AlgorandFixture } from "@algorandfoundation/algokit-utils/types/testing";
-import * as algokit from '@algorandfoundation/algokit-utils';
-import algosdk from "algosdk";
+import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account';
+import algosdk from 'algosdk';
 
 export interface StakingAccount {
   account?: TransactionSignerAccount;
@@ -9,16 +7,10 @@ export interface StakingAccount {
 }
 
 export type StakeInfo = {
-  account: string
-  stake: bigint
-  stakeDuration: bigint
-  stakeStartTime: bigint
-  algoAccuredRewards: bigint
-  lastUpdateTime: bigint
-  accruedASARewards: bigint
-  userSharePercentage: bigint
-}
-
+  account: string;
+  stake: bigint;
+  accruedASARewards: bigint;
+};
 
 export function byteArrayToUint128(byteArray: Uint8Array): bigint {
   let result = BigInt(0);
@@ -45,27 +37,13 @@ export function getStakingAccount(byteArray: Uint8Array, byteLength: number): St
   index += 32;
   const stake = byteArrayToUint128(byteArray.slice(index, index + byteLength));
   index += byteLength;
-  const stakeDuration = byteArrayToUint128(byteArray.slice(index, index + byteLength));
-  index += byteLength;
-  const stakeStartTime = byteArrayToUint128(byteArray.slice(index, index + byteLength));
-  index += byteLength;
-  const algoAccuredRewards = byteArrayToUint128(byteArray.slice(index, index + byteLength));
-  index += byteLength;
-  const lastUpdateTime = byteArrayToUint128(byteArray.slice(index, index + byteLength));
-  index += byteLength;
   const accruedASARewards = byteArrayToUint128(byteArray.slice(index, index + byteLength));
   index += byteLength;
-  const userSharePercentage = byteArrayToUint128(byteArray.slice(index, index + byteLength));
-  index += byteLength;
+
   const staker: StakeInfo = {
     account,
     stake,
-    stakeDuration,
-    stakeStartTime,
-    algoAccuredRewards,
-    lastUpdateTime,
     accruedASARewards,
-    userSharePercentage
   };
   return staker;
 }
