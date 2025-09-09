@@ -122,7 +122,7 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
     const globalState = await pIRPClient.state.global.getAll();
     expect(globalState.stakedAssetId).toBe(stakedAssetId);
     expect(globalState.rewardAssetId).toBe(rewardAssetOneId);
-    expect(globalState.contractVersion).toBe(2000n);
+    expect(globalState.contractVersion).toBe(2001n);
   });
 
   test('init storage', async () => {
@@ -480,6 +480,30 @@ describe('Permissionless Injected Reward Pool setup/admin functions - no staking
     const { balance: algoBalanceAfter } = await fixture.algorand.account.getInformation(rewardSender.addr);
     expect(ASATokenBalanceAfter).toBe(ASATokenBalanceBefore - REWARD_ASA_REWARD_AMOUNT);
     expect(algoBalanceAfter.microAlgos).toBe(algoBalanceBefore.microAlgos - 1000n);
+  });
+
+  test('attempt to unstake more than staked', async () => {
+    const staker = stakers[0];
+    fixture.algorand.account.setSignerFromAccount(staker.account);
+
+    const unstakeQuanity = STAKE_AMOUNT + 1n; // unstake all
+
+    pIRPClient.algorand.setSignerFromAccount(staker.account);
+
+    await expect(
+      pIRPClient
+        .newGroup()
+        .gas({ note: '1', args: [], maxFee: algokit.microAlgos(250_000n) })
+        .gas({ note: '2', args: [], maxFee: algokit.microAlgos(250_000n) })
+        .gas({ note: '3', args: [], maxFee: algokit.microAlgos(250_000n) })
+        .unstake({
+          args: [unstakeQuanity],
+          sender: staker.account.addr,
+          assetReferences: [stakedAssetId, xUSDAssetId, rewardAssetOneId],
+          maxFee: algokit.microAlgos(250_000n),
+        })
+        .send({ populateAppCallResources: true, coverAppCallInnerTransactionFees: true })
+    ).rejects.toThrow();
   });
 
   test('Staker 1 claim rewards', async () => {
